@@ -1,0 +1,16 @@
+#Future
+spring.datasource.future.jdbc-url=jdbc:postgresql://localhost:5436/dean
+spring.datasource.future.username=user
+spring.datasource.future.password=password
+spring.datasource.future.driver-class-name=org.postgresql.Driver
+spring.datasource.setNetworkTimeout=0
+
+#Old
+spring.datasource.old.jdbc-url=jdbc:jtds:sqlserver://localhost:1433/temp;encrypt=false;trustServerCertificate=false
+spring.datasource.old.username=user
+spring.datasource.old.password=password
+spring.datasource.old.driver-class-name=net.sourceforge.jtds.jdbc.Driver
+
+spring.jpa.database=default
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQL95Dialect
+#spring.jpa.show-sql=true
