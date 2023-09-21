@@ -25,10 +25,10 @@ public class DocumentModel extends DBBaseModel {
     @JoinColumn(name = "citizenship")
     @ManyToOne
     private CitizenshipModel citizenship;
-    private String foreignerString;
-    @JoinColumn(name = "foreigner")
+    private String studentLanguageString;
+    @JoinColumn(name = "studentLanguage")
     @ManyToOne
-    private ForeignerModel foreigner;
+    private StudentLanguageModel studentLanguage;
     private LocalDate birthDate;
     private String birthPlace;
     private String educationString;

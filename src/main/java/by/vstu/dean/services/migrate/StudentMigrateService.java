@@ -7,9 +7,7 @@ import by.vstu.dean.future.models.StudentModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
-import by.vstu.dean.old.models.DGroupModel;
 import by.vstu.dean.old.models.DStudentModel;
-import by.vstu.dean.old.repo.DGroupModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -25,7 +23,6 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     private final SpecializationModelRepository specializationModelRepository;
     private final GroupModelRepository groupModelRepository;
 
-    private final DGroupModelRepository dGroupModelRepository;
     private final DStudentModelRepository dStudentModelRepository;
 
     private final DocumentMigrateService documentMigrateService;

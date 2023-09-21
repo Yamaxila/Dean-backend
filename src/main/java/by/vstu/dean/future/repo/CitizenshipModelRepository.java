@@ -4,4 +4,5 @@ import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.CitizenshipModel;
 
 public interface CitizenshipModelRepository extends DBBaseModelRepository<CitizenshipModel> {
+    CitizenshipModel findBySourceId(Long citizenship);
 }

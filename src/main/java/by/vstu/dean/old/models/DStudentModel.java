@@ -70,10 +70,10 @@ public class DStudentModel extends OldDBBaseModel {
     private Integer citizenship;
 
     @Column(name = "inostr", length = 20)
-    private String foreignerString;
+    private String studentLanguageString;
 
     @Column(name = "dinostr_id")
-    private Integer foreigner;
+    private Integer studentLanguage;
 
     @Column(name = "data_roj")
     private LocalDateTime birthDate;
@@ -86,6 +86,7 @@ public class DStudentModel extends OldDBBaseModel {
 
     @JoinColumn(name = "dyo_id")
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     private DInstitutionModel institution;
 
     @Column(name = "god_okon")
@@ -284,7 +285,7 @@ public class DStudentModel extends OldDBBaseModel {
     private Integer move;
 
     @Column(name = "inostranec")
-    private Integer foreignerString2;
+    private Integer studentLanguageString2;
 
     @Column(name = "nom_dog", length = 20)
     private String documentNumber;

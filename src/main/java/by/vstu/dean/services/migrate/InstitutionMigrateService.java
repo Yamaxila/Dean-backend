@@ -1,11 +1,9 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.ForeignerModel;
 import by.vstu.dean.future.models.InstitutionModel;
 import by.vstu.dean.future.repo.InstitutionModelRepository;
 import by.vstu.dean.old.OldDBBaseModel;
-import by.vstu.dean.old.models.DForeignerModel;
 import by.vstu.dean.old.models.DInstitutionModel;
 import by.vstu.dean.old.repo.DInstitutionModelRepository;
 import lombok.RequiredArgsConstructor;

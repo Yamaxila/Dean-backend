@@ -14,8 +14,8 @@ import javax.persistence.Table;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "foreigner")
-public class ForeignerModel extends DBBaseModel {
+@Table(name = "studentLanguage")
+public class StudentLanguageModel extends DBBaseModel {
 
     private String name;
 

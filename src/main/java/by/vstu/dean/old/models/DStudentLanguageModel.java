@@ -12,7 +12,7 @@ import lombok.Setter;
 @AttributeOverrides({
         @AttributeOverride(name = "id", column = @Column(name = "dinostr_id", nullable = false))
 })
-public class DForeignerModel extends OldDBBaseModel {
+public class DStudentLanguageModel extends OldDBBaseModel {
     @Column(name = "inostr", length = 20)
     private String name;
 

@@ -1,6 +1,5 @@
 package by.vstu.dean.old.repo;
 
-import by.vstu.dean.future.models.SpecializationModel;
 import by.vstu.dean.old.OldDBBaseModelRepository;
 import by.vstu.dean.old.models.DGroupModel;
 import by.vstu.dean.old.models.DSpecializationModel;
@@ -20,6 +19,4 @@ public interface DStudentModelRepository extends OldDBBaseModelRepository<DStude
 
     List<DStudentModel> findAllByGroupId(Long id);
 
-    @Query("select s.id from DStudentModel s WHERE s.group.name in (?1)")
-    List<DStudentModel> findAllByGroupList(String list);
 }
