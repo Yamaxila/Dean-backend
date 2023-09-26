@@ -1,10 +1,6 @@
 package by.vstu.dean.services.migrate;
 
-import by.vstu.dean.future.models.SpecializationModel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.boot.ApplicationContextFactory;
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -18,7 +14,9 @@ public class MainMigrateService {
     private List<IMigrateExecutor> services = new ArrayList<>();
 
     private final CitizenshipMigrateService citizenshipMigrateService;
-    private final ForeignerMigrateService foreignerMigrateService;
+    private final DepartmentMigrateService departmentMigrateService;
+    private final DisciplineMigrateService disciplineMigrateService;
+    private final StudentLanguageMigrateService studentLanguageMigrateService;
     private final InstitutionMigrateService institutionMigrateService;
     private final QualificationMigrateService qualificationMigrateService;
     private final FacultyMigrateService facultyMigrateService;
@@ -26,7 +24,7 @@ public class MainMigrateService {
     private final SpecializationMigrateService specializationMigrateService;
     private final GroupMigrateService groupMigrateService;
     private final StudentMigrateService studentMigrateService;
-    private final DocumentMigrateService documentMigrateService;
+
 
     @PostConstruct
     public void migrate() {
@@ -34,7 +32,9 @@ public class MainMigrateService {
 
         Thread migrateThread = new Thread(() -> {
             services.add(this.citizenshipMigrateService);
-            services.add(this.foreignerMigrateService);
+            services.add(this.studentLanguageMigrateService);
+            services.add(this.departmentMigrateService);
+            services.add(this.disciplineMigrateService);
             services.add(this.institutionMigrateService);
             services.add(this.qualificationMigrateService);
             services.add(this.facultyMigrateService);
@@ -42,7 +42,7 @@ public class MainMigrateService {
             services.add(this.specializationMigrateService);
             services.add(this.groupMigrateService);
             services.add(this.studentMigrateService);
-//            services.add(this.documentMigrateService);
+
 
             services.forEach(IMigrateExecutor::migrate);
 
@@ -51,7 +51,7 @@ public class MainMigrateService {
 
         Thread checkThread = new Thread(() -> {
             boolean check = false;
-            while(Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration"))) {
+            while(Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration")) && !check) {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {}
