@@ -1,7 +1,7 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.StudentLanguageModel;
+import by.vstu.dean.future.models.students.StudentLanguageModel;
 import by.vstu.dean.future.repo.StudentLanguageModelRepository;
 import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DStudentLanguageModel;

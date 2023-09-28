@@ -1,13 +1,11 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.specs;
 
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.old.models.DFacultyModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,14 +17,20 @@ import javax.persistence.Table;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "departments")
-public class DepartmentModel extends DBBaseModel {
+@Table(name = "specializations")
+public class SpecializationModel extends DBBaseModel {
 
     private String name;
     private String shortName;
-    private String room;
-    @JoinColumn(name = "faculty_id")
+    private String spezCode;
+
+    @JoinColumn(name = "spec_id")
     @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    private FacultyModel faculty;
+    @JsonIgnore
+    private SpecialityModel spec;
+
+    @JoinColumn(name = "qualification_id")
+    @ManyToOne
+    private QualificationModel qualification;
+
 }

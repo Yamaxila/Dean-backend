@@ -2,9 +2,10 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.future.models.GroupModel;
+import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.future.repo.GroupModelRepository;
+import by.vstu.dean.future.repo.StudentModelRepository;
 import by.vstu.dean.old.models.DGroupModel;
 import by.vstu.dean.old.repo.DGroupModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
@@ -19,6 +20,7 @@ import java.util.List;
 public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupModel>{
 
     private final GroupModelRepository groupRepo;
+    private final StudentModelRepository studentModelRepository;
     private final FacultyModelRepository facultyModelRepository;
 
     private final DGroupModelRepository dGroupRepo;
@@ -63,6 +65,14 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         t.forEach(dGroup -> out.add(this.convertSingle(dGroup)));
 
         return out;
+    }
+
+    public List<GroupModel> applySpecIdByStudents() {
+        List<GroupModel> temp = this.groupRepo.findAllBySpecIsNull();
+        temp.forEach((group) -> {
+            group.setSpec(this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId()).getSpecialization().getSpec());
+        });
+        return temp;
     }
 
     @Override

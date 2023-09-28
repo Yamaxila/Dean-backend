@@ -1,4 +1,4 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.students;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
@@ -14,12 +14,9 @@ import javax.persistence.Table;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "specialities")
-public class SpecialityModel extends DBBaseModel {
+@Table(name = "studentLanguage")
+public class StudentLanguageModel extends DBBaseModel {
 
     private String name;
-    private String shortName;
-    private String specCode;
-
 
 }

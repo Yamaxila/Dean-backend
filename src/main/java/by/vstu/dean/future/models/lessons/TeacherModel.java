@@ -1,22 +1,23 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.lessons;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
-@Setter
-@Getter
+@Table(name = "teachers")
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "studentLanguage")
-public class StudentLanguageModel extends DBBaseModel {
+@Data
+public class TeacherModel extends DBBaseModel {
 
-    private String name;
+
+    private String lastName, firstName, secondName;
+
+    private String degree;
 
 }

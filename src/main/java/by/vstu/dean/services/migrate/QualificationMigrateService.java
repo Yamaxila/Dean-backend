@@ -1,7 +1,7 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.QualificationModel;
+import by.vstu.dean.future.models.specs.QualificationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.old.models.DQualificationModel;
 import by.vstu.dean.old.repo.DQualificationModelRepository;

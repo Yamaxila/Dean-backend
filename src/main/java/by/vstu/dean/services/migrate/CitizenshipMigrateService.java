@@ -26,11 +26,11 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
 
     @Override
     public List<CitizenshipModel> convertNotExistsFromDB() {
-
         List<OldDBBaseModel> bases = this.dCitizenshipRepository.findAllByIdAfter(this.getLastDBId());
         List<DCitizenshipModel> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DCitizenshipModel)base));
+        bases.forEach(base -> {
+            temp.add((DCitizenshipModel) base);
+        });
 
         return this.convertList(temp);
     }

@@ -1,6 +1,7 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.students;
 
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.students.StudentModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

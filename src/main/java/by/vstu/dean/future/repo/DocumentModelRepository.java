@@ -1,7 +1,7 @@
 package by.vstu.dean.future.repo;
 
 import by.vstu.dean.future.DBBaseModelRepository;
-import by.vstu.dean.future.models.DocumentModel;
+import by.vstu.dean.future.models.students.DocumentModel;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;

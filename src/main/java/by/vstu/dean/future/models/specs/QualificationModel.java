@@ -1,11 +1,10 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.specs;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.springframework.stereotype.Service;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;

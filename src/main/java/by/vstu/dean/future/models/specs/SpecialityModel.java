@@ -1,4 +1,4 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.specs;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
@@ -14,9 +14,12 @@ import javax.persistence.Table;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "citizenhips")
-public class CitizenshipModel extends DBBaseModel {
+@Table(name = "specialities")
+public class SpecialityModel extends DBBaseModel {
 
     private String name;
+    private String shortName;
+    private String specCode;
+
 
 }

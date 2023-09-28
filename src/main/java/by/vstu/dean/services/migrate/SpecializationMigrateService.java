@@ -2,7 +2,7 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.future.models.SpecializationModel;
+import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
 import by.vstu.dean.future.repo.SpecializationModelRepository;

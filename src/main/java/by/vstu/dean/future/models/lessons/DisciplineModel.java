@@ -1,4 +1,4 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.lessons;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import javax.validation.constraints.Size;
 
 @Entity
 @Getter

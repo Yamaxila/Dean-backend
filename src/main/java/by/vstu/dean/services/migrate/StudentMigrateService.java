@@ -2,8 +2,8 @@ package by.vstu.dean.services.migrate;
 
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.SpecializationModel;
-import by.vstu.dean.future.models.StudentModel;
+import by.vstu.dean.future.models.specs.SpecializationModel;
+import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
@@ -44,10 +44,10 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
             List<DStudentModel> temp = this.dStudentModelRepository.findAllByGroupId(group.getSourceId())
                     .stream().filter(p -> !ids.contains(p.getId())).toList();
+
             out.addAll(this.convertList(temp));
 
         });
-
 
         return out;
     }
@@ -81,6 +81,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
                 studentModel.setSpecialization(this.specializations.stream().filter(p -> p.getSourceId().equals(dStudentModel.getSpecialization().getId())).findAny().orElse(null));
 
         studentModel.setLastDocument(documentMigrateService.convertSingle(dStudentModel));
+
 
         return studentModel;
     }

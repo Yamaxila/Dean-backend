@@ -13,6 +13,7 @@ public class MainMigrateService {
 
     private List<IMigrateExecutor> services = new ArrayList<>();
 
+    private final ExamTypeMigrateService examTypeMigrateService;
     private final CitizenshipMigrateService citizenshipMigrateService;
     private final DepartmentMigrateService departmentMigrateService;
     private final DisciplineMigrateService disciplineMigrateService;
@@ -24,6 +25,8 @@ public class MainMigrateService {
     private final SpecializationMigrateService specializationMigrateService;
     private final GroupMigrateService groupMigrateService;
     private final StudentMigrateService studentMigrateService;
+    private final StudyPlanMigrateService studyPlanMigrateService;
+    private final EducationMigrateService educationMigrateService;
 
 
     @PostConstruct
@@ -31,39 +34,39 @@ public class MainMigrateService {
         Long startTime = System.currentTimeMillis();
 
         Thread migrateThread = new Thread(() -> {
+            services.add(this.examTypeMigrateService);
             services.add(this.citizenshipMigrateService);
             services.add(this.studentLanguageMigrateService);
-            services.add(this.departmentMigrateService);
-            services.add(this.disciplineMigrateService);
             services.add(this.institutionMigrateService);
             services.add(this.qualificationMigrateService);
             services.add(this.facultyMigrateService);
+            services.add(this.departmentMigrateService);
+            services.add(this.disciplineMigrateService);
             services.add(this.specialityMigrateService);
             services.add(this.specializationMigrateService);
             services.add(this.groupMigrateService);
             services.add(this.studentMigrateService);
+            services.add(this.studyPlanMigrateService);
 
 
             services.forEach(IMigrateExecutor::migrate);
 
+            System.out.println("Applying spec for groups");
+            this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
+            System.out.println("Applying student for educationModels");
+            this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
+
         });
 
 
+
         Thread checkThread = new Thread(() -> {
-            boolean check = false;
-            while(Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration")) && !check) {
+            while(Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration"))) {
                 try {
                     Thread.sleep(200);
                 } catch (InterruptedException e) {}
-
-                if(System.currentTimeMillis() - startTime > 40*1000 && !check) {
-                    System.out.println("I'm not dead yet! :)");
-                    check = true;
-                }
             }
-
             System.err.println("Migration time(s): " + Math.floor(((double)System.currentTimeMillis() - (double)startTime)/1000D));
-
         });
 
         migrateThread.setName("Migration");

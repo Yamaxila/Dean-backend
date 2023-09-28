@@ -1,16 +1,12 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.CitizenshipModel;
-import by.vstu.dean.future.models.DepartmentModel;
+import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.FacultyModel;
-import by.vstu.dean.future.repo.CitizenshipModelRepository;
 import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.old.OldDBBaseModel;
-import by.vstu.dean.old.models.DCitizenshipModel;
 import by.vstu.dean.old.models.DDepartmentModel;
-import by.vstu.dean.old.repo.DCitizenshipModelRepository;
 import by.vstu.dean.old.repo.DDepartmentModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -50,7 +46,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         departmentModel.setName(dDepartmentModel.getName());
         departmentModel.setShortName(dDepartmentModel.getShortName());
         departmentModel.setRoom(dDepartmentModel.getRoom());
-        FacultyModel faculty = this.facultyModels.stream().filter(p -> dDepartmentModel.getFaculty() != null && p.getSourceId().equals(dDepartmentModel.getFaculty().getId())).findAny().orElse(null);
+        FacultyModel faculty = this.facultyModels.stream().filter(p -> p.getSourceId().equals(dDepartmentModel.getFaculty().getId())).findAny().orElse(null);
         if(faculty != null)
             departmentModel.setFaculty(faculty);
         departmentModel.setStatus(EStatus.ACTIVE);

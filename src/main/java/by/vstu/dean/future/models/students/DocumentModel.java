@@ -1,14 +1,16 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.students;
 
 
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.CitizenshipModel;
+import by.vstu.dean.future.models.InstitutionModel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Setter
@@ -67,22 +69,13 @@ public class DocumentModel extends DBBaseModel {
     private String motherPhone;
     private String paymentType;
     private String benefits;
-    private String education1;
-    private String education1DocumentType;
-    private String education1DocumentSerial;
-    private String education1DocumentNumber;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "educations", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    private List<EducationModel> educations;
     private Double enrollScore;
     private boolean needHostel;
     private boolean reEnroll;
     private String lastSurname;
-    private String education2;
-    private String education2DocumentType;
-    private String education2DocumentSerial;
-    private String education2DocumentNumber;
-    private String education3;
-    private String education3DocumentType;
-    private String education3DocumentSerial;
-    private String education3DocumentNumber;
     private String enrollStudentScore;
     private String studentNumber;
     private String unbound;
