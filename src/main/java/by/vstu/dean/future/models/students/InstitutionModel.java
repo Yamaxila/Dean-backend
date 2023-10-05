@@ -1,4 +1,4 @@
-package by.vstu.dean.future.models;
+package by.vstu.dean.future.models.students;
 
 import by.vstu.dean.future.DBBaseModel;
 import lombok.AllArgsConstructor;
@@ -10,13 +10,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 @Entity
+@Table(name = "institutions")
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "citizenhips")
-public class CitizenshipModel extends DBBaseModel {
+public class InstitutionModel extends DBBaseModel {
 
-    private String name;
+    private String fullName;
+    private String shortName;
 
 }

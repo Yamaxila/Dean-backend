@@ -1,10 +1,11 @@
-package by.vstu.dean.security;
+package by.vstu.dean.configs.security;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
@@ -52,7 +53,9 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     public void configure(HttpSecurity http) throws Exception {
         ((HttpSecurity)((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)((HttpSecurity)http.csrf().disable())
+                .cors().and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.OPTIONS).permitAll()
                 .antMatchers(new String[] { "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs" })).permitAll()
                 .anyRequest()).authenticated()
                 .and())

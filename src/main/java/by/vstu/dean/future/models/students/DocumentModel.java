@@ -1,9 +1,9 @@
 package by.vstu.dean.future.models.students;
 
 
+import by.vstu.dean.adapters.LocalDateTypeAdapter;
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.future.models.CitizenshipModel;
-import by.vstu.dean.future.models.InstitutionModel;
+import com.google.gson.annotations.JsonAdapter;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,9 +28,10 @@ public class DocumentModel extends DBBaseModel {
     @ManyToOne
     private CitizenshipModel citizenship;
     private String studentLanguageString;
-    @JoinColumn(name = "studentLanguage")
+    @JoinColumn(name = "student_language")
     @ManyToOne
     private StudentLanguageModel studentLanguage;
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate birthDate;
     private String birthPlace;
     private String educationString;
@@ -54,10 +55,12 @@ public class DocumentModel extends DBBaseModel {
     private String job;
     private Double jobExperience;
     private String enrollmentOrder;
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollmentDate;
     private Integer deviationType;
     private String passportSerial;
     private String passportNumber;
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate passportIssueDate;
     private String passportIssueString;
     private String passportId;
@@ -83,8 +86,9 @@ public class DocumentModel extends DBBaseModel {
     private boolean move;
     private Long documentNumber;
     private String email;
-
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDate;
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate migrateDate;
 
 }

@@ -5,6 +5,6 @@ import by.vstu.dean.old.models.DStudyPlan;
 
 import java.util.List;
 
-public interface DStudyPlanRepository extends OldDBBaseModelRepository<DStudyPlan> {
+public interface DStudyPlanModelRepository extends OldDBBaseModelRepository<DStudyPlan> {
     List<DStudyPlan> findAllByGroupIdAndTeacherIdNotNull(Long id);
 }

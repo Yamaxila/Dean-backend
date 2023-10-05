@@ -71,9 +71,9 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         studentModel.setAddressRegion(dStudentModel.getAddressRegion());
         studentModel.setAddressFlat(dStudentModel.getAddressFlat());
         studentModel.setPhone(dStudentModel.getPhone());
-        studentModel.setSex(dStudentModel.getSex().equals("М") ? 1 : 0);
+        studentModel.setSex((dStudentModel.getSex() != null && dStudentModel.getSex().equals("М")) ? 1 : 0);
         studentModel.setSourceId(dStudentModel.getId());
-        studentModel.setStatus(dStudentModel.isExpelled() ? EStatus.DELETED : EStatus.ACTIVE);
+        studentModel.setStatus(dStudentModel.isExpelled() || dStudentModel.getGroup().getCurrentCourse().equals(99) ? EStatus.DELETED : EStatus.ACTIVE);
         if(dStudentModel.getSpecialization() != null)
             if(this.specializations.isEmpty())
                 studentModel.setSpecialization(this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));

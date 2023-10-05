@@ -12,16 +12,22 @@ import java.nio.charset.StandardCharsets;
 
 public class BaseRequest<B> {
 
-    private static final String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
-
+    private String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
 
     private String url;
 
     private HttpHeaders headers;
+    private HttpMethod method = HttpMethod.POST;
 
     public BaseRequest (String url) {
         this.url = url;
         this.headers = new HttpHeaders();
+    }
+
+    public BaseRequest<B> setAuthData(String clientId, String clientSecret) {
+        this.AUTH_CLIENT_ID = clientId;
+        this.AUTH_CLIENT_SECRET = clientSecret;
+        return this;
     }
 
     public String run (B entity) {
@@ -32,7 +38,7 @@ public class BaseRequest<B> {
         HttpEntity<B> request =
                 new HttpEntity<B>(entity, headers);
 
-        return restTemplate.exchange(this.url, HttpMethod.POST, request, String.class).getBody();
+        return restTemplate.exchange(this.url, this.method, request, String.class).getBody();
     }
 
     public BaseRequest<B> addHeader(String key, String value) {
@@ -46,11 +52,18 @@ public class BaseRequest<B> {
                 (AUTH_CLIENT_ID + ":" + AUTH_CLIENT_SECRET).getBytes(StandardCharsets.US_ASCII) );
 
         this.headers.add(HttpHeaders.AUTHORIZATION, "Basic " + new String( encodedAuth ));
-//        this.headers.add("username", AUTH_CLIENT_ID);
-//        this.headers.add("password", AUTH_CLIENT_SECRET);
         return this;
     }
 
+    public BaseRequest<B> setToken(String token) {
+        this.headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        return this;
+    }
+
+    public BaseRequest<B> setMethod(HttpMethod method) {
+        this.method = method;
+        return this;
+    }
     public BaseRequest<B> setMediaType(MediaType type) {
         this.headers.setContentType(type);
         return this;

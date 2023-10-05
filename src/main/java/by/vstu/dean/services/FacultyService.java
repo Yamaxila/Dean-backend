@@ -2,25 +2,14 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
-@RequiredArgsConstructor
-public class FacultyService {
+public class FacultyService extends BaseService<FacultyModel, FacultyModelRepository>{
 
-    @Autowired
-    private FacultyModelRepository repository;
-
-    public List<FacultyModel> findAll() {
-        return this.repository.findAll();
+    public FacultyService(FacultyModelRepository repo) {
+        super(repo);
     }
 
-
-    public FacultyModel findOne(long id) {
-        return this.repository.findById(id).orElse(null);
-    }
 }

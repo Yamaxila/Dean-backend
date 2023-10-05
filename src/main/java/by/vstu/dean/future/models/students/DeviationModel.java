@@ -1,7 +1,9 @@
 package by.vstu.dean.future.models.students;
 
+import by.vstu.dean.adapters.LocalDateTimeTypeAdapter;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.students.StudentModel;
+import com.google.gson.annotations.JsonAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,8 +27,11 @@ public class DeviationModel extends DBBaseModel {
     private String expelled;
     private Integer reasonNumber;
     private String deviationMsg;
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime msgDate;
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateStart;
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateEnd;
     private String lastNameNew;
     private String groupNameNew;
@@ -34,6 +39,7 @@ public class DeviationModel extends DBBaseModel {
     private String msg2;
     private String commandMsg1;
     private String commandMsg;
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateLiquidation;
     private Integer penalty;
 

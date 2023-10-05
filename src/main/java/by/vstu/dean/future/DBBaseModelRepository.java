@@ -11,6 +11,6 @@ public interface DBBaseModelRepository<T extends DBBaseModel> extends JpaReposit
 
     public DBBaseModel findTopByOrderByIdDesc();
 
-
+    DBBaseModel findBySourceId(Long sourceId);
 
 }

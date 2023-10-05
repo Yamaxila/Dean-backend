@@ -1,7 +1,7 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.CitizenshipModel;
+import by.vstu.dean.future.models.students.CitizenshipModel;
 import by.vstu.dean.future.repo.CitizenshipModelRepository;
 import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DCitizenshipModel;

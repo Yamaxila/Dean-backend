@@ -36,7 +36,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
     public QualificationModel convertSingle(DQualificationModel dQualificationModel) {
         QualificationModel qualificationModel = new QualificationModel();
         qualificationModel.setName(dQualificationModel.getNamePart1());
-        qualificationModel.setNameGenitive(dQualificationModel.getNamePart2());
+        qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : dQualificationModel.getNamePart2());
         qualificationModel.setStatus(EStatus.ACTIVE);
         qualificationModel.setSourceId(dQualificationModel.getId());
         return qualificationModel;

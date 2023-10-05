@@ -1,10 +1,12 @@
-package by.vstu.dean.security;
+package by.vstu.dean.configs.security;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.method.configuration.GlobalMethodSecurityConfiguration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
 
 @Configuration
@@ -21,4 +23,5 @@ public class MethodSecurityConfiguration extends GlobalMethodSecurityConfigurati
         handler.setApplicationContext(this.context);
         return (MethodSecurityExpressionHandler)handler;
     }
+
 }

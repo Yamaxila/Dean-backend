@@ -1,5 +1,6 @@
 package by.vstu.dean.services.migrate;
 
+import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ public class MainMigrateService {
 
     private List<IMigrateExecutor> services = new ArrayList<>();
 
+    private final TeacherDegreeMigrateService teacherDegreeMigrateService;
     private final ExamTypeMigrateService examTypeMigrateService;
     private final CitizenshipMigrateService citizenshipMigrateService;
     private final DepartmentMigrateService departmentMigrateService;
@@ -27,6 +29,7 @@ public class MainMigrateService {
     private final StudentMigrateService studentMigrateService;
     private final StudyPlanMigrateService studyPlanMigrateService;
     private final EducationMigrateService educationMigrateService;
+    private final DepartmentSpecialityMergeService departmentSpecialityMergeService;
 
 
     @PostConstruct
@@ -34,6 +37,7 @@ public class MainMigrateService {
         Long startTime = System.currentTimeMillis();
 
         Thread migrateThread = new Thread(() -> {
+            services.add(this.teacherDegreeMigrateService);
             services.add(this.examTypeMigrateService);
             services.add(this.citizenshipMigrateService);
             services.add(this.studentLanguageMigrateService);
@@ -47,14 +51,16 @@ public class MainMigrateService {
             services.add(this.groupMigrateService);
             services.add(this.studentMigrateService);
             services.add(this.studyPlanMigrateService);
+            services.add(this.departmentSpecialityMergeService);
 
 
-            services.forEach(IMigrateExecutor::migrate);
+//            services.forEach(IMigrateExecutor::migrate);
 
             System.out.println("Applying spec for groups");
             this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
             System.out.println("Applying student for educationModels");
             this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
+
 
         });
 

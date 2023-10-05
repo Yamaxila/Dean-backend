@@ -3,6 +3,7 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.lessons.TeacherModel;
+import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.future.repo.TeacherDepartmentMergeRepository;
 import by.vstu.dean.future.repo.TeacherModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
@@ -20,6 +21,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
     private final TeacherModelRepository teacherModelRepository;
     private final TeacherDepartmentMergeRepository teacherDepartmentMergeRepository;
     private final DTeacherModelRepository dTeacherModelRepository;
+    private final TeacherDegreeModelRepository teacherDegreeModelRepository;
 
     @Override
     public Long getLastDBId() {
@@ -42,7 +44,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
     public TeacherModel convertSingle(DTeacherModel dTeacherModel) {
 
         TeacherModel teacherModel = new TeacherModel();
-        teacherModel.setDegree(dTeacherModel.getDegree());
+        teacherModel.setDegree(this.teacherDegreeModelRepository.findByNameLike(dTeacherModel.getDegree() == null ? "..." : dTeacherModel.getDegree().toLowerCase().trim()));
         teacherModel.setLastName(dTeacherModel.getLastName());
         teacherModel.setFirstName(dTeacherModel.getFirstName());
         teacherModel.setSecondName(dTeacherModel.getSecondName());

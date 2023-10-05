@@ -9,4 +9,6 @@ public interface GroupModelRepository extends DBBaseModelRepository<GroupModel> 
     GroupModel findBySourceId(Long id);
 
     List<GroupModel> findAllBySpecIsNull();
+
+    GroupModel findByName(String name);
 }

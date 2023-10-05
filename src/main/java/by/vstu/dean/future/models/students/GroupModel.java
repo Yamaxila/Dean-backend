@@ -1,8 +1,10 @@
 package by.vstu.dean.future.models.students;
 
+import by.vstu.dean.adapters.LocalDateTypeAdapter;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.specs.SpecialityModel;
+import com.google.gson.annotations.JsonAdapter;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -38,6 +40,7 @@ public class GroupModel extends DBBaseModel {
 
     private Integer yearStart, yearEnd;
 
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate dateStart, dateEnd;
 
     private Double score;
