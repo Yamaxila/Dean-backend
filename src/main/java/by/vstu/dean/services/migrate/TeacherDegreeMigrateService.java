@@ -1,7 +1,6 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;

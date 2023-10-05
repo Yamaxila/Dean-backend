@@ -8,7 +8,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import springfox.documentation.annotations.ApiIgnore;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

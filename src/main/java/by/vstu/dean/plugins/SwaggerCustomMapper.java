@@ -1,17 +1,11 @@
 package by.vstu.dean.plugins;
 
 import io.swagger.models.Swagger;
-import io.swagger.models.Tag;
-import org.springframework.stereotype.Component;
 import springfox.documentation.service.Documentation;
-import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.contexts.DocumentationContext;
-import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
-import springfox.documentation.swagger.common.SwaggerPluginSupport;
-import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2MapperImpl;
 import springfox.documentation.spi.service.RequestHandlerProvider;
+import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
+import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2MapperImpl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 

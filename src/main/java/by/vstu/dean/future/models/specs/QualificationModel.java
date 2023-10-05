@@ -1,7 +1,6 @@
 package by.vstu.dean.future.models.specs;
 
 import by.vstu.dean.future.DBBaseModel;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

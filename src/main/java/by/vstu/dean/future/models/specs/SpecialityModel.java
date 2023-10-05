@@ -2,7 +2,6 @@ package by.vstu.dean.future.models.specs;
 
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.lessons.DepartmentModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

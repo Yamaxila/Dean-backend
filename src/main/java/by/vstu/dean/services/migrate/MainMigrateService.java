@@ -1,6 +1,5 @@
 package by.vstu.dean.services.migrate;
 
-import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

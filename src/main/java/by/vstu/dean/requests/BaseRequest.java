@@ -1,22 +1,21 @@
 package by.vstu.dean.requests;
 
-import com.google.gson.Gson;
 import org.apache.commons.codec.binary.Base64;
-import org.modelmapper.TypeToken;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
 import org.springframework.web.client.RestTemplate;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 public class BaseRequest<B> {
 
     private String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
 
-    private String url;
+    private final String url;
 
-    private HttpHeaders headers;
+    private final HttpHeaders headers;
     private HttpMethod method = HttpMethod.POST;
 
     public BaseRequest (String url) {
