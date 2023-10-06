@@ -8,10 +8,19 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с документами студентов.
+ */
 @RestController
 @RequestMapping("/api/students/documents/")
 @Api(tags = {"Documents"}, description = "Документы")
 public class DocumentController extends BaseController<DocumentModel, DocumentModelRepository, DocumentService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис документов студентов
+     */
     public DocumentController(DocumentService service) {
         super(service);
     }

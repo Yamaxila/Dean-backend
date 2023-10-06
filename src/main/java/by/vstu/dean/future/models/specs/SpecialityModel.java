@@ -14,6 +14,9 @@ import org.hibernate.annotations.NotFoundAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+/**
+ * Модель объекта специальности.
+ */
 @Entity
 @Setter
 @Getter
@@ -23,19 +26,32 @@ import javax.validation.constraints.NotNull;
 @ApiModel(description = "Объект специальности")
 public class SpecialityModel extends DBBaseModel {
 
+    /**
+     * Название специальности.
+     */
     @NotNull
     @ApiModelProperty(notes = "Название специальности")
     private String name;
+
+    /**
+     * Краткое название специальности.
+     */
     @ApiModelProperty(notes = "Краткое название")
     private String shortName;
+
+    /**
+     * Код специальности.
+     */
     @ApiModelProperty(notes = "Код специальности")
     private String specCode;
 
+    /**
+     * Кафедра, привязанная к специальности.
+     */
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @ApiModelProperty(notes = "Кафедра, привязанная к специальности")
-//    @JsonIgnore
     private DepartmentModel department;
 
 }

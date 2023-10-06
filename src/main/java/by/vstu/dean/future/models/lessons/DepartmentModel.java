@@ -17,6 +17,9 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Set;
 
+/**
+ * Модель объекта кафедры.
+ */
 @Entity
 @Setter
 @Getter
@@ -26,15 +29,30 @@ import java.util.Set;
 @ApiModel(description = "Объект кафедры")
 public class DepartmentModel extends DBBaseModel {
 
+    /**
+     * Название кафедры.
+     */
     @NotNull
     @ApiModelProperty(notes = "Название кафедры")
     private String name;
+
+    /**
+     * Краткое название кафедры.
+     */
     @NotNull
     @ApiModelProperty(notes = "Краткое название кафедры")
     private String shortName;
+
+    /**
+     * Аудитория, где находится кафедра.
+     */
     @NotNull
     @ApiModelProperty(notes = "Аудитория, где находится кафедра")
     private String room;
+
+    /**
+     * Факультет кафедры.
+     */
     @JoinColumn(name = "faculty_id")
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
@@ -42,11 +60,12 @@ public class DepartmentModel extends DBBaseModel {
     @JsonIgnore
     private FacultyModel faculty;
 
+    /**
+     * Все преподаватели, работающие на данной кафедре.
+     */
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
     @JsonIgnore
     private Set<TeacherDepartmentMerge> teachers;
-
-
 }

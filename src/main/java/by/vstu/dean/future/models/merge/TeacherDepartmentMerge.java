@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Модель объекта связи преподавателя и кафедры.
+ */
 @Entity
 @Table(name = "teacher_department_merge")
 @AllArgsConstructor
@@ -22,14 +25,19 @@ import javax.persistence.Table;
 @ApiModel(description = "Связующий объект преподаватель-кафедра")
 public class TeacherDepartmentMerge extends DBBaseModel {
 
+    /**
+     * Преподаватель.
+     */
     @JoinColumn(name = "teacher_id")
     @ManyToOne
     @ApiModelProperty(notes = "Преподаватель")
     private TeacherModel teacher;
 
+    /**
+     * Кафедра.
+     */
     @JoinColumn(name = "department_id")
     @ManyToOne
     @ApiModelProperty(notes = "Кафедра")
     private DepartmentModel department;
-
 }

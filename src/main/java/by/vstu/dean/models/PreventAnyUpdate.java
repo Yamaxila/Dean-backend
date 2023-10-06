@@ -4,22 +4,38 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreRemove;
 import javax.persistence.PreUpdate;
 
-
+/**
+ * Класс для предотвращения любых изменений сущностей JPA.
+ */
 public class PreventAnyUpdate {
 
+    /**
+     * Предперсистентное действие.
+     *
+     * @param o Объект
+     */
     @PrePersist
     void onPrePersist(Object o) {
-        throw new IllegalStateException("JPA is trying to persist an entity of type " + (o == null ? "null" : o.getClass()));
+        throw new IllegalStateException("JPA пытается сохранить сущность типа " + (o == null ? "null" : o.getClass()));
     }
 
+    /**
+     * Предобновляющее действие.
+     *
+     * @param o Объект
+     */
     @PreUpdate
     void onPreUpdate(Object o) {
-        throw new IllegalStateException("JPA is trying to update an entity of type " + (o == null ? "null" : o.getClass()));
+        throw new IllegalStateException("JPA пытается обновить сущность типа " + (o == null ? "null" : o.getClass()));
     }
 
+    /**
+     * Предудаляющее действие.
+     *
+     * @param o Объект
+     */
     @PreRemove
     void onPreRemove(Object o) {
-        throw new IllegalStateException("JPA is trying to remove an entity of type " + (o == null ? "null" : o.getClass()));
+        throw new IllegalStateException("JPA пытается удалить сущность типа " + (o == null ? "null" : o.getClass()));
     }
-
 }

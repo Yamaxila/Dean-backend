@@ -10,26 +10,39 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с типами экзаменов.
+ */
 @RestController
 @RequestMapping("/api/plans/exams/")
 @Api(tags = {"ExamTypes"}, description = "Типы экзаментов")
 public class ExamTypeController extends BaseController<ExamModel, ExamModelRepository, ExamTypeService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис типов экзаменов
+     */
     public ExamTypeController(ExamTypeService service) {
         super(service);
     }
 
+    /**
+     *
+     * @param facultyModel Модель типа экзамена
+     * @throws SecurityException Can't execute this!
+     */
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<ExamModel> put(ExamModel facultyModel) {
         throw new SecurityException("Can't execute this!");
     }
 
-    @Override
-    @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<ExamModel> delete(ExamModel facultyModel) {
-        throw new SecurityException("Can't execute this!");
-    }
-
+    /**
+     *
+     * @param id Идентификатор типа экзамена
+     * @throws SecurityException Can't execute this!
+     */
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<ExamModel> deleteById(Long id) {

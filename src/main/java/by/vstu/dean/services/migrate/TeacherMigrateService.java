@@ -42,9 +42,9 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
         TeacherModel teacherModel = new TeacherModel();
         teacherModel.setDegree(this.teacherDegreeModelRepository.findByNameLike(dTeacherModel.getDegree() == null ? "..." : dTeacherModel.getDegree().toLowerCase().trim()));
-        teacherModel.setLastName(dTeacherModel.getLastName());
-        teacherModel.setFirstName(dTeacherModel.getFirstName());
-        teacherModel.setSecondName(dTeacherModel.getSecondName());
+        teacherModel.setSurname(dTeacherModel.getLastName());
+        teacherModel.setName(dTeacherModel.getFirstName());
+        teacherModel.setPatronymic(dTeacherModel.getSecondName());
 
         teacherModel.setSourceId(dTeacherModel.getId());
         teacherModel.setStatus(EStatus.ACTIVE);

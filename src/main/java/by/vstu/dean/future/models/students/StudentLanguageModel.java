@@ -10,6 +10,9 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Класс, представляющий объект иностранного языка.
+ */
 @Entity
 @Setter
 @Getter
@@ -19,6 +22,9 @@ import javax.persistence.Table;
 @ApiModel(description = "Объект иностранного языка")
 public class StudentLanguageModel extends DBBaseModel {
 
+    /**
+     * Название иностранного языка.
+     */
     private String name;
 
 }

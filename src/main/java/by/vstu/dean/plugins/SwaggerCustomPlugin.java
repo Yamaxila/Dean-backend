@@ -5,13 +5,17 @@ import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import springfox.documentation.service.ResolvedMethodParameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spi.service.OperationBuilderPlugin;
 import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.spring.web.DescriptionResolver;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
+import javax.websocket.server.PathParam;
 import java.util.Optional;
 
 @Component
@@ -28,9 +32,28 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
 
             Optional<RequestMapping> requestMapping = context.findAnnotation(RequestMapping.class);
 
-            if (requestMapping.isPresent())
-                sb.append("<b>Ссылка:</b>").append("<input type='text' value='").append(context.requestMappingPattern()).append("'/>").append("<br /><br />");
+            if (requestMapping.isPresent()) {
 
+                StringBuilder params = new StringBuilder();
+
+
+                if(params.isEmpty() && context.getParameters().stream().anyMatch(p -> p.hasParameterAnnotation(RequestParam.class))) {
+                    params.append("?");
+
+                    int temp = 0;
+                    for (ResolvedMethodParameter methodParameter : context.getParameters()) {
+                        if(methodParameter.hasParameterAnnotation(RequestParam.class)) {
+                            String param = methodParameter.defaultName().get();
+                            params.append(param).append("=").append("{").append(temp).append("}");
+                            if (temp < requestMapping.get().params().length - 1)
+                                params.append("&");
+                        }
+                    }
+                }
+
+                sb.append("<b>Ссылка:</b>").append("<input type='text' value='").append(context.requestMappingPattern()).append(params).append("'/>").append("<br /><br />");
+
+            }
             Optional<ApiOperation> apiOperation = context.findAnnotation(ApiOperation.class);
 
             sb.append("<b>Описание</b>: ");
@@ -77,7 +100,6 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
                 sb.append("<em>Нет</em>");
 
 
-//            System.out.println(context());
             // Add the note text to the Swagger UI
             context.operationBuilder().notes(descriptions.resolve(sb.toString()));
         } catch (Exception e) {

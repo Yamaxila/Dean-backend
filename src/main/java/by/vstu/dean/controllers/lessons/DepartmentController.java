@@ -13,32 +13,42 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Контроллер для работы с кафедрами.
+ */
 @RestController
 @RequestMapping("/api/departments/")
 @Api(tags = "Departments", description = "Кафедры")
 public class DepartmentController extends BaseController<DepartmentModel, DepartmentModelRepository, DepartmentService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис кафедр
+     */
     public DepartmentController(DepartmentService service) {
         super(service);
     }
 
-
-    @RequestMapping(value = "/teachers",
+    /**
+     * Получает список преподавателей кафедры по её id.
+     *
+     * @param id Идентификатор кафедры
+     * @return Список преподавателей кафедры
+     */
+    @RequestMapping(value = "/{id}/teachers",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read')")
-    @ApiOperation(value = "getTeachers")
+    @ApiOperation(value = "getTeachers", notes = "Получает список преподавателей кафедры по её id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<List<TeacherModel>> getTeachers(@RequestParam Long id) {
-
+    public ResponseEntity<List<TeacherModel>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
 
         if (!o.isPresent())
@@ -46,5 +56,4 @@ public class DepartmentController extends BaseController<DepartmentModel, Depart
 
         return new ResponseEntity<>(o.get().getTeachers().stream().map(TeacherDepartmentMerge::getTeacher).toList(), HttpStatus.OK);
     }
-
 }

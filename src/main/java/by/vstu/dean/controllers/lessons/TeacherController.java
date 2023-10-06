@@ -8,10 +8,19 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с преподавателями.
+ */
 @RestController
 @RequestMapping("/teachers/")
-@Api(tags = "Teachers", description = "Предодаватели")
+@Api(tags = "Teachers", description = "Преподаватели")
 public class TeacherController extends BaseController<TeacherModel, TeacherModelRepository, TeacherService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис преподавателей
+     */
     public TeacherController(TeacherService service) {
         super(service);
     }

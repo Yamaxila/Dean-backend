@@ -18,16 +18,28 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-
+/**
+ * Контроллер для работы с объектами студентов.
+ */
 @RestController
 @RequestMapping("api/students")
 @Api(tags = "Students", description = "Студенты")
 public class StudentsController extends BaseController<StudentModel, StudentModelRepository, StudentService> {
 
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис студентов
+     */
     public StudentsController(StudentService service) {
         super(service);
     }
 
+    /**
+     * Получить всех студентов.
+     *
+     * @return Список студентов
+     */
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.POST)
@@ -38,6 +50,12 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
     }
 
+    /**
+     * Получить всех студентов по идентификатору группы.
+     *
+     * @param id Идентификатор группы
+     * @return Список студентов
+     */
     @RequestMapping(value = "/byGroup",
             produces = {"application/json"},
             method = RequestMethod.POST)
@@ -49,6 +67,12 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
         return new ResponseEntity<>(this.service.findAllByGroupId(id), HttpStatus.OK);
     }
 
+    /**
+     * Получить студента по идентификатору.
+     *
+     * @param id Идентификатор студента
+     * @return Объект студента
+     */
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)

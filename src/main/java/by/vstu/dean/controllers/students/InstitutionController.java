@@ -8,10 +8,19 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с учреждениями образования студентов.
+ */
 @RestController
 @RequestMapping("/students/institutions/")
 @Api(tags = "Institutions", description = "Учреждения образования")
 public class InstitutionController extends BaseController<InstitutionModel, InstitutionModelRepository, InstitutionService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис учреждений образования студентов
+     */
     public InstitutionController(InstitutionService service) {
         super(service);
     }

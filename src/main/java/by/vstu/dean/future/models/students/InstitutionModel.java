@@ -11,6 +11,9 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Класс, представляющий объект учреждения образования.
+ */
 @Entity
 @Table(name = "institutions")
 @Setter
@@ -19,8 +22,16 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @ApiModel(description = "Объект учреждения образования")
 public class InstitutionModel extends DBBaseModel {
+
+    /**
+     * Полное название учреждения образования.
+     */
     @ApiModelProperty(notes = "Полное название")
     private String fullName;
+
+    /**
+     * Краткое название учреждения образования.
+     */
     @ApiModelProperty(notes = "Краткое название")
     private String shortName;
 

@@ -8,10 +8,19 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с дисциплинами.
+ */
 @RestController
 @RequestMapping("/api/disciplines/")
 @Api(tags = "Disciplines", description = "Дисциплины")
 public class DisciplineController extends BaseController<DisciplineModel, DisciplineModelRepository, DisciplineService> {
+
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис дисциплин
+     */
     public DisciplineController(DisciplineService service) {
         super(service);
     }

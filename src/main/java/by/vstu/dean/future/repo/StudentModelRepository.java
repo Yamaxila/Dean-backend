@@ -6,17 +6,33 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * Интерфейс репозитория сущности студента.
+ */
 public interface StudentModelRepository extends DBBaseModelRepository<StudentModel> {
 
-
+    /**
+     * Найти id деканата всех пользователей.
+     *
+     * @return Список идентификаторов источников.
+     */
     @Query("select s.sourceId from StudentModel s")
     List<Long> findAllSourceIds();
 
+    /**
+     * Найти последнюю сущность по идентификатору группы с ненулевой специализацией.
+     *
+     * @param id Идентификатор группы.
+     * @return Базовая модель студента.
+     */
     StudentModel findTopByGroupIdAndSpecializationNotNull(Long id);
 
+    /**
+     * Найти всех студентов по идентификатору группы.
+     *
+     * @param id Идентификатор группы.
+     * @return Список базовых моделей студентов.
+     */
     List<StudentModel> findAllByGroupId(Long id);
 
-
-//    @Query("select s.sourceId from StudentModel s where s.id in ()")
-//    List<StudentModel> findAllByIds(List<Long> ids);
 }

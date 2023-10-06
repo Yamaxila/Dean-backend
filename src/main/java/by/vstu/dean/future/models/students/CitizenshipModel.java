@@ -11,6 +11,9 @@ import lombok.Setter;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+/**
+ * Модель объекта гражданства.
+ */
 @Entity
 @Setter
 @Getter
@@ -20,6 +23,9 @@ import javax.persistence.Table;
 @ApiModel(description = "Объект гражданства")
 public class CitizenshipModel extends DBBaseModel {
 
+    /**
+     * Страна (название).
+     */
     @ApiModelProperty(notes = "Страна, название")
     private String name;
 

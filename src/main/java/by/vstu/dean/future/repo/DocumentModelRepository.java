@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+
 public interface DocumentModelRepository extends DBBaseModelRepository<DocumentModel> {
     @Query("select s.sourceId from DocumentModel s")
     List<Long> findAllSourceIds();

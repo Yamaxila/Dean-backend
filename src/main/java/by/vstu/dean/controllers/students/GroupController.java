@@ -12,26 +12,38 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Контроллер для работы с группами студентов.
+ */
 @RestController
 @RequestMapping("/api/groups/")
 @Api(tags = "Groups")
 public class GroupController extends BaseController<GroupModel, GroupModelRepository, GroupService> {
 
+    /**
+     * Конструктор контроллера.
+     *
+     * @param service Сервис групп студентов
+     */
     public GroupController(GroupService service) {
         super(service);
     }
 
+    /**
+     * Получение всех групп по году окончания.
+     *
+     * @param year Год окончания
+     * @return Список групп
+     */
     @RequestMapping(value = "/byYear",
             produces = {"application/json"},
-            method = RequestMethod.GET)
+            method = RequestMethod.GET,
+            params = {"year"})
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read')")
     @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
@@ -40,9 +52,16 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
         return new ResponseEntity<>(this.service.getAllActive().stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
     }
 
+    /**
+     * Получение группы по имени.
+     *
+     * @param name Имя группы
+     * @return Группа
+     */
     @RequestMapping(value = "/byName",
             produces = {"application/json"},
-            method = RequestMethod.GET)
+            method = RequestMethod.GET,
+            params = {"name"})
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read')")
     @ApiOperation(value = "getByName")
@@ -51,14 +70,20 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
         return new ResponseEntity<>(this.service.findByName(name), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/department",
+    /**
+     * Получение отделения по идентификатору группы.
+     *
+     * @param id Идентификатор группы
+     * @return Отделение
+     */
+    @RequestMapping(value = "/{id}/department",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read')")
     @ApiOperation(value = "getDepartment")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<DepartmentModel> getDepartment(@RequestParam Long id) {
+    public ResponseEntity<DepartmentModel> getDepartment(@PathVariable Long id) {
 
         Optional<GroupModel> o = this.service.getById(id);
 
@@ -72,6 +97,4 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
 
         return new ResponseEntity<>(group.getSpec().getDepartment(), HttpStatus.OK);
     }
-
-
 }

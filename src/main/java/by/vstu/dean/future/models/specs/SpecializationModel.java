@@ -14,6 +14,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+/**
+ * Модель объекта специализации.
+ */
 @Entity
 @Setter
 @Getter
@@ -23,19 +26,36 @@ import javax.persistence.Table;
 @ApiModel(description = "Объект специализации")
 public class SpecializationModel extends DBBaseModel {
 
+    /**
+     * Название специализации.
+     */
     @ApiModelProperty(notes = "Название специализации")
     private String name;
+
+    /**
+     * Краткое название специализации.
+     */
     @ApiModelProperty(notes = "Краткое название")
     private String shortName;
+
+    /**
+     * Код специализации.
+     */
     @ApiModelProperty(notes = "Код специальности")
     private String spezCode;
 
+    /**
+     * Специальность.
+     */
     @JoinColumn(name = "spec_id")
     @ManyToOne
     @JsonIgnore
     @ApiModelProperty(notes = "Специальность")
     private SpecialityModel spec;
 
+    /**
+     * Квалификация.
+     */
     @JoinColumn(name = "qualification_id")
     @ManyToOne
     @ApiModelProperty(notes = "Квалификация")

@@ -6,12 +6,34 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
 
+/**
+ * Интерфейс репозитория базовой модели базы данных.
+ *
+ * @param <T> Сущность наследуемая от базовой модели.
+ */
 @NoRepositoryBean
 public interface DBBaseModelRepository<T extends DBBaseModel> extends JpaRepository<T, Long> {
 
-    public DBBaseModel findTopByOrderByIdDesc();
+    /**
+     * Найти последнюю сущность по идентификатору в порядке убывания.
+     *
+     * @return Последняя базовая модель.
+     */
+    T findTopByOrderByIdDesc();
 
-    <O extends DBBaseModel> List<O> findBySourceId(Long sourceId);
+    /**
+     * Найти все сущности по идентификатору источника.
+     *
+     * @param sourceId Идентификатор источника.
+     * @return Список базовых моделей.
+     */
+    List<T> findBySourceId(Long sourceId);
 
-    <O extends DBBaseModel> List<O> findAllByStatus(EStatus status);
+    /**
+     * Найти все сущности по статусу.
+     *
+     * @param status Статус.
+     * @return Список сущностей.
+     */
+    List<T> findAllByStatus(EStatus status);
 }
