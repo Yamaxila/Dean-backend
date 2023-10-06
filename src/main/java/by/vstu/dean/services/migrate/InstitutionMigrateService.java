@@ -29,7 +29,7 @@ public class InstitutionMigrateService extends BaseMigrateService<InstitutionMod
         List<OldDBBaseModel> bases = this.dInstitutionRepository.findAllByIdAfter(this.getLastDBId());
         List<DInstitutionModel> temp = new ArrayList<>();
 
-        bases.forEach(base -> temp.add((DInstitutionModel)base));
+        bases.forEach(base -> temp.add((DInstitutionModel) base));
 
         return this.convertList(temp);
     }

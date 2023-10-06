@@ -5,7 +5,7 @@ import by.vstu.dean.future.repo.QualificationModelRepository;
 import org.springframework.stereotype.Service;
 
 @Service
-public class QualificationService extends BaseService<QualificationModel, QualificationModelRepository>{
+public class QualificationService extends BaseService<QualificationModel, QualificationModelRepository> {
     public QualificationService(QualificationModelRepository repo) {
         super(repo);
     }

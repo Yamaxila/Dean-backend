@@ -3,6 +3,7 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.specs.SpecializationModel;
+import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
@@ -57,7 +58,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         StudentModel studentModel = new StudentModel();
 
-        studentModel.setGroup(this.groupModelRepository.findBySourceId(dStudentModel.getGroup().getId()));
+        studentModel.setGroup((GroupModel) this.groupModelRepository.findBySourceId(dStudentModel.getGroup().getId()));
         studentModel.setLastName(dStudentModel.getLastName());
         studentModel.setFirstName(dStudentModel.getFirstName());
         studentModel.setSecondName(dStudentModel.getSecondName());
@@ -74,9 +75,9 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         studentModel.setSex((dStudentModel.getSex() != null && dStudentModel.getSex().equals("М")) ? 1 : 0);
         studentModel.setSourceId(dStudentModel.getId());
         studentModel.setStatus(dStudentModel.isExpelled() || dStudentModel.getGroup().getCurrentCourse().equals(99) ? EStatus.DELETED : EStatus.ACTIVE);
-        if(dStudentModel.getSpecialization() != null)
-            if(this.specializations.isEmpty())
-                studentModel.setSpecialization(this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));
+        if (dStudentModel.getSpecialization() != null)
+            if (this.specializations.isEmpty())
+                studentModel.setSpecialization((SpecializationModel) this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));
             else
                 studentModel.setSpecialization(this.specializations.stream().filter(p -> p.getSourceId().equals(dStudentModel.getSpecialization().getId())).findAny().orElse(null));
 

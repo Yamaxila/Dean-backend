@@ -35,7 +35,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
         List<OldDBBaseModel> bases = this.dDisciplineModelRepository.findAllByIdAfter(this.getLastDBId());
         List<DDisciplineModel> temp = new ArrayList<>();
 
-        bases.forEach(base -> temp.add((DDisciplineModel)base));
+        bases.forEach(base -> temp.add((DDisciplineModel) base));
 
         return this.convertList(temp);
     }
@@ -52,7 +52,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
                         dDisciplineModel.getDkafId() != null
                                 && p.getSourceId().equals(Long.valueOf(dDisciplineModel.getDkafId()))
                 ).findAny().orElse(null);
-        if(department != null)
+        if (department != null)
             disciplineModel.setDepartment(department);
         disciplineModel.setStatus(EStatus.ACTIVE);
         disciplineModel.setSourceId(dDisciplineModel.getId());

@@ -2,6 +2,7 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.future.repo.GroupModelRepository;
@@ -17,7 +18,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupModel>{
+public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupModel> {
 
     private final GroupModelRepository groupRepo;
     private final StudentModelRepository studentModelRepository;
@@ -47,7 +48,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
         groupModel.setName(dGroupModel.getName());
         groupModel.setScore(Double.valueOf(dGroupModel.getScore()));
-        groupModel.setFaculty(facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
+        groupModel.setFaculty((FacultyModel) facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
         groupModel.setYearStart(dGroupModel.getYearStart());
         groupModel.setYearEnd(dGroupModel.getYearEnd());
         groupModel.setDateEnd(dGroupModel.getDateEnd() == null ? null : dGroupModel.getDateEnd().toLocalDate());

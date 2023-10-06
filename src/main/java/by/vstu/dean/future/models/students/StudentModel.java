@@ -22,41 +22,42 @@ import javax.validation.constraints.NotNull;
 public class StudentModel extends DBBaseModel {
 
     @NotNull
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Фамилия")
     private String lastName;
     @NotNull
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Имя")
     private String firstName;
     @NotNull
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Отчество")
     private String secondName;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Пол")
     private Integer sex;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Тип города")
     private Integer cityType;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Адрес")
+    @Deprecated
     private String address;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Страна")
     private String addressCountry;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Почтовый индекс")
     private String addressIndex;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Область")
     private String addressState;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Район")
     private String addressRegion;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Город")
     private String addressCity;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Улица")
     private String addressStreet;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Дом")
     private String addressHouse;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Корпус")
     private String addressHousePart;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Квартира")
     private String addressFlat;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Телефон")
     private String phone;
-    @ApiModelProperty(notes = "")
+    @ApiModelProperty(notes = "Является ли город - деревней")
     private boolean cityIsVillage;
 
     @JoinColumn(name = "last_document_id")

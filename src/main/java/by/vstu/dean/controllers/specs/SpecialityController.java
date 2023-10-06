@@ -1,7 +1,7 @@
 package by.vstu.dean.controllers.specs;
 
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.specs.SpecialityModel;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
 import by.vstu.dean.services.SpecialityService;

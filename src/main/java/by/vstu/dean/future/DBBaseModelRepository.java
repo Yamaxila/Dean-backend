@@ -1,7 +1,7 @@
 package by.vstu.dean.future;
 
+import by.vstu.dean.enums.EStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
@@ -11,6 +11,7 @@ public interface DBBaseModelRepository<T extends DBBaseModel> extends JpaReposit
 
     public DBBaseModel findTopByOrderByIdDesc();
 
-    DBBaseModel findBySourceId(Long sourceId);
+    <O extends DBBaseModel> List<O> findBySourceId(Long sourceId);
 
+    <O extends DBBaseModel> List<O> findAllByStatus(EStatus status);
 }

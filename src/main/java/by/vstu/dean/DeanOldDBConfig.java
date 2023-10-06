@@ -25,12 +25,12 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "deanEntityManagerFactory",
         transactionManagerRef = "deanTransactionManager",
-        basePackages = { "by.vstu.dean.old" }
+        basePackages = {"by.vstu.dean.old"}
 )
 public class DeanOldDBConfig {
 
-    @Bean(name="deanDataSource")
-    @ConfigurationProperties(prefix="spring.datasource.old")
+    @Bean(name = "deanDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.old")
     public DataSource deanDataSource() {
         HikariDataSource ds = (HikariDataSource) DataSourceBuilder.create().build();
 
@@ -40,7 +40,7 @@ public class DeanOldDBConfig {
 
     @Bean(name = "deanEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean deanEntityManagerFactory(EntityManagerFactoryBuilder builder,
-                                                                              @Qualifier("deanDataSource") DataSource deanDataSource) {
+                                                                           @Qualifier("deanDataSource") DataSource deanDataSource) {
         return builder
                 .dataSource(deanDataSource)
                 .packages("by.vstu.dean.old")
@@ -53,6 +53,7 @@ public class DeanOldDBConfig {
             @Qualifier("deanEntityManagerFactory") EntityManagerFactory deanEntityManagerFactory) {
         return new JpaTransactionManager(deanEntityManagerFactory);
     }
+
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyStandardImpl.class.getName());

@@ -1,11 +1,10 @@
 package by.vstu.dean.old.models;
 
 import by.vstu.dean.old.OldDBBaseModel;
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter

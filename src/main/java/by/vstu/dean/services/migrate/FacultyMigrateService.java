@@ -51,8 +51,8 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
         faculty.setClerkName(dFaculty.getClerkName());
         faculty.setEnrollMsgPaid(dFaculty.getEnrollMsgPaid());
         faculty.setEnrollMsgNotPaid(dFaculty.getEnrollMsgNotPaid());
-        faculty.setEnrollDatePaid(dFaculty.getEnrollDateNotPaid()== null ? LocalDate.now() : dFaculty.getEnrollDateNotPaid().toLocalDate());
-        faculty.setEnrollDateNotPaid(dFaculty.getEnrollDateNotPaid()== null ? LocalDate.now() : dFaculty.getEnrollDateNotPaid().toLocalDate());
+        faculty.setEnrollDatePaid(dFaculty.getEnrollDateNotPaid() == null ? LocalDate.now() : dFaculty.getEnrollDateNotPaid().toLocalDate());
+        faculty.setEnrollDateNotPaid(dFaculty.getEnrollDateNotPaid() == null ? LocalDate.now() : dFaculty.getEnrollDateNotPaid().toLocalDate());
         faculty.setMoveMsgDate(dFaculty.getMoveMsgDate() == null ? LocalDate.now() : dFaculty.getMoveMsgDate().toLocalDate());
         faculty.setMoveMsgNumber(dFaculty.getMoveMsgNumber());
         faculty.setName(dFaculty.getName());

@@ -64,14 +64,14 @@ public class MainMigrateService {
         });
 
 
-
         Thread checkThread = new Thread(() -> {
-            while(Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration"))) {
+            while (Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration"))) {
                 try {
                     Thread.sleep(200);
-                } catch (InterruptedException e) {}
+                } catch (InterruptedException e) {
+                }
             }
-            System.err.println("Migration time(s): " + Math.floor(((double)System.currentTimeMillis() - (double)startTime)/1000D));
+            System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
         });
 
         migrateThread.setName("Migration");

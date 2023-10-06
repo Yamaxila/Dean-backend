@@ -1,21 +1,14 @@
 package by.vstu.dean.configs;
 
-import by.vstu.dean.plugins.SwaggerCustomMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
 import springfox.documentation.service.ApiInfo;
 import springfox.documentation.spi.DocumentationType;
-import springfox.documentation.spi.service.RequestHandlerProvider;
 import springfox.documentation.spring.web.plugins.Docket;
-import springfox.documentation.spring.web.plugins.DocumentationPluginsManager;
 import springfox.documentation.swagger.web.*;
-import springfox.documentation.swagger2.mappers.ServiceModelToSwagger2Mapper;
-
-import java.util.List;
 
 @Configuration
 public class SpringFoxConfig {
@@ -62,11 +55,4 @@ public class SpringFoxConfig {
     }
 
 
-    @Bean
-    @Primary
-    public ServiceModelToSwagger2Mapper customSwaggerMapper(
-            DocumentationPluginsManager pluginsManager,
-            List<RequestHandlerProvider> handlerProviders) {
-        return new SwaggerCustomMapper(pluginsManager, handlerProviders);
-    }
 }

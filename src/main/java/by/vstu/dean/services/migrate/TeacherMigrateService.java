@@ -4,10 +4,8 @@ import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
-import by.vstu.dean.future.repo.TeacherDepartmentMergeRepository;
 import by.vstu.dean.future.repo.TeacherModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
-import by.vstu.dean.old.repo.DTeacherModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,11 +14,9 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTeacherModel>{
+public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTeacherModel> {
 
     private final TeacherModelRepository teacherModelRepository;
-    private final TeacherDepartmentMergeRepository teacherDepartmentMergeRepository;
-    private final DTeacherModelRepository dTeacherModelRepository;
     private final TeacherDegreeModelRepository teacherDegreeModelRepository;
 
     @Override
@@ -40,6 +36,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
         List<DTeacherModel> temp = dTeacherModels.stream().filter(p -> !ids.contains(p.getId())).toList();
         return this.convertList(temp);
     }
+
     @Override
     public TeacherModel convertSingle(DTeacherModel dTeacherModel) {
 

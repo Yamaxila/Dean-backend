@@ -1,8 +1,17 @@
 package by.vstu.dean.enums;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
+@ApiModel(description = "enum реализующий тип обучения")
 public enum EEducationType {
 
-    DAYTIME(0), EXTRAMURAL(1), UNKNOWN(-1);
+    @ApiModelProperty(notes = "Дневное")
+    DAYTIME(0),
+    @ApiModelProperty(notes = "Заочное")
+    EXTRAMURAL(1),
+    @ApiModelProperty(notes = "Неизвестно")
+    UNKNOWN(-1);
 
     final int id;
 

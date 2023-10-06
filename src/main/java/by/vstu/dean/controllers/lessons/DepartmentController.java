@@ -1,7 +1,7 @@
 package by.vstu.dean.controllers.lessons;
 
 import by.vstu.dean.anotations.ApiSecurity;
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.models.merge.TeacherDepartmentMerge;
@@ -30,7 +30,7 @@ public class DepartmentController extends BaseController<DepartmentModel, Depart
     }
 
 
-    @RequestMapping(value="/getTeachers",
+    @RequestMapping(value = "/teachers",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -41,7 +41,7 @@ public class DepartmentController extends BaseController<DepartmentModel, Depart
 
         Optional<DepartmentModel> o = this.service.getById(id);
 
-        if(!o.isPresent())
+        if (!o.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(o.get().getTeachers().stream().map(TeacherDepartmentMerge::getTeacher).toList(), HttpStatus.OK);

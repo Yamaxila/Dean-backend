@@ -20,6 +20,7 @@ import java.util.Optional;
 public class SwaggerCustomPlugin implements OperationBuilderPlugin {
 
     private final DescriptionResolver descriptions;
+
     @Override
     public void apply(OperationContext context) {
         try {
@@ -27,7 +28,7 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
 
             Optional<RequestMapping> requestMapping = context.findAnnotation(RequestMapping.class);
 
-            if(requestMapping.isPresent())
+            if (requestMapping.isPresent())
                 sb.append("<b>Ссылка:</b>").append("<input type='text' value='").append(context.requestMappingPattern()).append("'/>").append("<br /><br />");
 
             Optional<ApiOperation> apiOperation = context.findAnnotation(ApiOperation.class);
@@ -45,11 +46,11 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             int i = 0;
             sb.append("<b>Необходимые роли</b>: ");
             if (preAuthorizeAnnotation.isPresent()) {
-                if(preAuthorizeAnnotation.get().roles().length > 0)
+                if (preAuthorizeAnnotation.get().roles().length > 0)
                     sb.append("<em>");
                 for (String role : preAuthorizeAnnotation.get().roles()) {
                     sb.append(role);
-                    if(i < preAuthorizeAnnotation.get().roles().length-1)
+                    if (i < preAuthorizeAnnotation.get().roles().length - 1)
                         sb.append(", ");
 
                     i++;
@@ -61,13 +62,13 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             i = 0;
             sb.append("<br /><br />");
             sb.append("<b>Необходимые права</b>: ");
-            if(preAuthorizeAnnotation.isPresent() && preAuthorizeAnnotation.get().scopes().length > 0) {
+            if (preAuthorizeAnnotation.isPresent() && preAuthorizeAnnotation.get().scopes().length > 0) {
 
-                if(preAuthorizeAnnotation.get().scopes().length > 0)
+                if (preAuthorizeAnnotation.get().scopes().length > 0)
                     sb.append("<em>");
                 for (String scope : preAuthorizeAnnotation.get().scopes()) {
                     sb.append(scope);
-                    if(i < preAuthorizeAnnotation.get().scopes().length-1)
+                    if (i < preAuthorizeAnnotation.get().scopes().length - 1)
                         sb.append(", ");
                     i++;
                 }
@@ -80,7 +81,7 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             // Add the note text to the Swagger UI
             context.operationBuilder().notes(descriptions.resolve(sb.toString()));
         } catch (Exception e) {
-            throw  new RuntimeException(e);
+            throw new RuntimeException(e);
         }
     }
 

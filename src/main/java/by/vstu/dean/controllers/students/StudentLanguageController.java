@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.students;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.students.StudentLanguageModel;
 import by.vstu.dean.future.repo.StudentLanguageModelRepository;
 import by.vstu.dean.services.StudentLanguageService;

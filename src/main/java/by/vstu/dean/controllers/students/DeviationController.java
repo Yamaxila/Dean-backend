@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.students;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.students.DeviationModel;
 import by.vstu.dean.future.repo.DeviationModelRepository;
 import by.vstu.dean.services.DeviationService;

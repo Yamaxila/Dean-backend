@@ -4,4 +4,6 @@ import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 
 public interface TeacherModelRepository extends DBBaseModelRepository<TeacherModel> {
+
+
 }

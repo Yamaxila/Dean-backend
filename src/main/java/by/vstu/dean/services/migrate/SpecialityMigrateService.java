@@ -16,7 +16,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel, DSpecialityModel>{
+public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel, DSpecialityModel> {
 
     private final DSpecialityModelRepository dSpecialityRepo;
     private final SpecialityModelRepository specialityRepo;
@@ -38,7 +38,7 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
                 .map(DSpecializationModel::getSpeciality).distinct()
                 .filter(p -> !ids.contains(p.getId())).forEach(spec -> {
                     out.add(this.convertSingle(spec));
-        });
+                });
 
         return out;
     }

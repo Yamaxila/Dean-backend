@@ -1,7 +1,7 @@
 package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.anotations.ApiSecurity;
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -28,7 +29,18 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
         super(service);
     }
 
-    @RequestMapping(value="/getByName",
+    @RequestMapping(value = "/byYear",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("#oauth2.hasScope('read')")
+    @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
+    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<List<GroupModel>> getAllByYearEnd(@RequestParam Integer year) {
+        return new ResponseEntity<>(this.service.getAllActive().stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/byName",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -39,7 +51,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
         return new ResponseEntity<>(this.service.findByName(name), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/getDepartment",
+    @RequestMapping(value = "/department",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -50,12 +62,12 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
 
         Optional<GroupModel> o = this.service.getById(id);
 
-        if(!o.isPresent())
+        if (!o.isPresent())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         GroupModel group = o.get();
 
-        if(group.getSpec().getDepartment() == null)
+        if (group.getSpec().getDepartment() == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
         return new ResponseEntity<>(group.getSpec().getDepartment(), HttpStatus.OK);

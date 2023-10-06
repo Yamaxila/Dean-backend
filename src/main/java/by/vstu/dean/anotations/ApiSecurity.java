@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 public @interface ApiSecurity {
 
     String[] scopes() default {""};
+
     String[] roles() default {""};
 
 }

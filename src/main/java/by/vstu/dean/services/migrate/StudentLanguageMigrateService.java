@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class StudentLanguageMigrateService extends BaseMigrateService<StudentLanguageModel, DStudentLanguageModel> {
-    
+
     private final DStudentLanguageModelRepository dStudentLanguageRepository;
     private final StudentLanguageModelRepository studentLanguageRepository;
 
@@ -30,7 +30,7 @@ public class StudentLanguageMigrateService extends BaseMigrateService<StudentLan
         List<OldDBBaseModel> bases = this.dStudentLanguageRepository.findAllByIdAfter(this.getLastDBId());
         List<DStudentLanguageModel> temp = new ArrayList<>();
 
-        bases.forEach(base -> temp.add((DStudentLanguageModel)base));
+        bases.forEach(base -> temp.add((DStudentLanguageModel) base));
 
         return this.convertList(temp);
     }

@@ -22,10 +22,10 @@ public class DepartmentSpecialityMergeService implements IMigrateExecutor {
         DepartmentModel department = this.departmentService.getBySourceId(departmentSourceId);
         SpecialityModel speciality = this.specialityService.getBySourceId(specSourceId);
 
-        if(department == null)
+        if (department == null)
             throw new RuntimeException("Department cannot be null!");
 
-        if(speciality == null)
+        if (speciality == null)
             throw new RuntimeException("Speciality cannot be null!");
 
         speciality.setDepartment(department);
@@ -59,13 +59,10 @@ public class DepartmentSpecialityMergeService implements IMigrateExecutor {
 //        list.add(this.get(0L, 0L));
 
 
-
-
         //this.departmentSpecialityMergeRepository.saveAllAndFlush(list.stream().filter(p -> old.stream().noneMatch(p1 -> p.getDepartment().getId().equals(p1.getDepartment().getId())) && old.stream().noneMatch(p1 -> p.getSpecialityModel().getId().equals(p1.getSpecialityModel().getId()))).toList());
 
         this.specialityService.saveAll(list);
     }
-
 
 
 }

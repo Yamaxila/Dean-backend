@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.lessons;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.services.TeacherDegreeService;

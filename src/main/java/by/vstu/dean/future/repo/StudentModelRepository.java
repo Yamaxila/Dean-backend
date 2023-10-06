@@ -13,9 +13,9 @@ public interface StudentModelRepository extends DBBaseModelRepository<StudentMod
     List<Long> findAllSourceIds();
 
     StudentModel findTopByGroupIdAndSpecializationNotNull(Long id);
+
     List<StudentModel> findAllByGroupId(Long id);
 
-    StudentModel findBySourceId(Long id);
 
 //    @Query("select s.sourceId from StudentModel s where s.id in ()")
 //    List<StudentModel> findAllByIds(List<Long> ids);

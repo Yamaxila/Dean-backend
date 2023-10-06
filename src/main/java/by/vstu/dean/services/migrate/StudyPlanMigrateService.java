@@ -37,6 +37,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     private final List<ExamModel> examTypes = new ArrayList<>();
     private final List<GroupModel> groups = new ArrayList<>();
     private final List<TeacherModel> teachers = new ArrayList<>();
+
     @Override
     public Long getLastDBId() {
         return this.studyPlanRepository.findTopByOrderByIdDesc() == null ? 0 : this.studyPlanRepository.findTopByOrderByIdDesc().getSourceId();
@@ -48,9 +49,9 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         List<OldDBBaseModel> bases = this.dStudyPlanModelRepository.findAllByIdAfter(this.getLastDBId());
         List<DStudyPlan> temp = new ArrayList<>();
 
-        bases.forEach(base -> temp.add((DStudyPlan)base));
+        bases.forEach(base -> temp.add((DStudyPlan) base));
 
-        if(!temp.isEmpty()) {
+        if (!temp.isEmpty()) {
             this.examTypes.addAll(this.examModelRepository.findAll());
             this.groups.addAll(this.groupModelRepository.findAll());
             this.disciplines.addAll(this.disciplineModelRepository.findAll());
@@ -62,7 +63,6 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
             return this.convertList(temp).stream().filter(p -> p.getGroup() != null && p.getTeacher() != null).toList();
         }
-
 
 
         return new ArrayList<>();
@@ -77,37 +77,37 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         DisciplineModel discipline = disciplines.stream().filter(p -> p.getSourceId().equals(Long.valueOf(dStudyPlan.getNdis()))).findFirst().orElse(null);
         TeacherModel teacher = teachers.stream().filter(p -> dStudyPlan.getTeacher() != null && p.getSourceId().equals(dStudyPlan.getTeacher().getId())).findFirst().orElse(null);
 
-        if(exam != null)
+        if (exam != null)
             studyPlan.setExam(exam);
 
         studyPlan.setSemester(dStudyPlan.getSemester());
 
-        if(group != null)
+        if (group != null)
             studyPlan.setGroup(group);
 
         studyPlan.setYearEnd(dStudyPlan.getYearEnd());
         studyPlan.setYearStart(dStudyPlan.getYearStart());
         studyPlan.setCourse(dStudyPlan.getCourse());
 
-        if(discipline != null)
+        if (discipline != null)
             studyPlan.setDiscipline(discipline);
 
         studyPlan.setSemesterNumber(dStudyPlan.getSemesterNumber());
 
-        if(teacher != null) {
+        if (teacher != null) {
             studyPlan.setTeacher(teacher);
 
-            if(discipline != null && discipline.getDepartment() != null) {
+            if (discipline != null && discipline.getDepartment() != null) {
                 long departmentId = discipline.getDepartment().getId();
 
-                departmentId = switch ((int) departmentId){
+                departmentId = switch ((int) departmentId) {
                     case 31 -> 15L;
                     case 27 -> 7L;
                     case 11 -> 26L;
                     default -> departmentId;
                 };
 
-                if(this.teacherDepartmentMergeRepository.findByDepartmentIdAndTeacherId(departmentId, teacher.getId()) == null) {
+                if (this.teacherDepartmentMergeRepository.findByDepartmentIdAndTeacherId(departmentId, teacher.getId()) == null) {
                     TeacherDepartmentMerge tdm = new TeacherDepartmentMerge(teacher, discipline.getDepartment());
                     tdm.setSourceId(dStudyPlan.getId());
                     tdm.setStatus(EStatus.ACTIVE);

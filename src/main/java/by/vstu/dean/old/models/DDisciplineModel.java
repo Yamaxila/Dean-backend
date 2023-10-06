@@ -1,6 +1,5 @@
 package by.vstu.dean.old.models;
 
-import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.old.OldDBBaseModel;
 import lombok.Getter;
 import lombok.Setter;

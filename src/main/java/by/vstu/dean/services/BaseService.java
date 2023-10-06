@@ -16,22 +16,29 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     public List<O> getAll() {
         return this.repo.findAll();
     }
+
+    public List<O> getAllActive() {
+        return this.repo.findAllByStatus(EStatus.ACTIVE);
+    }
+
     public Optional<O> getById(Long id) {
         return this.repo.findById(id);
     }
 
     public O getBySourceId(Long id) {
-        return (O)this.repo.findBySourceId(id);
+        return (O) this.repo.findBySourceId(id);
     }
 
     public O save(O o) {
         return this.repo.saveAndFlush(o);
     }
+
     public List<O> saveAll(List<O> o) {
         return this.repo.saveAllAndFlush(o);
     }
+
     public O delete(O o) {
-        if(o.getId() == null)
+        if (o.getId() == null)
             return null;
 
         o.setStatus(EStatus.DELETED);
@@ -42,7 +49,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     public O delete(Long id) {
         Optional<O> o = this.getById(id);
 
-        if(!o.isPresent())
+        if (!o.isPresent())
             return null;
 
         O o1 = o.get();

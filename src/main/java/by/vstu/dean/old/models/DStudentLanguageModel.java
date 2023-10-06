@@ -1,9 +1,10 @@
 package by.vstu.dean.old.models;
 
 import by.vstu.dean.old.OldDBBaseModel;
-import javax.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import javax.persistence.*;
 
 @Getter
 @Setter

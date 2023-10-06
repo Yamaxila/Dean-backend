@@ -6,6 +6,4 @@ import by.vstu.dean.future.models.specs.QualificationModel;
 public interface QualificationModelRepository extends DBBaseModelRepository<QualificationModel> {
 
 
-    QualificationModel findBySourceId(Long sourceId);
-
 }

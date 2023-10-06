@@ -1,7 +1,7 @@
 package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.anotations.ApiSecurity;
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.StudentModelRepository;
 import by.vstu.dean.services.StudentService;
@@ -28,7 +28,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
         super(service);
     }
 
-    @RequestMapping(value="/",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.POST)
     @Secured({"ROLE_ADMIN"})
@@ -38,7 +38,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/getAllByGroup",
+    @RequestMapping(value = "/byGroup",
             produces = {"application/json"},
             method = RequestMethod.POST)
     @Secured({"ROLE_ADMIN"})
@@ -49,7 +49,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
         return new ResponseEntity<>(this.service.findAllByGroupId(id), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_ADMIN"})

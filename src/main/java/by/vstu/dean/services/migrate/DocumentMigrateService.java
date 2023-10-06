@@ -1,9 +1,11 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.students.DocumentModel;
-import by.vstu.dean.future.models.students.EducationModel;
-import by.vstu.dean.future.repo.*;
+import by.vstu.dean.future.models.students.*;
+import by.vstu.dean.future.repo.CitizenshipModelRepository;
+import by.vstu.dean.future.repo.DocumentModelRepository;
+import by.vstu.dean.future.repo.InstitutionModelRepository;
+import by.vstu.dean.future.repo.StudentLanguageModelRepository;
 import by.vstu.dean.old.models.DStudentModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,11 +44,11 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         documentModel.setFullNameL(dStudentModel.getFullNameL());
         documentModel.setFirstNameL(dStudentModel.getFullNameL());
         documentModel.setCitizenshipString(dStudentModel.getCitizenshipString());
-        documentModel.setCitizenship(this.citizenshipModelRepository.findBySourceId(dStudentModel.getCitizenship() == null ? 0 : Long.valueOf(dStudentModel.getCitizenship())));
-        documentModel.setStudentLanguage(this.studentLanguageModelRepository.findBySourceId(dStudentModel.getStudentLanguage() == null ? 0 : Long.valueOf(dStudentModel.getStudentLanguage())));
-        documentModel.setInstitution(this.institutionModelRepository.findBySourceId(dStudentModel.getInstitution() != null ? dStudentModel.getInstitution().getId() : null));
+        documentModel.setCitizenship((CitizenshipModel) this.citizenshipModelRepository.findBySourceId(dStudentModel.getCitizenship() == null ? 0 : Long.valueOf(dStudentModel.getCitizenship())));
+        documentModel.setStudentLanguage((StudentLanguageModel) this.studentLanguageModelRepository.findBySourceId(dStudentModel.getStudentLanguage() == null ? 0 : Long.valueOf(dStudentModel.getStudentLanguage())));
+        documentModel.setInstitution((InstitutionModel) this.institutionModelRepository.findBySourceId(dStudentModel.getInstitution() != null ? dStudentModel.getInstitution().getId() : null));
         documentModel.setStudentLanguageString(dStudentModel.getStudentLanguageString());
-        documentModel.setCaseNo(Long.parseLong(dStudentModel.getCaseNo().replaceAll("[^0-9]","")));
+        documentModel.setCaseNo(Long.parseLong(dStudentModel.getCaseNo().replaceAll("[^0-9]", "")));
 //        documentModel.setDocumentNumber(dStudentModel.getDocumentNumber() == null ? -1 : Long.parseLong(dStudentModel.getDocumentNumber()));
         documentModel.setBenefits(dStudentModel.getBenefits());
         documentModel.setBirthPlace(dStudentModel.getBirthPlace());
@@ -59,21 +61,21 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         EducationModel education2 = new EducationModel();
         EducationModel education3 = new EducationModel();
 
-        education1.setEducation(dStudentModel.getEducation1() == null  || dStudentModel.getEducation1().isEmpty() ? null : dStudentModel.getEducation1());
-        education2.setEducation(dStudentModel.getEducation2() == null  || dStudentModel.getEducation2().isEmpty() ? null : dStudentModel.getEducation2());
-        education3.setEducation(dStudentModel.getEducation3() == null  || dStudentModel.getEducation3().isEmpty() ? null : dStudentModel.getEducation3());
+        education1.setEducation(dStudentModel.getEducation1() == null || dStudentModel.getEducation1().isEmpty() ? null : dStudentModel.getEducation1());
+        education2.setEducation(dStudentModel.getEducation2() == null || dStudentModel.getEducation2().isEmpty() ? null : dStudentModel.getEducation2());
+        education3.setEducation(dStudentModel.getEducation3() == null || dStudentModel.getEducation3().isEmpty() ? null : dStudentModel.getEducation3());
 
-        education1.setEducationDocumentSerial(dStudentModel.getEducation1DocumentSerial() == null  || dStudentModel.getEducation1DocumentSerial().isEmpty() ? null : dStudentModel.getEducation1DocumentSerial());
-        education2.setEducationDocumentSerial(dStudentModel.getEducation2DocumentSerial() == null  || dStudentModel.getEducation2DocumentSerial().isEmpty() ? null : dStudentModel.getEducation2DocumentSerial());
-        education3.setEducationDocumentSerial(dStudentModel.getEducation3DocumentSerial() == null  || dStudentModel.getEducation3DocumentSerial().isEmpty() ? null : dStudentModel.getEducation3DocumentSerial());
+        education1.setEducationDocumentSerial(dStudentModel.getEducation1DocumentSerial() == null || dStudentModel.getEducation1DocumentSerial().isEmpty() ? null : dStudentModel.getEducation1DocumentSerial());
+        education2.setEducationDocumentSerial(dStudentModel.getEducation2DocumentSerial() == null || dStudentModel.getEducation2DocumentSerial().isEmpty() ? null : dStudentModel.getEducation2DocumentSerial());
+        education3.setEducationDocumentSerial(dStudentModel.getEducation3DocumentSerial() == null || dStudentModel.getEducation3DocumentSerial().isEmpty() ? null : dStudentModel.getEducation3DocumentSerial());
 
-        education1.setEducationDocumentNumber(dStudentModel.getEducation1DocumentNumber() == null  || dStudentModel.getEducation1DocumentNumber().isEmpty() ? null : dStudentModel.getEducation1DocumentNumber());
-        education2.setEducationDocumentNumber(dStudentModel.getEducation2DocumentNumber() == null  || dStudentModel.getEducation2DocumentNumber().isEmpty() ? null : dStudentModel.getEducation2DocumentNumber());
-        education3.setEducationDocumentNumber(dStudentModel.getEducation3DocumentNumber() == null  || dStudentModel.getEducation3DocumentNumber().isEmpty() ? null : dStudentModel.getEducation3DocumentNumber());
+        education1.setEducationDocumentNumber(dStudentModel.getEducation1DocumentNumber() == null || dStudentModel.getEducation1DocumentNumber().isEmpty() ? null : dStudentModel.getEducation1DocumentNumber());
+        education2.setEducationDocumentNumber(dStudentModel.getEducation2DocumentNumber() == null || dStudentModel.getEducation2DocumentNumber().isEmpty() ? null : dStudentModel.getEducation2DocumentNumber());
+        education3.setEducationDocumentNumber(dStudentModel.getEducation3DocumentNumber() == null || dStudentModel.getEducation3DocumentNumber().isEmpty() ? null : dStudentModel.getEducation3DocumentNumber());
 
-        education1.setEducationDocumentType(dStudentModel.getEducation1DocumentType() == null  || dStudentModel.getEducation1DocumentType().isEmpty() ? null : dStudentModel.getEducation1DocumentType());
-        education2.setEducationDocumentType(dStudentModel.getEducation2DocumentType() == null  || dStudentModel.getEducation2DocumentType().isEmpty() ? null : dStudentModel.getEducation2DocumentType());
-        education3.setEducationDocumentType(dStudentModel.getEducation3DocumentType() == null  || dStudentModel.getEducation3DocumentType().isEmpty() ? null : dStudentModel.getEducation3DocumentType());
+        education1.setEducationDocumentType(dStudentModel.getEducation1DocumentType() == null || dStudentModel.getEducation1DocumentType().isEmpty() ? null : dStudentModel.getEducation1DocumentType());
+        education2.setEducationDocumentType(dStudentModel.getEducation2DocumentType() == null || dStudentModel.getEducation2DocumentType().isEmpty() ? null : dStudentModel.getEducation2DocumentType());
+        education3.setEducationDocumentType(dStudentModel.getEducation3DocumentType() == null || dStudentModel.getEducation3DocumentType().isEmpty() ? null : dStudentModel.getEducation3DocumentType());
 
         education1.setStatus(dStudentModel.isExpelled() ? EStatus.DELETED : EStatus.ACTIVE);
         education2.setStatus(dStudentModel.isExpelled() ? EStatus.DELETED : EStatus.ACTIVE);
@@ -83,16 +85,16 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         education2.setSourceId(dStudentModel.getId());
         education3.setSourceId(dStudentModel.getId());
 
-        if(education1.getEducation() != null || education1.getEducationDocumentSerial() != null || education1.getEducationDocumentNumber() != null || education1.getEducationDocumentType() != null)
+        if (education1.getEducation() != null || education1.getEducationDocumentSerial() != null || education1.getEducationDocumentNumber() != null || education1.getEducationDocumentType() != null)
             educations.add(education1);
-        if(education2.getEducation() != null || education2.getEducationDocumentSerial() != null || education2.getEducationDocumentNumber() != null || education2.getEducationDocumentType() != null)
+        if (education2.getEducation() != null || education2.getEducationDocumentSerial() != null || education2.getEducationDocumentNumber() != null || education2.getEducationDocumentType() != null)
             educations.add(education2);
-        if(education3.getEducation() != null || education3.getEducationDocumentSerial() != null || education3.getEducationDocumentNumber() != null || education3.getEducationDocumentType() != null)
+        if (education3.getEducation() != null || education3.getEducationDocumentSerial() != null || education3.getEducationDocumentNumber() != null || education3.getEducationDocumentType() != null)
             educations.add(education3);
 
         this.educationMigrateService.insertAll(educations);
 
-        documentModel.setEducationString(dStudentModel.getEducationString() == null  || dStudentModel.getEducationString().isEmpty() ? null : dStudentModel.getEducationString());
+        documentModel.setEducationString(dStudentModel.getEducationString() == null || dStudentModel.getEducationString().isEmpty() ? null : dStudentModel.getEducationString());
         documentModel.setEducationYearEnd(dStudentModel.getEducationYearEnd());
 
         documentModel.setJob(dStudentModel.getJob());

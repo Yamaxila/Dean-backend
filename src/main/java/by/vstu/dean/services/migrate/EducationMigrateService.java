@@ -1,6 +1,7 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.future.models.students.EducationModel;
+import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.EducationModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,7 @@ public class EducationMigrateService extends BaseMigrateService<EducationModel, 
     public List<EducationModel> applyStudentIds() {
         List<EducationModel> temp = this.educationModelRepository.findAllByStudentIdIsNull();
         temp.forEach((educationModel) -> {
-            educationModel.setStudent(this.studentModelRepository.findBySourceId(educationModel.getSourceId()));
+            educationModel.setStudent((StudentModel) this.studentModelRepository.findBySourceId(educationModel.getSourceId()));
         });
         return temp;
     }

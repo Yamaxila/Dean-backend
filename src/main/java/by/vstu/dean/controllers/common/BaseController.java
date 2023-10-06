@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers;
+package by.vstu.dean.controllers.common;
 
 import by.vstu.dean.anotations.ApiSecurity;
 import by.vstu.dean.future.DBBaseModel;
@@ -22,7 +22,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
 
     protected final S service;
 
-    @RequestMapping(value="/",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -33,7 +33,19 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/id",
+    @RequestMapping(value = "/active",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
+    @PreAuthorize("#oauth2.hasScope('read')")
+    @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
+    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<List<O>> getAllActive() {
+        return new ResponseEntity<>(this.service.getAllActive(), HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/byId",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -45,7 +57,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
         return groupModel.map(model -> new ResponseEntity<>(model, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value="/",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @Secured({"ROLE_ADMIN"})
@@ -56,7 +68,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
         return new ResponseEntity<>(this.service.save(o), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     @Secured({"ROLE_ADMIN"})
@@ -64,13 +76,14 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @ApiOperation(value = "delete", notes = "Помечает объект в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> delete(@RequestParam O o) {
-        if(o.getId() == null)
+        if (o.getId() == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
 
         return new ResponseEntity<>(this.service.delete(o), HttpStatus.OK);
     }
-    @RequestMapping(value="/byId",
+
+    @RequestMapping(value = "/byId",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     @Secured({"ROLE_ADMIN"})
@@ -78,10 +91,12 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @ApiOperation(value = "deleteById", notes = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> deleteById(@RequestParam Long id) {
-        if(id == null)
+        if (id == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         return new ResponseEntity<>(this.service.delete(id), HttpStatus.OK);
 
     }
+
+
 }

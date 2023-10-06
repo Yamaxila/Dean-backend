@@ -17,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name ="exams")
+@Table(name = "exams")
 @Data
 @ApiModel(description = "Объект зачетной единицы")
 public class ExamModel extends DBBaseModel {

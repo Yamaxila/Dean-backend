@@ -18,7 +18,7 @@ public class BaseRequest<B> {
     private final HttpHeaders headers;
     private HttpMethod method = HttpMethod.POST;
 
-    public BaseRequest (String url) {
+    public BaseRequest(String url) {
         this.url = url;
         this.headers = new HttpHeaders();
     }
@@ -29,7 +29,7 @@ public class BaseRequest<B> {
         return this;
     }
 
-    public String run (B entity) {
+    public String run(B entity) {
 
         RestTemplate restTemplate = new RestTemplate();
 
@@ -48,9 +48,9 @@ public class BaseRequest<B> {
     public BaseRequest<B> setAuthHeaders() {
 
         byte[] encodedAuth = Base64.encodeBase64(
-                (AUTH_CLIENT_ID + ":" + AUTH_CLIENT_SECRET).getBytes(StandardCharsets.US_ASCII) );
+                (AUTH_CLIENT_ID + ":" + AUTH_CLIENT_SECRET).getBytes(StandardCharsets.US_ASCII));
 
-        this.headers.add(HttpHeaders.AUTHORIZATION, "Basic " + new String( encodedAuth ));
+        this.headers.add(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
         return this;
     }
 
@@ -63,6 +63,7 @@ public class BaseRequest<B> {
         this.method = method;
         return this;
     }
+
     public BaseRequest<B> setMediaType(MediaType type) {
         this.headers.setContentType(type);
         return this;

@@ -28,7 +28,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
     public List<QualificationModel> convertNotExistsFromDB() {
 
         List<DQualificationModel> temp = new ArrayList<>();
-        this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()).forEach(base -> temp.add((DQualificationModel)base));
+        this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()).forEach(base -> temp.add((DQualificationModel) base));
         return this.convertList(temp);
     }
 

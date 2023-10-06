@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.lessons;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.lessons.DisciplineModel;
 import by.vstu.dean.future.repo.DisciplineModelRepository;
 import by.vstu.dean.services.DisciplineService;

@@ -28,12 +28,12 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     private String signingKey;
 
     public void configure(ResourceServerSecurityConfigurer config) {
-        config.tokenServices((ResourceServerTokenServices)tokenServices()).resourceId("dean");
+        config.tokenServices((ResourceServerTokenServices) tokenServices()).resourceId("dean");
     }
 
     @Bean
     public TokenStore tokenStore() {
-        return (TokenStore)new JwtTokenStore(accessTokenConverter());
+        return (TokenStore) new JwtTokenStore(accessTokenConverter());
     }
 
     @Bean
@@ -52,11 +52,11 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     }
 
     public void configure(HttpSecurity http) throws Exception {
-        ((HttpSecurity)((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl)((HttpSecurity)http.csrf().disable())
+        ((HttpSecurity) ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) ((HttpSecurity) http.csrf().disable())
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(new String[] { "/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs" })).permitAll()
+                .antMatchers(new String[]{"/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs"})).permitAll()
                 .anyRequest()).authenticated()
                 .and())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

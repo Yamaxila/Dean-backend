@@ -27,14 +27,14 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "futureEntityManagerFactory",
         transactionManagerRef = "futureTransactionManager",
-        basePackages = { "by.vstu.dean.future"}
+        basePackages = {"by.vstu.dean.future"}
 )
-@AutoConfigurationPackage(basePackages = { "by.vstu.dean.future"})
+@AutoConfigurationPackage(basePackages = {"by.vstu.dean.future"})
 public class DeanFutureDBConfig {
 
     @Primary
-    @Bean(name="futureDataSource")
-    @ConfigurationProperties(prefix="spring.datasource.future")
+    @Bean(name = "futureDataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.future")
     public DataSource futureDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -43,11 +43,11 @@ public class DeanFutureDBConfig {
     @Bean(name = "futureEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean futureEntityManagerFactory(EntityManagerFactoryBuilder builder,
                                                                              @Qualifier("futureDataSource") DataSource primaryDataSource) {
-       return builder
+        return builder
                 .dataSource(primaryDataSource)
                 .packages("by.vstu.dean.future")
-               .properties(jpaProperties())
-               .build();
+                .properties(jpaProperties())
+                .build();
     }
 
     @Bean(name = "futureTransactionManager")

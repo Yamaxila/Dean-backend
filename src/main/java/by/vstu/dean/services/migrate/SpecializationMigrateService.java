@@ -2,6 +2,8 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.specs.QualificationModel;
+import by.vstu.dean.future.models.specs.SpecialityModel;
 import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
@@ -56,8 +58,8 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
         specializationModel.setSpezCode("<FIXME>");
         specializationModel.setShortName(dSpecializationModel.getShortName());
 
-        specializationModel.setQualification(this.qualificationModelRepository.findBySourceId(dSpecializationModel.getDkvalifId() == null ? 1 : dSpecializationModel.getDkvalifId().getId()));
-        specializationModel.setSpec(this.specialityRepository.findBySourceId(dSpecializationModel.getSpeciality() == null ? 319 : dSpecializationModel.getSpeciality().getId()));
+        specializationModel.setQualification((QualificationModel) this.qualificationModelRepository.findBySourceId(dSpecializationModel.getDkvalifId() == null ? 1 : dSpecializationModel.getDkvalifId().getId()));
+        specializationModel.setSpec((SpecialityModel) this.specialityRepository.findBySourceId(dSpecializationModel.getSpeciality() == null ? 319 : dSpecializationModel.getSpeciality().getId()));
 
         return specializationModel;
     }

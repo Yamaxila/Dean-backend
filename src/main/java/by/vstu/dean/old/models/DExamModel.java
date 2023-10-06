@@ -27,10 +27,10 @@ public class DExamModel extends OldDBBaseModel {
 
     public ExamType getExamType() {
 
-        if(type.equalsIgnoreCase("зачет"))
+        if (type.equalsIgnoreCase("зачет"))
             return ExamType.TEST;
 
-        if(type.equalsIgnoreCase("экзамен"))
+        if (type.equalsIgnoreCase("экзамен"))
             return ExamType.EXAM;
 
         return ExamType.UNKNOWN;

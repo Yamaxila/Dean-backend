@@ -4,5 +4,5 @@ import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.students.StudentLanguageModel;
 
 public interface StudentLanguageModelRepository extends DBBaseModelRepository<StudentLanguageModel> {
-    StudentLanguageModel findBySourceId(Long aLong);
+
 }

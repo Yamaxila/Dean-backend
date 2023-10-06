@@ -1,8 +1,8 @@
 package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
-import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.FacultyModel;
+import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.old.OldDBBaseModel;
@@ -35,7 +35,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         List<OldDBBaseModel> bases = this.dDepartmentModelRepository.findAllByIdAfter(this.getLastDBId());
         List<DDepartmentModel> temp = new ArrayList<>();
 
-        bases.forEach(base -> temp.add((DDepartmentModel)base));
+        bases.forEach(base -> temp.add((DDepartmentModel) base));
 
         return this.convertList(temp);
     }
@@ -47,7 +47,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         departmentModel.setShortName(dDepartmentModel.getShortName());
         departmentModel.setRoom(dDepartmentModel.getRoom());
         FacultyModel faculty = this.facultyModels.stream().filter(p -> p.getSourceId().equals(dDepartmentModel.getFaculty().getId())).findAny().orElse(null);
-        if(faculty != null)
+        if (faculty != null)
             departmentModel.setFaculty(faculty);
         departmentModel.setStatus(EStatus.ACTIVE);
         departmentModel.setSourceId(dDepartmentModel.getId());

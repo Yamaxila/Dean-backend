@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.lessons;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.lessons.ExamModel;
 import by.vstu.dean.future.repo.ExamModelRepository;
 import by.vstu.dean.services.ExamTypeService;

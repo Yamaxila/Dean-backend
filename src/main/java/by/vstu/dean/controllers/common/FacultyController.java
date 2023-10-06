@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers;
+package by.vstu.dean.controllers.common;
 
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;

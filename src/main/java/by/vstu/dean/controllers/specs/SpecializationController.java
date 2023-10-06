@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.specs;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.services.SpecializationService;

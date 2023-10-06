@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.students;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.students.CitizenshipModel;
 import by.vstu.dean.future.repo.CitizenshipModelRepository;
 import by.vstu.dean.services.CitizenshipService;

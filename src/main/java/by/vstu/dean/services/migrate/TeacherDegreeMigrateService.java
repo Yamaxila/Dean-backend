@@ -19,6 +19,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     private final DTeacherModelRepository teacherModelRepository;
 
     private List<TeacherDegreeModel> teacherDegreeModels = new ArrayList<>();
+
     @Override
     public Long getLastDBId() {
         throw new RuntimeException("Not implemented!");
@@ -35,13 +36,13 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     public TeacherDegreeModel convertSingle(DTeacherModel dTeacherModel) {
         TeacherDegreeModel teacherDegreeModel;
         boolean notInList = false;
-        if(!this.teacherDegreeModels.isEmpty()) {
+        if (!this.teacherDegreeModels.isEmpty()) {
             teacherDegreeModel = this.teacherDegreeModels.stream().filter(p -> p.getName().equalsIgnoreCase(dTeacherModel.getDegree().trim())).findFirst().orElse(null);
         } else {
             teacherDegreeModel = this.teacherDegreeModelRepository.findByNameLike(dTeacherModel.getDegree().toLowerCase().trim());
             notInList = true;
         }
-        if(teacherDegreeModel == null) {
+        if (teacherDegreeModel == null) {
 
             teacherDegreeModel = new TeacherDegreeModel();
 
@@ -52,7 +53,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
             notInList = true;
         }
 
-        if(notInList)
+        if (notInList)
             this.teacherDegreeModels.add(teacherDegreeModel);
 
         return teacherDegreeModel;

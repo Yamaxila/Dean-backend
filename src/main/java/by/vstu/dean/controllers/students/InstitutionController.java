@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.students;
 
-import by.vstu.dean.controllers.BaseController;
+import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.future.models.students.InstitutionModel;
 import by.vstu.dean.future.repo.InstitutionModelRepository;
 import by.vstu.dean.services.InstitutionService;
