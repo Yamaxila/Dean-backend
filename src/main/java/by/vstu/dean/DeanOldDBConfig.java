@@ -20,6 +20,9 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Конфигурация базы данных для старой БД.
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -29,6 +32,11 @@ import java.util.Map;
 )
 public class DeanOldDBConfig {
 
+    /**
+     * Создает источник данных для старой БД.
+     *
+     * @return Источник данных для старой БД.
+     */
     @Bean(name = "deanDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.old")
     public DataSource deanDataSource() {
@@ -38,6 +46,13 @@ public class DeanOldDBConfig {
         return ds;
     }
 
+    /**
+     * Создает фабрику менеджера сущностей для старой БД.
+     *
+     * @param builder         Построитель фабрики менеджера сущностей.
+     * @param deanDataSource  Источник данных для старой БД.
+     * @return Фабрика менеджера сущностей для старой БД.
+     */
     @Bean(name = "deanEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean deanEntityManagerFactory(EntityManagerFactoryBuilder builder,
                                                                            @Qualifier("deanDataSource") DataSource deanDataSource) {
@@ -48,12 +63,23 @@ public class DeanOldDBConfig {
                 .build();
     }
 
+    /**
+     * Создает менеджер транзакций для старой БД.
+     *
+     * @param deanEntityManagerFactory Фабрика менеджера сущностей для старой БД.
+     * @return Менеджер транзакций для старой БД.
+     */
     @Bean(name = "deanTransactionManager")
     public PlatformTransactionManager deanTransactionManager(
             @Qualifier("deanEntityManagerFactory") EntityManagerFactory deanEntityManagerFactory) {
         return new JpaTransactionManager(deanEntityManagerFactory);
     }
 
+    /**
+     * Возвращает настройки JPA.
+     *
+     * @return Map объект с настройками JPA.
+     */
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyStandardImpl.class.getName());

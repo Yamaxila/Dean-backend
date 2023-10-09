@@ -8,35 +8,75 @@ import lombok.RequiredArgsConstructor;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Базовый сервис с общими методами для работы с моделями базы данных.
+ * @param <O> Тип объекта модели базы данных.
+ * @param <R> Тип репозитория для объекта модели базы данных.
+ */
 @RequiredArgsConstructor
 public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRepository<O>> {
 
+    /** Репозиторий для работы с моделью базы данных. */
     protected final R repo;
 
+    /**
+     * Получает все объекты модели из базы данных.
+     * @return Список объектов модели.
+     */
     public List<O> getAll() {
         return this.repo.findAll();
     }
 
+    /**
+     * Получает все активные объекты модели из базы данных.
+     * @return Список активных объектов модели.
+     */
     public List<O> getAllActive() {
         return this.repo.findAllByStatus(EStatus.ACTIVE);
     }
 
+    /**
+     * Получает объект модели по идентификатору.
+     * @param id Идентификатор объекта модели.
+     * @return Optional, содержащий объект модели, если найден, иначе пустой Optional.
+     */
     public Optional<O> getById(Long id) {
         return this.repo.findById(id);
     }
 
+    /**
+     * Получает объект модели по идентификатору.
+     * @param id Идентификатор объекта модели.
+     * @return Объект модели, соответствующий идентификатору.
+     */
     public O getBySourceId(Long id) {
-        return (O) this.repo.findBySourceId(id);
+        return this.repo.findBySourceId(id).get(0);
     }
 
+    /**
+     * Сохраняет объект модели в базу данных.
+     * @param o Объект модели для сохранения.
+     * @return Сохраненный объект модели.
+     */
     public O save(O o) {
         return this.repo.saveAndFlush(o);
     }
 
+    /**
+     * Сохраняет список объектов модели в базу данных.
+     * @param o Список объектов модели для сохранения.
+     * @return Список сохраненных объектов модели.
+     */
     public List<O> saveAll(List<O> o) {
         return this.repo.saveAllAndFlush(o);
     }
 
+    /**
+     * Удаляет объект модели.
+     * @param o Объект модели для удаления.
+     * @return Удаленный объект модели.
+     */
+    @Deprecated
     public O delete(O o) {
         if (o.getId() == null)
             return null;
@@ -46,10 +86,15 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
         return this.repo.saveAndFlush(o);
     }
 
+    /**
+     * Удаляет объект модели по идентификатору.
+     * @param id Идентификатор объекта модели для удаления.
+     * @return Удаленный объект модели.
+     */
     public O delete(Long id) {
         Optional<O> o = this.getById(id);
 
-        if (!o.isPresent())
+        if (o.isEmpty())
             return null;
 
         O o1 = o.get();

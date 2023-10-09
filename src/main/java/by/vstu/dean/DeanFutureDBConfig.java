@@ -1,6 +1,5 @@
 package by.vstu.dean;
 
-
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -22,6 +21,9 @@ import javax.sql.DataSource;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Конфигурация базы данных для новой БД.
+ */
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
@@ -32,6 +34,11 @@ import java.util.Map;
 @AutoConfigurationPackage(basePackages = {"by.vstu.dean.future"})
 public class DeanFutureDBConfig {
 
+    /**
+     * Создает источник данных для новой БД.
+     *
+     * @return Источник данных для новой БД.
+     */
     @Primary
     @Bean(name = "futureDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.future")
@@ -39,6 +46,13 @@ public class DeanFutureDBConfig {
         return DataSourceBuilder.create().build();
     }
 
+    /**
+     * Создает фабрику менеджера сущностей для новой БД.
+     *
+     * @param builder             Построитель фабрики менеджера сущностей.
+     * @param primaryDataSource    Источник данных для новой БД.
+     * @return Фабрика менеджера сущностей для новой БД.
+     */
     @Primary
     @Bean(name = "futureEntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean futureEntityManagerFactory(EntityManagerFactoryBuilder builder,
@@ -50,6 +64,12 @@ public class DeanFutureDBConfig {
                 .build();
     }
 
+    /**
+     * Создает менеджер транзакций для новой БД.
+     *
+     * @param primaryEntityManagerFactory Фабрика менеджера сущностей для новой БД.
+     * @return Менеджер транзакций для новой БД.
+     */
     @Bean(name = "futureTransactionManager")
     public PlatformTransactionManager futureTransactionManager(
             @Qualifier("futureEntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
@@ -57,26 +77,15 @@ public class DeanFutureDBConfig {
         return new JpaTransactionManager(primaryEntityManagerFactory);
     }
 
+    /**
+     * Возвращает настройки JPA.
+     *
+     * @return Map объект с настройками JPA.
+     */
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
         props.put("hibernate.physical_naming_strategy", CamelCaseToUnderscoresNamingStrategy.class.getName());
         props.put("hibernate.implicit_naming_strategy", ImplicitNamingStrategyLegacyJpaImpl.class.getName());
         return props;
     }
-
-//    @Bean
-//    public DataSourceInitializer dataSourceInitializer(@Qualifier("dataSource") final DataSource dataSource) {
-//        ResourceDatabasePopulator resourceDatabasePopulator = new ResourceDatabasePopulator();
-//        resourceDatabasePopulator.addScript(new ClassPathResource("/schema.sql"));
-//        DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
-//        dataSourceInitializer.setDataSource(dataSource);
-//        dataSourceInitializer.setDatabasePopulator(resourceDatabasePopulator);
-//        return dataSourceInitializer;
-//    }
-//
-//    @Bean(name = "futureGroupsRepo")
-//    public GroupsRepo groupsRepo() {
-//        return new GroupsRepoImpl();
-//    }
-
 }
