@@ -79,7 +79,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @ApiOperation(value = "getById", notes = "Отправляет объект по его id из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<O> getById(@PathVariable Long id) {
-        Optional<O> groupModel = (Optional<O>) this.service.getById(id);
+        Optional<O> groupModel = this.service.getById(id);
         return groupModel.map(model -> new ResponseEntity<>(model, HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -117,6 +117,6 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
         if (id == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<O>(this.service.delete(id), HttpStatus.OK);
+        return new ResponseEntity<>(this.service.delete(id), HttpStatus.OK);
     }
 }

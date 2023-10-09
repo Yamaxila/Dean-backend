@@ -63,7 +63,7 @@ public class DepartmentModel extends DBBaseModel {
     /**
      * Все преподаватели, работающие на данной кафедре.
      */
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
     @JsonIgnore

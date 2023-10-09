@@ -19,8 +19,7 @@ public class QualificationController extends BaseController<QualificationModel, 
     /**
      * Конструктор контроллера.
      *
-     * @p
-     * aram service Сервис квалификации
+     * @param service Сервис квалификации
      */
     public QualificationController(QualificationService service) {
         super(service);

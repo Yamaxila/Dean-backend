@@ -1,0 +1,24 @@
+{
+  "properties": [
+    {
+      "name": "auth.url",
+      "type": "java.lang.String",
+      "description": "auth-service full url."
+    },
+    {
+      "name": "auth.clientId",
+      "type": "java.lang.String",
+      "description": "auth-service clientId."
+    },
+    {
+      "name": "auth.clientSecret",
+      "type": "java.lang.String",
+      "description": "auth-service clientSecret."
+    },
+    {
+      "name": "auth.loginData",
+      "type": "java.lang.String",
+      "description": "auth-service login data."
+    }
+  ]
+}

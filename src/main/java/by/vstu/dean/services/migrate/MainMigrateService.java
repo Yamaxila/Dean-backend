@@ -11,7 +11,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class MainMigrateService {
 
-    private List<IMigrateExecutor> services = new ArrayList<>();
+    private final List<IMigrateExecutor> services = new ArrayList<>();
 
     private final TeacherDegreeMigrateService teacherDegreeMigrateService;
     private final ExamTypeMigrateService examTypeMigrateService;
@@ -33,7 +33,7 @@ public class MainMigrateService {
 
     @PostConstruct
     public void migrate() {
-        Long startTime = System.currentTimeMillis();
+        long startTime = System.currentTimeMillis();
 
         Thread migrateThread = new Thread(() -> {
             services.add(this.teacherDegreeMigrateService);
@@ -53,32 +53,18 @@ public class MainMigrateService {
             services.add(this.departmentSpecialityMergeService);
 
 
-//            services.forEach(IMigrateExecutor::migrate);
+            services.forEach(IMigrateExecutor::migrate);
 
             System.out.println("Applying spec for groups");
             this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
             System.out.println("Applying student for educationModels");
             this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
 
-
-        });
-
-
-        Thread checkThread = new Thread(() -> {
-            while (Thread.getAllStackTraces().keySet().stream().anyMatch(p -> p.getName().contains("Migration"))) {
-                try {
-                    Thread.sleep(200);
-                } catch (InterruptedException e) {
-                }
-            }
             System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
         });
 
         migrateThread.setName("Migration");
         migrateThread.start();
-
-        checkThread.setName("checkThread");
-        checkThread.start();
 
     }
 

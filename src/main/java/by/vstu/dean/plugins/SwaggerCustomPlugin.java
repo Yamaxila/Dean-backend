@@ -3,9 +3,9 @@ package by.vstu.dean.plugins;
 import by.vstu.dean.anotations.ApiSecurity;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import springfox.documentation.service.ResolvedMethodParameter;
@@ -15,7 +15,6 @@ import springfox.documentation.spi.service.contexts.OperationContext;
 import springfox.documentation.spring.web.DescriptionResolver;
 import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
-import javax.websocket.server.PathParam;
 import java.util.Optional;
 
 @Component
@@ -43,10 +42,12 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
                     int temp = 0;
                     for (ResolvedMethodParameter methodParameter : context.getParameters()) {
                         if(methodParameter.hasParameterAnnotation(RequestParam.class)) {
-                            String param = methodParameter.defaultName().get();
-                            params.append(param).append("=").append("{").append(temp).append("}");
-                            if (temp < requestMapping.get().params().length - 1)
-                                params.append("&");
+                            if(methodParameter.defaultName().isPresent()) {
+                                String param = methodParameter.defaultName().get();
+                                params.append(param).append("=").append("{").append(temp).append("}");
+                                if (temp < requestMapping.get().params().length - 1)
+                                    params.append("&");
+                            }
                         }
                     }
                 }
@@ -108,7 +109,7 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
     }
 
     @Override
-    public boolean supports(DocumentationType documentationType) {
+    public boolean supports(@NotNull DocumentationType documentationType) {
         return SwaggerPluginSupport.pluginDoesApply(documentationType);
     }
 }

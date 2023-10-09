@@ -35,11 +35,12 @@ public class BaseRequest<B> {
 
 
         HttpEntity<B> request =
-                new HttpEntity<B>(entity, headers);
+                new HttpEntity<>(entity, headers);
 
         return restTemplate.exchange(this.url, this.method, request, String.class).getBody();
     }
 
+    @SuppressWarnings({"unused"})
     public BaseRequest<B> addHeader(String key, String value) {
         this.headers.add(key, value);
         return this;

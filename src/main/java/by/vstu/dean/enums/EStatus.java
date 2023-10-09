@@ -18,14 +18,11 @@ public enum EStatus {
     @ApiModelProperty(notes = "Неизвестный статус")
     UNKNOWN(-1);
 
-    private final int id;
-
     /**
      * Конструктор с параметром.
      *
-     * @param id Идентификатор статуса
+     * @param ignoredId Идентификатор статуса
      */
-    EStatus(int id) {
-        this.id = id;
+    EStatus(int ignoredId) {
     }
 }

@@ -4,8 +4,9 @@ import by.vstu.dean.future.DBBaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -19,7 +20,8 @@ import javax.persistence.Table;
 @Table(name = "educations")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 public class EducationModel extends DBBaseModel {
 
     /**

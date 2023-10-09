@@ -18,7 +18,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     private final TeacherDegreeModelRepository teacherDegreeModelRepository;
     private final DTeacherModelRepository teacherModelRepository;
 
-    private List<TeacherDegreeModel> teacherDegreeModels = new ArrayList<>();
+    private final List<TeacherDegreeModel> teacherDegreeModels = new ArrayList<>();
 
     @Override
     public Long getLastDBId() {

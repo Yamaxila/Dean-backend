@@ -55,13 +55,8 @@ public class DepartmentSpecialityMergeService implements IMigrateExecutor {
         list.add(this.get(26L, 221L));//ЭиЭБ
         list.add(this.get(26L, 513L));
         list.add(this.get(26L, 511L));
-//        list.add(this.get(0L, 0L));
-//        list.add(this.get(0L, 0L));
 
-
-        //this.departmentSpecialityMergeRepository.saveAllAndFlush(list.stream().filter(p -> old.stream().noneMatch(p1 -> p.getDepartment().getId().equals(p1.getDepartment().getId())) && old.stream().noneMatch(p1 -> p.getSpecialityModel().getId().equals(p1.getSpecialityModel().getId()))).toList());
-
-        this.specialityService.saveAll(list);
+        System.out.println(this.specialityService.saveAll(list));
     }
 
 

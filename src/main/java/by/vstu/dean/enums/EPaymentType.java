@@ -18,14 +18,11 @@ public enum EPaymentType {
     @ApiModelProperty(notes = "Целевое обучение")
     DIRECTIONAL(2);
 
-    private final int id;
-
     /**
      * Конструктор с параметром.
      *
-     * @param id Идентификатор типа оплаты
+     * @param ignoredId Идентификатор типа оплаты
      */
-    EPaymentType(int id) {
-        this.id = id;
+    EPaymentType(int ignoredId) {
     }
 }

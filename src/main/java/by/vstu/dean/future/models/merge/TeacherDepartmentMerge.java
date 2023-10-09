@@ -5,9 +5,7 @@ import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -21,7 +19,8 @@ import javax.persistence.Table;
 @Table(name = "teacher_department_merge")
 @AllArgsConstructor
 @NoArgsConstructor
-@Data
+@Setter
+@Getter
 @ApiModel(description = "Связующий объект преподаватель-кафедра")
 public class TeacherDepartmentMerge extends DBBaseModel {
 

@@ -18,14 +18,11 @@ public enum ExamType {
     @ApiModelProperty(notes = "Неизвестный тип экзамена")
     UNKNOWN(-1);
 
-    private final int id;
-
     /**
      * Конструктор с параметром.
      *
-     * @param id Идентификатор типа экзамена
+     * @param ignoredId Идентификатор типа экзамена
      */
-    ExamType(int id) {
-        this.id = id;
+    ExamType(int ignoredId) {
     }
 }

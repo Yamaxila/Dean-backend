@@ -2,15 +2,14 @@ package by.vstu.dean.old;
 
 
 import by.vstu.dean.models.PreventAnyUpdate;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 
-@Data
+@Setter
+@Getter
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor

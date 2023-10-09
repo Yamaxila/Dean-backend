@@ -17,9 +17,5 @@ public class DQualificationModel extends OldDBBaseModel {
 
     @Column(name = "namekvalif_1", length = 50)
     private String namePart2;
-//
-//    public String getName() {
-//        return (this.namePart1 + " " + this.namePart2).replace("  ", " ");
-//    }
 
 }

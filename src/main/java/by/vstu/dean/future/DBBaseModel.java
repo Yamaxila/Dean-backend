@@ -3,9 +3,7 @@ package by.vstu.dean.future;
 import by.vstu.dean.enums.EStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -14,7 +12,8 @@ import javax.persistence.*;
 /**
  * Абстрактный базовый объект базы данных.
  */
-@Data
+@Setter
+@Getter
 @MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor

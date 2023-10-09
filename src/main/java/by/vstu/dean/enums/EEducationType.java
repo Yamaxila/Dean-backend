@@ -18,14 +18,11 @@ public enum EEducationType {
     @ApiModelProperty(notes = "Неизвестный тип обучения")
     UNKNOWN(-1);
 
-    private final int id;
-
     /**
      * Конструктор с параметром.
      *
-     * @param id Идентификатор типа обучения
+     * @param ignoredId Идентификатор типа обучения
      */
-    EEducationType(int id) {
-        this.id = id;
+    EEducationType(int ignoredId) {
     }
 }
