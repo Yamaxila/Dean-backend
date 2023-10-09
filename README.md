@@ -65,14 +65,19 @@ class BaseRequestExample {
 
     @Test
     void contextLoad() {
-        String json = new BaseRequest<String>("http://localhost:18076/api/groups")
+        BaseRequest<String> baseRequest = new BaseRequest<String>("http://localhost:18076/api/groups/")
                 .setMethod(HttpMethod.GET)
-                .setToken("TOKEN")
-                .setMediaType(MediaType.APPLICATION_JSON)
-                .run("");
+                .setToken("BEARER TOKEN")
+                .setMediaType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        gson.fromJson(json, new TypeToken<List<GroupModel>>() {
-        }.getType());
+        String json = baseRequest.run("");
+
+        gson.fromJson(json, new TypeToken<List<GroupModel>>(){}.getType());
+
+        json = baseRequest.setUrl("http://localhost:18076/api/groups/58/").run("");
+
+        gson.fromJson(json, GroupModel.class);
+
     }
 }
 

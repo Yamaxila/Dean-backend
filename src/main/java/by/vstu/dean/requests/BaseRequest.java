@@ -13,7 +13,7 @@ public class BaseRequest<B> {
 
     private String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
 
-    private final String url;
+    private String url;
 
     private final HttpHeaders headers;
     private HttpMethod method = HttpMethod.POST;
@@ -43,6 +43,11 @@ public class BaseRequest<B> {
     @SuppressWarnings({"unused"})
     public BaseRequest<B> addHeader(String key, String value) {
         this.headers.add(key, value);
+        return this;
+    }
+
+    public BaseRequest<B> setUrl(String url) {
+        this.url = url;
         return this;
     }
 
