@@ -42,18 +42,19 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
 
     @Override
     public DisciplineModel convertSingle(DDisciplineModel dDisciplineModel) {
+        if(this.departments == null)
+            this.departments = this.departmentModelRepository.findAll();
+
         DisciplineModel disciplineModel = new DisciplineModel();
         disciplineModel.setName(dDisciplineModel.getName());
         disciplineModel.setShortName(dDisciplineModel.getShortName());
 
-        DepartmentModel department = this.departments
+        this.departments
                 .stream()
                 .filter(p ->
                         dDisciplineModel.getDkafId() != null
                                 && p.getSourceId().equals(Long.valueOf(dDisciplineModel.getDkafId()))
-                ).findAny().orElse(null);
-        if (department != null)
-            disciplineModel.setDepartment(department);
+                ).findAny().ifPresent(disciplineModel::setDepartment);
         disciplineModel.setStatus(EStatus.ACTIVE);
         disciplineModel.setSourceId(dDisciplineModel.getId());
         return disciplineModel;

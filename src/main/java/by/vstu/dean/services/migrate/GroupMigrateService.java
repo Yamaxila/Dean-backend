@@ -2,14 +2,13 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
 import by.vstu.dean.old.models.DGroupModel;
-import by.vstu.dean.old.repo.DGroupModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +23,6 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     private final StudentModelRepository studentModelRepository;
     private final FacultyModelRepository facultyModelRepository;
 
-    private final DGroupModelRepository dGroupRepo;
     private final DStudentModelRepository dStudentModelRepository;
 
     @Override
@@ -46,9 +44,9 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
         GroupModel groupModel = new GroupModel();
 
-        groupModel.setName(dGroupModel.getName());
+        groupModel.setName(StringUtils.safeTrim(dGroupModel.getName()));
         groupModel.setScore(Double.valueOf(dGroupModel.getScore()));
-        groupModel.setFaculty((FacultyModel) facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
+        groupModel.setFaculty(facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
         groupModel.setYearStart(dGroupModel.getYearStart());
         groupModel.setYearEnd(dGroupModel.getYearEnd());
         groupModel.setDateEnd(dGroupModel.getDateEnd() == null ? null : dGroupModel.getDateEnd().toLocalDate());
@@ -70,9 +68,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
     public List<GroupModel> applySpecIdByStudents() {
         List<GroupModel> temp = this.groupRepo.findAllBySpecIsNull();
-        temp.forEach((group) -> {
-            group.setSpec(this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId()).getSpecialization().getSpec());
-        });
+        temp.forEach((group) -> group.setSpec(this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId()).getSpecialization().getSpec()));
         return temp;
     }
 

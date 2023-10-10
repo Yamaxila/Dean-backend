@@ -10,11 +10,13 @@ import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
 import by.vstu.dean.old.models.DStudentModel;
 import by.vstu.dean.old.repo.DStudentModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +31,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     private final DocumentMigrateService documentMigrateService;
 
     private final List<SpecializationModel> specializations = new ArrayList<>();
+    private final List<GroupModel> groups = new ArrayList<>();
 
     @Override
     public Long getLastDBId() {
@@ -41,7 +44,8 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         List<StudentModel> out = new ArrayList<>();
         List<Long> ids = this.studentModelRepository.findAllSourceIds();
         this.specializations.addAll(this.specializationModelRepository.findAll());
-        this.groupModelRepository.findAll().forEach(group -> {
+        this.groups.addAll(this.groupModelRepository.findAll());
+        this.groups.forEach(group -> {
 
             List<DStudentModel> temp = this.dStudentModelRepository.findAllByGroupId(group.getSourceId())
                     .stream().filter(p -> !ids.contains(p.getId())).toList();
@@ -58,26 +62,41 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         StudentModel studentModel = new StudentModel();
 
-        studentModel.setGroup((GroupModel) this.groupModelRepository.findBySourceId(dStudentModel.getGroup().getId()));
-        studentModel.setLastName(dStudentModel.getLastName());
-        studentModel.setFirstName(dStudentModel.getFirstName());
-        studentModel.setSecondName(dStudentModel.getSecondName());
-        studentModel.setAddressCountry(dStudentModel.getAddressCity());
-        studentModel.setAddressCity(dStudentModel.getAddressCity2());
-        studentModel.setAddressHouse(dStudentModel.getAddressHouse());
-        studentModel.setAddressHousePart(dStudentModel.getAddressHousePart());
-        studentModel.setAddressIndex(dStudentModel.getAddressIndex());
-        studentModel.setAddressState(dStudentModel.getAddressState());
-        studentModel.setAddressStreet(dStudentModel.getAddressStreet());
-        studentModel.setAddressRegion(dStudentModel.getAddressRegion());
-        studentModel.setAddressFlat(dStudentModel.getAddressFlat());
-        studentModel.setPhone(dStudentModel.getPhone());
+        if(this.groups.isEmpty()) {
+            this.groups.addAll(this.groupModelRepository.findAll());
+        }
+
+        if(this.specializations.isEmpty()) {
+            this.specializations.addAll(this.specializationModelRepository.findAll());
+        }
+
+        Optional<GroupModel> group = this.groups.stream().filter(p -> p.getSourceId().equals(dStudentModel.getGroup().getId())).findFirst();
+
+        if(group.isEmpty())
+            throw new RuntimeException("Group for student with sourceId " + dStudentModel.getId() + " not found!");
+
+        studentModel.setGroup(this.groupModelRepository.findBySourceId(dStudentModel.getGroup().getId()));
+        studentModel.setLastName(StringUtils.safeTrim(dStudentModel.getLastName()));
+        studentModel.setFirstName(StringUtils.safeTrim(dStudentModel.getFirstName()));
+        studentModel.setSecondName(StringUtils.safeTrim(dStudentModel.getSecondName()));
+        studentModel.setAddressCountry(StringUtils.safeTrim(dStudentModel.getAddressCity()));
+        studentModel.setAddressCity(StringUtils.safeTrim(dStudentModel.getAddressCity2()));
+        studentModel.setAddressHouse(StringUtils.safeTrim(dStudentModel.getAddressHouse()));
+        studentModel.setAddressHousePart(StringUtils.safeTrim(dStudentModel.getAddressHousePart()));
+        studentModel.setAddressIndex(StringUtils.safeTrim(dStudentModel.getAddressIndex()));
+        studentModel.setAddressState(StringUtils.safeTrim(dStudentModel.getAddressState()));
+        studentModel.setAddressStreet(StringUtils.safeTrim(dStudentModel.getAddressStreet()));
+        studentModel.setAddressRegion(StringUtils.safeTrim(dStudentModel.getAddressRegion()));
+        studentModel.setAddressFlat(StringUtils.safeTrim(dStudentModel.getAddressFlat()));
+        studentModel.setPhone(StringUtils.safeTrim(dStudentModel.getPhone()));
         studentModel.setSex((dStudentModel.getSex() != null && dStudentModel.getSex().equals("М")) ? 1 : 0);
         studentModel.setSourceId(dStudentModel.getId());
+        studentModel.setApproved(false);
+        studentModel.setHostelRoom(null);
         studentModel.setStatus(dStudentModel.isExpelled() || dStudentModel.getGroup().getCurrentCourse().equals(99) ? EStatus.DELETED : EStatus.ACTIVE);
         if (dStudentModel.getSpecialization() != null)
             if (this.specializations.isEmpty())
-                studentModel.setSpecialization((SpecializationModel) this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));
+                studentModel.setSpecialization(this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));
             else
                 studentModel.setSpecialization(this.specializations.stream().filter(p -> p.getSourceId().equals(dStudentModel.getSpecialization().getId())).findAny().orElse(null));
 

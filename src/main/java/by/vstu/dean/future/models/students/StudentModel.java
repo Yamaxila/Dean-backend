@@ -1,6 +1,7 @@
 package by.vstu.dean.future.models.students;
 
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.hostels.HostelRoomModel;
 import by.vstu.dean.future.models.specs.SpecializationModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -163,4 +166,16 @@ public class StudentModel extends DBBaseModel {
     @ApiModelProperty(notes = "Группа")
     private GroupModel group;
 
+    /**
+     * Комната, в которой проживает студент.
+     */
+    @JoinColumn(name = "hostel_room_id")
+    @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
+    @ApiModelProperty(notes = "Комната")
+    private HostelRoomModel hostelRoom;
+
+    @Column(name = "approved")
+    @NotNull
+    private boolean isApproved = false;
 }

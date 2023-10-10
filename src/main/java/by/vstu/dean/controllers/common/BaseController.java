@@ -38,7 +38,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
      *
      * @return Список объектов
      */
-    @RequestMapping(value = "/",
+    @RequestMapping(value = "",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
@@ -61,8 +61,8 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @PreAuthorize("#oauth2.hasScope('read')")
     @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<List<O>> getAllActive() {
-        return new ResponseEntity<>(this.service.getAllActive(), HttpStatus.OK);
+    public ResponseEntity<List<O>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
+        return new ResponseEntity<>(this.service.getAllActive(is), HttpStatus.OK);
     }
 
     /**

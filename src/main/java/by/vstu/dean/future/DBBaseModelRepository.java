@@ -27,7 +27,7 @@ public interface DBBaseModelRepository<T extends DBBaseModel> extends JpaReposit
      * @param sourceId Идентификатор источника.
      * @return Список базовых моделей.
      */
-    List<T> findBySourceId(Long sourceId);
+    T findBySourceId(Long sourceId);
 
     /**
      * Найти все сущности по статусу.

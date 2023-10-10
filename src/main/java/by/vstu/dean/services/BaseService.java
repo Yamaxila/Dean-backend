@@ -31,8 +31,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * Получает все активные объекты модели из базы данных.
      * @return Список активных объектов модели.
      */
-    public List<O> getAllActive() {
-        return this.repo.findAllByStatus(EStatus.ACTIVE);
+    public List<O> getAllActive(Boolean is) {
+        return this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED));
     }
 
     /**
@@ -50,7 +50,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Объект модели, соответствующий идентификатору.
      */
     public O getBySourceId(Long id) {
-        return this.repo.findBySourceId(id).get(0);
+        return this.repo.findBySourceId(id);
     }
 
     /**

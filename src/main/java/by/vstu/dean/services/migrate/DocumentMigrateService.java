@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -24,6 +25,9 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     private final DocumentModelRepository documentModelRepository;
     private final EducationMigrateService educationMigrateService;
 
+    private final ArrayList<CitizenshipModel> citizenshipModels = new ArrayList<>();
+    private final ArrayList<StudentLanguageModel> studentLanguageModels = new ArrayList<>();
+    private final ArrayList<InstitutionModel> institutionModels = new ArrayList<>();
     @Override
     public Long getLastDBId() {
         return this.documentModelRepository.findTopByOrderByIdDesc() == null ? 19000 : this.documentModelRepository.findTopByOrderByIdDesc().getSourceId();
@@ -37,6 +41,15 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     @Override
     public DocumentModel convertSingle(DStudentModel dStudentModel) {
 
+        if(this.citizenshipModels.isEmpty())
+            this.citizenshipModels.addAll(this.citizenshipModelRepository.findAll());
+
+        if(this.studentLanguageModels.isEmpty())
+            this.studentLanguageModels.addAll(this.studentLanguageModelRepository.findAll());
+
+        if(this.institutionModels.isEmpty())
+            this.institutionModels.addAll(this.institutionModelRepository.findAll());
+
 
         DocumentModel documentModel = new DocumentModel();
 
@@ -44,9 +57,25 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         documentModel.setFullNameL(dStudentModel.getFullNameL());
         documentModel.setFirstNameL(dStudentModel.getFullNameL());
         documentModel.setCitizenshipString(dStudentModel.getCitizenshipString());
-        documentModel.setCitizenship((CitizenshipModel) this.citizenshipModelRepository.findBySourceId(dStudentModel.getCitizenship() == null ? 0 : Long.valueOf(dStudentModel.getCitizenship())));
-        documentModel.setStudentLanguage((StudentLanguageModel) this.studentLanguageModelRepository.findBySourceId(dStudentModel.getStudentLanguage() == null ? 0 : Long.valueOf(dStudentModel.getStudentLanguage())));
-        documentModel.setInstitution((InstitutionModel) this.institutionModelRepository.findBySourceId(dStudentModel.getInstitution() != null ? dStudentModel.getInstitution().getId() : null));
+
+        Optional<CitizenshipModel> citizenship = this.citizenshipModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getCitizenship() == null ? 0 : Long.valueOf(dStudentModel.getCitizenship()))).findFirst();
+
+        if(citizenship.isEmpty())
+            throw new RuntimeException("Citizenship not found for student with sourceId = " + dStudentModel.getId());
+
+        Optional<StudentLanguageModel> language = this.studentLanguageModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getStudentLanguage() == null ? 0 : Long.valueOf(dStudentModel.getStudentLanguage()))).findFirst();
+
+        if(language.isEmpty())
+            throw new RuntimeException("Language not found for student with sourceId = " + dStudentModel.getId());
+
+        Optional<InstitutionModel> institution = this.institutionModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getInstitution() == null ? 0 : dStudentModel.getInstitution().getId())).findFirst();
+
+        if(institution.isEmpty())
+            throw new RuntimeException("Institution not found for student with sourceId = " + dStudentModel.getId());
+
+        documentModel.setCitizenship(citizenship.get());
+        documentModel.setStudentLanguage(language.get());
+        documentModel.setInstitution(institution.get());
         documentModel.setStudentLanguageString(dStudentModel.getStudentLanguageString());
         documentModel.setCaseNo(Long.parseLong(dStudentModel.getCaseNo().replaceAll("[^0-9]", "")));
 //        documentModel.setDocumentNumber(dStudentModel.getDocumentNumber() == null ? -1 : Long.parseLong(dStudentModel.getDocumentNumber()));

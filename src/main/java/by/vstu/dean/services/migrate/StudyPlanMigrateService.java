@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +38,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     private final List<ExamModel> examTypes = new ArrayList<>();
     private final List<GroupModel> groups = new ArrayList<>();
     private final List<TeacherModel> teachers = new ArrayList<>();
+    private static final List<TeacherDepartmentMerge> teacherDepartmentMerges = new ArrayList<>();
 
     @Override
     public Long getLastDBId() {
@@ -70,6 +72,9 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
     @Override
     public StudyPlanModel convertSingle(DStudyPlan dStudyPlan) {
+        if(teacherDepartmentMerges.isEmpty())
+            teacherDepartmentMerges.addAll(this.teacherDepartmentMergeRepository.findAll());
+
         StudyPlanModel studyPlan = new StudyPlanModel();
 
         ExamModel exam = examTypes.stream().filter(p -> dStudyPlan.getExam() != null && p.getSourceId().equals(dStudyPlan.getExam().getId())).findFirst().orElse(null);
@@ -107,12 +112,14 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
                     default -> departmentId;
                 };
 
-                if (this.teacherDepartmentMergeRepository.findByDepartmentIdAndTeacherId(departmentId, teacher.getId()) == null) {
+                long finalDepartmentId = departmentId;
+                Optional<TeacherDepartmentMerge> optionalTeacherDepartmentMerge = teacherDepartmentMerges.stream().filter(p -> p.getTeacher().getId().equals(teacher.getId()) && p.getDepartment().getId().equals(finalDepartmentId)).findFirst();
+
+                if (optionalTeacherDepartmentMerge.isEmpty()) {
                     TeacherDepartmentMerge tdm = new TeacherDepartmentMerge(teacher, discipline.getDepartment());
                     tdm.setSourceId(dStudyPlan.getId());
                     tdm.setStatus(EStatus.ACTIVE);
-//                    System.out.printf("Found department %s for teacher %s\n", discipline.getDepartment().getId(), teacher.getId());
-                    this.teacherDepartmentMergeRepository.saveAndFlush(tdm);
+                    teacherDepartmentMerges.add(tdm);
                 }
             }
         }
@@ -124,11 +131,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
     private List<DTeacherModel> findUniqueTeachers() {
         List<DTeacherModel> teachers = new ArrayList<>();
-        this.groupModelRepository.findAll().forEach((group) -> {
-
-            teachers.addAll(this.dStudyPlanModelRepository.findAllByGroupIdAndTeacherIdNotNull(group.getSourceId()).stream().map(DStudyPlan::getTeacher).distinct().toList());
-
-        });
+        this.groupModelRepository.findAll().forEach((group) -> teachers.addAll(this.dStudyPlanModelRepository.findAllByGroupIdAndTeacherIdNotNull(group.getSourceId()).stream().map(DStudyPlan::getTeacher).distinct().toList()));
         return teachers.stream().distinct().toList();
     }
 
@@ -136,6 +139,15 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     public List<StudyPlanModel> convertList(List<DStudyPlan> t) {
         List<StudyPlanModel> out = new ArrayList<>();
         t.forEach(plan -> out.add(this.convertSingle(plan)));
+
+        List<TeacherDepartmentMerge> tdms = new ArrayList<>();
+        teacherDepartmentMerges.forEach((tdm) -> {
+            if(tdms.stream().noneMatch(p -> p.getTeacher().getId().equals(tdm.getTeacher().getId()) && p.getDepartment().getId().equals(tdm.getDepartment().getId())))
+                tdms.add(tdm);
+        });
+
+        this.teacherDepartmentMergeRepository.saveAll(tdms); //FIXME: дубликаты в статическом листе
+        teacherDepartmentMerges.clear();
         return out;
     }
 

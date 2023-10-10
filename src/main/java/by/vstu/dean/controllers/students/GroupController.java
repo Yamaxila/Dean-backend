@@ -48,8 +48,8 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
     @PreAuthorize("#oauth2.hasScope('read')")
     @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<List<GroupModel>> getAllByYearEnd(@RequestParam Integer year) {
-        return new ResponseEntity<>(this.service.getAllActive().stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
+    public ResponseEntity<List<GroupModel>> getAllByYearEnd(@RequestParam Integer year, @RequestParam(required = false, defaultValue = "true") Boolean is) {
+        return new ResponseEntity<>(this.service.getAllActive(is).stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
     }
 
     /**
@@ -87,7 +87,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
 
         Optional<GroupModel> o = this.service.getById(id);
 
-        if (!o.isPresent())
+        if (o.isEmpty())
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
         GroupModel group = o.get();
