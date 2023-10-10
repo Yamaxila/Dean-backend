@@ -2,7 +2,9 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.models.students.GroupModel;
+import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.future.repo.StudentModelRepository;
@@ -33,7 +35,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     @Override
     public List<GroupModel> convertNotExistsFromDB() {
 
-        List<DGroupModel> dGroupModels = this.dStudentModelRepository.findAllGroups(19000L).stream().distinct().toList();
+        List<DGroupModel> dGroupModels = this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList();
         List<Long> ids = this.groupRepo.findAll().stream().map(DBBaseModel::getSourceId).toList();
 
         return this.convertList(dGroupModels.stream().filter(p -> !ids.contains(p.getId())).toList());
@@ -51,7 +53,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         groupModel.setYearEnd(dGroupModel.getYearEnd());
         groupModel.setDateEnd(dGroupModel.getDateEnd() == null ? null : dGroupModel.getDateEnd().toLocalDate());
         groupModel.setDateStart(dGroupModel.getDateStart() == null ? null : dGroupModel.getDateStart().toLocalDate());
-        groupModel.setStatus(EStatus.ACTIVE);
+        groupModel.setStatus(dGroupModel.getCurrentCourse() != 99 ? EStatus.ACTIVE : EStatus.DELETED);
         groupModel.setSourceId(dGroupModel.getId());
 
         return groupModel;
@@ -68,7 +70,15 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
     public List<GroupModel> applySpecIdByStudents() {
         List<GroupModel> temp = this.groupRepo.findAllBySpecIsNull();
-        temp.forEach((group) -> group.setSpec(this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId()).getSpecialization().getSpec()));
+        temp.forEach((group) -> {
+            StudentModel studentModel = this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId());
+            if(studentModel != null) {
+                SpecializationModel specializationModel = studentModel.getSpecialization();
+
+                if (specializationModel != null)
+                    group.setSpec(specializationModel.getSpec());
+            }
+        });
         return temp;
     }
 

@@ -3,8 +3,8 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.old.OldDBBaseModel;
 
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Базовый класс для сервисов миграции данных.

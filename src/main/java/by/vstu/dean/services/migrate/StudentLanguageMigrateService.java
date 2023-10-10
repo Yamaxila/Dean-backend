@@ -3,7 +3,6 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.students.StudentLanguageModel;
 import by.vstu.dean.future.repo.StudentLanguageModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DStudentLanguageModel;
 import by.vstu.dean.old.repo.DStudentLanguageModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,7 @@ public class StudentLanguageMigrateService extends BaseMigrateService<StudentLan
 
     @Override
     public List<StudentLanguageModel> convertNotExistsFromDB() {
-
-        List<OldDBBaseModel> bases = this.dStudentLanguageRepository.findAllByIdAfter(this.getLastDBId());
-        List<DStudentLanguageModel> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DStudentLanguageModel) base));
-
-        return this.convertList(temp);
+        return this.convertList(this.dStudentLanguageRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override

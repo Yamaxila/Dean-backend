@@ -3,7 +3,10 @@ package by.vstu.dean.future;
 import by.vstu.dean.enums.EStatus;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 

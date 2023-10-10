@@ -14,4 +14,9 @@ public class DisciplineUpdateService extends BaseUpdateService<DDisciplineModel,
     public DisciplineUpdateService(DisciplineModelRepository repo, DDisciplineModelRepository dRepo, DisciplineMigrateService baseMigrateService, DisciplineService service, MainUpdateService updateService) {
         super(repo, dRepo, baseMigrateService, service, updateService);
     }
+
+    @Override
+    public void update() {
+        System.err.println("DISABLED " + this.getClass().getName());
+    }
 }

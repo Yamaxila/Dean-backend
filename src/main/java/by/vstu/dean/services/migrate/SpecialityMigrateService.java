@@ -33,7 +33,7 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
         List<Long> ids = this.specialityRepo.findAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
         List<SpecialityModel> out = new ArrayList<>();
 
-        this.dStudentRepo.findAllSpecializations(19000L).stream()
+        this.dStudentRepo.findAllSpecializations(14000L).stream()
                 .filter(p -> p.getSpeciality() != null)
                 .map(DSpecializationModel::getSpeciality).distinct()
                 .filter(p -> !ids.contains(p.getId())).forEach(spec -> {

@@ -8,6 +8,6 @@ import java.util.List;
 @NoRepositoryBean
 public interface OldDBBaseModelRepository<T extends OldDBBaseModel> extends JpaRepository<T, Long> {
 
-    List<OldDBBaseModel> findAllByIdAfter(Long id);
+    List<T> findAllByIdAfter(Long id);
 
 }

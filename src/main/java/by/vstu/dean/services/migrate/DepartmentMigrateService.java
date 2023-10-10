@@ -5,7 +5,6 @@ import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.future.repo.FacultyModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DDepartmentModel;
 import by.vstu.dean.old.repo.DDepartmentModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +30,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
 
     @Override
     public List<DepartmentModel> convertNotExistsFromDB() {
-
-        List<OldDBBaseModel> bases = this.dDepartmentModelRepository.findAllByIdAfter(this.getLastDBId());
-        List<DDepartmentModel> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DDepartmentModel) base));
-
-        return this.convertList(temp);
+        return this.convertList(this.dDepartmentModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override

@@ -3,7 +3,6 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.students.CitizenshipModel;
 import by.vstu.dean.future.repo.CitizenshipModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DCitizenshipModel;
 import by.vstu.dean.old.repo.DCitizenshipModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
 
     @Override
     public List<CitizenshipModel> convertNotExistsFromDB() {
-        List<OldDBBaseModel> bases = this.dCitizenshipRepository.findAllByIdAfter(this.getLastDBId());
-        List<DCitizenshipModel> temp = new ArrayList<>();
-        bases.forEach(base -> {
-            temp.add((DCitizenshipModel) base);
-        });
-
-        return this.convertList(temp);
+        return this.convertList(this.dCitizenshipRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override

@@ -5,7 +5,6 @@ import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.lessons.DisciplineModel;
 import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.future.repo.DisciplineModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DDisciplineModel;
 import by.vstu.dean.old.repo.DDisciplineModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +30,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
 
     @Override
     public List<DisciplineModel> convertNotExistsFromDB() {
-
-        List<OldDBBaseModel> bases = this.dDisciplineModelRepository.findAllByIdAfter(this.getLastDBId());
-        List<DDisciplineModel> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DDisciplineModel) base));
-
-        return this.convertList(temp);
+        return this.convertList(this.dDisciplineModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override
@@ -58,6 +51,22 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
         disciplineModel.setStatus(EStatus.ACTIVE);
         disciplineModel.setSourceId(dDisciplineModel.getId());
         return disciplineModel;
+    }
+
+    public void fixIfNeeded(DisciplineModel disciplineModel, DepartmentModel departmentModel) {
+
+        if(disciplineModel.getDepartment() == null) {
+            disciplineModel.setDepartment(departmentModel);
+            this.insertSingle(disciplineModel);
+            return;
+        }
+
+        if(!disciplineModel.getDepartment().getId().equals(departmentModel.getId())) {
+            disciplineModel.setDepartment(departmentModel);
+            this.insertSingle(disciplineModel);
+            return;
+        }
+
     }
 
     @Override

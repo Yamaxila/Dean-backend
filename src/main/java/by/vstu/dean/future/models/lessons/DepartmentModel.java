@@ -57,7 +57,6 @@ public class DepartmentModel extends DBBaseModel {
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @ApiModelProperty(notes = "Факультет кафедры")
-    @JsonIgnore
     private FacultyModel faculty;
 
     /**

@@ -49,9 +49,10 @@ public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldD
                 if (!((DBBaseModel) value1).getSourceId().equals(((DBBaseModel) value2).getSourceId()))
                     return false;
             } else {
-                if (!Objects.equals(value1, value2)) {
-                    return false;
-                }
+                if(!(value1 instanceof DBBaseModel))
+                    if (!Objects.equals(value1, value2)) {
+                        return false;
+                    }
             }
         }
         return true;

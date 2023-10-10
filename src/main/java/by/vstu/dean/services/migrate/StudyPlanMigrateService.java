@@ -8,16 +8,13 @@ import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.models.merge.TeacherDepartmentMerge;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.*;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DStudyPlan;
-import by.vstu.dean.old.models.DTeacherModel;
 import by.vstu.dean.old.repo.DStudyPlanModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -48,17 +45,12 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     @Override
     public List<StudyPlanModel> convertNotExistsFromDB() {
 
-        List<OldDBBaseModel> bases = this.dStudyPlanModelRepository.findAllByIdAfter(this.getLastDBId());
-        List<DStudyPlan> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DStudyPlan) base));
+        List<DStudyPlan> temp = this.dStudyPlanModelRepository.findAllByIdAfter(this.getLastDBId());
 
         if (!temp.isEmpty()) {
             this.examTypes.addAll(this.examModelRepository.findAll());
             this.groups.addAll(this.groupModelRepository.findAll());
             this.disciplines.addAll(this.disciplineModelRepository.findAll());
-
-            this.teacherMigrateService.insertAll(this.teacherMigrateService.convertNotExistsFromDB(this.findUniqueTeachers()));
 
             this.teachers.addAll(this.teacherModelRepository.findAll());
 
@@ -102,26 +94,26 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         if (teacher != null) {
             studyPlan.setTeacher(teacher);
 
-            if (discipline != null && discipline.getDepartment() != null) {
-                long departmentId = discipline.getDepartment().getId();
-
-                departmentId = switch ((int) departmentId) {
-                    case 31 -> 15L;
-                    case 27 -> 7L;
-                    case 11 -> 26L;
-                    default -> departmentId;
-                };
-
-                long finalDepartmentId = departmentId;
-                Optional<TeacherDepartmentMerge> optionalTeacherDepartmentMerge = teacherDepartmentMerges.stream().filter(p -> p.getTeacher().getId().equals(teacher.getId()) && p.getDepartment().getId().equals(finalDepartmentId)).findFirst();
-
-                if (optionalTeacherDepartmentMerge.isEmpty()) {
-                    TeacherDepartmentMerge tdm = new TeacherDepartmentMerge(teacher, discipline.getDepartment());
-                    tdm.setSourceId(dStudyPlan.getId());
-                    tdm.setStatus(EStatus.ACTIVE);
-                    teacherDepartmentMerges.add(tdm);
-                }
-            }
+//            if (discipline != null && discipline.getDepartment() != null) {
+//                long departmentId = discipline.getDepartment().getId();
+//
+//                departmentId = switch ((int) departmentId) {
+//                    case 31 -> 15L;
+//                    case 27 -> 7L;
+//                    case 11 -> 26L;
+//                    default -> departmentId;
+//                };
+//
+//                long finalDepartmentId = departmentId;
+//                Optional<TeacherDepartmentMerge> optionalTeacherDepartmentMerge = teacherDepartmentMerges.stream().filter(p -> p.getTeacher().getId().equals(teacher.getId()) && p.getDepartment().getId().equals(finalDepartmentId)).findFirst();
+//
+//                if (optionalTeacherDepartmentMerge.isEmpty()) {
+//                    TeacherDepartmentMerge tdm = new TeacherDepartmentMerge(teacher, discipline.getDepartment());
+//                    tdm.setSourceId(dStudyPlan.getId());
+//                    tdm.setStatus(EStatus.ACTIVE);
+//                    teacherDepartmentMerges.add(tdm);
+//                }
+//            }
         }
 
         studyPlan.setSourceId(dStudyPlan.getId());
@@ -129,11 +121,11 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         return studyPlan;
     }
 
-    private List<DTeacherModel> findUniqueTeachers() {
-        List<DTeacherModel> teachers = new ArrayList<>();
-        this.groupModelRepository.findAll().forEach((group) -> teachers.addAll(this.dStudyPlanModelRepository.findAllByGroupIdAndTeacherIdNotNull(group.getSourceId()).stream().map(DStudyPlan::getTeacher).distinct().toList()));
-        return teachers.stream().distinct().toList();
-    }
+//    private List<DTeacherModel> findUniqueTeachers() {
+//        List<DTeacherModel> teachers = new ArrayList<>();
+//        this.groupModelRepository.findAll().forEach((group) -> teachers.addAll(this.dStudyPlanModelRepository.findAllByGroupIdAndTeacherIdNotNull(group.getSourceId()).stream().map(DStudyPlan::getTeacher).distinct().toList()));
+//        return teachers.stream().distinct().toList();
+//    }
 
     @Override
     public List<StudyPlanModel> convertList(List<DStudyPlan> t) {

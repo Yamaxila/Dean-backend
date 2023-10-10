@@ -1,7 +1,9 @@
 package by.vstu.dean;
 
-import by.vstu.dean.adapters.json.*;
-import by.vstu.dean.adapters.*;
+import by.vstu.dean.adapters.LocalDateTimeTypeAdapter;
+import by.vstu.dean.adapters.LocalDateTypeAdapter;
+import by.vstu.dean.adapters.json.LocalDateJsonAdapter;
+import by.vstu.dean.adapters.json.LocalDateTimeJsonAdapter;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.requests.BaseRequest;
 import com.google.gson.Gson;

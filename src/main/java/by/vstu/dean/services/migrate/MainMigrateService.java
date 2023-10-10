@@ -1,5 +1,6 @@
 package by.vstu.dean.services.migrate;
 
+import by.vstu.dean.services.updates.MainUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +15,7 @@ public class MainMigrateService {
     private final List<IMigrateExecutor> services = new ArrayList<>();
 
     private final TeacherDegreeMigrateService teacherDegreeMigrateService;
+    private final TeacherMigrateService teacherMigrateService;
     private final ExamTypeMigrateService examTypeMigrateService;
     private final CitizenshipMigrateService citizenshipMigrateService;
     private final DepartmentMigrateService departmentMigrateService;
@@ -29,7 +31,9 @@ public class MainMigrateService {
     private final StudyPlanMigrateService studyPlanMigrateService;
     private final EducationMigrateService educationMigrateService;
     private final DepartmentSpecialityMergeService departmentSpecialityMergeService;
-
+    private final AbsenceMigrateService absenceMigrateService;
+    private final TeacherDepartmentMigrateService teacherDepartmentMigrateService;
+    private final MainUpdateService mainUpdateService;
 
     @PostConstruct
     public void migrate() {
@@ -37,6 +41,7 @@ public class MainMigrateService {
 
         Thread migrateThread = new Thread(() -> {
             services.add(this.teacherDegreeMigrateService);
+            services.add(this.teacherMigrateService);
             services.add(this.examTypeMigrateService);
             services.add(this.citizenshipMigrateService);
             services.add(this.studentLanguageMigrateService);
@@ -50,7 +55,9 @@ public class MainMigrateService {
             services.add(this.groupMigrateService);
             services.add(this.studentMigrateService);
             services.add(this.studyPlanMigrateService);
+            services.add(this.absenceMigrateService);
             services.add(this.departmentSpecialityMergeService);
+            services.add(this.teacherDepartmentMigrateService);
 
 
             services.forEach(IMigrateExecutor::migrate);
@@ -61,6 +68,8 @@ public class MainMigrateService {
             this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
 
             System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
+
+            this.mainUpdateService.update();
         });
 
         migrateThread.setName("Migration");

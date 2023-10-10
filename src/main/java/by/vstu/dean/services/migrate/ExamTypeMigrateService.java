@@ -3,7 +3,6 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.lessons.ExamModel;
 import by.vstu.dean.future.repo.ExamModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DExamModel;
 import by.vstu.dean.old.repo.DExamModelModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,13 +25,7 @@ public class ExamTypeMigrateService extends BaseMigrateService<ExamModel, DExamM
 
     @Override
     public List<ExamModel> convertNotExistsFromDB() {
-        List<OldDBBaseModel> bases = this.dExamModelModelRepository.findAllByIdAfter(this.getLastDBId());
-        List<DExamModel> temp = new ArrayList<>();
-        bases.forEach(base -> {
-            temp.add((DExamModel) base);
-        });
-
-        return this.convertList(temp);
+        return this.convertList(this.dExamModelModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override

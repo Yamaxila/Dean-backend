@@ -3,7 +3,6 @@ package by.vstu.dean.services.migrate;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.students.InstitutionModel;
 import by.vstu.dean.future.repo.InstitutionModelRepository;
-import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.models.DInstitutionModel;
 import by.vstu.dean.old.repo.DInstitutionModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -26,12 +25,7 @@ public class InstitutionMigrateService extends BaseMigrateService<InstitutionMod
 
     @Override
     public List<InstitutionModel> convertNotExistsFromDB() {
-        List<OldDBBaseModel> bases = this.dInstitutionRepository.findAllByIdAfter(this.getLastDBId());
-        List<DInstitutionModel> temp = new ArrayList<>();
-
-        bases.forEach(base -> temp.add((DInstitutionModel) base));
-
-        return this.convertList(temp);
+        return this.convertList(this.dInstitutionRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
     @Override

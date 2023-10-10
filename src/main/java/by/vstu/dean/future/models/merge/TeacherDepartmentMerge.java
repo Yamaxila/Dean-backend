@@ -5,7 +5,10 @@ import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;

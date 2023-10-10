@@ -6,6 +6,7 @@ import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.future.repo.TeacherModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
+import by.vstu.dean.old.repo.DTeacherModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTeacherModel> {
 
+    private final DTeacherModelRepository dTeacherModelRepository;
     private final TeacherModelRepository teacherModelRepository;
     private final TeacherDegreeModelRepository teacherDegreeModelRepository;
 
@@ -26,12 +28,11 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
     @Override
     public List<TeacherModel> convertNotExistsFromDB() {
-        throw new RuntimeException("Not implemented");
+        return this.convertList(this.dTeacherModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
+    @Deprecated
     public List<TeacherModel> convertNotExistsFromDB(List<DTeacherModel> dTeacherModels) {
-        System.err.println(this.getClass().getName());
-
         List<Long> ids = this.teacherModelRepository.findAll().stream().map(DBBaseModel::getSourceId).toList();
         List<DTeacherModel> temp = dTeacherModels.stream().filter(p -> !ids.contains(p.getId())).toList();
         return this.convertList(temp);
@@ -72,6 +73,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
     @Override
     public void migrate() {
-
+        System.err.println(this.getClass().getName());
+        this.insertAll(this.convertNotExistsFromDB());
     }
 }

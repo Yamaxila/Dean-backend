@@ -6,6 +6,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Getter
@@ -14,7 +15,7 @@ import java.time.LocalDateTime;
 @AttributeOverrides({
         @AttributeOverride(name = "id", column = @Column(name = "dstudent_id", nullable = false))
 })
-public class DStudentModel extends OldDBBaseModel {
+public class DStudentModel extends OldDBBaseModel implements Serializable {
     @JoinColumn(name = "dfak_id")
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
