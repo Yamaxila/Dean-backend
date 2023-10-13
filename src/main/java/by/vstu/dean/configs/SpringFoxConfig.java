@@ -46,9 +46,9 @@ public class SpringFoxConfig {
                 .docExpansion(DocExpansion.NONE)
                 .filter(false)
                 .maxDisplayedTags(null)
-                .operationsSorter(OperationsSorter.ALPHA)
+                .operationsSorter(OperationsSorter.METHOD)
                 .showExtensions(false)
-                .tagsSorter(TagsSorter.ALPHA)
+                .tagsSorter(null)
                 .supportedSubmitMethods(UiConfiguration.Constants.NO_SUBMIT_METHODS)
                 .validatorUrl(null)
                 .build();

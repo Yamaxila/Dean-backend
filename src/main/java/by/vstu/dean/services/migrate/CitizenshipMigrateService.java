@@ -8,6 +8,7 @@ import by.vstu.dean.old.repo.DCitizenshipModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +30,13 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
     }
 
     @Override
-    public CitizenshipModel convertSingle(DCitizenshipModel dCitizenshipModel) {
+    public CitizenshipModel convertSingle(DCitizenshipModel dCitizenshipModel, boolean update) {
         CitizenshipModel citizenshipModel = new CitizenshipModel(dCitizenshipModel.getName());
         citizenshipModel.setStatus(EStatus.ACTIVE);
         citizenshipModel.setSourceId(dCitizenshipModel.getId());
+        if(!update)
+            citizenshipModel.setCreated(LocalDateTime.now());
+        citizenshipModel.setUpdated(LocalDateTime.now());
         return citizenshipModel;
     }
 

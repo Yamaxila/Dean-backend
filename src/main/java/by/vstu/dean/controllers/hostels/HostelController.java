@@ -2,6 +2,7 @@ package by.vstu.dean.controllers.hostels;
 
 import by.vstu.dean.anotations.ApiSecurity;
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.hostels.HostelRoomModel;
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.HostelRoomModelRepository;
@@ -10,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,8 +29,7 @@ public class HostelController extends BaseController<HostelRoomModel, HostelRoom
     @RequestMapping(value = "{id}/rooms",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRooms", notes = "Отправляет все комнаты указанного общежития")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<HostelRoomModel>> findAllByHostelId(@PathVariable int id) {
@@ -40,20 +39,28 @@ public class HostelController extends BaseController<HostelRoomModel, HostelRoom
     @RequestMapping(value = "{id}/rooms/active",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRoomsActive", notes = "Отправляет все активные комнаты указанного общежития")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<HostelRoomModel>> findAllByHostelIdActive(@PathVariable int id, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         return new ResponseEntity<>(this.service.getAllActive(is).stream().filter(p -> p.getHostel().ordinal() == id).toList(), HttpStatus.OK);
     }
 
+    @RequestMapping(value = "{id}/floors/{floor}",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @ApiOperation(value = "getAllByHostelAndFloor", notes = "Отправляет все активные комнаты указанного общежития по этажу")
+    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<List<HostelRoomModel>> findAllByHostelIdAndFloor(@PathVariable int id, @PathVariable int floor) {
+        return new ResponseEntity<>(this.service.getAll().stream().filter(p -> p.getHostel().ordinal()==id && p.getFloor() == floor).toList(), HttpStatus.OK);
+    }
+
     @Override
     @RequestMapping(value = "/rooms/{roomId}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRooms", notes = "Отправляет комнату по её id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<HostelRoomModel> getById(@PathVariable Long roomId) {
@@ -63,8 +70,7 @@ public class HostelController extends BaseController<HostelRoomModel, HostelRoom
     @RequestMapping(value = "/rooms/{id}/students",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRooms", notes = "Отправляет всех студентов, проживавщих(-ющих) в комнате")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllRoomStudents(@PathVariable Long id) {
@@ -75,20 +81,19 @@ public class HostelController extends BaseController<HostelRoomModel, HostelRoom
     @RequestMapping(value = "/rooms/{roomId}/students/active",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRooms", notes = "Отправляет всех активных(или нет) студентов, проживавщих(-ющих) в комнате")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllRoomStudentsActive(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
-        return o.map(hostelRoomModel -> new ResponseEntity<>(hostelRoomModel.getStudents().stream().filter(p ->  (p.getStatus().ordinal() == 0) == is).toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        return o.map(hostelRoomModel -> new ResponseEntity<>(hostelRoomModel.getStudents().stream().filter(p ->  p.getStatus().equals(is ? EStatus.ACTIVE : EStatus.DELETED)).toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(value = "/rooms/{roomId}/students/approved",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllRooms", notes = "Отправляет всех подтвержденных(или нет) студентов, проживавщих(-ющих) в комнате")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllRoomStudentsApproved(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {

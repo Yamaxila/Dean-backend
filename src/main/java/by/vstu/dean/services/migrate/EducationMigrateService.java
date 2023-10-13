@@ -28,7 +28,7 @@ public class EducationMigrateService extends BaseMigrateService<EducationModel, 
     }
 
     @Override
-    public EducationModel convertSingle(DStudentModel educationModel) {
+    public EducationModel convertSingle(DStudentModel educationModel, boolean update) {
         throw new RuntimeException("Not implemented!");
     }
 

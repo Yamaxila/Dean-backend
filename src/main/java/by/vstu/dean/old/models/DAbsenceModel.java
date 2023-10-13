@@ -37,7 +37,7 @@ public class DAbsenceModel extends OldDBBaseModel {
 
     @Size(max = 8)
     @JoinColumn(name = "delo", referencedColumnName = "delo")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private DStudentModel student;
 
     @Column(name = "data")
@@ -106,4 +106,8 @@ public class DAbsenceModel extends OldDBBaseModel {
     @Column(name = "data_vidachi")
     private LocalDateTime datePrint;
 
+//    @Transient
+//    public DStudentModel getLastStudent() {
+//        return students.stream().min(Comparator.comparing(OldDBBaseModel::getId)).orElse(null);
+//    }
 }

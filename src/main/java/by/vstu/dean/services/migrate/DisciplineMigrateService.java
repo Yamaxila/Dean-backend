@@ -10,6 +10,7 @@ import by.vstu.dean.old.repo.DDisciplineModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
     }
 
     @Override
-    public DisciplineModel convertSingle(DDisciplineModel dDisciplineModel) {
+    public DisciplineModel convertSingle(DDisciplineModel dDisciplineModel, boolean update) {
         if(this.departments == null)
             this.departments = this.departmentModelRepository.findAll();
 
@@ -50,6 +51,9 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
                 ).findAny().ifPresent(disciplineModel::setDepartment);
         disciplineModel.setStatus(EStatus.ACTIVE);
         disciplineModel.setSourceId(dDisciplineModel.getId());
+        if(!update)
+            disciplineModel.setCreated(LocalDateTime.now());
+        disciplineModel.setUpdated(LocalDateTime.now());
         return disciplineModel;
     }
 
@@ -64,7 +68,6 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
         if(!disciplineModel.getDepartment().getId().equals(departmentModel.getId())) {
             disciplineModel.setDepartment(departmentModel);
             this.insertSingle(disciplineModel);
-            return;
         }
 
     }

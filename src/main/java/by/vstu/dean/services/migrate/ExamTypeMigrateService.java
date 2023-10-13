@@ -8,6 +8,7 @@ import by.vstu.dean.old.repo.DExamModelModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,12 +30,16 @@ public class ExamTypeMigrateService extends BaseMigrateService<ExamModel, DExamM
     }
 
     @Override
-    public ExamModel convertSingle(DExamModel dExamModel) {
+    public ExamModel convertSingle(DExamModel dExamModel, boolean update) {
         ExamModel examModel = new ExamModel();
         examModel.setName(dExamModel.getName());
         examModel.setType(dExamModel.getExamType());
         examModel.setStatus(EStatus.ACTIVE);
         examModel.setSourceId(dExamModel.getId());
+        if(!update)
+            examModel.setCreated(LocalDateTime.now());
+        examModel.setUpdated(LocalDateTime.now());
+
         return examModel;
     }
 

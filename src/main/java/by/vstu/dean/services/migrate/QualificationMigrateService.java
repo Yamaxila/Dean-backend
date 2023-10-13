@@ -8,6 +8,7 @@ import by.vstu.dean.old.repo.DQualificationModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,17 +29,20 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
     public List<QualificationModel> convertNotExistsFromDB() {
 
         List<DQualificationModel> temp = new ArrayList<>();
-        this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()).forEach(base -> temp.add((DQualificationModel) base));
+        temp.addAll(this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()));
         return this.convertList(temp);
     }
 
     @Override
-    public QualificationModel convertSingle(DQualificationModel dQualificationModel) {
+    public QualificationModel convertSingle(DQualificationModel dQualificationModel, boolean update) {
         QualificationModel qualificationModel = new QualificationModel();
         qualificationModel.setName(dQualificationModel.getNamePart1());
         qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : dQualificationModel.getNamePart2());
         qualificationModel.setStatus(EStatus.ACTIVE);
         qualificationModel.setSourceId(dQualificationModel.getId());
+        if(!update)
+            qualificationModel.setCreated(LocalDateTime.now());
+        qualificationModel.setUpdated(LocalDateTime.now());
         return qualificationModel;
     }
 

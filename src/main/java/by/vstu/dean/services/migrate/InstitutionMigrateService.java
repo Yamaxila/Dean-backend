@@ -8,6 +8,7 @@ import by.vstu.dean.old.repo.DInstitutionModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,10 +30,13 @@ public class InstitutionMigrateService extends BaseMigrateService<InstitutionMod
     }
 
     @Override
-    public InstitutionModel convertSingle(DInstitutionModel dInstitutionModel) {
+    public InstitutionModel convertSingle(DInstitutionModel dInstitutionModel, boolean update) {
         InstitutionModel institutionModel = new InstitutionModel(dInstitutionModel.getFullName(), dInstitutionModel.getShortName());
         institutionModel.setStatus(dInstitutionModel.getStatus() != null && dInstitutionModel.getStatus() == 1 ? EStatus.ACTIVE : EStatus.DELETED);
         institutionModel.setSourceId(dInstitutionModel.getId());
+        if(!update)
+            institutionModel.setCreated(LocalDateTime.now());
+        institutionModel.setUpdated(LocalDateTime.now());
         return institutionModel;
     }
 

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
 
     @Override
     public Long getLastDBId() {
-        FacultyModel facultyModel = (FacultyModel) facultyRepo.findTopByOrderByIdDesc();
+        FacultyModel facultyModel = facultyRepo.findTopByOrderByIdDesc();
         return facultyModel == null ? 0 : facultyModel.getSourceId();
     }
 
@@ -30,8 +31,7 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
         List<FacultyModel> out = new ArrayList<>();
 
         dFacultyRepo.findAllByIdAfter(this.getLastDBId()).forEach(dBase -> {
-            DFacultyModel dFaculty = (DFacultyModel) dBase;
-            FacultyModel faculty = this.convertSingle(dFaculty);
+            FacultyModel faculty = this.convertSingle(dBase);
 
             out.add(faculty);
 
@@ -41,7 +41,7 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
     }
 
     @Override
-    public FacultyModel convertSingle(DFacultyModel dFaculty) {
+    public FacultyModel convertSingle(DFacultyModel dFaculty, boolean update) {
         FacultyModel faculty = new FacultyModel();
         faculty.setSourceId(dFaculty.getId());
         faculty.setStatus(EStatus.ACTIVE);
@@ -60,6 +60,10 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
         faculty.setNameGenitive(dFaculty.getNameGenitive());
         faculty.setShortName(dFaculty.getShortName());
         faculty.setJournalType(dFaculty.getJournalType());
+
+        if(!update)
+            faculty.setCreated(LocalDateTime.now());
+        faculty.setUpdated(LocalDateTime.now());
 
         return faculty;
     }

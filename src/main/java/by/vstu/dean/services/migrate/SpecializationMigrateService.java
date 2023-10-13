@@ -2,8 +2,6 @@ package by.vstu.dean.services.migrate;
 
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
-import by.vstu.dean.future.models.specs.QualificationModel;
-import by.vstu.dean.future.models.specs.SpecialityModel;
 import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
@@ -13,6 +11,7 @@ import by.vstu.dean.old.repo.DSpecializationModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,18 +47,21 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
     }
 
     @Override
-    public SpecializationModel convertSingle(DSpecializationModel dSpecializationModel) {
+    public SpecializationModel convertSingle(DSpecializationModel dSpecializationModel, boolean update) {
         SpecializationModel specializationModel = new SpecializationModel();
 
         specializationModel.setSourceId(dSpecializationModel.getId());
         specializationModel.setStatus(EStatus.ACTIVE);
+        if(!update)
+            specializationModel.setCreated(LocalDateTime.now());
+        specializationModel.setUpdated(LocalDateTime.now());
 
         specializationModel.setName(dSpecializationModel.getName());
         specializationModel.setSpezCode("<FIXME>");
         specializationModel.setShortName(dSpecializationModel.getShortName());
 
-        specializationModel.setQualification((QualificationModel) this.qualificationModelRepository.findBySourceId(dSpecializationModel.getDkvalifId() == null ? 1 : dSpecializationModel.getDkvalifId().getId()));
-        specializationModel.setSpec((SpecialityModel) this.specialityRepository.findBySourceId(dSpecializationModel.getSpeciality() == null ? 319 : dSpecializationModel.getSpeciality().getId()));
+        specializationModel.setQualification(this.qualificationModelRepository.findBySourceId(dSpecializationModel.getDkvalifId() == null ? 1 : dSpecializationModel.getDkvalifId().getId()));
+        specializationModel.setSpec(this.specialityRepository.findBySourceId(dSpecializationModel.getSpeciality() == null ? 319 : dSpecializationModel.getSpeciality().getId()));
 
         return specializationModel;
     }

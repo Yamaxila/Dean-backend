@@ -17,6 +17,7 @@ import by.vstu.dean.services.TeacherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
     @Override
     public Long getLastDBId() { // Лучще не брать ниже, ибо в старой базе есть люди с одинаковым номером зачетки
-        return this.absenceModelRepository.findTopByOrderByIdDesc() == null ? 83546 : this.absenceModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.absenceModelRepository.findTopByOrderByIdDesc() == null ? 83536 : this.absenceModelRepository.findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -50,7 +51,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     }
 
     @Override
-    public AbsenceModel convertSingle(DAbsenceModel dAbsenceModel) {
+    public AbsenceModel convertSingle(DAbsenceModel dAbsenceModel, boolean update) {
 
         if(this.teachers.isEmpty())
             this.teachers.addAll(this.teacherService.getAll());
@@ -110,6 +111,10 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         absenceModel.setStatus(!dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
         absenceModel.setSourceId(dAbsenceModel.getId());
 
+        if(!update)
+            absenceModel.setCreated(LocalDateTime.now());
+        absenceModel.setUpdated(LocalDateTime.now());
+
         return absenceModel;
     }
 
@@ -128,9 +133,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         System.err.println(this.getClass().getName());
         this.insertAll(this.convertNotExistsFromDB());
 
-        this.absenceModelRepository.findAll().forEach((absenceModel) -> {
-            this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment());
-        });
+        this.absenceModelRepository.findAll().forEach((absenceModel) -> this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment()));
 
     }
 }

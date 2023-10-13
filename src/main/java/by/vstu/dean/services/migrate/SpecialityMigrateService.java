@@ -6,11 +6,11 @@ import by.vstu.dean.future.models.specs.SpecialityModel;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
 import by.vstu.dean.old.models.DSpecialityModel;
 import by.vstu.dean.old.models.DSpecializationModel;
-import by.vstu.dean.old.repo.DSpecialityModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +18,6 @@ import java.util.List;
 @Service
 public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel, DSpecialityModel> {
 
-    private final DSpecialityModelRepository dSpecialityRepo;
     private final SpecialityModelRepository specialityRepo;
     private final DStudentModelRepository dStudentRepo;
 
@@ -36,15 +35,13 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
         this.dStudentRepo.findAllSpecializations(14000L).stream()
                 .filter(p -> p.getSpeciality() != null)
                 .map(DSpecializationModel::getSpeciality).distinct()
-                .filter(p -> !ids.contains(p.getId())).forEach(spec -> {
-                    out.add(this.convertSingle(spec));
-                });
+                .filter(p -> !ids.contains(p.getId())).forEach(spec -> out.add(this.convertSingle(spec)));
 
         return out;
     }
 
     @Override
-    public SpecialityModel convertSingle(DSpecialityModel spec) {
+    public SpecialityModel convertSingle(DSpecialityModel spec, boolean update) {
 
         SpecialityModel specialityModel = new SpecialityModel();
         specialityModel.setName(spec.getName());
@@ -52,6 +49,10 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
         specialityModel.setSpecCode(spec.getSpecCode());
         specialityModel.setStatus(EStatus.ACTIVE);
         specialityModel.setSourceId(spec.getId());
+
+        if(!update)
+            specialityModel.setCreated(LocalDateTime.now());
+        specialityModel.setUpdated(LocalDateTime.now());
 
         return specialityModel;
     }

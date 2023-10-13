@@ -14,6 +14,7 @@ import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +43,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     }
 
     @Override
-    public GroupModel convertSingle(DGroupModel dGroupModel) {
+    public GroupModel convertSingle(DGroupModel dGroupModel, boolean update) {
 
         GroupModel groupModel = new GroupModel();
 
@@ -55,6 +56,10 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         groupModel.setDateStart(dGroupModel.getDateStart() == null ? null : dGroupModel.getDateStart().toLocalDate());
         groupModel.setStatus(dGroupModel.getCurrentCourse() != 99 ? EStatus.ACTIVE : EStatus.DELETED);
         groupModel.setSourceId(dGroupModel.getId());
+
+        if(!update)
+            groupModel.setCreated(LocalDateTime.now());
+        groupModel.setUpdated(LocalDateTime.now());
 
         return groupModel;
     }

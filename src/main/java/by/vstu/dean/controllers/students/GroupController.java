@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,8 +43,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
             produces = {"application/json"},
             method = RequestMethod.GET,
             params = {"year"})
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<GroupModel>> getAllByYearEnd(@RequestParam Integer year, @RequestParam(required = false, defaultValue = "true") Boolean is) {
@@ -62,8 +60,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
             produces = {"application/json"},
             method = RequestMethod.GET,
             params = {"name"})
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getByName")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<GroupModel> getByName(@RequestParam String name) {
@@ -79,8 +76,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
     @RequestMapping(value = "/{id}/department",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getDepartment")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<DepartmentModel> getDepartment(@PathVariable Long id) {

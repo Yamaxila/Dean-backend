@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -39,7 +40,7 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     }
 
     @Override
-    public DocumentModel convertSingle(DStudentModel dStudentModel) {
+    public DocumentModel convertSingle(DStudentModel dStudentModel, boolean update) {
 
         if(this.citizenshipModels.isEmpty())
             this.citizenshipModels.addAll(this.citizenshipModelRepository.findAll());
@@ -160,6 +161,10 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         documentModel.setSourceId(dStudentModel.getId());
         documentModel.setStatus(dStudentModel.isExpelled() ? EStatus.DELETED : EStatus.ACTIVE);
         documentModel.setMigrateDate(LocalDate.now());
+
+        if(!update)
+            documentModel.setCreated(LocalDateTime.now());
+        documentModel.setUpdated(LocalDateTime.now());
 
         return documentModel;
     }

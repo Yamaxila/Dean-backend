@@ -22,6 +22,7 @@ public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldD
     protected final M baseMigrateService;
     protected final S service;
     protected final MainUpdateService updateService;
+
     public boolean isEqual(O future, O old) throws IllegalAccessException {
         Class<?> clazz = future.getClass();
 
@@ -34,6 +35,7 @@ public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldD
                         && !p.getName().equalsIgnoreCase("approved")
                         && !p.getName().equalsIgnoreCase("hostel_room")
                         && !p.getName().equalsIgnoreCase("hostel_room_id")
+                        && !p.getName().equalsIgnoreCase("migrate_date")
         ).toList()) {
 
             if(field.getType().equals(Set.class) || field.getType().equals(List.class))
@@ -60,7 +62,7 @@ public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldD
     public List<O> getUpdated() {
         List<O> out = new ArrayList<>();
         this.repo.findAll().stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).forEach(row -> {
-            O temp = this.baseMigrateService.convertSingle(this.findOldModel(row.getSourceId()));
+            O temp = this.baseMigrateService.convertSingle(this.findOldModel(row.getSourceId()), true);
             try {
                 if(!this.isEqual(row, temp)) {
                     temp.setId(row.getId());

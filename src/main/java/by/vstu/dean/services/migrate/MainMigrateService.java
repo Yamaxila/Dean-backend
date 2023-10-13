@@ -62,14 +62,17 @@ public class MainMigrateService {
 
             services.forEach(IMigrateExecutor::migrate);
 
+            System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
+            long updateStartTime = System.currentTimeMillis();
+
+            this.mainUpdateService.update();
+            System.err.println("Update time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
+
             System.out.println("Applying spec for groups");
             this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
             System.out.println("Applying student for educationModels");
             this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
 
-            System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
-
-            this.mainUpdateService.update();
         });
 
         migrateThread.setName("Migration");

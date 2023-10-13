@@ -10,6 +10,7 @@ import by.vstu.dean.old.repo.DDepartmentModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,7 +35,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
     }
 
     @Override
-    public DepartmentModel convertSingle(DDepartmentModel dDepartmentModel) {
+    public DepartmentModel convertSingle(DDepartmentModel dDepartmentModel, boolean update) {
         if(this.facultyModels == null)
             this.facultyModels = this.facultyModelRepository.findAll();
         DepartmentModel departmentModel = new DepartmentModel();
@@ -44,6 +45,9 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         this.facultyModels.stream().filter(p -> p.getSourceId().equals(dDepartmentModel.getFaculty().getId())).findAny().ifPresent(departmentModel::setFaculty);
         departmentModel.setStatus(EStatus.ACTIVE);
         departmentModel.setSourceId(dDepartmentModel.getId());
+        if(!update)
+            departmentModel.setCreated(LocalDateTime.now());
+        departmentModel.setUpdated(LocalDateTime.now());
         return departmentModel;
     }
 

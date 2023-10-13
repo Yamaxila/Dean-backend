@@ -14,6 +14,7 @@ import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -58,7 +59,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     }
 
     @Override
-    public StudentModel convertSingle(DStudentModel dStudentModel) {
+    public StudentModel convertSingle(DStudentModel dStudentModel, boolean update) {
 
         StudentModel studentModel = new StudentModel();
 
@@ -102,6 +103,9 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         studentModel.setLastDocument(documentMigrateService.convertSingle(dStudentModel));
 
+        if(!update)
+            studentModel.setCreated(LocalDateTime.now());
+        studentModel.setUpdated(LocalDateTime.now());
 
         return studentModel;
     }

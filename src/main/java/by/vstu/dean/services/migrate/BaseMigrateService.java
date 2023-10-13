@@ -34,8 +34,11 @@ public abstract class BaseMigrateService<S extends DBBaseModel, T extends OldDBB
      * @param t Модель старой базы данных.
      * @return Конвертированная модель новой базы данных.
      */
-    public abstract S convertSingle(T t);
+    public S convertSingle(T t) {
+        return this.convertSingle(t, false);
+    }
 
+    public abstract S convertSingle(T t, boolean update);
     /**
      * Конвертирует список записей из старой базы данных в новую.
      *

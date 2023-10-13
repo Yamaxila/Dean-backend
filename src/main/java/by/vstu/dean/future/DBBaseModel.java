@@ -7,10 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * Абстрактный базовый объект базы данных.
@@ -48,4 +51,11 @@ public abstract class DBBaseModel {
     @ApiModelProperty(notes = "Статус")
     private EStatus status;
 
+    @ApiModelProperty(notes = "Дата создания записи")
+    @CreatedDate
+    private LocalDateTime created;
+
+    @ApiModelProperty(notes = "Дата обновления записи")
+    @LastModifiedDate
+    private LocalDateTime updated;
 }

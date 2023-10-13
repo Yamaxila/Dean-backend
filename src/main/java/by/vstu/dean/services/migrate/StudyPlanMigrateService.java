@@ -13,6 +13,7 @@ import by.vstu.dean.old.repo.DStudyPlanModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,8 +29,6 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     private final DisciplineModelRepository disciplineModelRepository;
     private final TeacherModelRepository teacherModelRepository;
     private final TeacherDepartmentMergeRepository teacherDepartmentMergeRepository;
-
-    private final TeacherMigrateService teacherMigrateService;
 
     private final List<DisciplineModel> disciplines = new ArrayList<>();
     private final List<ExamModel> examTypes = new ArrayList<>();
@@ -63,7 +62,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
     }
 
     @Override
-    public StudyPlanModel convertSingle(DStudyPlan dStudyPlan) {
+    public StudyPlanModel convertSingle(DStudyPlan dStudyPlan, boolean update) {
         if(teacherDepartmentMerges.isEmpty())
             teacherDepartmentMerges.addAll(this.teacherDepartmentMergeRepository.findAll());
 
@@ -118,6 +117,11 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
         studyPlan.setSourceId(dStudyPlan.getId());
         studyPlan.setStatus(EStatus.DELETED);
+
+        if(!update)
+            studyPlan.setCreated(LocalDateTime.now());
+        studyPlan.setUpdated(LocalDateTime.now());
+
         return studyPlan;
     }
 

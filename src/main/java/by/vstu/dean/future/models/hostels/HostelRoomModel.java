@@ -4,7 +4,6 @@ import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.students.StudentModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -34,7 +33,7 @@ public class HostelRoomModel extends DBBaseModel {
     @JoinColumn(referencedColumnName = "id", name = "hostel_room_id")
     @OneToMany
     @NotFound(action = NotFoundAction.IGNORE)
-    @JsonIgnore
+//    @JsonIgnore
     private Set<StudentModel> students;
 
 }

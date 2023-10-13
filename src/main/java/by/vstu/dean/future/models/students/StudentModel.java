@@ -3,6 +3,7 @@ package by.vstu.dean.future.models.students;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.hostels.HostelRoomModel;
 import by.vstu.dean.future.models.specs.SpecializationModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -173,6 +174,7 @@ public class StudentModel extends DBBaseModel {
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @ApiModelProperty(notes = "Комната")
+    @JsonIgnore
     private HostelRoomModel hostelRoom;
 
     @Column(name = "approved")

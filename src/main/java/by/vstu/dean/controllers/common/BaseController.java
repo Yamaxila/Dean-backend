@@ -41,8 +41,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @RequestMapping(value = "",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAll", notes = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<O>> getAll() {
@@ -58,7 +57,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<O>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
@@ -74,8 +73,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getById", notes = "Отправляет объект по его id из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<O> getById(@PathVariable Long id) {
@@ -92,8 +90,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.PUT)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('write')")
+    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "put", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> put(@RequestParam O o) {
@@ -109,8 +106,7 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('write')")
+    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "deleteById", notes = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> deleteById(@PathVariable Long id) {
@@ -119,4 +115,6 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
 
         return new ResponseEntity<>(this.service.delete(id), HttpStatus.OK);
     }
+
+
 }

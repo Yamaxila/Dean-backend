@@ -8,6 +8,7 @@ import by.vstu.dean.old.repo.DTeacherModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     }
 
     @Override
-    public TeacherDegreeModel convertSingle(DTeacherModel dTeacherModel) {
+    public TeacherDegreeModel convertSingle(DTeacherModel dTeacherModel, boolean update) {
         TeacherDegreeModel teacherDegreeModel;
         boolean notInList = false;
         if (!this.teacherDegreeModels.isEmpty()) {
@@ -49,6 +50,9 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
             teacherDegreeModel.setSourceId(0L);
             teacherDegreeModel.setStatus(EStatus.ACTIVE);
 
+            if(!update)
+                teacherDegreeModel.setCreated(LocalDateTime.now());
+            teacherDegreeModel.setUpdated(LocalDateTime.now());
             teacherDegreeModel.setName(dTeacherModel.getDegree().toLowerCase().trim());
             notInList = true;
         }

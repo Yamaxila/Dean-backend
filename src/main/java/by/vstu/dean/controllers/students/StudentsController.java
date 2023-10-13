@@ -10,7 +10,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,8 +43,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAll() {
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
@@ -60,8 +58,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
     @RequestMapping(value = "/byGroup/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "getAllByGroup", notes = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllByGroup(@PathVariable Long id) {
@@ -77,8 +74,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
     @RequestMapping(value = "/byGroup/{id}/active",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "getAllByGroup", notes = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllActiveByGroup(@PathVariable Long id) {
@@ -94,8 +90,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
     @RequestMapping(value = "/{id}/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read')")
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "getById", notes = "Отправляет объект из базы по id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<StudentModel> getById(@PathVariable Long id) {
