@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с преподавателями.
  */
 @RestController
-@RequestMapping("/teachers/")
+@RequestMapping("/api/teachers/")
 @Api(tags = "Teachers", description = "Преподаватели")
 public class TeacherController extends BaseController<TeacherModel, TeacherModelRepository, TeacherService> {
 

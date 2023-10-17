@@ -86,6 +86,16 @@
             <optional>true</optional>
         </dependency>
         <dependency>
+            <groupId>cz.jirutka.rsql</groupId>
+            <artifactId>rsql-parser</artifactId>
+            <version>2.1.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.github.perplexhub</groupId>
+            <artifactId>rsql-querydsl-spring-boot-starter</artifactId>
+            <version>6.0.7</version>
+        </dependency>
+        <dependency>
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <scope>runtime</scope>

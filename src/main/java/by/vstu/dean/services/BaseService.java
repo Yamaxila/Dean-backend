@@ -3,7 +3,11 @@ package by.vstu.dean.services;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.DBBaseModelRepository;
+import by.vstu.dean.rsql.CustomRsqlVisitor;
+import cz.jirutka.rsql.parser.RSQLParser;
+import cz.jirutka.rsql.parser.ast.Node;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +29,16 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      */
     public List<O> getAll() {
         return this.repo.findAll();
+    }
+
+    /**
+     * Получает все объекты модели из базы данных.
+     * @return Список объектов модели.
+     */
+    public List<O> rsql(String rsql) {
+        Node rootNode = new RSQLParser().parse(rsql);
+        Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<O>());
+        return this.repo.findAll(spec);
     }
 
     /**

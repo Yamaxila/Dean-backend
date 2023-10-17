@@ -49,6 +49,21 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
     }
 
     /**
+     * Получает объекты из базы данных через rsql-запрос.
+     *
+     * @return Список объектов
+     */
+    @RequestMapping(value = "/rsql",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
+    @ApiOperation(value = "rsql", notes = "Получает объекты из базы данных через rsql-запрос")
+    @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
+    public ResponseEntity<List<O>> getAllRSql(@RequestParam(required = false, defaultValue = "id>0") String sql) {
+        return new ResponseEntity<>(this.service.rsql(sql), HttpStatus.OK);
+    }
+
+    /**
      * Получает все активные объекты из базы данных.
      *
      * @return Список активных объектов
@@ -115,6 +130,5 @@ public abstract class BaseController<O extends DBBaseModel, R extends DBBaseMode
 
         return new ResponseEntity<>(this.service.delete(id), HttpStatus.OK);
     }
-
 
 }

@@ -1,5 +1,6 @@
 package by.vstu.dean.requests;
 
+import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -13,6 +14,7 @@ public class BaseRequest<B> {
 
     private String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
 
+    @Getter
     private String url;
 
     private final HttpHeaders headers;
