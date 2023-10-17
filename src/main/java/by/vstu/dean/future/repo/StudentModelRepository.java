@@ -3,12 +3,14 @@ package by.vstu.dean.future.repo;
 import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.students.StudentModel;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Интерфейс репозитория сущности студента.
  */
+@Repository
 public interface StudentModelRepository extends DBBaseModelRepository<StudentModel> {
 
     /**

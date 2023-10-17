@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/absences/")
-@Api(tags = "Absences", description = "Контроллер отработок")
+@Api(tags = "Absences", description = "Отработки")
 public class AbsenceController extends BaseController<AbsenceModel, AbsenceModelRepository, AbsenceService> {
     public AbsenceController(AbsenceService service) {
         super(service);

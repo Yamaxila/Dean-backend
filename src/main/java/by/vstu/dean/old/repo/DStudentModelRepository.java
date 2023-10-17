@@ -5,9 +5,11 @@ import by.vstu.dean.old.models.DGroupModel;
 import by.vstu.dean.old.models.DSpecializationModel;
 import by.vstu.dean.old.models.DStudentModel;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface DStudentModelRepository extends OldDBBaseModelRepository<DStudentModel> {
 
 

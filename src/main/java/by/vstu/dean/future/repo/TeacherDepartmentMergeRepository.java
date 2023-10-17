@@ -2,10 +2,12 @@ package by.vstu.dean.future.repo;
 
 import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.merge.TeacherDepartmentMerge;
+import org.springframework.stereotype.Repository;
 
 /**
  * Репозиторий для работы с связующими сущностями Преодаватель-Кафедра.
  */
+@Repository
 public interface TeacherDepartmentMergeRepository extends DBBaseModelRepository<TeacherDepartmentMerge> {
 
     /**

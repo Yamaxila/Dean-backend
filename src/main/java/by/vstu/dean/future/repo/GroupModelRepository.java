@@ -2,12 +2,14 @@ package by.vstu.dean.future.repo;
 
 import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.students.GroupModel;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Репозиторий для работы с сущностями GroupModel.
  */
+@Repository
 public interface GroupModelRepository extends DBBaseModelRepository<GroupModel> {
 
     /**

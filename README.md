@@ -33,7 +33,7 @@ mvn dokka:dokka
 - [IMigrateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/IMigrateExecutor.java) - позволяет автоматически вызывать сервисы из [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java)
 - [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java) - главный сервис миграции. Позволяет автоматически выполнять миграцию при запуске
 
-Миграция [update](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/)
+Обновление [update](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/)
 - [BaseUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/BaseUpdateService.java) - базовый сервис обновления
 - [IUpdateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/IUpdateExecutor.java) - позволяет автоматически вызывать сервисы и инициализировать из [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java)
 - [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java) - главный сервис обновлений. Позволяет автоматически выполнять обновление при запуске(после миграции) 

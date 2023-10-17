@@ -2,12 +2,14 @@ package by.vstu.dean.future.repo;
 
 import by.vstu.dean.future.DBBaseModelRepository;
 import by.vstu.dean.future.models.students.EducationModel;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 /**
  * Репозиторий для работы с сужностями EducationModel.
  */
+@Repository
 public interface EducationModelRepository extends DBBaseModelRepository<EducationModel> {
 
     /**

@@ -19,7 +19,7 @@ public class MethodSecurityConfiguration extends GlobalMethodSecurityConfigurati
     protected MethodSecurityExpressionHandler createExpressionHandler() {
         OAuth2MethodSecurityExpressionHandler handler = new OAuth2MethodSecurityExpressionHandler();
         handler.setApplicationContext(this.context);
-        return (MethodSecurityExpressionHandler) handler;
+        return handler;
     }
 
 }
