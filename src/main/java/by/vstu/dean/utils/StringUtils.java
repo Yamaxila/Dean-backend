@@ -7,4 +7,13 @@ public class StringUtils {
         return in == null ? "" : in.trim();
     }
 
+    public static boolean canBeInt(String in) {
+        try {
+            Integer.parseInt(in);
+            return true;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
 }

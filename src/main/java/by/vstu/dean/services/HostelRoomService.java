@@ -5,6 +5,7 @@ import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.hostels.HostelRoomModel;
 import by.vstu.dean.future.repo.HostelRoomModelRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Cacheable("hostel")
 public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomModelRepository> {
     public HostelRoomService(HostelRoomModelRepository repo) {
         super(repo);

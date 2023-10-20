@@ -40,8 +40,8 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
             this.departments = this.departmentModelRepository.findAll();
 
         DisciplineModel disciplineModel = new DisciplineModel();
-        disciplineModel.setName(dDisciplineModel.getName());
-        disciplineModel.setShortName(dDisciplineModel.getShortName());
+        disciplineModel.setName(dDisciplineModel.getName().trim());
+        disciplineModel.setShortName(dDisciplineModel.getShortName().trim());
 
         this.departments
                 .stream()

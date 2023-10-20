@@ -33,9 +33,9 @@ public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldD
                         && !p.getName().equalsIgnoreCase("created")
                         && !p.getName().equalsIgnoreCase("sourceId")
                         && !p.getName().equalsIgnoreCase("approved")
-                        && !p.getName().equalsIgnoreCase("hostel_room")
-                        && !p.getName().equalsIgnoreCase("hostel_room_id")
-                        && !p.getName().equalsIgnoreCase("migrate_date")
+                        && !p.getName().equalsIgnoreCase("hostelRoom")
+                        && !p.getName().equalsIgnoreCase("hostelRoomId")
+                        && !p.getName().equalsIgnoreCase("migrateDate")
         ).toList()) {
 
             if(field.getType().equals(Set.class) || field.getType().equals(List.class))

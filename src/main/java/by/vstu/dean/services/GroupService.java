@@ -2,12 +2,14 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
  * Сервис для работы с объектами модели группы.
  */
 @Service
+@Cacheable("group")
 public class GroupService extends BaseService<GroupModel, GroupModelRepository> {
 
     /**

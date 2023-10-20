@@ -2,12 +2,14 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.future.models.specs.QualificationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
  * Сервис для работы с объектами модели квалификации.
  */
 @Service
+@Cacheable("qualification")
 public class QualificationService extends BaseService<QualificationModel, QualificationModelRepository> {
 
     /**

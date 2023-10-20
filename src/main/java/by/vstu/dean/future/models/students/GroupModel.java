@@ -6,10 +6,7 @@ import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.specs.SpecialityModel;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
@@ -23,6 +20,7 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "groups")

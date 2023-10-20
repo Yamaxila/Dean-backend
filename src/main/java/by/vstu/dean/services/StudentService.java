@@ -2,6 +2,7 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.StudentModelRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,6 +11,7 @@ import java.util.List;
  * Сервис для работы с объектами модели студента.
  */
 @Service
+@Cacheable("student")
 public class StudentService extends BaseService<StudentModel, StudentModelRepository> {
 
     /**

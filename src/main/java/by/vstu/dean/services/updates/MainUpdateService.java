@@ -15,15 +15,11 @@ public class MainUpdateService {
     public void update() {
 
 
-        new Thread(() -> {
-            System.err.println("Update started!");
-            Thread.currentThread().setName("Update");
 
-            services.forEach(IUpdateExecutor::update);
+        System.err.println("Update started!");
+        Thread.currentThread().setName("Update");
 
-            System.err.println("Update done!");
-
-        }).start();
+        services.forEach(IUpdateExecutor::update);
 
 
     }

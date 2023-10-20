@@ -2,12 +2,14 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.future.models.lessons.StudyPlanModel;
 import by.vstu.dean.future.repo.StudyPlanModelRepository;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 /**
  * Сервис для работы с объектами модели учебного плана.
  */
 @Service
+@Cacheable("studyplan")
 public class StudyPlanService extends BaseService<StudyPlanModel, StudyPlanModelRepository> {
 
     /**

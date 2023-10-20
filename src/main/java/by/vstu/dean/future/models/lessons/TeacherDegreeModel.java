@@ -3,10 +3,7 @@ package by.vstu.dean.future.models.lessons;
 import by.vstu.dean.future.DBBaseModel;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -16,6 +13,7 @@ import javax.persistence.Table;
  */
 @Getter
 @Entity
+@ToString
 @Table(name = "teacher_degrees")
 @ApiModel(description = "Объект должности преподавателя")
 @Setter

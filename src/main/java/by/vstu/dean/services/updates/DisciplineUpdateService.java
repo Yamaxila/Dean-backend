@@ -17,6 +17,6 @@ public class DisciplineUpdateService extends BaseUpdateService<DDisciplineModel,
 
     @Override
     public void update() {
-        System.err.println("DISABLED " + this.getClass().getName());
+
     }
 }

@@ -1,6 +1,7 @@
 package by.vstu.dean.future;
 
 import by.vstu.dean.enums.EStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -53,9 +54,11 @@ public abstract class DBBaseModel {
 
     @ApiModelProperty(notes = "Дата создания записи")
     @CreatedDate
+    @JsonIgnore
     private LocalDateTime created;
 
     @ApiModelProperty(notes = "Дата обновления записи")
     @LastModifiedDate
+    @JsonIgnore
     private LocalDateTime updated;
 }

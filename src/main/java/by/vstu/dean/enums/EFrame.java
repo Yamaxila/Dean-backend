@@ -1,22 +1,26 @@
 package by.vstu.dean.enums;
 
+import lombok.Getter;
+
 import java.util.Arrays;
 
-public enum ELessonType {
+public enum EFrame {
 
-    LECTURE(0),
-    PRACTICE(1),
-    LAB(2),
+    FIRST(1),
+    SECOND(2),
+    FOURTH(4),
+    FIFTH(5),
 
     UNKNOWN(-1);
 
+    @Getter
     final int id;
 
-    ELessonType(int id) {
+    EFrame(int id) {
         this.id = id;
     }
 
-    public static ELessonType valueOf(int id) {
+    public static EFrame valueOf(int id) {
         return Arrays.stream(values()).filter(p -> p.id == id).findFirst().orElse(UNKNOWN);
     }
 }
