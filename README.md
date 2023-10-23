@@ -64,16 +64,16 @@ mvn dokka:dokka
 
 Мапперы и DTO [dto](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/)
 
-- [BaseMapperInterface](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/BaseMapperInterface.java) -
+- [BaseMapperInterface](https://github.com/Yamaxila/Dean-backend/blob/master/src/main/java/by/vstu/dean/dto/future/BaseMapperInterface.java) -
   базовый маппер
 - [BaseDTO](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/BaseDTO.java) - базовый
   DTO
-- [MapperImpl](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/impl) - пакет
+- [MapperImpl](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mapper/impl) - пакет
   содержащий имплиментации мапперов
 
 Rest-репозитории для других сервисов
 
-- [ApiRepositoryBase](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/api/ApiRepositoryBase.java) -
+- [ApiRepositoryBase](https://github.com/Yamaxila/Dean-backend/blob/master/src/main/java/by/vstu/dean/requests/repo/ApiRepositoryBase.java) -
   позволяет подключать объекты, как обычный репозиторий (см. Примеры)
 
 ## Примеры
