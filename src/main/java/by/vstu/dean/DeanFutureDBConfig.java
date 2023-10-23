@@ -49,8 +49,8 @@ public class DeanFutureDBConfig {
     /**
      * Создает фабрику менеджера сущностей для новой БД.
      *
-     * @param builder             Построитель фабрики менеджера сущностей.
-     * @param primaryDataSource    Источник данных для новой БД.
+     * @param builder           Построитель фабрики менеджера сущностей.
+     * @param primaryDataSource Источник данных для новой БД.
      * @return Фабрика менеджера сущностей для новой БД.
      */
     @Primary

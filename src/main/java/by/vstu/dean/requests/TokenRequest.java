@@ -31,14 +31,14 @@ public class TokenRequest {
 
     public String getToken() {
 
-        if(System.getProperty("expires_at") != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis()) {
+        if (System.getProperty("expires_at") != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis()) {
             return System.getProperty("accessToken");
         }
 
         BaseRequest<String> request = new BaseRequest<String>(authUrl)
                 .setMediaType(MediaType.APPLICATION_FORM_URLENCODED);
 
-        if(this.clientId != null && this.password != null) {
+        if (this.clientId != null && this.password != null) {
             request.setAuthData(clientId, clientSecret);
         }
 
@@ -48,7 +48,8 @@ public class TokenRequest {
 
         TokenModel tokenModel = new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter()).create()
-                .fromJson(json, new TypeToken<TokenModel>(){}.getType());
+                .fromJson(json, new TypeToken<TokenModel>() {
+                }.getType());
 
         System.setProperty("accessToken", tokenModel.getAccessToken());
         System.setProperty("expires_at", System.currentTimeMillis() + tokenModel.getExpiresIn());

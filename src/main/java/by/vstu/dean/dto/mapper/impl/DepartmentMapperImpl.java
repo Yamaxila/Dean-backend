@@ -34,7 +34,7 @@ public class DepartmentMapperImpl implements DepartmentMapper {
 
         Optional<DepartmentModel> optionalDepartmentModel = this.departmentModelRepository.findById(dto.getId());
 
-        if(optionalDepartmentModel.isPresent())
+        if (optionalDepartmentModel.isPresent())
             return optionalDepartmentModel.get();
 
         DepartmentModel departmentModel = new DepartmentModel();

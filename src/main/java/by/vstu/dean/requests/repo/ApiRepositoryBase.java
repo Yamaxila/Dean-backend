@@ -34,8 +34,8 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
 
     protected String params;
     protected String defaultUrl;
+
     private final TypeToken<ArrayList<O>> targetTypeList;
-    private final TypeToken<O> targetTypeBase;
 
     protected ApiRepositoryBase(String host, String endpoint, String params, String token, Class<O> targetClass) {
         this.request = new BaseRequest<>(host + "/" + endpoint);
@@ -43,17 +43,19 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
         this.request.setToken(token);
         this.defaultUrl = this.request.getUrl();
         this.params = params;
-        this.targetTypeList = new TypeToken<ArrayList<O>>(){}.where(new TypeParameter<O>(){}, targetClass);
-        this.targetTypeBase = TypeToken.of(targetClass);
+        this.targetTypeList = new TypeToken<ArrayList<O>>() {
+        }.where(new TypeParameter<O>() {
+        }, targetClass);
     }
 
     public List<O> getAll() {
         return this.rsql("");
     }
 
+    @SuppressWarnings("unused")
     public O getSingle(Long id) {
         List<O> o = this.rsql("id==" + id);
-        if(o == null || o.isEmpty())
+        if (o == null || o.isEmpty())
             return null;
         return o.get(0);
     }
@@ -65,6 +67,7 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
         return gson.fromJson(json, targetTypeList.getType());
     }
 
+    @SuppressWarnings("unused")
     public String rawRSQl(String rsql) {
         this.request.setMethod(HttpMethod.GET);
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);

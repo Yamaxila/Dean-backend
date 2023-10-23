@@ -5,6 +5,7 @@ import by.vstu.dean.dto.BaseDTO;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -14,6 +15,7 @@ import java.util.List;
 /**
  * DTO for {@link by.vstu.dean.future.models.students.DocumentModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class DocumentDTO extends BaseDTO {
 

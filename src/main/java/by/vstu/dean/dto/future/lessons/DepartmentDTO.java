@@ -4,6 +4,7 @@ import by.vstu.dean.dto.BaseDTO;
 import by.vstu.dean.dto.future.FacultyDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 import java.util.Set;
@@ -11,6 +12,7 @@ import java.util.Set;
 /**
  * DTO for {@link by.vstu.dean.future.models.lessons.DepartmentModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class DepartmentDTO extends BaseDTO {
 

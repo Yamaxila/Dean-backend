@@ -36,7 +36,7 @@ public class ExamTypeMigrateService extends BaseMigrateService<ExamModel, DExamM
         examModel.setType(dExamModel.getExamType());
         examModel.setStatus(EStatus.ACTIVE);
         examModel.setSourceId(dExamModel.getId());
-        if(!update)
+        if (!update)
             examModel.setCreated(LocalDateTime.now());
         examModel.setUpdated(LocalDateTime.now());
 

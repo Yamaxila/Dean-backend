@@ -32,15 +32,15 @@ public class HostelRoomService extends BaseService<HostelRoomDTO, HostelRoomMode
 
         long calculatedCount = (24 * 7) + (44 * 4);
 
-        if(count < calculatedCount)
+        if (count < calculatedCount)
             System.err.println("Calculated count of hostel rooms less that expected!");
         else
             return;
 
         List<HostelRoomModel> out = new ArrayList<>();
 
-        for(int floor = 3; floor < 10; floor++) {
-            for(int room = 1; room < 13; room++) {
+        for (int floor = 3; floor < 10; floor++) {
+            for (int room = 1; room < 13; room++) {
                 HostelRoomModel hostelRoomModelLittle = new HostelRoomModel();
 
                 hostelRoomModelLittle.setHostel(EHostel.HOSTEL_3);
@@ -64,7 +64,7 @@ public class HostelRoomService extends BaseService<HostelRoomDTO, HostelRoomMode
             }
         }
 
-        for(int floor = 2; floor < 6; floor++) {
+        for (int floor = 2; floor < 6; floor++) {
             for (int room = 1; room < 23; room++) {
                 HostelRoomModel hostelRoomModelLittle = new HostelRoomModel();
 

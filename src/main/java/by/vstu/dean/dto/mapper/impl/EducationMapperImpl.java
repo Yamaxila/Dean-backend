@@ -24,7 +24,7 @@ public class EducationMapperImpl implements EducationMapper {
 
             Optional<EducationModel> optionalEducationModel = this.educationModelRepository.findById(dto.getId());
 
-            if(optionalEducationModel.isPresent())
+            if (optionalEducationModel.isPresent())
                 return optionalEducationModel.get();
 
             EducationModel educationModel = new EducationModel();

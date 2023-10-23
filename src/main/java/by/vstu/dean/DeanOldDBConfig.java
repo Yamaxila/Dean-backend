@@ -49,8 +49,8 @@ public class DeanOldDBConfig {
     /**
      * Создает фабрику менеджера сущностей для старой БД.
      *
-     * @param builder         Построитель фабрики менеджера сущностей.
-     * @param deanDataSource  Источник данных для старой БД.
+     * @param builder        Построитель фабрики менеджера сущностей.
+     * @param deanDataSource Источник данных для старой БД.
      * @return Фабрика менеджера сущностей для старой БД.
      */
     @Bean(name = "deanEntityManagerFactory")

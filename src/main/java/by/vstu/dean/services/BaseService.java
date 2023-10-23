@@ -16,6 +16,7 @@ import java.util.Optional;
 
 /**
  * Базовый сервис с общими методами для работы с моделями базы данных.
+ *
  * @param <D> Тип DTO объекта модели базы данных
  * @param <O> Тип объекта модели базы данных.
  * @param <M> Маппер модель-DTO и обратно.
@@ -24,14 +25,19 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>> {
 
-    /** Репозиторий для работы с моделью базы данных. */
+    /**
+     * Репозиторий для работы с моделью базы данных.
+     */
     protected final R repo;
 
-    /** Маппер. */
+    /**
+     * Маппер.
+     */
     protected final M mapper;
 
     /**
      * Получает все объекты модели из базы данных.
+     *
      * @return Список объектов модели.
      */
     public List<O> getAll() {
@@ -40,16 +46,18 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Получает все объекты модели из базы данных.
+     *
      * @return Список объектов модели.
      */
     public List<O> rsql(String rsql) {
         Node rootNode = new RSQLParser().parse(rsql);
-        Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<O>());
+        Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<>());
         return this.repo.findAll(spec);
     }
 
     /**
      * Получает все активные объекты модели из базы данных.
+     *
      * @return Список активных объектов модели.
      */
     public List<O> getAllActive(Boolean is) {
@@ -58,6 +66,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Получает объект модели по идентификатору.
+     *
      * @param id Идентификатор объекта модели.
      * @return Optional, содержащий объект модели, если найден, иначе пустой Optional.
      */
@@ -67,6 +76,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Получает объект модели по идентификатору.
+     *
      * @param id Идентификатор объекта модели.
      * @return Объект модели, соответствующий идентификатору.
      */
@@ -76,6 +86,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Сохраняет объект модели в базу данных.
+     *
      * @param o сущность.
      * @return Сохраненный объект модели.
      */
@@ -84,13 +95,14 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
     }
 
     public D update(D dto) {
-        if(this.repo.findById(dto.getId()).isEmpty())
+        if (this.repo.findById(dto.getId()).isEmpty())
             return this.mapper.toDto(this.save(this.mapper.toEntity(dto)));
         return this.mapper.toDto(this.repo.saveAndFlush(this.mapper.partialUpdate(dto, this.repo.findById(dto.getId()).get())));
     }
 
     /**
      * Сохраняет список объектов модели в базу данных.
+     *
      * @param o Список объектов модели для сохранения.
      * @return Список сохраненных объектов модели.
      */
@@ -100,6 +112,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Удаляет объект модели.
+     *
      * @param o Объект модели для удаления.
      * @return Удаленный объект модели.
      */
@@ -115,6 +128,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
     /**
      * Удаляет объект модели по идентификатору.
+     *
      * @param id Идентификатор объекта модели для удаления.
      * @return Удаленный объект модели.
      */

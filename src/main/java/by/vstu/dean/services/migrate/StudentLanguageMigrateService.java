@@ -34,7 +34,7 @@ public class StudentLanguageMigrateService extends BaseMigrateService<StudentLan
         StudentLanguageModel studentLanguageModel = new StudentLanguageModel(dStudentLanguageModel.getName());
         studentLanguageModel.setStatus(EStatus.ACTIVE);
         studentLanguageModel.setSourceId(dStudentLanguageModel.getId());
-        if(!update)
+        if (!update)
             studentLanguageModel.setCreated(LocalDateTime.now());
         studentLanguageModel.setUpdated(LocalDateTime.now());
         return studentLanguageModel;

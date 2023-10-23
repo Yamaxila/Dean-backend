@@ -53,11 +53,6 @@ public class DepartmentController extends BaseController<DepartmentDTO, Departme
     public ResponseEntity<List<TeacherDTO>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
 
-        if(o.isEmpty())
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>(this.service.toDto(o.get()).getTeachers().stream().toList(), HttpStatus.OK);
-//        return o.map(departmentModel -> new ResponseEntity<>(departmentModel.getTeachers().stream().map(TeacherDepartmentMerge::getTeacher).toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
-
+        return o.map(departmentModel -> new ResponseEntity<>(this.service.toDto(departmentModel).getTeachers().stream().toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

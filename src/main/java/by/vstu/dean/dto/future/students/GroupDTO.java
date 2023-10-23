@@ -5,10 +5,12 @@ import by.vstu.dean.dto.future.specs.SpecialityDTO;
 import by.vstu.dean.future.models.students.GroupModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DTO for {@link GroupModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class GroupDTO extends BaseDTO {
     /**

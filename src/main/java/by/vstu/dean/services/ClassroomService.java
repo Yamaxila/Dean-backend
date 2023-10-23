@@ -21,6 +21,7 @@ import java.util.List;
 @Cacheable("classroom")
 public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository> {
 
+    @SuppressWarnings("unused")
     private final DepartmentService departmentService;
 
     public ClassroomService(ClassroomModelRepository repo, ClassroomMapper mapper, DepartmentService departmentService) {
@@ -31,13 +32,13 @@ public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, 
 
     public List<ClassroomModel> updateFromExcel(String filePath) {
 
-        try(FileInputStream file = new FileInputStream(filePath);
-            Workbook workbook = new XSSFWorkbook(file)) {
+        try (FileInputStream file = new FileInputStream(filePath);
+             Workbook workbook = new XSSFWorkbook(file)) {
             Sheet sheet = workbook.getSheetAt(0);
             List<ClassroomModel> nClassRooms = new ArrayList<>();
             List<ClassroomModel> classroomModelList = this.getAll();
 
-            for(int i = 1; i < sheet.getLastRowNum(); i++) {
+            for (int i = 1; i < sheet.getLastRowNum(); i++) {
 
                 ClassroomModel classroomModel = new ClassroomModel();
                 classroomModel.setStatus(EStatus.ACTIVE);
@@ -46,15 +47,15 @@ public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, 
                 classroomModel.setUpdated(LocalDateTime.now());
 
                 Row row = sheet.getRow(i);
-                classroomModel.setFrame(EFrame.valueOf((int)row.getCell(0).getNumericCellValue()));
+                classroomModel.setFrame(EFrame.valueOf((int) row.getCell(0).getNumericCellValue()));
                 Cell au = row.getCell(1);
                 au.setCellType(CellType.STRING);
                 classroomModel.setRoomNumber(au.getStringCellValue());
                 classroomModel.setRoomType(EClassroomType.byName(row.getCell(2).getStringCellValue()));
                 classroomModel.setDepartment(null);
-                classroomModel.setSeatsNumber((int)row.getCell(3).getNumericCellValue());
+                classroomModel.setSeatsNumber((int) row.getCell(3).getNumericCellValue());
                 classroomModel.setSquare(row.getCell(4).getNumericCellValue());
-                if(classroomModelList.stream().noneMatch(p -> p.getFrame().equals(classroomModel.getFrame()) && p.getRoomNumber().equalsIgnoreCase(classroomModel.getRoomNumber())))
+                if (classroomModelList.stream().noneMatch(p -> p.getFrame().equals(classroomModel.getFrame()) && p.getRoomNumber().equalsIgnoreCase(classroomModel.getRoomNumber())))
                     nClassRooms.add(classroomModel);
             }
 
@@ -63,7 +64,6 @@ public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, 
 
 
         } catch (Exception ignored) {
-            ignored.printStackTrace();
             return new ArrayList<>();
         }
     }

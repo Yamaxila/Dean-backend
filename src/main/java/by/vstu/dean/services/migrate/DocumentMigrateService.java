@@ -29,6 +29,7 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     private final ArrayList<CitizenshipModel> citizenshipModels = new ArrayList<>();
     private final ArrayList<StudentLanguageModel> studentLanguageModels = new ArrayList<>();
     private final ArrayList<InstitutionModel> institutionModels = new ArrayList<>();
+
     @Override
     public Long getLastDBId() {
         return this.documentModelRepository.findTopByOrderByIdDesc() == null ? 19000 : this.documentModelRepository.findTopByOrderByIdDesc().getSourceId();
@@ -42,13 +43,13 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     @Override
     public DocumentModel convertSingle(DStudentModel dStudentModel, boolean update) {
 
-        if(this.citizenshipModels.isEmpty())
+        if (this.citizenshipModels.isEmpty())
             this.citizenshipModels.addAll(this.citizenshipModelRepository.findAll());
 
-        if(this.studentLanguageModels.isEmpty())
+        if (this.studentLanguageModels.isEmpty())
             this.studentLanguageModels.addAll(this.studentLanguageModelRepository.findAll());
 
-        if(this.institutionModels.isEmpty())
+        if (this.institutionModels.isEmpty())
             this.institutionModels.addAll(this.institutionModelRepository.findAll());
 
 
@@ -61,17 +62,17 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
 
         Optional<CitizenshipModel> citizenship = this.citizenshipModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getCitizenship() == null ? 0 : Long.valueOf(dStudentModel.getCitizenship()))).findFirst();
 
-        if(citizenship.isEmpty())
+        if (citizenship.isEmpty())
             throw new RuntimeException("Citizenship not found for student with sourceId = " + dStudentModel.getId());
 
         Optional<StudentLanguageModel> language = this.studentLanguageModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getStudentLanguage() == null ? 0 : Long.valueOf(dStudentModel.getStudentLanguage()))).findFirst();
 
-        if(language.isEmpty())
+        if (language.isEmpty())
             throw new RuntimeException("Language not found for student with sourceId = " + dStudentModel.getId());
 
         Optional<InstitutionModel> institution = this.institutionModels.stream().filter(p -> p.getSourceId().equals(dStudentModel.getInstitution() == null ? 0 : dStudentModel.getInstitution().getId())).findFirst();
 
-        if(institution.isEmpty())
+        if (institution.isEmpty())
             throw new RuntimeException("Institution not found for student with sourceId = " + dStudentModel.getId());
 
         documentModel.setCitizenship(citizenship.get());
@@ -162,7 +163,7 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         documentModel.setStatus(dStudentModel.isExpelled() ? EStatus.DELETED : EStatus.ACTIVE);
         documentModel.setMigrateDate(LocalDate.now());
 
-        if(!update)
+        if (!update)
             documentModel.setCreated(LocalDateTime.now());
         documentModel.setUpdated(LocalDateTime.now());
 

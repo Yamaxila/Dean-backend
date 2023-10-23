@@ -36,7 +36,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
 
     @Override
     public DisciplineModel convertSingle(DDisciplineModel dDisciplineModel, boolean update) {
-        if(this.departments == null)
+        if (this.departments == null)
             this.departments = this.departmentModelRepository.findAll();
 
         DisciplineModel disciplineModel = new DisciplineModel();
@@ -51,7 +51,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
                 ).findAny().ifPresent(disciplineModel::setDepartment);
         disciplineModel.setStatus(EStatus.ACTIVE);
         disciplineModel.setSourceId(dDisciplineModel.getId());
-        if(!update)
+        if (!update)
             disciplineModel.setCreated(LocalDateTime.now());
         disciplineModel.setUpdated(LocalDateTime.now());
         return disciplineModel;
@@ -59,13 +59,13 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
 
     public void fixIfNeeded(DisciplineModel disciplineModel, DepartmentModel departmentModel) {
 
-        if(disciplineModel.getDepartment() == null) {
+        if (disciplineModel.getDepartment() == null) {
             disciplineModel.setDepartment(departmentModel);
             this.insertSingle(disciplineModel);
             return;
         }
 
-        if(!disciplineModel.getDepartment().getId().equals(departmentModel.getId())) {
+        if (!disciplineModel.getDepartment().getId().equals(departmentModel.getId())) {
             disciplineModel.setDepartment(departmentModel);
             this.insertSingle(disciplineModel);
         }

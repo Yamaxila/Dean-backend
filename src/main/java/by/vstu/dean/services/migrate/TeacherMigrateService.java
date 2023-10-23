@@ -47,7 +47,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
         teacherModel.setSurname(dTeacherModel.getLastName().trim());
         teacherModel.setName(dTeacherModel.getFirstName().trim());
         teacherModel.setPatronymic(dTeacherModel.getSecondName().trim());
-        if(!update)
+        if (!update)
             teacherModel.setCreated(LocalDateTime.now());
         teacherModel.setUpdated(LocalDateTime.now());
         teacherModel.setSourceId(dTeacherModel.getId());

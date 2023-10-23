@@ -3,12 +3,14 @@ package by.vstu.dean.dto.future.lessons;
 import by.vstu.dean.dto.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
 /**
  * DTO for {@link by.vstu.dean.future.models.lessons.TeacherModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class TeacherDTO extends BaseDTO {
     /**
@@ -38,6 +40,7 @@ public final class TeacherDTO extends BaseDTO {
     @ApiModelProperty(notes = "Должность преподавателя")
     private TeacherDegreeDTO degree;
 
+    @SuppressWarnings("unused")
     public String getFullName() {
         return String.format("%s %s %s", this.surname, this.name, this.patronymic);
     }

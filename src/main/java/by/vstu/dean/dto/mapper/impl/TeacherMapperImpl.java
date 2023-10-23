@@ -13,7 +13,7 @@ import java.util.List;
 @Component
 public class TeacherMapperImpl implements TeacherMapper {
 
-//    @Autowired
+    //    @Autowired
 //    private TeacherService teacherService;
     @Autowired
     private TeacherDegreeMapper teacherDegreeMapper;

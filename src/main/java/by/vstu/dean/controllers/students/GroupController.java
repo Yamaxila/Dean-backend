@@ -33,7 +33,7 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
      * Конструктор контроллера.
      *
      * @param service          Сервис групп студентов
-     * @param departmentMapper
+     * @param departmentMapper Саппер
      */
     public GroupController(GroupService service, DepartmentMapper departmentMapper) {
         super(service);

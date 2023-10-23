@@ -55,7 +55,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
     @ApiOperation(value = "getAllByHostelAndFloor", notes = "Отправляет все активные комнаты указанного общежития по этажу")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<HostelRoomDTO>> findAllByHostelIdAndFloor(@PathVariable int id, @PathVariable int floor) {
-        return new ResponseEntity<>(this.service.toDto(this.service.getAll()).stream().filter(p -> p.getHostel().ordinal()==id && p.getFloor() == floor).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(this.service.toDto(this.service.getAll()).stream().filter(p -> p.getHostel().ordinal() == id && p.getFloor() == floor).toList(), HttpStatus.OK);
     }
 
     @Override
@@ -89,7 +89,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
     public ResponseEntity<List<StudentDTO>> getAllRoomStudentsActive(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
 
-        return o.map(hostelRoomModel -> new ResponseEntity<>(this.service.toDto(hostelRoomModel).getStudents().stream().filter(p ->  p.getStatus().equals(is ? EStatus.ACTIVE : EStatus.DELETED)).toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return o.map(hostelRoomModel -> new ResponseEntity<>(this.service.toDto(hostelRoomModel).getStudents().stream().filter(p -> p.getStatus().equals(is ? EStatus.ACTIVE : EStatus.DELETED)).toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     @RequestMapping(value = "/rooms/{roomId}/students/approved",

@@ -29,7 +29,7 @@ public class ClassroomMapperImpl implements ClassroomMapper {
 
         Optional<ClassroomModel> optionalClassroomModel = this.classroomModelRepo.findById(dto.getId());
 
-        if(optionalClassroomModel.isPresent())
+        if (optionalClassroomModel.isPresent())
             return optionalClassroomModel.get();
 
         ClassroomModel classroomModel = new ClassroomModel();
@@ -43,7 +43,7 @@ public class ClassroomMapperImpl implements ClassroomMapper {
         classroomModel.setFrame(dto.getFrame());
         classroomModel.setSquare(dto.getSquare());
         classroomModel.setRoomType(dto.getRoomType());
-        if(dto.getDepartmentId() != null)
+        if (dto.getDepartmentId() != null)
             classroomModel.setDepartment(this.departmentService.getById(dto.getDepartmentId()).orElseThrow());
 
         return classroomModel;
@@ -63,7 +63,7 @@ public class ClassroomMapperImpl implements ClassroomMapper {
         classroomDTO.setStatus(entity.getStatus());
         classroomDTO.setRoomNumber(entity.getRoomNumber());
         classroomDTO.setSquare(entity.getSquare());
-        if(entity.getDepartment() != null)
+        if (entity.getDepartment() != null)
             classroomDTO.setDepartmentId(entity.getDepartment().getId());
         classroomDTO.setFrame(entity.getFrame());
         classroomDTO.setRoomType(entity.getRoomType());
@@ -91,8 +91,7 @@ public class ClassroomMapperImpl implements ClassroomMapper {
         if (dto.getDepartmentId() != null) {
             Optional<DepartmentModel> optionalDepartmentModel = this.departmentService.getById(dto.getDepartmentId());
 
-            if(optionalDepartmentModel.isPresent())
-                entity.setDepartment(optionalDepartmentModel.get());
+            optionalDepartmentModel.ifPresent(entity::setDepartment);
         }
         if (dto.getSquare() != null) {
             entity.setSquare(dto.getSquare());

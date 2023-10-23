@@ -3,12 +3,14 @@ package by.vstu.dean.dto.future.specs;
 import by.vstu.dean.dto.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
 
 /**
-* DTO for {@link by.vstu.dean.future.models.specs.QualificationModel}
-*/
+ * DTO for {@link by.vstu.dean.future.models.specs.QualificationModel}
+ */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class QualificationDTO extends BaseDTO {
 

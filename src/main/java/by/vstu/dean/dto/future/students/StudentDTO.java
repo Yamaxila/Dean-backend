@@ -7,6 +7,7 @@ import by.vstu.dean.future.models.students.StudentModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -14,6 +15,7 @@ import javax.validation.constraints.NotNull;
 /**
  * DTO for {@link StudentModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class StudentDTO extends BaseDTO {
 

@@ -29,18 +29,16 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
     }
 
     /**
-     *
      * @param facultyModel Модель факультета
      * @throws SecurityException Can't execute this!
      */
     @Override
     @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<FacultyDTO> put(FacultyDTO facultyModel){
+    public ResponseEntity<FacultyDTO> put(FacultyDTO facultyModel) {
         throw new SecurityException("Can't execute this!");
     }
 
     /**
-     *
      * @param id Идентификатор факультета
      * @throws SecurityException Can't execute this!
      */

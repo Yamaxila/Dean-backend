@@ -18,6 +18,7 @@ public final class ExamTypeDTO extends BaseDTO {
      */
     @ApiModelProperty(notes = "Название зачетной единицы")
     @NotNull
+    @SuppressWarnings("unused")
     private String name;
 
     /**
@@ -25,6 +26,7 @@ public final class ExamTypeDTO extends BaseDTO {
      */
     @Enumerated(EnumType.STRING)
     @NotNull
+    @SuppressWarnings("unused")
     private ExamType type;
 
 }

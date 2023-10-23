@@ -23,7 +23,7 @@ public class QualificationMapperImpl implements QualificationMapper {
 
             Optional<QualificationModel> optionalQualification = this.qualificationModelRepository.findById(dto.getId());
 
-            if(optionalQualification.isPresent())
+            if (optionalQualification.isPresent())
                 return optionalQualification.get();
 
             QualificationModel qualificationModel = new QualificationModel();

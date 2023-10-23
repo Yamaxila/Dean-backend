@@ -57,7 +57,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         groupModel.setStatus(dGroupModel.getCurrentCourse() != 99 ? EStatus.ACTIVE : EStatus.DELETED);
         groupModel.setSourceId(dGroupModel.getId());
 
-        if(!update)
+        if (!update)
             groupModel.setCreated(LocalDateTime.now());
         groupModel.setUpdated(LocalDateTime.now());
 
@@ -77,7 +77,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         List<GroupModel> temp = this.groupRepo.findAllBySpecIsNull();
         temp.forEach((group) -> {
             StudentModel studentModel = this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId());
-            if(studentModel != null) {
+            if (studentModel != null) {
                 SpecializationModel specializationModel = studentModel.getSpecialization();
 
                 if (specializationModel != null)

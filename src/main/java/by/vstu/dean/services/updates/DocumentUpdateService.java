@@ -11,7 +11,7 @@ import by.vstu.dean.services.migrate.DocumentMigrateService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class DocumentUpdateService extends BaseUpdateService<DocumentDTO, DStudentModel, DStudentModelRepository, DocumentModel, DocumentMapper, DocumentModelRepository, DocumentService, DocumentMigrateService>{
+public class DocumentUpdateService extends BaseUpdateService<DocumentDTO, DStudentModel, DStudentModelRepository, DocumentModel, DocumentMapper, DocumentModelRepository, DocumentService, DocumentMigrateService> {
 
     public DocumentUpdateService(DocumentModelRepository repo, DStudentModelRepository dRepo, DocumentMigrateService baseMigrateService, DocumentService service, MainUpdateService updateService) {
         super(repo, dRepo, baseMigrateService, service, updateService);

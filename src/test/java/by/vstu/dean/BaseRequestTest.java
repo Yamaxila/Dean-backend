@@ -36,7 +36,8 @@ class BaseRequestTest {
 
         String json = baseRequest.run("");
 
-        gson.fromJson(json, new TypeToken<List<GroupModel>>(){}.getType());
+        gson.fromJson(json, new TypeToken<List<GroupModel>>() {
+        }.getType());
 
         json = baseRequest.setUrl("http://localhost:18076/api/groups/58/").run("");
 

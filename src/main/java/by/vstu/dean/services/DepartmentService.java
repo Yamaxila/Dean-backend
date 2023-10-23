@@ -16,14 +16,12 @@ public class DepartmentService extends BaseService<DepartmentDTO, DepartmentMode
     /**
      * Конструктор для создания экземпляра сервиса кафедры.
      *
-     * @param repo Репозиторий для работы с моделью кафедры.
+     * @param repo   Репозиторий для работы с моделью кафедры.
      * @param mapper Маппер.
      */
     public DepartmentService(DepartmentModelRepository repo, DepartmentMapper mapper) {
         super(repo, mapper);
     }
-
-
 
 
 }

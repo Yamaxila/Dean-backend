@@ -17,7 +17,6 @@ public class TeacherDepartmentMigrateService implements IMigrateExecutor {
     private final AbsenceService absenceService;
 
 
-
     @Override
     public void migrate() {
 
@@ -25,7 +24,7 @@ public class TeacherDepartmentMigrateService implements IMigrateExecutor {
 
             TeacherDepartmentMerge tdm = this.teacherDepartmentMergeRepository.findByDepartmentIdAndTeacherId(absenceModel.getDepartment().getId(), absenceModel.getTeacherModel().getId());
 
-            if(tdm == null) {
+            if (tdm == null) {
 
                 TeacherDepartmentMerge tdmNew = new TeacherDepartmentMerge();
 
@@ -41,9 +40,6 @@ public class TeacherDepartmentMigrateService implements IMigrateExecutor {
 
 
         });
-
-
-
 
 
     }

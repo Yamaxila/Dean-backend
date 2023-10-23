@@ -34,7 +34,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
         CitizenshipModel citizenshipModel = new CitizenshipModel(dCitizenshipModel.getName());
         citizenshipModel.setStatus(EStatus.ACTIVE);
         citizenshipModel.setSourceId(dCitizenshipModel.getId());
-        if(!update)
+        if (!update)
             citizenshipModel.setCreated(LocalDateTime.now());
         citizenshipModel.setUpdated(LocalDateTime.now());
         return citizenshipModel;

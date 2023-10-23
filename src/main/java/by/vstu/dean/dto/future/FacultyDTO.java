@@ -4,10 +4,12 @@ import by.vstu.dean.dto.BaseDTO;
 import by.vstu.dean.future.models.FacultyModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DTO for {@link FacultyModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class FacultyDTO extends BaseDTO {
 

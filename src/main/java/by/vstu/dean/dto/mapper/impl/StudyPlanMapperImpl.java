@@ -6,7 +6,6 @@ import by.vstu.dean.future.models.lessons.StudyPlanModel;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -62,11 +61,9 @@ public class StudyPlanMapperImpl implements StudyPlanMapper {
         if (all == null) {
             return null;
         } else {
-            List<StudyPlanDTO> list = new ArrayList(all.size());
-            Iterator var3 = all.iterator();
+            List<StudyPlanDTO> list = new ArrayList<>(all.size());
 
-            while(var3.hasNext()) {
-                StudyPlanModel studyPlanModel = (StudyPlanModel)var3.next();
+            for (StudyPlanModel studyPlanModel : all) {
                 list.add(this.toDto(studyPlanModel));
             }
 
@@ -78,11 +75,9 @@ public class StudyPlanMapperImpl implements StudyPlanMapper {
         if (all == null) {
             return null;
         } else {
-            List<StudyPlanModel> list = new ArrayList(all.size());
-            Iterator var3 = all.iterator();
+            List<StudyPlanModel> list = new ArrayList<>(all.size());
 
-            while(var3.hasNext()) {
-                StudyPlanDTO studyPlanDTO = (StudyPlanDTO)var3.next();
+            for (StudyPlanDTO studyPlanDTO : all) {
                 list.add(this.toEntity(studyPlanDTO));
             }
 

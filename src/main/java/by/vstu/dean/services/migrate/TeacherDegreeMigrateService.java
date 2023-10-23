@@ -50,7 +50,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
             teacherDegreeModel.setSourceId(0L);
             teacherDegreeModel.setStatus(EStatus.ACTIVE);
 
-            if(!update)
+            if (!update)
                 teacherDegreeModel.setCreated(LocalDateTime.now());
             teacherDegreeModel.setUpdated(LocalDateTime.now());
             teacherDegreeModel.setName(dTeacherModel.getDegree().toLowerCase().trim());

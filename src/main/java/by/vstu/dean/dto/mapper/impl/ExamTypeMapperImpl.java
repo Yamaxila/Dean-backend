@@ -24,7 +24,7 @@ public class ExamTypeMapperImpl implements ExamTypeMapper {
 
             Optional<ExamModel> optionalExamModel = this.examModelRepository.findById(dto.getId());
 
-            if(optionalExamModel.isPresent())
+            if (optionalExamModel.isPresent())
                 return optionalExamModel.get();
 
             ExamModel examModel = new ExamModel();

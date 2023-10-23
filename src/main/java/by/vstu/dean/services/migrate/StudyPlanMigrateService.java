@@ -63,7 +63,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
     @Override
     public StudyPlanModel convertSingle(DStudyPlan dStudyPlan, boolean update) {
-        if(teacherDepartmentMerges.isEmpty())
+        if (teacherDepartmentMerges.isEmpty())
             teacherDepartmentMerges.addAll(this.teacherDepartmentMergeRepository.findAll());
 
         StudyPlanModel studyPlan = new StudyPlanModel();
@@ -118,7 +118,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         studyPlan.setSourceId(dStudyPlan.getId());
         studyPlan.setStatus(EStatus.DELETED);
 
-        if(!update)
+        if (!update)
             studyPlan.setCreated(LocalDateTime.now());
         studyPlan.setUpdated(LocalDateTime.now());
 
@@ -138,7 +138,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
         List<TeacherDepartmentMerge> tdms = new ArrayList<>();
         teacherDepartmentMerges.forEach((tdm) -> {
-            if(tdms.stream().noneMatch(p -> p.getTeacher().getId().equals(tdm.getTeacher().getId()) && p.getDepartment().getId().equals(tdm.getDepartment().getId())))
+            if (tdms.stream().noneMatch(p -> p.getTeacher().getId().equals(tdm.getTeacher().getId()) && p.getDepartment().getId().equals(tdm.getDepartment().getId())))
                 tdms.add(tdm);
         });
 

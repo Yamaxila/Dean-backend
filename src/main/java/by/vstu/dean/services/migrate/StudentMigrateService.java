@@ -63,17 +63,17 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         StudentModel studentModel = new StudentModel();
 
-        if(this.groups.isEmpty()) {
+        if (this.groups.isEmpty()) {
             this.groups.addAll(this.groupModelRepository.findAll());
         }
 
-        if(this.specializations.isEmpty()) {
+        if (this.specializations.isEmpty()) {
             this.specializations.addAll(this.specializationModelRepository.findAll());
         }
 
         Optional<GroupModel> group = this.groups.stream().filter(p -> p.getSourceId().equals(dStudentModel.getGroup().getId())).findFirst();
 
-        if(group.isEmpty())
+        if (group.isEmpty())
             throw new RuntimeException("Group for student with sourceId " + dStudentModel.getId() + " not found!");
 
         studentModel.setGroup(this.groupModelRepository.findBySourceId(dStudentModel.getGroup().getId()));
@@ -103,7 +103,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         studentModel.setLastDocument(documentMigrateService.convertSingle(dStudentModel));
 
-        if(!update)
+        if (!update)
             studentModel.setCreated(LocalDateTime.now());
         studentModel.setUpdated(LocalDateTime.now());
 

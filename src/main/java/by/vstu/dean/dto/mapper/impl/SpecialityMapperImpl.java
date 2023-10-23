@@ -29,7 +29,7 @@ public class SpecialityMapperImpl extends BaseMapperImpl implements SpecialityMa
 
         Optional<SpecialityModel> oSpecialityModel = this.specialityService.findById(dto.getId());
 
-        if(oSpecialityModel.isPresent())
+        if (oSpecialityModel.isPresent())
             return oSpecialityModel.get();
 
         SpecialityModel specialityModel = new SpecialityModel();

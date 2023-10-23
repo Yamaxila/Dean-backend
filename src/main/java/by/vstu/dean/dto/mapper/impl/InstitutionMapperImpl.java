@@ -24,7 +24,7 @@ public class InstitutionMapperImpl implements InstitutionMapper {
 
             Optional<InstitutionModel> optionalInstitutionModel = this.institutionModelRepository.findById(dto.getId());
 
-            if(optionalInstitutionModel.isPresent())
+            if (optionalInstitutionModel.isPresent())
                 return optionalInstitutionModel.get();
 
             InstitutionModel institutionModel = new InstitutionModel();

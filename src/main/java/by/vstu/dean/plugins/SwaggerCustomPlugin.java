@@ -36,13 +36,13 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
                 StringBuilder params = new StringBuilder();
 
 
-                if(params.isEmpty() && context.getParameters().stream().anyMatch(p -> p.hasParameterAnnotation(RequestParam.class))) {
+                if (params.isEmpty() && context.getParameters().stream().anyMatch(p -> p.hasParameterAnnotation(RequestParam.class))) {
                     params.append("?");
 
                     int temp = 0;
                     for (ResolvedMethodParameter methodParameter : context.getParameters()) {
-                        if(methodParameter.hasParameterAnnotation(RequestParam.class)) {
-                            if(methodParameter.defaultName().isPresent()) {
+                        if (methodParameter.hasParameterAnnotation(RequestParam.class)) {
+                            if (methodParameter.defaultName().isPresent()) {
                                 String param = methodParameter.defaultName().get();
                                 params.append(param).append("=").append("{").append(temp).append("}");
                                 if (temp < requestMapping.get().params().length - 1)

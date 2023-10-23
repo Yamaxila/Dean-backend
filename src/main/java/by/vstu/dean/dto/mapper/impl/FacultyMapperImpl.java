@@ -23,7 +23,7 @@ public class FacultyMapperImpl implements FacultyMapper {
         } else {
             Optional<FacultyModel> optionalFacultyModel = this.facultyModelRepository.findById(dto.getId());
 
-            if(optionalFacultyModel.isPresent())
+            if (optionalFacultyModel.isPresent())
                 return optionalFacultyModel.get();
 
             FacultyModel facultyModel = new FacultyModel();

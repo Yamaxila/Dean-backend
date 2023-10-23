@@ -13,50 +13,50 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
     @Override
     public AbsenceModel toEntity(AbsenceDTO dto) {
-        if ( dto == null ) {
+        if (dto == null) {
             return null;
         }
 
         AbsenceModel absenceModel = new AbsenceModel();
 
-        absenceModel.setId( dto.getId() );
+        absenceModel.setId(dto.getId());
         absenceModel.setSourceId(dto.getSourceId());
-        absenceModel.setStatus( dto.getStatus() );
-        absenceModel.setUpdated( dto.getUpdated() );
+        absenceModel.setStatus(dto.getStatus());
+        absenceModel.setUpdated(dto.getUpdated());
 
         return absenceModel;
     }
 
     @Override
     public AbsenceDTO toDto(AbsenceModel entity) {
-        if ( entity == null ) {
+        if (entity == null) {
             return null;
         }
 
         AbsenceDTO absenceDTO = new AbsenceDTO();
 
-        absenceDTO.setId( entity.getId() );
+        absenceDTO.setId(entity.getId());
         absenceDTO.setSourceId(entity.getSourceId());
-        absenceDTO.setUpdated( entity.getUpdated() );
-        absenceDTO.setStatus( entity.getStatus() );
+        absenceDTO.setUpdated(entity.getUpdated());
+        absenceDTO.setStatus(entity.getStatus());
 
         return absenceDTO;
     }
 
     @Override
     public AbsenceModel partialUpdate(AbsenceDTO dto, AbsenceModel entity) {
-        if ( dto == null ) {
+        if (dto == null) {
             return null;
         }
 
-        if ( dto.getId() != null ) {
-            entity.setId( dto.getId() );
+        if (dto.getId() != null) {
+            entity.setId(dto.getId());
         }
-        if ( dto.getStatus() != null ) {
-            entity.setStatus( dto.getStatus() );
+        if (dto.getStatus() != null) {
+            entity.setStatus(dto.getStatus());
         }
-        if ( dto.getUpdated() != null ) {
-            entity.setUpdated( dto.getUpdated() );
+        if (dto.getUpdated() != null) {
+            entity.setUpdated(dto.getUpdated());
         }
 
         return entity;
@@ -64,13 +64,13 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
     @Override
     public List<AbsenceDTO> toDto(List<AbsenceModel> all) {
-        if ( all == null ) {
+        if (all == null) {
             return null;
         }
 
-        List<AbsenceDTO> list = new ArrayList<AbsenceDTO>( all.size() );
-        for ( AbsenceModel absenceModel : all ) {
-            list.add( toDto( absenceModel ) );
+        List<AbsenceDTO> list = new ArrayList<>(all.size());
+        for (AbsenceModel absenceModel : all) {
+            list.add(toDto(absenceModel));
         }
 
         return list;
@@ -78,13 +78,13 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
     @Override
     public List<AbsenceModel> toEntity(List<AbsenceDTO> all) {
-        if ( all == null ) {
+        if (all == null) {
             return null;
         }
 
-        List<AbsenceModel> list = new ArrayList<AbsenceModel>( all.size() );
-        for ( AbsenceDTO absenceDTO : all ) {
-            list.add( toEntity( absenceDTO ) );
+        List<AbsenceModel> list = new ArrayList<>(all.size());
+        for (AbsenceDTO absenceDTO : all) {
+            list.add(toEntity(absenceDTO));
         }
 
         return list;

@@ -1,50 +1,80 @@
 # Dean-Backend
+
 Copyright VSTU 2023 by Yamaxila
 
 ## Бэкенд деканата ВГТУ
 
-Данный проект реализует миграцию и доступ к новым данным деканата. 
+Данный проект реализует миграцию и доступ к новым данным деканата.
 
 ### Документация
-Проект имеет Swagger для доступа к информации об эндпоинтах. Если необходима документация по классам, то необходимо синхронизировать Maven и выполнить:
+
+Проект имеет Swagger для доступа к информации об эндпоинтах. Если необходима документация по классам, то необходимо
+синхронизировать Maven и выполнить:
+
 ```
 mvn dokka:dokka
 ```
-~~Очень желательно~~ **Обязательно** писать документацию в соответсвии с JavaDoc. 
+
+~~Очень желательно~~ **Обязательно** писать документацию в соответсвии с JavaDoc.
 
 ### Поддержка
 
 Проект имеет набор базовых классов, от которых необходимо строить всю последующую иерархию:
 
-Новый деканат [future](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/), [services](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/)
-- [DBBaseModel](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/DBBaseModel.java) - содержит базовый набор полей для любого класса
-- [DBBaseModelRepository](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/DBBaseModelRepository.java) - базовый репозиторий с необходимыми методами
-- [BaseService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/BaseService.java) - базовый сервис с готовой реализацией
-- [BaseController](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/controllers/common/BaseController.java) - базовый контроллер с готовой реализацией 
+Новый
+деканат [future](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/), [services](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/)
+
+- [DBBaseModel](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/DBBaseModel.java) -
+  содержит базовый набор полей для любого класса
+- [DBBaseModelRepository](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/future/DBBaseModelRepository.java) -
+  базовый репозиторий с необходимыми методами
+- [BaseService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/BaseService.java) -
+  базовый сервис с готовой реализацией
+- [BaseController](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/controllers/common/BaseController.java) -
+  базовый контроллер с готовой реализацией
 
 Старый деканат [old](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/old/)
-- [OldDBBaseModel](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/old/OldDBBaseModel.java) - содержит базовый набор полей для старого деканата
-- [OldDBBaseModelRepository](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/old/OldDBBaseModelRepository.java) - базовый репозиторий с необходимыми методами
-<br>
-<sub>P.S. старый деканат не может иметь сервисов, т.к. в него запрещено заносить данные</sub>
+
+- [OldDBBaseModel](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/old/OldDBBaseModel.java) -
+  содержит базовый набор полей для старого деканата
+- [OldDBBaseModelRepository](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/old/OldDBBaseModelRepository.java) -
+  базовый репозиторий с необходимыми методами
+  <br>
+  <sub>P.S. старый деканат не может иметь сервисов, т.к. в него запрещено заносить данные</sub>
 
 Миграция [migrate](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/)
-- [BaseMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/BaseMigrateService.java) - базовый сервис миграции
-- [IMigrateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/IMigrateExecutor.java) - позволяет автоматически вызывать сервисы из [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java)
-- [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java) - главный сервис миграции. Позволяет автоматически выполнять миграцию при запуске
+
+- [BaseMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/BaseMigrateService.java) -
+  базовый сервис миграции
+- [IMigrateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/IMigrateExecutor.java) -
+  позволяет автоматически вызывать сервисы
+  из [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java)
+- [MainMigrateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/migrate/MainMigrateService.java) -
+  главный сервис миграции. Позволяет автоматически выполнять миграцию при запуске
 
 Обновление [update](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/)
-- [BaseUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/BaseUpdateService.java) - базовый сервис обновления
-- [IUpdateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/IUpdateExecutor.java) - позволяет автоматически вызывать сервисы и инициализировать из [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java)
-- [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java) - главный сервис обновлений. Позволяет автоматически выполнять обновление при запуске(после миграции) 
+
+- [BaseUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/BaseUpdateService.java) -
+  базовый сервис обновления
+- [IUpdateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/IUpdateExecutor.java) -
+  позволяет автоматически вызывать сервисы и инициализировать
+  из [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java)
+- [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java) -
+  главный сервис обновлений. Позволяет автоматически выполнять обновление при запуске(после миграции)
 
 Мапперы и DTO [dto](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/)
-- [BaseMapperInterface](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/BaseMapperInterface.java) - базовый маппер
-- [BaseDTO](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/BaseDTO.java) - базовый DTO
-- [MapperImpl](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/impl) - пакет содержащий имплиментации мапперов
+
+- [BaseMapperInterface](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/BaseMapperInterface.java) -
+  базовый маппер
+- [BaseDTO](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/BaseDTO.java) - базовый
+  DTO
+- [MapperImpl](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/impl) - пакет
+  содержащий имплиментации мапперов
 
 Rest-репозитории для других сервисов
-- [ApiRepositoryBase](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/api/ApiRepositoryBase.java) - позволяет подключать объекты, как обычный репозиторий (см. Примеры)
+
+- [ApiRepositoryBase](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/api/ApiRepositoryBase.java) -
+  позволяет подключать объекты, как обычный репозиторий (см. Примеры)
 
 ## Примеры
 
@@ -118,7 +148,8 @@ public abstract class DeanApiRepositoryBase<O extends DBBaseModel> extends ApiRe
 
 ```
 
-P.S. Для работы репозиториев необходим клиент с scope "rsql". **БЕЗДУМНОЕ ИСПОЛЬЗОВАНИЕ ДАННОГО КЛИЕНТА ЯВЛЯЕТСЯ УГРОЗОЙ БЕЗОПАСТНОСТИ СЕРВИСА**
+P.S. Для работы репозиториев необходим клиент с scope "rsql". **БЕЗДУМНОЕ ИСПОЛЬЗОВАНИЕ ДАННОГО КЛИЕНТА ЯВЛЯЕТСЯ УГРОЗОЙ
+БЕЗОПАСТНОСТИ СЕРВИСА**
 
 Создание репозитория на примере GroupsRepo:
 
@@ -143,5 +174,6 @@ public class GroupsRepo extends DeanApiRepositoryBase<GroupModel> {
 
 ```
 
-P.S.  Я настоятельно рекомендую использовать здесь аннотацию `@Cacheble` на методе `getSingle(Long)`, т.к. большое количество запросов сильно скажется на быстродействии
+P.S. Я настоятельно рекомендую использовать здесь аннотацию `@Cacheble` на методе `getSingle(Long)`, т.к. большое
+количество запросов сильно скажется на быстродействии
 

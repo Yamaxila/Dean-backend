@@ -57,16 +57,16 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     @Override
     public AbsenceModel convertSingle(DAbsenceModel dAbsenceModel, boolean update) {
 
-        if(this.teachers.isEmpty())
+        if (this.teachers.isEmpty())
             this.teachers.addAll(this.teacherService.getAll());
 
-        if(this.disciplines.isEmpty())
+        if (this.disciplines.isEmpty())
             this.disciplines.addAll(this.disciplineService.getAll());
 
-        if(this.departments.isEmpty())
+        if (this.departments.isEmpty())
             this.departments.addAll(this.departmentService.getAll());
 
-        if(this.students.isEmpty())
+        if (this.students.isEmpty())
             this.students.addAll(this.studentService.getAll());
 
         AbsenceModel absenceModel = new AbsenceModel();
@@ -86,10 +86,10 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
         List<DStudentModel> students = this.dStudentModelRepository.findAllByCaseNo(dAbsenceModel.getStudentNumber());
         DStudentModel oneStudent;
-        if(students.isEmpty())
+        if (students.isEmpty())
             throw new RuntimeException("DStudent not found for absence with id = " + dAbsenceModel.getId());
 
-        if(students.size() > 1)
+        if (students.size() > 1)
             oneStudent = students.stream().max(Comparator.comparing(DStudentModel::getId)).orElse(null);
         else
             oneStudent = students.get(0);
@@ -97,16 +97,16 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
         Optional<StudentModel> student = this.students.stream().filter(p -> p.getSourceId().equals(oneStudent.getId())).findFirst();
 
-        if(teacherModel.isEmpty())
+        if (teacherModel.isEmpty())
             throw new RuntimeException("Teacher not found for absence with id = " + dAbsenceModel.getId());
 
-        if(disciplineModel.isEmpty())
+        if (disciplineModel.isEmpty())
             throw new RuntimeException("Discipline not found for absence with id = " + dAbsenceModel.getId());
 
-        if(student.isEmpty())
+        if (student.isEmpty())
             throw new RuntimeException("Student not found for absence with id = " + dAbsenceModel.getId());
 
-        if(departmentModel.isEmpty())
+        if (departmentModel.isEmpty())
             throw new RuntimeException("Department not found for absence with id = " + dAbsenceModel.getId());
 
         absenceModel.setTeacherModel(teacherModel.get());
@@ -127,7 +127,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         absenceModel.setStatus(!dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
         absenceModel.setSourceId(dAbsenceModel.getId());
 
-        if(!update)
+        if (!update)
             absenceModel.setCreated(LocalDateTime.now());
         absenceModel.setUpdated(LocalDateTime.now());
 

@@ -4,6 +4,7 @@ import by.vstu.dean.dto.BaseDTO;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -11,6 +12,7 @@ import javax.persistence.Enumerated;
 /**
  * DTO for {@link by.vstu.dean.future.models.rooms.ClassroomModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class ClassroomDTO extends BaseDTO {
 

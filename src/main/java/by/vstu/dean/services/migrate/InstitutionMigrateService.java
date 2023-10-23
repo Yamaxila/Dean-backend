@@ -34,7 +34,7 @@ public class InstitutionMigrateService extends BaseMigrateService<InstitutionMod
         InstitutionModel institutionModel = new InstitutionModel(dInstitutionModel.getFullName(), dInstitutionModel.getShortName());
         institutionModel.setStatus(dInstitutionModel.getStatus() != null && dInstitutionModel.getStatus() == 1 ? EStatus.ACTIVE : EStatus.DELETED);
         institutionModel.setSourceId(dInstitutionModel.getId());
-        if(!update)
+        if (!update)
             institutionModel.setCreated(LocalDateTime.now());
         institutionModel.setUpdated(LocalDateTime.now());
         return institutionModel;

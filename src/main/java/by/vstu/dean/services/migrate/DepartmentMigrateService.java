@@ -36,7 +36,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
 
     @Override
     public DepartmentModel convertSingle(DDepartmentModel dDepartmentModel, boolean update) {
-        if(this.facultyModels == null)
+        if (this.facultyModels == null)
             this.facultyModels = this.facultyModelRepository.findAll();
         DepartmentModel departmentModel = new DepartmentModel();
         departmentModel.setName(dDepartmentModel.getName());
@@ -45,7 +45,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         this.facultyModels.stream().filter(p -> p.getSourceId().equals(dDepartmentModel.getFaculty().getId())).findAny().ifPresent(departmentModel::setFaculty);
         departmentModel.setStatus(EStatus.ACTIVE);
         departmentModel.setSourceId(dDepartmentModel.getId());
-        if(!update)
+        if (!update)
             departmentModel.setCreated(LocalDateTime.now());
         departmentModel.setUpdated(LocalDateTime.now());
         return departmentModel;

@@ -8,7 +8,6 @@ import by.vstu.dean.future.models.specs.SpecializationModel;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 @Component
@@ -94,11 +93,9 @@ public class SpecializationMapperImpl implements SpecializationMapper {
         if (all == null) {
             return null;
         } else {
-            List<SpecializationDTO> list = new ArrayList(all.size());
-            Iterator var3 = all.iterator();
+            List<SpecializationDTO> list = new ArrayList<>(all.size());
 
-            while(var3.hasNext()) {
-                SpecializationModel specializationModel = (SpecializationModel)var3.next();
+            for (SpecializationModel specializationModel : all) {
                 list.add(this.toDto(specializationModel));
             }
 
@@ -110,11 +107,9 @@ public class SpecializationMapperImpl implements SpecializationMapper {
         if (all == null) {
             return null;
         } else {
-            List<SpecializationModel> list = new ArrayList(all.size());
-            Iterator var3 = all.iterator();
+            List<SpecializationModel> list = new ArrayList<>(all.size());
 
-            while(var3.hasNext()) {
-                SpecializationDTO specializationDTO = (SpecializationDTO)var3.next();
+            for (SpecializationDTO specializationDTO : all) {
                 list.add(this.toEntity(specializationDTO));
             }
 

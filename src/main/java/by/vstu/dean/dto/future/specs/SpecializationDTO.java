@@ -3,10 +3,12 @@ package by.vstu.dean.dto.future.specs;
 import by.vstu.dean.dto.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DTO for {@link by.vstu.dean.future.models.specs.SpecializationModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public final class SpecializationDTO extends BaseDTO {
 

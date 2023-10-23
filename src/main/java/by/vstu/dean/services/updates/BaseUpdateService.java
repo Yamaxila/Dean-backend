@@ -40,7 +40,7 @@ public abstract class BaseUpdateService<U extends BaseDTO, D extends OldDBBaseMo
                         && !p.getName().equalsIgnoreCase("migrateDate")
         ).toList()) {
 
-            if(field.getType().equals(Set.class) || field.getType().equals(List.class))
+            if (field.getType().equals(Set.class) || field.getType().equals(List.class))
                 continue;
 
             field.setAccessible(true);
@@ -48,12 +48,12 @@ public abstract class BaseUpdateService<U extends BaseDTO, D extends OldDBBaseMo
             Object value2 = field.get(old);
 
 
-            if(value1 instanceof DBBaseModel
+            if (value1 instanceof DBBaseModel
                     && value2 instanceof DBBaseModel) {
                 if (!((DBBaseModel) value1).getSourceId().equals(((DBBaseModel) value2).getSourceId()))
                     return false;
             } else {
-                if(!(value1 instanceof DBBaseModel))
+                if (!(value1 instanceof DBBaseModel))
                     if (!Objects.equals(value1, value2)) {
                         return false;
                     }
@@ -61,12 +61,13 @@ public abstract class BaseUpdateService<U extends BaseDTO, D extends OldDBBaseMo
         }
         return true;
     }
+
     public List<O> getUpdated() {
         List<O> out = new ArrayList<>();
         this.repo.findAll().stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).forEach(row -> {
             O temp = this.baseMigrateService.convertSingle(this.findOldModel(row.getSourceId()), true);
             try {
-                if(!this.isEqual(row, temp)) {
+                if (!this.isEqual(row, temp)) {
                     temp.setId(row.getId());
                     temp.setStatus(row.getStatus());
                     temp.setSourceId(row.getSourceId());
@@ -84,7 +85,7 @@ public abstract class BaseUpdateService<U extends BaseDTO, D extends OldDBBaseMo
     protected D findOldModel(Long id) {
         Optional<D> d = this.dRepo.findById(id);
 
-        if(d.isEmpty())
+        if (d.isEmpty())
             throw new RuntimeException("Old DB lost Row with id = " + id);
 
         return d.get();

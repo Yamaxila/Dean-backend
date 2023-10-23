@@ -33,9 +33,10 @@ class AuthTest {
                 .setMediaType(MediaType.APPLICATION_FORM_URLENCODED)
                 .run(loginData);
         System.out.println(json);
-        System.out.println((TokenModel)new GsonBuilder()
+        System.out.println((TokenModel) new GsonBuilder()
                 .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter()).create()
-                .fromJson(json, new TypeToken<TokenModel>(){}.getType()));
+                .fromJson(json, new TypeToken<TokenModel>() {
+                }.getType()));
 
     }
 

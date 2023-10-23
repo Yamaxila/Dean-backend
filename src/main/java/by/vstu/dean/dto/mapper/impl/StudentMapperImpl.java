@@ -38,7 +38,6 @@ public class StudentMapperImpl implements StudentMapper {
             return optionalStudentModel.get();
 
 
-
         StudentModel.StudentModelBuilder studentModel = StudentModel.builder();
 
         studentModel.sex(dto.getSex());
@@ -61,7 +60,7 @@ public class StudentMapperImpl implements StudentMapper {
     }
 
     @Override
-    public StudentDTO toDto (StudentModel entity){
+    public StudentDTO toDto(StudentModel entity) {
         if (entity == null) {
             return null;
         }
@@ -93,7 +92,7 @@ public class StudentMapperImpl implements StudentMapper {
     }
 
     @Override
-    public StudentModel partialUpdate (StudentDTO dto, StudentModel entity){
+    public StudentModel partialUpdate(StudentDTO dto, StudentModel entity) {
         if (dto == null) {
             return null;
         }
@@ -167,7 +166,7 @@ public class StudentMapperImpl implements StudentMapper {
     }
 
     @Override
-    public List<StudentDTO> toDto (List < StudentModel > all) {
+    public List<StudentDTO> toDto(List<StudentModel> all) {
         if (all == null) {
             return null;
         }
@@ -176,7 +175,7 @@ public class StudentMapperImpl implements StudentMapper {
     }
 
     @Override
-    public List<StudentModel> toEntity (List < StudentDTO > all) {
+    public List<StudentModel> toEntity(List<StudentDTO> all) {
         if (all == null) {
             return null;
         }

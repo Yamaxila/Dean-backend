@@ -29,7 +29,7 @@ public class GroupMapperImpl extends BaseMapperImpl implements GroupMapper {
 
         Optional<GroupModel> optionalGroupModel = this.groupModelRepository.findById(dto.getId());
 
-        if(optionalGroupModel.isPresent())
+        if (optionalGroupModel.isPresent())
             return optionalGroupModel.get();
 
         GroupModel groupModel = new GroupModel();
@@ -55,7 +55,7 @@ public class GroupMapperImpl extends BaseMapperImpl implements GroupMapper {
         groupDTO.setYearEnd(entity.getYearEnd());
         groupDTO.setSpec(this.specialityMapper.toDto(entity.getSpec()));
         groupDTO.setFacultyId(entity.getFaculty().getId());
-        groupDTO.setCurrentCourse(entity.getYearEnd()-entity.getYearStart()); //TODO: Need to implement semester
+        groupDTO.setCurrentCourse(entity.getYearEnd() - entity.getYearStart()); //TODO: Need to implement semester
         return groupDTO;
     }
 

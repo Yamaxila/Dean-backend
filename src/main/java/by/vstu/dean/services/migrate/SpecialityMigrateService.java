@@ -50,7 +50,7 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
         specialityModel.setStatus(EStatus.ACTIVE);
         specialityModel.setSourceId(spec.getId());
 
-        if(!update)
+        if (!update)
             specialityModel.setCreated(LocalDateTime.now());
         specialityModel.setUpdated(LocalDateTime.now());
 

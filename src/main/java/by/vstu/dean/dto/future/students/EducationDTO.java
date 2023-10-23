@@ -3,10 +3,12 @@ package by.vstu.dean.dto.future.students;
 import by.vstu.dean.dto.BaseDTO;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DTO {@link by.vstu.dean.future.models.students.EducationModel}
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
 public class EducationDTO extends BaseDTO {
 

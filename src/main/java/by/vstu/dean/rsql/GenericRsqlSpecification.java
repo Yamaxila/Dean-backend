@@ -100,11 +100,11 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
             else if (type.equals(Long.class)) return Long.parseLong(arg);
             else if (type.equals(Byte.class)) return Byte.parseByte(arg);
             else if (type.isEnum()) {
-                if(type.equals(EFrame.class))
+                if (type.equals(EFrame.class))
                     return StringUtils.canBeInt(arg) ? EFrame.valueOf(Integer.parseInt(arg)) : EFrame.valueOf(arg);
-                else if(type.equals(ELessonType.class))
+                else if (type.equals(ELessonType.class))
                     return StringUtils.canBeInt(arg) ? ELessonType.valueOf(Integer.parseInt(arg)) : ELessonType.valueOf(arg);
-                else if(type.equals(EClassroomType.class))
+                else if (type.equals(EClassroomType.class))
                     return StringUtils.canBeInt(arg) ? EClassroomType.valueOf(Integer.parseInt(arg)) : EClassroomType.valueOf(arg);
                 else return Enum.valueOf((Class<? extends Enum>) type, arg);
             } else return arg;

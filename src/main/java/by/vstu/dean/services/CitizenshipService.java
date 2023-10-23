@@ -16,13 +16,12 @@ public class CitizenshipService extends BaseService<CitizenshipDTO, CitizenshipM
     /**
      * Конструктор для создания экземпляра сервиса гражданства.
      *
-     * @param repo Репозиторий для работы с моделью гражданства.
+     * @param repo   Репозиторий для работы с моделью гражданства.
      * @param mapper Маппер.
      */
     public CitizenshipService(CitizenshipModelRepository repo, CitizenshipMapper mapper) {
         super(repo, mapper);
     }
-
 
 
 }

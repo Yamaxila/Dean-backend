@@ -52,7 +52,7 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
 
         specializationModel.setSourceId(dSpecializationModel.getId());
         specializationModel.setStatus(EStatus.ACTIVE);
-        if(!update)
+        if (!update)
             specializationModel.setCreated(LocalDateTime.now());
         specializationModel.setUpdated(LocalDateTime.now());
 

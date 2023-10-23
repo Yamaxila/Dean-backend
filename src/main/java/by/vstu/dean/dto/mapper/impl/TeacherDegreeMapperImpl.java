@@ -24,7 +24,7 @@ public class TeacherDegreeMapperImpl implements TeacherDegreeMapper {
 
             Optional<TeacherDegreeModel> optionalTeacherDegreeModel = this.teacherDegreeModelRepository.findById(dto.getId());
 
-            if(optionalTeacherDegreeModel.isPresent())
+            if (optionalTeacherDegreeModel.isPresent())
                 return optionalTeacherDegreeModel.get();
 
             TeacherDegreeModel teacherDegreeModel = new TeacherDegreeModel();

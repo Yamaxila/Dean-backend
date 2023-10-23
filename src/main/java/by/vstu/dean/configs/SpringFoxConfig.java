@@ -13,7 +13,6 @@ import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger.web.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -67,8 +66,8 @@ public class SpringFoxConfig {
     }
 
     private OAuth securitySchema() {
-        return new OAuth("oauth2", new ArrayList(),
-                Arrays.asList(new ResourceOwnerPasswordCredentialsGrant(authURL)));
+        return new OAuth("oauth2", new ArrayList<>(),
+                List.of(new ResourceOwnerPasswordCredentialsGrant(authURL)));
     }
 
     private SecurityContext securityContext() {

@@ -40,7 +40,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
         qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : dQualificationModel.getNamePart2());
         qualificationModel.setStatus(EStatus.ACTIVE);
         qualificationModel.setSourceId(dQualificationModel.getId());
-        if(!update)
+        if (!update)
             qualificationModel.setCreated(LocalDateTime.now());
         qualificationModel.setUpdated(LocalDateTime.now());
         return qualificationModel;

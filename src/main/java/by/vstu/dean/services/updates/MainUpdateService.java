@@ -15,7 +15,6 @@ public class MainUpdateService {
     public void update() {
 
 
-
         System.err.println("Update started!");
         Thread.currentThread().setName("Update");
 

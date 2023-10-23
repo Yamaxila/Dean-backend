@@ -11,7 +11,7 @@ import by.vstu.dean.services.migrate.EducationMigrateService;
 import org.springframework.stereotype.Service;
 
 @Service
-public class EducationUpdateService extends BaseUpdateService<EducationDTO, DStudentModel, DStudentModelRepository, EducationModel, EducationMapper, EducationModelRepository, EducationService, EducationMigrateService>{
+public class EducationUpdateService extends BaseUpdateService<EducationDTO, DStudentModel, DStudentModelRepository, EducationModel, EducationMapper, EducationModelRepository, EducationService, EducationMigrateService> {
 
     public EducationUpdateService(EducationModelRepository repo, DStudentModelRepository dRepo, EducationMigrateService baseMigrateService, EducationService service, MainUpdateService updateService) {
         super(repo, dRepo, baseMigrateService, service, updateService);

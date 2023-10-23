@@ -30,7 +30,6 @@ public class ExamTypeController extends BaseController<ExamTypeDTO, ExamModel, E
     }
 
     /**
-     *
      * @param facultyModel Модель типа экзамена
      * @throws SecurityException Can't execute this!
      */
@@ -41,7 +40,6 @@ public class ExamTypeController extends BaseController<ExamTypeDTO, ExamModel, E
     }
 
     /**
-     *
      * @param id Идентификатор типа экзамена
      * @throws SecurityException Can't execute this!
      */

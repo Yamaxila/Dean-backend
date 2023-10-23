@@ -61,7 +61,7 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
         faculty.setShortName(dFaculty.getShortName());
         faculty.setJournalType(dFaculty.getJournalType());
 
-        if(!update)
+        if (!update)
             faculty.setCreated(LocalDateTime.now());
         faculty.setUpdated(LocalDateTime.now());
 

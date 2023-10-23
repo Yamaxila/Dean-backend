@@ -39,6 +39,7 @@ public abstract class BaseMigrateService<S extends DBBaseModel, T extends OldDBB
     }
 
     public abstract S convertSingle(T t, boolean update);
+
     /**
      * Конвертирует список записей из старой базы данных в новую.
      *
