@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.students.InstitutionDTO;
+import by.vstu.dean.dto.mapper.InstitutionMapper;
 import by.vstu.dean.future.models.students.InstitutionModel;
 import by.vstu.dean.future.repo.InstitutionModelRepository;
 import by.vstu.dean.services.InstitutionService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/students/institutions/")
 @Api(tags = "Institutions", description = "Учреждения образования")
-public class InstitutionController extends BaseController<InstitutionModel, InstitutionModelRepository, InstitutionService> {
+public class InstitutionController extends BaseController<InstitutionDTO, InstitutionModel, InstitutionMapper, InstitutionModelRepository, InstitutionService> {
 
     /**
      * Конструктор контроллера.

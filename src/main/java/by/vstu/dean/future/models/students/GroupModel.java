@@ -79,4 +79,5 @@ public class GroupModel extends DBBaseModel {
      */
     @ApiModelProperty(notes = "Средний балл")
     private Double score;
+
 }

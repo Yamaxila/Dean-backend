@@ -2,7 +2,10 @@ package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.anotations.ApiSecurity;
 import by.vstu.dean.controllers.common.BaseController;
-import by.vstu.dean.future.models.lessons.DepartmentModel;
+import by.vstu.dean.dto.future.lessons.DepartmentDTO;
+import by.vstu.dean.dto.future.students.GroupDTO;
+import by.vstu.dean.dto.mapper.DepartmentMapper;
+import by.vstu.dean.dto.mapper.GroupMapper;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.services.GroupService;
@@ -22,15 +25,19 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/groups/")
 @Api(tags = "Groups")
-public class GroupController extends BaseController<GroupModel, GroupModelRepository, GroupService> {
+public class GroupController extends BaseController<GroupDTO, GroupModel, GroupMapper, GroupModelRepository, GroupService> {
+
+    private final DepartmentMapper departmentMapper;
 
     /**
      * Конструктор контроллера.
      *
-     * @param service Сервис групп студентов
+     * @param service          Сервис групп студентов
+     * @param departmentMapper
      */
-    public GroupController(GroupService service) {
+    public GroupController(GroupService service, DepartmentMapper departmentMapper) {
         super(service);
+        this.departmentMapper = departmentMapper;
     }
 
     /**
@@ -46,8 +53,8 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<List<GroupModel>> getAllByYearEnd(@RequestParam Integer year, @RequestParam(required = false, defaultValue = "true") Boolean is) {
-        return new ResponseEntity<>(this.service.getAllActive(is).stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
+    public ResponseEntity<List<GroupDTO>> getAllByYearEnd(@RequestParam Integer year, @RequestParam(required = false, defaultValue = "true") Boolean is) {
+        return new ResponseEntity<>(this.service.toDto(this.service.getAllActive(is)).stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
     }
 
     /**
@@ -63,8 +70,8 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getByName")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<GroupModel> getByName(@RequestParam String name) {
-        return new ResponseEntity<>(this.service.findByName(name), HttpStatus.OK);
+    public ResponseEntity<GroupDTO> getByName(@RequestParam String name) {
+        return new ResponseEntity<>(this.service.toDto(this.service.findByName(name)), HttpStatus.OK);
     }
 
     /**
@@ -79,7 +86,7 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @ApiOperation(value = "getDepartment")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<DepartmentModel> getDepartment(@PathVariable Long id) {
+    public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long id) {
 
         Optional<GroupModel> o = this.service.getById(id);
 
@@ -91,6 +98,6 @@ public class GroupController extends BaseController<GroupModel, GroupModelReposi
         if (group.getSpec().getDepartment() == null)
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
-        return new ResponseEntity<>(group.getSpec().getDepartment(), HttpStatus.OK);
+        return new ResponseEntity<>(this.departmentMapper.toDto(group.getSpec().getDepartment()), HttpStatus.OK);
     }
 }

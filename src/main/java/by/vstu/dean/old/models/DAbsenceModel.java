@@ -36,9 +36,8 @@ public class DAbsenceModel extends OldDBBaseModel {
     private String lessonType;
 
     @Size(max = 8)
-    @JoinColumn(name = "delo", referencedColumnName = "delo")
-    @ManyToOne(fetch = FetchType.EAGER)
-    private DStudentModel student;
+    @Column(name = "delo")
+    private String studentNumber;
 
     @Column(name = "data")
     private LocalDateTime date;

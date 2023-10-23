@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.students.DocumentDTO;
+import by.vstu.dean.dto.mapper.DocumentMapper;
 import by.vstu.dean.future.models.students.DocumentModel;
 import by.vstu.dean.future.repo.DocumentModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -12,15 +14,11 @@ import java.util.Optional;
  */
 @Service
 @Cacheable("document")
-public class DocumentService extends BaseService<DocumentModel, DocumentModelRepository> {
+public class DocumentService extends BaseService<DocumentDTO, DocumentModel, DocumentMapper, DocumentModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса документа.
-     *
-     * @param repo Репозиторий для работы с моделью документа.
-     */
-    public DocumentService(DocumentModelRepository repo) {
-        super(repo);
+
+    public DocumentService(DocumentModelRepository repo, DocumentMapper mapper) {
+        super(repo, mapper);
     }
 
     @Override

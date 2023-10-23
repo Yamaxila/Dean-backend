@@ -21,4 +21,5 @@ public interface DStudentModelRepository extends OldDBBaseModelRepository<DStude
 
     List<DStudentModel> findAllByGroupId(Long id);
 
+    List<DStudentModel> findAllByCaseNo(String caseNo);
 }

@@ -2,8 +2,6 @@ package by.vstu.dean.future.models.lessons;
 
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.FacultyModel;
-import by.vstu.dean.future.models.merge.TeacherDepartmentMerge;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -63,8 +61,7 @@ public class DepartmentModel extends DBBaseModel {
      * Все преподаватели, работающие на данной кафедре.
      */
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
+    @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "department_id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
-    @JsonIgnore
-    private Set<TeacherDepartmentMerge> teachers;
+    private Set<TeacherModel> teachers;
 }

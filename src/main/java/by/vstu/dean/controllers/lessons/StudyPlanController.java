@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.lessons;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.lessons.StudyPlanDTO;
+import by.vstu.dean.dto.mapper.StudyPlanMapper;
 import by.vstu.dean.future.models.lessons.StudyPlanModel;
 import by.vstu.dean.future.repo.StudyPlanModelRepository;
 import by.vstu.dean.services.StudyPlanService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/plans/")
 @Api(tags = "StudyPlans", description = "Учебные планы")
-public class StudyPlanController extends BaseController<StudyPlanModel, StudyPlanModelRepository, StudyPlanService> {
+public class StudyPlanController extends BaseController<StudyPlanDTO, StudyPlanModel, StudyPlanMapper, StudyPlanModelRepository, StudyPlanService> {
 
     /**
      * Конструктор контроллера.

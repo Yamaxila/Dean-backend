@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.FacultyDTO;
+import by.vstu.dean.dto.mapper.FacultyMapper;
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,15 +12,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("faculty")
-public class FacultyService extends BaseService<FacultyModel, FacultyModelRepository> {
+public class FacultyService extends BaseService<FacultyDTO, FacultyModel, FacultyMapper, FacultyModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса факультета.
-     *
-     * @param repo Репозиторий для работы с моделью факультета.
-     */
-    public FacultyService(FacultyModelRepository repo) {
-        super(repo);
+
+    public FacultyService(FacultyModelRepository repo, FacultyMapper mapper) {
+        super(repo, mapper);
     }
-
 }

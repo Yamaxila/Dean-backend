@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.specs;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.specs.QualificationDTO;
+import by.vstu.dean.dto.mapper.QualificationMapper;
 import by.vstu.dean.future.models.specs.QualificationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.services.QualificationService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/qualifications/")
 @Api(tags = "Qualification", description = "Квалификация")
-public class QualificationController extends BaseController<QualificationModel, QualificationModelRepository, QualificationService> {
+public class QualificationController extends BaseController<QualificationDTO, QualificationModel, QualificationMapper, QualificationModelRepository, QualificationService> {
 
     /**
      * Конструктор контроллера.

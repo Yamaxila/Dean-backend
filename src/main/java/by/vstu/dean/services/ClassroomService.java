@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.rooms.ClassroomDTO;
+import by.vstu.dean.dto.mapper.ClassroomMapper;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import by.vstu.dean.enums.EStatus;
@@ -17,13 +19,15 @@ import java.util.List;
 
 @Service
 @Cacheable("classroom")
-public class ClassroomService extends BaseService<ClassroomModel, ClassroomModelRepository> {
+public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository> {
 
     private final DepartmentService departmentService;
-    public ClassroomService(ClassroomModelRepository repo, DepartmentService departmentService) {
-        super(repo);
+
+    public ClassroomService(ClassroomModelRepository repo, ClassroomMapper mapper, DepartmentService departmentService) {
+        super(repo, mapper);
         this.departmentService = departmentService;
     }
+
 
     public List<ClassroomModel> updateFromExcel(String filePath) {
 

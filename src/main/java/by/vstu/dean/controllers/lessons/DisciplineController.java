@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.lessons;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.lessons.DisciplineDTO;
+import by.vstu.dean.dto.mapper.DisciplineMapper;
 import by.vstu.dean.future.models.lessons.DisciplineModel;
 import by.vstu.dean.future.repo.DisciplineModelRepository;
 import by.vstu.dean.services.DisciplineService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/disciplines/")
 @Api(tags = "Disciplines", description = "Дисциплины")
-public class DisciplineController extends BaseController<DisciplineModel, DisciplineModelRepository, DisciplineService> {
+public class DisciplineController extends BaseController<DisciplineDTO, DisciplineModel, DisciplineMapper, DisciplineModelRepository, DisciplineService> {
 
     /**
      * Конструктор контроллера.

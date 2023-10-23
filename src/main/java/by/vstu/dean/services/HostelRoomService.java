@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.hostels.HostelRoomDTO;
+import by.vstu.dean.dto.mapper.HostelRoomMapper;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.enums.EStatus;
@@ -15,11 +17,12 @@ import java.util.List;
 
 @Service
 @Cacheable("hostel")
-public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomModelRepository> {
-    public HostelRoomService(HostelRoomModelRepository repo) {
-        super(repo);
-    }
+public class HostelRoomService extends BaseService<HostelRoomDTO, HostelRoomModel, HostelRoomMapper, HostelRoomModelRepository> {
 
+
+    public HostelRoomService(HostelRoomModelRepository repo, HostelRoomMapper mapper) {
+        super(repo, mapper);
+    }
 
     @PostConstruct()
     @Order(7)

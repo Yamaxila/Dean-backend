@@ -1,5 +1,7 @@
 package by.vstu.dean.controllers.common;
 
+import by.vstu.dean.dto.future.FacultyDTO;
+import by.vstu.dean.dto.mapper.FacultyMapper;
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;
@@ -15,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/faculties/")
 @Api(tags = "Faculties")
-public class FacultyController extends BaseController<FacultyModel, FacultyModelRepository, FacultyService> {
+public class FacultyController extends BaseController<FacultyDTO, FacultyModel, FacultyMapper, FacultyModelRepository, FacultyService> {
 
     /**
      * Конструктор контроллера.
@@ -33,7 +35,7 @@ public class FacultyController extends BaseController<FacultyModel, FacultyModel
      */
     @Override
     @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<FacultyModel> put(FacultyModel facultyModel){
+    public ResponseEntity<FacultyDTO> put(FacultyDTO facultyModel){
         throw new SecurityException("Can't execute this!");
     }
 
@@ -44,7 +46,7 @@ public class FacultyController extends BaseController<FacultyModel, FacultyModel
      */
     @Override
     @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<FacultyModel> deleteById(Long id) {
+    public ResponseEntity<FacultyDTO> deleteById(Long id) {
         throw new SecurityException("Can't execute this!");
     }
 }

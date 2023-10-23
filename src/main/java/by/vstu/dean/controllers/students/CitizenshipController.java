@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.students.CitizenshipDTO;
+import by.vstu.dean.dto.mapper.CitizenshipMapper;
 import by.vstu.dean.future.models.students.CitizenshipModel;
 import by.vstu.dean.future.repo.CitizenshipModelRepository;
 import by.vstu.dean.services.CitizenshipService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/students/citizenship/")
 @Api(tags = "Citizenship's", description = "Гражданства")
-public class CitizenshipController extends BaseController<CitizenshipModel, CitizenshipModelRepository, CitizenshipService> {
+public class CitizenshipController extends BaseController<CitizenshipDTO, CitizenshipModel, CitizenshipMapper, CitizenshipModelRepository, CitizenshipService> {
 
     /**
      * Конструктор контроллера.

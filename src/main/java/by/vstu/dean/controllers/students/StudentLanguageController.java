@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.students.StudentLanguageDTO;
+import by.vstu.dean.dto.mapper.StudentLanguageMapper;
 import by.vstu.dean.future.models.students.StudentLanguageModel;
 import by.vstu.dean.future.repo.StudentLanguageModelRepository;
 import by.vstu.dean.services.StudentLanguageService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/students/langs/")
 @Api(tags = {"Languages"}, description = "Языки")
-public class StudentLanguageController extends BaseController<StudentLanguageModel, StudentLanguageModelRepository, StudentLanguageService> {
+public class StudentLanguageController extends BaseController<StudentLanguageDTO, StudentLanguageModel, StudentLanguageMapper, StudentLanguageModelRepository, StudentLanguageService> {
 
     /**
      * Конструктор контроллера.

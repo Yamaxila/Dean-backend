@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.lessons;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.lessons.ExamTypeDTO;
+import by.vstu.dean.dto.mapper.ExamTypeMapper;
 import by.vstu.dean.future.models.lessons.ExamModel;
 import by.vstu.dean.future.repo.ExamModelRepository;
 import by.vstu.dean.services.ExamTypeService;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/plans/exams/")
 @Api(tags = {"ExamTypes"}, description = "Типы экзаментов")
-public class ExamTypeController extends BaseController<ExamModel, ExamModelRepository, ExamTypeService> {
+public class ExamTypeController extends BaseController<ExamTypeDTO, ExamModel, ExamTypeMapper, ExamModelRepository, ExamTypeService> {
 
     /**
      * Конструктор контроллера.
@@ -34,7 +36,7 @@ public class ExamTypeController extends BaseController<ExamModel, ExamModelRepos
      */
     @Override
     @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<ExamModel> put(ExamModel facultyModel) {
+    public ResponseEntity<ExamTypeDTO> put(ExamTypeDTO facultyModel) {
         throw new SecurityException("Can't execute this!");
     }
 
@@ -45,7 +47,7 @@ public class ExamTypeController extends BaseController<ExamModel, ExamModelRepos
      */
     @Override
     @ApiOperation(value = "", hidden = true)
-    public ResponseEntity<ExamModel> deleteById(Long id) {
+    public ResponseEntity<ExamTypeDTO> deleteById(Long id) {
         throw new SecurityException("Can't execute this!");
     }
 }

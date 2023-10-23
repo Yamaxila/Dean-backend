@@ -38,10 +38,17 @@ mvn dokka:dokka
 - [IUpdateExecutor](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/IUpdateExecutor.java) - позволяет автоматически вызывать сервисы и инициализировать из [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java)
 - [MainUpdateService](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/services/updates/MainUpdateService.java) - главный сервис обновлений. Позволяет автоматически выполнять обновление при запуске(после миграции) 
 
+Мапперы и DTO [dto](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/)
+- [BaseMapperInterface](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/BaseMapperInterface.java) - базовый маппер
+- [BaseDTO](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/BaseDTO.java) - базовый DTO
+- [MapperImpl](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/dto/mappers/impl) - пакет содержащий имплиментации мапперов
 
-### Примеры
+Rest-репозитории для других сервисов
+- [ApiRepositoryBase](https://github.com/yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/api/ApiRepositoryBase.java) - позволяет подключать объекты, как обычный репозиторий (см. Примеры)
 
-- Пример работы с [BaseRequest](https://github.com/Yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/BaseRequest.java):
+## Примеры
+
+### Пример работы с [BaseRequest](https://github.com/Yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/BaseRequest.java):
 
 ```java
 import by.vstu.dean.adapters.json.*;
@@ -90,4 +97,51 @@ class BaseRequestExample {
 
 ```
 
+### Пример работы с [ApiRepositoryBase](https://github.com/Yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/repo/ApiRepositoryBase.java):
+
+Создание базового репозитория проекта:
+
+```java
+import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.requests.TokenRequest;
+import by.vstu.dean.requests.repo.ApiRepositoryBase;
+import org.springframework.data.repository.NoRepositoryBean;
+
+@NoRepositoryBean
+public abstract class DeanApiRepositoryBase<O extends DBBaseModel> extends ApiRepositoryBase<O> {
+
+    protected DeanApiRepositoryBase(String endpoint, Class<O> target) {
+        super("http://localhost:18076/api", endpoint, "", new TokenRequest("AUTH-URL", "USERNAME", "PASSWORD", "CLIENT_ID", "CLIENT_SECRET").getToken(), target);
+    }
+
+}
+
+```
+
+P.S. Для работы репозиториев необходим клиент с scope "rsql". **БЕЗДУМНОЕ ИСПОЛЬЗОВАНИЕ ДАННОГО КЛИЕНТА ЯВЛЯЕТСЯ УГРОЗОЙ БЕЗОПАСТНОСТИ СЕРВИСА**
+
+Создание репозитория на примере GroupsRepo:
+
+```java
+
+import by.vstu.dean.future.models.students.GroupModel;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.stereotype.Repository;
+
+@Repository
+public class GroupsRepo extends DeanApiRepositoryBase<GroupModel> {
+    public GroupsRepo() {
+        super("groups/", GroupModel.class);
+    }
+
+    @Override
+    @Cacheable(value = "groups", key = "#id")
+    public GroupModel getSingle(Long id) {
+        return super.getSingle(id);
+    }
+}
+
+```
+
+P.S.  Я настоятельно рекомендую использовать здесь аннотацию `@Cacheble` на методе `getSingle(Long)`, т.к. большое количество запросов сильно скажется на быстродействии
 

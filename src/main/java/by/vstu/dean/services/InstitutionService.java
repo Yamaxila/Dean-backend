@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.students.InstitutionDTO;
+import by.vstu.dean.dto.mapper.InstitutionMapper;
 import by.vstu.dean.future.models.students.InstitutionModel;
 import by.vstu.dean.future.repo.InstitutionModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,14 +12,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("institution")
-public class InstitutionService extends BaseService<InstitutionModel, InstitutionModelRepository> {
+public class InstitutionService extends BaseService<InstitutionDTO, InstitutionModel, InstitutionMapper, InstitutionModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса учебного учреждения.
-     *
-     * @param repo Репозиторий для работы с моделью учебного учреждения.
-     */
-    public InstitutionService(InstitutionModelRepository repo) {
-        super(repo);
+    public InstitutionService(InstitutionModelRepository repo, InstitutionMapper mapper) {
+        super(repo, mapper);
     }
 }

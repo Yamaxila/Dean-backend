@@ -1,5 +1,7 @@
 package by.vstu.dean.services.updates;
 
+import by.vstu.dean.dto.BaseDTO;
+import by.vstu.dean.dto.future.BaseMapperInterface;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.DBBaseModelRepository;
@@ -15,7 +17,7 @@ import java.lang.reflect.Field;
 import java.util.*;
 
 @RequiredArgsConstructor
-public abstract class BaseUpdateService<D extends OldDBBaseModel, Y extends OldDBBaseModelRepository<D>, O extends DBBaseModel, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>, M extends BaseMigrateService<O, D>> implements IUpdateExecutor {
+public abstract class BaseUpdateService<U extends BaseDTO, D extends OldDBBaseModel, Y extends OldDBBaseModelRepository<D>, O extends DBBaseModel, I extends BaseMapperInterface<U, O>, R extends DBBaseModelRepository<O>, S extends BaseService<U, O, I, R>, M extends BaseMigrateService<O, D>> implements IUpdateExecutor {
 
     protected final R repo;
     protected final Y dRepo;

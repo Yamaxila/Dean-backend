@@ -2,6 +2,8 @@ package by.vstu.dean.controllers.rooms;
 
 import by.vstu.dean.anotations.ApiSecurity;
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.rooms.ClassroomDTO;
+import by.vstu.dean.dto.mapper.ClassroomMapper;
 import by.vstu.dean.future.models.rooms.ClassroomModel;
 import by.vstu.dean.future.repo.ClassroomModelRepository;
 import by.vstu.dean.services.ClassroomService;
@@ -17,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/classes/")
-public class ClassroomController extends BaseController<ClassroomModel, ClassroomModelRepository, ClassroomService> {
+public class ClassroomController extends BaseController<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository, ClassroomService> {
     public ClassroomController(ClassroomService service) {
         super(service);
     }

@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.specs;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.specs.SpecializationDTO;
+import by.vstu.dean.dto.mapper.SpecializationMapper;
 import by.vstu.dean.future.models.specs.SpecializationModel;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.services.SpecializationService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/spez/")
 @Api(tags = "Specializations", description = "Специализации")
-public class SpecializationController extends BaseController<SpecializationModel, SpecializationModelRepository, SpecializationService> {
+public class SpecializationController extends BaseController<SpecializationDTO, SpecializationModel, SpecializationMapper, SpecializationModelRepository, SpecializationService> {
 
     /**
      * Конструктор контроллера.

@@ -2,6 +2,8 @@ package by.vstu.dean.controllers.students;
 
 import by.vstu.dean.anotations.ApiSecurity;
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.students.StudentDTO;
+import by.vstu.dean.dto.mapper.StudentMapper;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.StudentModelRepository;
@@ -24,7 +26,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/students")
 @Api(tags = "Students", description = "Студенты")
-public class StudentsController extends BaseController<StudentModel, StudentModelRepository, StudentService> {
+public class StudentsController extends BaseController<StudentDTO, StudentModel, StudentMapper, StudentModelRepository, StudentService> {
 
     /**
      * Конструктор контроллера.
@@ -45,8 +47,8 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
-    public ResponseEntity<List<StudentModel>> getAll() {
-        return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<StudentDTO>> getAll() {
+        return new ResponseEntity<>(this.service.toDto(this.service.getAll()), HttpStatus.OK);
     }
 
     /**
@@ -93,7 +95,7 @@ public class StudentsController extends BaseController<StudentModel, StudentMode
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @ApiOperation(value = "getById", notes = "Отправляет объект из базы по id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
-    public ResponseEntity<StudentModel> getById(@PathVariable Long id) {
+    public ResponseEntity<StudentDTO> getById(@PathVariable Long id) {
         return super.getById(id);
     }
 }

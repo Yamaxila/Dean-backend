@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.specs.SpecialityDTO;
+import by.vstu.dean.dto.mapper.SpecialityMapper;
 import by.vstu.dean.future.models.specs.SpecialityModel;
 import by.vstu.dean.future.repo.SpecialityModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,14 +12,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("speciality")
-public class SpecialityService extends BaseService<SpecialityModel, SpecialityModelRepository> {
+public class SpecialityService extends BaseService<SpecialityDTO, SpecialityModel, SpecialityMapper, SpecialityModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса специальности.
-     *
-     * @param repo Репозиторий для работы с моделью специальности.
-     */
-    public SpecialityService(SpecialityModelRepository repo) {
-        super(repo);
+
+    public SpecialityService(SpecialityModelRepository repo, SpecialityMapper mapper) {
+        super(repo, mapper);
     }
 }

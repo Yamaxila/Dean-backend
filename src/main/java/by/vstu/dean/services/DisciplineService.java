@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.lessons.DisciplineDTO;
+import by.vstu.dean.dto.mapper.DisciplineMapper;
 import by.vstu.dean.future.models.lessons.DisciplineModel;
 import by.vstu.dean.future.repo.DisciplineModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,14 +12,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("discipline")
-public class DisciplineService extends BaseService<DisciplineModel, DisciplineModelRepository> {
+public class DisciplineService extends BaseService<DisciplineDTO, DisciplineModel, DisciplineMapper, DisciplineModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса учебной дисциплины.
-     *
-     * @param repo Репозиторий для работы с моделью учебной дисциплины.
-     */
-    public DisciplineService(DisciplineModelRepository repo) {
-        super(repo);
+    public DisciplineService(DisciplineModelRepository repo, DisciplineMapper mapper) {
+        super(repo, mapper);
     }
 }

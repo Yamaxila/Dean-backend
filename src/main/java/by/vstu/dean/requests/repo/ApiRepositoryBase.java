@@ -11,7 +11,6 @@ import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import lombok.Getter;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoRepositoryBean
-@Cacheable(value = "api")
 public abstract class ApiRepositoryBase<O extends DBBaseModel> {
 
     protected BaseRequest<String> request;
@@ -50,26 +48,16 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
     }
 
     public List<O> getAll() {
-        this.request.setUrl(this.defaultUrl);
-        this.request.setMethod(HttpMethod.GET);
-        String json = this.request.run(this.params);
-        List<O> o = null;
-        try {
-            o = gson.fromJson(json, targetTypeList.getType());
-        } catch (Exception ignored) { }
-        return o;
+        return this.rsql("");
     }
 
-    @Cacheable(value = "api", key = "#id")
     public O getSingle(Long id) {
-        this.request.setMethod(HttpMethod.GET);
-        this.request.setUrl(this.defaultUrl + id.toString());
-        String json = this.request.run(this.params);
-
-        return gson.fromJson(json, targetTypeBase.getType());
+        List<O> o = this.rsql("id==" + id);
+        if(o == null || o.isEmpty())
+            return null;
+        return o.get(0);
     }
 
-    @Cacheable(value = "api", key = "#rsql")
     public List<O> rsql(String rsql) {
         this.request.setMethod(HttpMethod.GET);
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);
@@ -77,7 +65,6 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
         return gson.fromJson(json, targetTypeList.getType());
     }
 
-    @Cacheable(value = "api", key = "#rsql")
     public String rawRSQl(String rsql) {
         this.request.setMethod(HttpMethod.GET);
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);

@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.students.DeviationDTO;
+import by.vstu.dean.dto.mapper.DeviationMapper;
 import by.vstu.dean.future.models.students.DeviationModel;
 import by.vstu.dean.future.repo.DeviationModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,14 +12,9 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("deviation")
-public class DeviationService extends BaseService<DeviationModel, DeviationModelRepository> {
-
-    /**
-     * Конструктор для создания экземпляра сервиса отклонений.
-     *
-     * @param repo Репозиторий для работы с моделью отклонений.
-     */
-    public DeviationService(DeviationModelRepository repo) {
-        super(repo);
+public class DeviationService extends BaseService<DeviationDTO, DeviationModel, DeviationMapper, DeviationModelRepository> {
+    public DeviationService(DeviationModelRepository repo, DeviationMapper mapper) {
+        super(repo, mapper);
     }
+
 }

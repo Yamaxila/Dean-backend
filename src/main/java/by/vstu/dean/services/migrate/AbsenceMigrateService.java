@@ -9,7 +9,9 @@ import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.models.students.StudentModel;
 import by.vstu.dean.future.repo.AbsenceModelRepository;
 import by.vstu.dean.old.models.DAbsenceModel;
+import by.vstu.dean.old.models.DStudentModel;
 import by.vstu.dean.old.repo.DAbsenceModelRepository;
+import by.vstu.dean.old.repo.DStudentModelRepository;
 import by.vstu.dean.services.DepartmentService;
 import by.vstu.dean.services.DisciplineService;
 import by.vstu.dean.services.StudentService;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,6 +31,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
     private final DAbsenceModelRepository dAbsenceModelRepository;
     private final AbsenceModelRepository absenceModelRepository;
+    private final DStudentModelRepository dStudentModelRepository;
 
     private final DisciplineMigrateService disciplineMigrateService;
     private final TeacherService teacherService;
@@ -41,8 +45,8 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     private final List<DepartmentModel> departments = new ArrayList<>();
 
     @Override
-    public Long getLastDBId() { // Лучще не брать ниже, ибо в старой базе есть люди с одинаковым номером зачетки
-        return this.absenceModelRepository.findTopByOrderByIdDesc() == null ? 83536 : this.absenceModelRepository.findTopByOrderByIdDesc().getSourceId();
+    public Long getLastDBId() {
+        return this.absenceModelRepository.findTopByOrderByIdDesc() == null ? 70000 : this.absenceModelRepository.findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -79,7 +83,19 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         Optional<DisciplineModel> disciplineModel = this.disciplines.stream().filter(p -> p.getSourceId().equals(dAbsenceModel.getDiscipline().getId())).findFirst();
         long finalDId = dId;
         Optional<DepartmentModel> departmentModel = this.departments.stream().filter(p -> p.getSourceId().equals(finalDId)).findFirst();
-        Optional<StudentModel> student = this.students.stream().filter(p -> p.getSourceId().equals(dAbsenceModel.getStudent().getId())).findFirst();
+
+        List<DStudentModel> students = this.dStudentModelRepository.findAllByCaseNo(dAbsenceModel.getStudentNumber());
+        DStudentModel oneStudent;
+        if(students.isEmpty())
+            throw new RuntimeException("DStudent not found for absence with id = " + dAbsenceModel.getId());
+
+        if(students.size() > 1)
+            oneStudent = students.stream().max(Comparator.comparing(DStudentModel::getId)).orElse(null);
+        else
+            oneStudent = students.get(0);
+
+
+        Optional<StudentModel> student = this.students.stream().filter(p -> p.getSourceId().equals(oneStudent.getId())).findFirst();
 
         if(teacherModel.isEmpty())
             throw new RuntimeException("Teacher not found for absence with id = " + dAbsenceModel.getId());

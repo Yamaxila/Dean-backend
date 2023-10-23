@@ -1,6 +1,8 @@
 package by.vstu.dean.controllers.lessons;
 
 import by.vstu.dean.controllers.common.BaseController;
+import by.vstu.dean.dto.future.lessons.TeacherDTO;
+import by.vstu.dean.dto.mapper.TeacherMapper;
 import by.vstu.dean.future.models.lessons.TeacherModel;
 import by.vstu.dean.future.repo.TeacherModelRepository;
 import by.vstu.dean.services.TeacherService;
@@ -14,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/teachers/")
 @Api(tags = "Teachers", description = "Преподаватели")
-public class TeacherController extends BaseController<TeacherModel, TeacherModelRepository, TeacherService> {
+public class TeacherController extends BaseController<TeacherDTO, TeacherModel, TeacherMapper, TeacherModelRepository, TeacherService> {
 
     /**
      * Конструктор контроллера.

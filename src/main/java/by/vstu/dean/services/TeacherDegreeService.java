@@ -1,5 +1,7 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.dto.future.lessons.TeacherDegreeDTO;
+import by.vstu.dean.dto.mapper.TeacherDegreeMapper;
 import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -10,14 +12,10 @@ import org.springframework.stereotype.Service;
  */
 @Service
 @Cacheable("degree")
-public class TeacherDegreeService extends BaseService<TeacherDegreeModel, TeacherDegreeModelRepository> {
+public class TeacherDegreeService extends BaseService<TeacherDegreeDTO, TeacherDegreeModel, TeacherDegreeMapper, TeacherDegreeModelRepository> {
 
-    /**
-     * Конструктор для создания экземпляра сервиса ученой степени преподавателя.
-     *
-     * @param repo Репозиторий для работы с моделью ученой степени преподавателя.
-     */
-    public TeacherDegreeService(TeacherDegreeModelRepository repo) {
-        super(repo);
+
+    public TeacherDegreeService(TeacherDegreeModelRepository repo, TeacherDegreeMapper mapper) {
+        super(repo, mapper);
     }
 }
