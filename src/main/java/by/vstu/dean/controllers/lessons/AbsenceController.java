@@ -10,10 +10,20 @@ import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+/**
+ * Контроллер для работы с отработками.
+ *
+ * @apiNote Этот контроллер обрабатывает запросы, связанные с отработками студентов.
+ */
 @RestController
 @RequestMapping("/api/absences/")
 @Api(tags = "Absences", description = "Отработки")
 public class AbsenceController extends BaseController<AbsenceDTO, AbsenceModel, AbsenceMapper, AbsenceModelRepository, AbsenceService> {
+    /**
+     * Конструктор контроллера отработок.
+     *
+     * @param service Сервис для работы с отработками.
+     */
     public AbsenceController(AbsenceService service) {
         super(service);
     }

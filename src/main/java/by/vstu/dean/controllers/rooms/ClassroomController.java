@@ -18,21 +18,37 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Контроллер для работы с аудиториями (classrooms).
+ *
+ * @apiNote Этот контроллер обрабатывает запросы, связанные с аудиториями.
+ */
 @RestController
 @RequestMapping("/api/classes/")
 @Api(tags = "Classrooms", description = "Аудитории")
 public class ClassroomController extends BaseController<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository, ClassroomService> {
+    /**
+     * Конструктор контроллера аудиторий.
+     *
+     * @param service Сервис для работы с аудиториями.
+     */
     public ClassroomController(ClassroomService service) {
         super(service);
     }
 
-    @RequestMapping(value = "/update",
-            produces = {"application/json"},
-            method = RequestMethod.POST)
+    /**
+     * Метод для обновления данных из файла.
+     *
+     * <p>Этот метод обновляет данные о аудиториях из файла "rooms.xlsx" и возвращает список обновленных аудиторий.
+     *
+     * @return Список обновленных аудиторий.
+     */
+    @RequestMapping(value = "/update", produces = {"application/json"}, method = RequestMethod.POST)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "update", notes = "Обновляет данныеиз базы", hidden = true)
+    @ApiOperation(value = "update", notes = "Обновляет данные из базы", hidden = true)
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<ClassroomModel>> updateRoomListFromFile() {
         return new ResponseEntity<>(this.service.updateFromExcel("./rooms.xlsx"), HttpStatus.OK);
     }
 }
+
