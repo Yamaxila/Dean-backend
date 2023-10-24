@@ -1,21 +1,22 @@
 package by.vstu.dean.dto.mapper.impl;
 
-import by.vstu.dean.dto.BaseMapperImpl;
 import by.vstu.dean.dto.future.students.GroupDTO;
 import by.vstu.dean.dto.mapper.GroupMapper;
 import by.vstu.dean.dto.mapper.SpecialityMapper;
+import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.models.students.GroupModel;
 import by.vstu.dean.future.repo.GroupModelRepository;
 import by.vstu.dean.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @Component
-public class GroupMapperImpl extends BaseMapperImpl implements GroupMapper {
+public class GroupMapperImpl implements GroupMapper {
 
     @Autowired
     private GroupModelRepository groupModelRepository;
@@ -48,14 +49,19 @@ public class GroupMapperImpl extends BaseMapperImpl implements GroupMapper {
 
     @Override
     public GroupDTO toDto(GroupModel entity) {
-        GroupDTO groupDTO = (GroupDTO) this.mapBaseFields(entity);
+        GroupDTO groupDTO = new GroupDTO();
 
+        groupDTO.setId(entity.getId());
+        groupDTO.setSourceId(entity.getSourceId());
+        groupDTO.setUpdated(entity.getUpdated());
+        groupDTO.setStatus(entity.getStatus());
         groupDTO.setName(entity.getName());
         groupDTO.setYearStart(entity.getYearStart());
         groupDTO.setYearEnd(entity.getYearEnd());
         groupDTO.setSpec(this.specialityMapper.toDto(entity.getSpec()));
         groupDTO.setFacultyId(entity.getFaculty().getId());
-        groupDTO.setCurrentCourse(entity.getYearEnd() - entity.getYearStart()); //TODO: Need to implement semester
+        int course = LocalDate.now().getYear() - entity.getYearStart() - (LocalDate.now().getMonth().getValue() < 7 ? -1 : 0);
+        groupDTO.setCurrentCourse(entity.getStatus().equals(EStatus.DELETED) ? entity.getYearEnd()-entity.getYearStart() : course);
         return groupDTO;
     }
 

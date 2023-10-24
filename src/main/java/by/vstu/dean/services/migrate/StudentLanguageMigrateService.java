@@ -5,6 +5,7 @@ import by.vstu.dean.future.models.students.StudentLanguageModel;
 import by.vstu.dean.future.repo.StudentLanguageModelRepository;
 import by.vstu.dean.old.models.DStudentLanguageModel;
 import by.vstu.dean.old.repo.DStudentLanguageModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +32,7 @@ public class StudentLanguageMigrateService extends BaseMigrateService<StudentLan
 
     @Override
     public StudentLanguageModel convertSingle(DStudentLanguageModel dStudentLanguageModel, boolean update) {
-        StudentLanguageModel studentLanguageModel = new StudentLanguageModel(dStudentLanguageModel.getName());
+        StudentLanguageModel studentLanguageModel = new StudentLanguageModel(StringUtils.safeTrim(dStudentLanguageModel.getName()));
         studentLanguageModel.setStatus(EStatus.ACTIVE);
         studentLanguageModel.setSourceId(dStudentLanguageModel.getId());
         if (!update)

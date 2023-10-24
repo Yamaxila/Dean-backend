@@ -7,6 +7,7 @@ import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.future.repo.DisciplineModelRepository;
 import by.vstu.dean.old.models.DDisciplineModel;
 import by.vstu.dean.old.repo.DDisciplineModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -40,8 +41,8 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
             this.departments = this.departmentModelRepository.findAll();
 
         DisciplineModel disciplineModel = new DisciplineModel();
-        disciplineModel.setName(dDisciplineModel.getName().trim());
-        disciplineModel.setShortName(dDisciplineModel.getShortName().trim());
+        disciplineModel.setName(StringUtils.safeTrim(dDisciplineModel.getName()));
+        disciplineModel.setShortName(StringUtils.safeTrim(dDisciplineModel.getShortName()));
 
         this.departments
                 .stream()

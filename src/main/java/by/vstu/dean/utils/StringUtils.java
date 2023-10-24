@@ -4,7 +4,7 @@ public class StringUtils {
 
 
     public static String safeTrim(String in) {
-        return in == null ? "" : in.trim();
+        return in == null ? "" : in.trim().replace("  ", " ");
     }
 
     public static boolean canBeInt(String in) {

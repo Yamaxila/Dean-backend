@@ -8,6 +8,7 @@ import by.vstu.dean.future.repo.SpecialityModelRepository;
 import by.vstu.dean.future.repo.SpecializationModelRepository;
 import by.vstu.dean.old.models.DSpecializationModel;
 import by.vstu.dean.old.repo.DSpecializationModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -56,9 +57,9 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
             specializationModel.setCreated(LocalDateTime.now());
         specializationModel.setUpdated(LocalDateTime.now());
 
-        specializationModel.setName(dSpecializationModel.getName());
+        specializationModel.setName(StringUtils.safeTrim(dSpecializationModel.getName()));
         specializationModel.setSpezCode("<FIXME>");
-        specializationModel.setShortName(dSpecializationModel.getShortName());
+        specializationModel.setShortName(StringUtils.safeTrim(dSpecializationModel.getShortName()));
 
         specializationModel.setQualification(this.qualificationModelRepository.findBySourceId(dSpecializationModel.getDkvalifId() == null ? 1 : dSpecializationModel.getDkvalifId().getId()));
         specializationModel.setSpec(this.specialityRepository.findBySourceId(dSpecializationModel.getSpeciality() == null ? 319 : dSpecializationModel.getSpeciality().getId()));

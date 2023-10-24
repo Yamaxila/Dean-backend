@@ -1,6 +1,7 @@
 package by.vstu.dean.future.models.students;
 
 import by.vstu.dean.adapters.LocalDateTypeAdapter;
+import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.FacultyModel;
 import by.vstu.dean.future.models.specs.SpecialityModel;
@@ -8,10 +9,7 @@ import com.google.gson.annotations.JsonAdapter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDate;
 
 /**
@@ -53,6 +51,12 @@ public class GroupModel extends DBBaseModel {
      */
     @ApiModelProperty(notes = "Год поступления")
     private Integer yearStart;
+
+    /**
+     * Семестр окончания
+     */
+    @Enumerated(EnumType.ORDINAL)
+    private ESemester endSemester;
 
     /**
      * Год окончания обучения группы.

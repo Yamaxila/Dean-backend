@@ -19,7 +19,7 @@ public class TeacherDepartmentMigrateService implements IMigrateExecutor {
 
     @Override
     public void migrate() {
-
+        System.err.println(this.getClass().getName());
         this.absenceService.getAll().forEach((absenceModel) -> {
 
             TeacherDepartmentMerge tdm = this.teacherDepartmentMergeRepository.findByDepartmentIdAndTeacherId(absenceModel.getDepartment().getId(), absenceModel.getTeacherModel().getId());

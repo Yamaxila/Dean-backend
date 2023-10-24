@@ -52,7 +52,6 @@ public class DepartmentController extends BaseController<DepartmentDTO, Departme
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDTO>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
-
         return o.map(departmentModel -> new ResponseEntity<>(this.service.toDto(departmentModel).getTeachers().stream().toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

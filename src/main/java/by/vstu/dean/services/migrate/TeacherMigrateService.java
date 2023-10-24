@@ -7,6 +7,7 @@ import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.future.repo.TeacherModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
 import by.vstu.dean.old.repo.DTeacherModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,9 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
         TeacherModel teacherModel = new TeacherModel();
         teacherModel.setDegree(this.teacherDegreeModelRepository.findByNameLike(dTeacherModel.getDegree() == null ? "..." : dTeacherModel.getDegree().toLowerCase().trim()));
-        teacherModel.setSurname(dTeacherModel.getLastName().trim());
-        teacherModel.setName(dTeacherModel.getFirstName().trim());
-        teacherModel.setPatronymic(dTeacherModel.getSecondName().trim());
+        teacherModel.setSurname(StringUtils.safeTrim(dTeacherModel.getLastName()));
+        teacherModel.setName(StringUtils.safeTrim(dTeacherModel.getFirstName()));
+        teacherModel.setPatronymic(StringUtils.safeTrim(dTeacherModel.getSecondName()));
         if (!update)
             teacherModel.setCreated(LocalDateTime.now());
         teacherModel.setUpdated(LocalDateTime.now());

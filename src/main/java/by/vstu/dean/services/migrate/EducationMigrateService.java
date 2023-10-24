@@ -7,11 +7,12 @@ import by.vstu.dean.old.models.DStudentModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-
 public class EducationMigrateService extends BaseMigrateService<EducationModel, DStudentModel> {
 
     private final EducationModelRepository educationModelRepository;
@@ -39,8 +40,14 @@ public class EducationMigrateService extends BaseMigrateService<EducationModel, 
 
     public List<EducationModel> applyStudentIds() {
         List<EducationModel> temp = this.educationModelRepository.findAllByStudentIdIsNull();
-        temp.forEach((educationModel) -> educationModel.setStudent(this.studentModelRepository.findBySourceId(educationModel.getSourceId())));
-        return temp;
+        List<EducationModel> out = new ArrayList<>();
+        temp.forEach((educationModel) -> {
+            educationModel.setStudent(this.studentModelRepository.findBySourceId(educationModel.getSourceId()));
+            if(educationModel.getUpdated() == null)
+                educationModel.setUpdated(LocalDateTime.now());
+            out.add(educationModel);
+        });
+        return out;
     }
 
     @Override

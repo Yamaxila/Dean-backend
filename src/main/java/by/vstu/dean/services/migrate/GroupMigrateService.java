@@ -1,5 +1,6 @@
 package by.vstu.dean.services.migrate;
 
+import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.enums.EStatus;
 import by.vstu.dean.future.DBBaseModel;
 import by.vstu.dean.future.models.specs.SpecializationModel;
@@ -52,9 +53,14 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         groupModel.setFaculty(facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
         groupModel.setYearStart(dGroupModel.getYearStart());
         groupModel.setYearEnd(dGroupModel.getYearEnd());
+        try {
+            groupModel.setEndSemester(dGroupModel.getSemestrEnd().equalsIgnoreCase("осенний") ? ESemester.AUTUMN : ESemester.SPRING);
+        } catch (Exception ignored) {
+            groupModel.setEndSemester(ESemester.UNKNOWN);
+        }
         groupModel.setDateEnd(dGroupModel.getDateEnd() == null ? null : dGroupModel.getDateEnd().toLocalDate());
         groupModel.setDateStart(dGroupModel.getDateStart() == null ? null : dGroupModel.getDateStart().toLocalDate());
-        groupModel.setStatus(dGroupModel.getCurrentCourse() != 99 ? EStatus.ACTIVE : EStatus.DELETED);
+        groupModel.setStatus(dGroupModel.getCurrentCourse() == null || dGroupModel.getCurrentCourse() != 99 ? EStatus.ACTIVE : EStatus.DELETED);
         groupModel.setSourceId(dGroupModel.getId());
 
         if (!update)

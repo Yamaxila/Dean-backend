@@ -5,6 +5,7 @@ import by.vstu.dean.future.models.lessons.TeacherDegreeModel;
 import by.vstu.dean.future.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
 import by.vstu.dean.old.repo.DTeacherModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -38,9 +39,9 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
         TeacherDegreeModel teacherDegreeModel;
         boolean notInList = false;
         if (!this.teacherDegreeModels.isEmpty()) {
-            teacherDegreeModel = this.teacherDegreeModels.stream().filter(p -> p.getName().equalsIgnoreCase(dTeacherModel.getDegree().trim())).findFirst().orElse(null);
+            teacherDegreeModel = this.teacherDegreeModels.stream().filter(p -> p.getName().equalsIgnoreCase(StringUtils.safeTrim(dTeacherModel.getDegree()))).findFirst().orElse(null);
         } else {
-            teacherDegreeModel = this.teacherDegreeModelRepository.findByNameLike(dTeacherModel.getDegree().toLowerCase().trim());
+            teacherDegreeModel = this.teacherDegreeModelRepository.findByNameLike(StringUtils.safeTrim(dTeacherModel.getDegree().toLowerCase()));
             notInList = true;
         }
         if (teacherDegreeModel == null) {
@@ -53,7 +54,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
             if (!update)
                 teacherDegreeModel.setCreated(LocalDateTime.now());
             teacherDegreeModel.setUpdated(LocalDateTime.now());
-            teacherDegreeModel.setName(dTeacherModel.getDegree().toLowerCase().trim());
+            teacherDegreeModel.setName(StringUtils.safeTrim(dTeacherModel.getDegree().toLowerCase()));
             notInList = true;
         }
 

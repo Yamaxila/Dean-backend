@@ -5,6 +5,7 @@ import by.vstu.dean.future.models.specs.QualificationModel;
 import by.vstu.dean.future.repo.QualificationModelRepository;
 import by.vstu.dean.old.models.DQualificationModel;
 import by.vstu.dean.old.repo.DQualificationModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,16 +29,15 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
     @Override
     public List<QualificationModel> convertNotExistsFromDB() {
 
-        List<DQualificationModel> temp = new ArrayList<>();
-        temp.addAll(this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()));
+        List<DQualificationModel> temp = new ArrayList<>(this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()));
         return this.convertList(temp);
     }
 
     @Override
     public QualificationModel convertSingle(DQualificationModel dQualificationModel, boolean update) {
         QualificationModel qualificationModel = new QualificationModel();
-        qualificationModel.setName(dQualificationModel.getNamePart1());
-        qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : dQualificationModel.getNamePart2());
+        qualificationModel.setName(StringUtils.safeTrim(dQualificationModel.getNamePart1()));
+        qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : StringUtils.safeTrim(dQualificationModel.getNamePart2()));
         qualificationModel.setStatus(EStatus.ACTIVE);
         qualificationModel.setSourceId(dQualificationModel.getId());
         if (!update)

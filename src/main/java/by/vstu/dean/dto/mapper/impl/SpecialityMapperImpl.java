@@ -1,6 +1,5 @@
 package by.vstu.dean.dto.mapper.impl;
 
-import by.vstu.dean.dto.BaseMapperImpl;
 import by.vstu.dean.dto.future.specs.SpecialityDTO;
 import by.vstu.dean.dto.mapper.SpecialityMapper;
 import by.vstu.dean.future.models.specs.SpecialityModel;
@@ -14,7 +13,7 @@ import java.util.Optional;
 
 
 @Component
-public class SpecialityMapperImpl extends BaseMapperImpl implements SpecialityMapper {
+public class SpecialityMapperImpl implements SpecialityMapper {
 
     @Autowired
     private SpecialityModelRepository specialityService;

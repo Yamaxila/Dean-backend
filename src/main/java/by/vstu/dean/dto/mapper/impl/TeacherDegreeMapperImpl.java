@@ -33,6 +33,7 @@ public class TeacherDegreeMapperImpl implements TeacherDegreeMapper {
             teacherDegreeModel.setStatus(dto.getStatus());
             teacherDegreeModel.setUpdated(LocalDateTime.now());
             teacherDegreeModel.setName(dto.getName());
+            teacherDegreeModel.setHourPrice(dto.getHourPrice());
             return teacherDegreeModel;
         }
     }
@@ -47,6 +48,8 @@ public class TeacherDegreeMapperImpl implements TeacherDegreeMapper {
             teacherDegreeDTO.setUpdated(entity.getUpdated());
             teacherDegreeDTO.setStatus(entity.getStatus());
             teacherDegreeDTO.setName(entity.getName());
+            teacherDegreeDTO.setHourPrice(entity.getHourPrice());
+
             return teacherDegreeDTO;
         }
     }

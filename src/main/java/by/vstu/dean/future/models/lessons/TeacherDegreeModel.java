@@ -13,7 +13,6 @@ import javax.persistence.Table;
  */
 @Getter
 @Entity
-@ToString
 @Table(name = "teacher_degrees")
 @ApiModel(description = "Объект должности преподавателя")
 @Setter
@@ -26,6 +25,12 @@ public class TeacherDegreeModel extends DBBaseModel {
      */
     @ApiModelProperty(notes = "Название должности")
     private String name;
+
+    /**
+     * Оплата за 1 час
+     */
+    @ApiModelProperty(notes = "Оплата за 1 час")
+    private Double hourPrice;
 
     public String toString() {
         return "TeacherDegreeModel(name=" + this.getName() + ")";

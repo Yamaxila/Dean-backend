@@ -7,6 +7,7 @@ import by.vstu.dean.future.repo.SpecialityModelRepository;
 import by.vstu.dean.old.models.DSpecialityModel;
 import by.vstu.dean.old.models.DSpecializationModel;
 import by.vstu.dean.old.repo.DStudentModelRepository;
+import by.vstu.dean.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -44,9 +45,9 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
     public SpecialityModel convertSingle(DSpecialityModel spec, boolean update) {
 
         SpecialityModel specialityModel = new SpecialityModel();
-        specialityModel.setName(spec.getName());
-        specialityModel.setShortName(spec.getShort_name());
-        specialityModel.setSpecCode(spec.getSpecCode());
+        specialityModel.setName(StringUtils.safeTrim(spec.getName()));
+        specialityModel.setShortName(StringUtils.safeTrim(spec.getShort_name()));
+        specialityModel.setSpecCode(StringUtils.safeTrim(spec.getSpecCode()));
         specialityModel.setStatus(EStatus.ACTIVE);
         specialityModel.setSourceId(spec.getId());
 

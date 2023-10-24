@@ -7,6 +7,7 @@ import by.vstu.dean.dto.mapper.ClassroomMapper;
 import by.vstu.dean.future.models.rooms.ClassroomModel;
 import by.vstu.dean.future.repo.ClassroomModelRepository;
 import by.vstu.dean.services.ClassroomService;
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/classes/")
+@Api(tags = "Classrooms", description = "Аудитории")
 public class ClassroomController extends BaseController<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository, ClassroomService> {
     public ClassroomController(ClassroomService service) {
         super(service);

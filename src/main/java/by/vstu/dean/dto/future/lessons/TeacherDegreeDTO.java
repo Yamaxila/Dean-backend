@@ -18,4 +18,10 @@ public class TeacherDegreeDTO extends BaseDTO {
     @ApiModelProperty(notes = "Название должности")
     private String name;
 
+    /**
+     * Оплата за 1 час
+     */
+    @ApiModelProperty(notes = "Оплата за 1 час")
+    private Double hourPrice;
+
 }
