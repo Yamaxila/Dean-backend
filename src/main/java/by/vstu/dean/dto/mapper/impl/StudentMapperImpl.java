@@ -40,6 +40,9 @@ public class StudentMapperImpl implements StudentMapper {
 
         StudentModel.StudentModelBuilder studentModel = StudentModel.builder();
 
+        studentModel.lastName(dto.getSurname());
+        studentModel.firstName(dto.getName());
+        studentModel.secondName(dto.getPatronymic());
         studentModel.sex(dto.getSex());
         studentModel.address(dto.getAddress());
         studentModel.addressCountry(dto.getAddressCountry());
@@ -67,6 +70,9 @@ public class StudentMapperImpl implements StudentMapper {
 
         StudentDTO studentDTO = new StudentDTO();
 
+        studentDTO.setSurname(entity.getLastName());
+        studentDTO.setName(entity.getFirstName());
+        studentDTO.setPatronymic(entity.getSecondName());
         studentDTO.setId(entity.getId());
         studentDTO.setSourceId(entity.getSourceId());
         studentDTO.setUpdated(entity.getUpdated());

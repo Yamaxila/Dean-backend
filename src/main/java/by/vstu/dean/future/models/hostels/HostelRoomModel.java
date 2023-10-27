@@ -26,15 +26,15 @@ public class HostelRoomModel extends DBBaseModel {
     @ApiModelProperty(value = "Номер комнаты", example = "302")
     private int roomNumber;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     @ApiModelProperty(value = "Тип комнаты", example = "LITTLE")
     private EHostelRoomType roomType;
 
     @ApiModelProperty(value = "Этаж", example = "2")
     private int floor;
 
-    @Enumerated(EnumType.STRING)
-    @ApiModelProperty(value = "Общежитие", example = "HOSTEL_2")
+    @Enumerated(EnumType.ORDINAL)
+    @ApiModelProperty(value = "Общежитие", example = "1")
     private EHostel hostel;
 
     @JoinColumn(referencedColumnName = "id", name = "hostel_room_id")

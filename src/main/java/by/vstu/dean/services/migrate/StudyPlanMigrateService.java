@@ -90,9 +90,8 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
         studyPlan.setSemesterNumber(dStudyPlan.getSemesterNumber());
 
-        if (teacher != null) {
+        if (teacher != null)
             studyPlan.setTeacher(teacher);
-        }
 
         studyPlan.setSourceId(dStudyPlan.getId());
         studyPlan.setStatus(EStatus.DELETED);

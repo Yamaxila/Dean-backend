@@ -1,6 +1,8 @@
 package by.vstu.dean.plugins;
 
 import by.vstu.dean.anotations.ApiSecurity;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.jetbrains.annotations.NotNull;
@@ -17,6 +19,10 @@ import springfox.documentation.swagger.common.SwaggerPluginSupport;
 
 import java.util.Optional;
 
+/**
+ * Кастомный Swagger-плагин для документирования API операций.
+ */
+@ApiModel(description = "Кастомный Swagger-плагин для документирования API операций")
 @Component
 @Order(SwaggerPluginSupport.SWAGGER_PLUGIN_ORDER + 1)
 @RequiredArgsConstructor
@@ -24,6 +30,12 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
 
     private final DescriptionResolver descriptions;
 
+    /**
+     * Применяет кастомные аннотации и описания к операции Swagger.
+     *
+     * @param context Контекст операции Swagger.
+     */
+    @ApiModelProperty(value = "Метод для применения кастомных аннотаций и описаний к операции Swagger.")
     @Override
     public void apply(OperationContext context) {
         try {
@@ -34,7 +46,6 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             if (requestMapping.isPresent()) {
 
                 StringBuilder params = new StringBuilder();
-
 
                 if (params.isEmpty() && context.getParameters().stream().anyMatch(p -> p.hasParameterAnnotation(RequestParam.class))) {
                     params.append("?");
@@ -65,7 +76,7 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             }
             sb.append("<br /><br />");
 
-            // Check authorization
+            // Проверка аутентификации и авторизации
             Optional<ApiSecurity> preAuthorizeAnnotation = context.findAnnotation(ApiSecurity.class);
             int i = 0;
             sb.append("<b>Необходимые роли</b>: ");
@@ -100,14 +111,20 @@ public class SwaggerCustomPlugin implements OperationBuilderPlugin {
             } else
                 sb.append("<em>Нет</em>");
 
-
-            // Add the note text to the Swagger UI
+            // Добавляем текст с описанием в Swagger UI
             context.operationBuilder().notes(descriptions.resolve(sb.toString()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
+    /**
+     * Поддерживает ли данный плагин указанный тип документации.
+     *
+     * @param documentationType Тип документации.
+     * @return `true`, если плагин поддерживает указанный тип документации, иначе `false`.
+     */
+    @ApiModelProperty(value = "Метод для определения, поддерживает ли плагин указанный тип документации.")
     @Override
     public boolean supports(@NotNull DocumentationType documentationType) {
         return SwaggerPluginSupport.pluginDoesApply(documentationType);

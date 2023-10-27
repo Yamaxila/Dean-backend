@@ -3,11 +3,14 @@ package by.vstu.dean.enums;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Перечисление, реализующее типы обучения.
  */
 @ApiModel(description = "Enum реализующий тип обучения")
-public enum EEducationType {
+public enum EEducationType implements BaseEnum<EEducationType> {
 
     @ApiModelProperty(notes = "Дневное обучение")
     DAYTIME(0),
@@ -24,5 +27,10 @@ public enum EEducationType {
      * @param ignoredId Идентификатор типа обучения
      */
     EEducationType(int ignoredId) {
+    }
+
+    @Override
+    public List<EEducationType> getValues() {
+        return Arrays.stream(EEducationType.values()).toList();
     }
 }

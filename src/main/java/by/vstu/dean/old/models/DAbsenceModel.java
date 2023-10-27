@@ -23,9 +23,8 @@ public class DAbsenceModel extends OldDBBaseModel {
     @Column(name = "god_uch2")
     private Integer yearEnd;
 
-    @JoinColumn(name = "dkaf_id")
-    @ManyToOne
-    private DDepartmentModel department;
+    @Column(name = "dkaf_id")
+    private Long departmentId;
 
     @JoinColumn(name = "ndis")
     @ManyToOne

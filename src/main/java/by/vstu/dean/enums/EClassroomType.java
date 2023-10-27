@@ -3,8 +3,9 @@ package by.vstu.dean.enums;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.List;
 
-public enum EClassroomType {
+public enum EClassroomType implements BaseEnum<EClassroomType>{
 
 
     LECTURE(0, "лекционная"),
@@ -44,4 +45,8 @@ public enum EClassroomType {
         return Arrays.stream(EClassroomType.values()).filter(p -> p.name.equalsIgnoreCase(name)).findFirst().orElse(UNKNOWN);
     }
 
+    @Override
+    public List<EClassroomType> getValues() {
+        return Arrays.stream(EClassroomType.values()).toList();
+    }
 }

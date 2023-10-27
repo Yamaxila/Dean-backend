@@ -11,7 +11,6 @@ import lombok.EqualsAndHashCode;
 
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import java.util.Set;
 
 /**
  * DTO for {@link by.vstu.dean.future.models.hostels.HostelRoomModel}
@@ -32,10 +31,10 @@ public class HostelRoomDTO extends BaseDTO {
     @ApiModelProperty(value = "Этаж", example = "2")
     private int floor;
 
-    @Enumerated(EnumType.STRING)
-    @ApiModelProperty(value = "Общежитие", example = "HOSTEL_2")
+    @Enumerated(EnumType.ORDINAL)
+    @ApiModelProperty(value = "Общежитие", example = "1")
     private EHostel hostel;
 
-    @ApiModelProperty(value = "Список студентов в комнате")
-    private Set<StudentDTO> students;
+    @ApiModelProperty(value = "Cтудент")
+    private StudentDTO student;
 }

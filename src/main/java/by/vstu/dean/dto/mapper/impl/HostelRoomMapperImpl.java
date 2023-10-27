@@ -1,14 +1,16 @@
 package by.vstu.dean.dto.mapper.impl;
 
 import by.vstu.dean.dto.future.hostels.HostelRoomDTO;
+import by.vstu.dean.dto.future.students.StudentDTO;
 import by.vstu.dean.dto.mapper.HostelRoomMapper;
 import by.vstu.dean.dto.mapper.StudentMapper;
+import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.future.models.hostels.HostelRoomModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -29,8 +31,8 @@ public class HostelRoomMapperImpl implements HostelRoomMapper {
             hostelRoomModel.setRoomNumber(dto.getRoomNumber());
             hostelRoomModel.setRoomType(dto.getRoomType());
             hostelRoomModel.setFloor(dto.getFloor());
-            hostelRoomModel.setHostel(dto.getHostel());
-            hostelRoomModel.setStudents(new HashSet<>(this.studentMapper.toEntity(dto.getStudents().stream().toList())));
+            hostelRoomModel.setHostel(EHostel.valueOf(dto.getHostel().name()));
+//            hostelRoomModel.setStudents(new HashSet<>(this.studentMapper.toEntity(dto.getStudents().stream().toList())));
             return hostelRoomModel;
         }
     }
@@ -47,8 +49,8 @@ public class HostelRoomMapperImpl implements HostelRoomMapper {
             hostelRoomDTO.setRoomNumber(entity.getRoomNumber());
             hostelRoomDTO.setRoomType(entity.getRoomType());
             hostelRoomDTO.setFloor(entity.getFloor());
-            hostelRoomDTO.setHostel(entity.getHostel());
-            hostelRoomDTO.setStudents(new HashSet<>(this.studentMapper.toDto(entity.getStudents().stream().toList())));
+            hostelRoomDTO.setHostel(EHostel.valueOf(entity.getHostel().name()));
+//            hostelRoomDTO.setStudents(new HashSet<>(this.studentMapper.toDto(entity.getStudents().stream().toList())));
             return hostelRoomDTO;
         }
     }
@@ -79,9 +81,9 @@ public class HostelRoomMapperImpl implements HostelRoomMapper {
                 entity.setHostel(dto.getHostel());
             }
 
-            if (dto.getStudents() != null) {
-                dto.setStudents(new HashSet<>(this.studentMapper.toDto(entity.getStudents().stream().toList())));
-            }
+//            if (dto.getStudents() != null) {
+//                dto.setStudents(new HashSet<>(this.studentMapper.toDto(entity.getStudents().stream().toList())));
+//            }
 
             return entity;
         }
@@ -91,7 +93,25 @@ public class HostelRoomMapperImpl implements HostelRoomMapper {
         if (all == null) {
             return null;
         }
-        return all.stream().map(this::toDto).toList();
+
+        List<HostelRoomDTO> out = new ArrayList<>();
+
+        all.forEach(h -> {
+
+            HostelRoomDTO hostelRoomDTO = this.toDto(h);
+            if(h.getStudents().isEmpty()) {
+                hostelRoomDTO.setStudent(new StudentDTO());
+                out.add(hostelRoomDTO);
+            } else
+                h.getStudents().forEach((student) -> {
+                    hostelRoomDTO.setStudent(this.studentMapper.toDto(student));
+                    out.add(hostelRoomDTO);
+                });
+
+        });
+
+
+        return out;
     }
 
     public List<HostelRoomModel> toEntity(List<HostelRoomDTO> all) {

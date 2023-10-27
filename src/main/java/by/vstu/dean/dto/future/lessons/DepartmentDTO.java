@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
 
 /**
  * DTO for {@link by.vstu.dean.future.models.lessons.DepartmentModel}
@@ -36,10 +35,10 @@ public final class DepartmentDTO extends BaseDTO {
     @ApiModelProperty(notes = "Факультет кафедры")
     private FacultyDTO faculty;
 
-    /**
-     * Все преподаватели, работающие на данной кафедре.
-     */
-    @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
-    private Set<TeacherDTO> teachers;
+//    /**
+//     * Все преподаватели, работающие на данной кафедре.
+//     */
+//    @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
+//    private Set<TeacherDTO> teachers;
 
 }

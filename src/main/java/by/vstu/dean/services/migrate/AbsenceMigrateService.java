@@ -72,7 +72,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         AbsenceModel absenceModel = new AbsenceModel();
 
         absenceModel.setAbsenceTime(dAbsenceModel.getClock().doubleValue());
-        long dId = dAbsenceModel.getDepartment().getId();
+        long dId = dAbsenceModel.getDepartmentId();
         dId = switch ((int) dId) {
             case 31 -> 15L;
             case 27 -> 7L;

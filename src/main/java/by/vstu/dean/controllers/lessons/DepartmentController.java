@@ -5,6 +5,7 @@ import by.vstu.dean.controllers.common.BaseController;
 import by.vstu.dean.dto.future.lessons.DepartmentDTO;
 import by.vstu.dean.dto.future.lessons.TeacherDTO;
 import by.vstu.dean.dto.mapper.DepartmentMapper;
+import by.vstu.dean.dto.mapper.TeacherMapper;
 import by.vstu.dean.future.models.lessons.DepartmentModel;
 import by.vstu.dean.future.repo.DepartmentModelRepository;
 import by.vstu.dean.services.DepartmentService;
@@ -29,13 +30,16 @@ import java.util.Optional;
 @Api(tags = "Departments", description = "Кафедры")
 public class DepartmentController extends BaseController<DepartmentDTO, DepartmentModel, DepartmentMapper, DepartmentModelRepository, DepartmentService> {
 
+    private final TeacherMapper teacherMapper;
+
     /**
      * Конструктор контроллера.
      *
      * @param service Сервис кафедр
      */
-    public DepartmentController(DepartmentService service) {
+    public DepartmentController(DepartmentService service, TeacherMapper teacherMapper) {
         super(service);
+        this.teacherMapper = teacherMapper;
     }
 
     /**
@@ -52,6 +56,6 @@ public class DepartmentController extends BaseController<DepartmentDTO, Departme
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDTO>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
-        return o.map(departmentModel -> new ResponseEntity<>(this.service.toDto(departmentModel).getTeachers().stream().toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return o.map(departmentModel -> new ResponseEntity<>(this.teacherMapper.toDto(departmentModel.getTeachers().stream().toList()).stream().toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
     }
 }

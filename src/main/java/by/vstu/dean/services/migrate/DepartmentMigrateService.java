@@ -14,6 +14,11 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Сервис миграции данных для моделей DepartmentModel и DDepartmentModel.
+ * Этот сервис предоставляет функциональность для миграции данных из старой версии моделей (DDepartmentModel)
+ * в новую версию (DepartmentModel) и сохранения их в репозитории новой версии.
+ */
 @Service
 @RequiredArgsConstructor
 public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel, DDepartmentModel> {
@@ -24,16 +29,33 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
 
     private List<FacultyModel> facultyModels;
 
+    /**
+     * Метод для получения идентификатора последней записи в репозитории новой версии модели.
+     *
+     * @return Идентификатор последней записи или 0, если репозиторий пуст.
+     */
     @Override
     public Long getLastDBId() {
         return this.departmentModelRepository.findTopByOrderByIdDesc() == null ? 0 : this.departmentModelRepository.findTopByOrderByIdDesc().getSourceId();
     }
 
+    /**
+     * Метод для преобразования моделей DDepartmentModel, которых нет в новой версии, в DepartmentModel.
+     *
+     * @return Список новых моделей, готовых для сохранения.
+     */
     @Override
     public List<DepartmentModel> convertNotExistsFromDB() {
         return this.convertList(this.dDepartmentModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
 
+    /**
+     * Метод для преобразования одной модели DDepartmentModel в DepartmentModel.
+     *
+     * @param dDepartmentModel Модель старой версии.
+     * @param update           Флаг обновления (true, если модель обновляется, false, если создаётся новая).
+     * @return Преобразованная модель новой версии.
+     */
     @Override
     public DepartmentModel convertSingle(DDepartmentModel dDepartmentModel, boolean update) {
         if (this.facultyModels == null)
@@ -51,6 +73,12 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         return departmentModel;
     }
 
+    /**
+     * Метод для преобразования списка моделей DDepartmentModel в список DepartmentModel.
+     *
+     * @param t Список моделей старой версии.
+     * @return Список преобразованных моделей новой версии.
+     */
     @Override
     public List<DepartmentModel> convertList(List<DDepartmentModel> t) {
         List<DepartmentModel> out = new ArrayList<>();
@@ -58,16 +86,32 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         return out;
     }
 
+    /**
+     * Метод для сохранения одной модели DepartmentModel в репозитории новой версии.
+     *
+     * @param t Модель новой версии.
+     * @return Сохраненная модель.
+     */
     @Override
     public DepartmentModel insertSingle(DepartmentModel t) {
         return this.departmentModelRepository.saveAndFlush(t);
     }
 
+    /**
+     * Метод для сохранения списка моделей DepartmentModel в репозитории новой версии.
+     *
+     * @param t Список моделей новой версии.
+     * @return Список сохраненных моделей.
+     */
     @Override
     public List<DepartmentModel> insertAll(List<DepartmentModel> t) {
         return this.departmentModelRepository.saveAllAndFlush(t);
     }
 
+    /**
+     * Метод для выполнения миграции данных.
+     * Получает и преобразует несуществующие модели и сохраняет их в репозитории новой версии.
+     */
     @Override
     public void migrate() {
         System.err.println(this.getClass().getName());

@@ -3,11 +3,14 @@ package by.vstu.dean.enums;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
+import java.util.Arrays;
+import java.util.List;
+
 /**
  * Перечисление, реализующее типы экзаменов.
  */
 @ApiModel(description = "Enum реализующий тип экзамена")
-public enum ExamType {
+public enum ExamType implements BaseEnum<ExamType> {
 
     @ApiModelProperty(notes = "Экзамен")
     EXAM(0),
@@ -24,5 +27,10 @@ public enum ExamType {
      * @param ignoredId Идентификатор типа экзамена
      */
     ExamType(int ignoredId) {
+    }
+
+    @Override
+    public List<ExamType> getValues() {
+        return Arrays.stream(ExamType.values()).toList();
     }
 }

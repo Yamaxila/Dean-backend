@@ -10,7 +10,6 @@ import by.vstu.dean.future.repo.DepartmentModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +45,7 @@ public class DepartmentMapperImpl implements DepartmentMapper {
         departmentModel.setName(dto.getName());
         departmentModel.setShortName(dto.getShortName());
         departmentModel.setFaculty(this.facultyMapper.toEntity(dto.getFaculty()));
-        departmentModel.setTeachers(new HashSet<>(this.teacherMapper.toEntity(dto.getTeachers().stream().toList())));
+//        departmentModel.setTeachers(new HashSet<>(this.teacherMapper.toEntity(dto.getTeachers().stream().toList())));
 
         return departmentModel;
     }
@@ -66,7 +65,7 @@ public class DepartmentMapperImpl implements DepartmentMapper {
         departmentDTO.setName(entity.getName());
         departmentDTO.setShortName(entity.getShortName());
         departmentDTO.setFaculty(this.facultyMapper.toDto(entity.getFaculty()));
-        departmentDTO.setTeachers(new HashSet<>(this.teacherMapper.toDto(entity.getTeachers().stream().toList())));
+//        departmentDTO.setTeachers(new HashSet<>(this.teacherMapper.toDto(entity.getTeachers().stream().toList())));
 
         return departmentDTO;
     }
