@@ -38,7 +38,7 @@ build/
 .vscode/
 
 ### Project specific ###
-app/src/main/resources/application.properties
+application.properties
 /.jpb/
 /.mvn/
 /mvnw
