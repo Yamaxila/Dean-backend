@@ -135,9 +135,9 @@ Rest-репозитории для других сервисов
 ### Пример работы с [BaseRequest](https://github.com/Yamaxila/Dean-backend/tree/master/src/main/java/by/vstu/dean/requests/BaseRequest.java):
 
 ```java
-import by.vstu.dean.adapters.json.*;
-import by.vstu.dean.adapters.*;
-import by.vstu.dean.future.models.students.GroupModel;
+
+import by.vstu.dean.core.adapters.*;
+import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.requests.BaseRequest;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -169,7 +169,8 @@ class BaseRequestExample {
 
         String json = baseRequest.run("");
 
-        gson.fromJson(json, new TypeToken<List<GroupModel>>(){}.getType());
+        gson.fromJson(json, new TypeToken<List<GroupModel>>() {
+        }.getType());
 
         json = baseRequest.setUrl("http://localhost:18076/api/groups/58/").run("");
 
@@ -186,7 +187,7 @@ class BaseRequestExample {
 Создание базового репозитория проекта:
 
 ```java
-import by.vstu.dean.future.DBBaseModel;
+import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.requests.TokenRequest;
 import by.vstu.dean.requests.repo.ApiRepositoryBase;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -209,7 +210,7 @@ P.S. Для работы репозиториев необходим клиен�
 
 ```java
 
-import by.vstu.dean.future.models.students.GroupModel;
+import by.vstu.dean.models.students.GroupModel;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Repository;
 

@@ -5,14 +5,21 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.7.14</version>
+        <version>2.7.18</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>by.vstu</groupId>
     <artifactId>Dean-backend</artifactId>
     <version>1.0.1</version>
+    <packaging>pom</packaging>
     <name>Dean-backend</name>
     <description>Dean backend</description>
+    <modules>
+        <module>models</module>
+        <module>old</module>
+        <module>core</module>
+        <module>app</module>
+    </modules>
     <properties>
         <app.profiles>release</app.profiles>
         <java.version>17</java.version>
@@ -21,7 +28,7 @@
         <dokka.version>1.9.0</dokka.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
-        <repo.url>${repoUrl}</repo.url>
+        <!--        <repo.url>${repoUrl}</repo.url>-->
     </properties>
     <pluginRepositories>
         <pluginRepository>
@@ -308,7 +315,6 @@
                 </executions>
             </plugin>
             <plugin>
-                <!-- explicitly define maven-deploy-plugin after other to force exec order -->
                 <artifactId>maven-deploy-plugin</artifactId>
                 <executions>
                     <execution>
@@ -333,7 +339,7 @@
     <distributionManagement>
         <repository>
             <id>repository</id>
-            <url>${repo.url}</url>
+            <!--            <url>${repo.url}</url>-->
             <uniqueVersion>false</uniqueVersion>
             <layout>default</layout>
             <releases>

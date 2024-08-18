@@ -1,0 +1,32 @@
+package by.vstu.dean.models.students;
+
+import by.vstu.dean.core.models.DBBaseModel;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
+/**
+ * Модель объекта гражданства.
+ */
+@Entity
+@Setter
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@Table(name = "citizenhips")
+@ApiModel(description = "Объект гражданства")
+public class CitizenshipModel extends DBBaseModel {
+
+    /**
+     * Страна (название).
+     */
+    @ApiModelProperty(notes = "Страна, название")
+    private String name;
+
+}
