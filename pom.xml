@@ -10,16 +10,10 @@
     </parent>
     <groupId>by.vstu</groupId>
     <artifactId>Dean-backend</artifactId>
-    <version>1.0.1</version>
+    <version>${app.version}</version>
     <packaging>pom</packaging>
     <name>Dean-backend</name>
     <description>Dean backend</description>
-    <modules>
-        <module>models</module>
-        <module>old</module>
-        <module>core</module>
-        <module>app</module>
-    </modules>
     <properties>
         <app.profiles>release</app.profiles>
         <java.version>17</java.version>
@@ -28,8 +22,16 @@
         <dokka.version>1.9.0</dokka.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <app.version>1.0.1</app.version>
         <!--        <repo.url>${repoUrl}</repo.url>-->
     </properties>
+    <modules>
+        <module>models</module>
+        <module>old</module>
+        <module>core</module>
+        <module>app</module>
+        <module>runner</module>
+    </modules>
     <pluginRepositories>
         <pluginRepository>
             <id>jcenter</id>

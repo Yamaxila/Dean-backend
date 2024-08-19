@@ -30,7 +30,8 @@
                             <artifactId>lombok</artifactId>
                         </exclude>
                     </excludes>
-                    <skip>true</skip>
+                    <classifier>original</classifier>
+<!--                    <skip>true</skip>-->
                 </configuration>
             </plugin>
         </plugins>
