@@ -2,10 +2,10 @@ package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.dto.mapper.DepartmentMapper;
-import by.vstu.dean.dto.mapper.GroupMapper;
 import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.dto.v1.students.GroupDTO;
+import by.vstu.dean.mapper.v1.DepartmentMapper;
+import by.vstu.dean.mapper.v1.GroupMapper;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.services.GroupService;

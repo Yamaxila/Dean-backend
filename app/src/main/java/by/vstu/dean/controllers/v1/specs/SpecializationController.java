@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.specs;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.SpecializationMapper;
 import by.vstu.dean.dto.v1.specs.SpecializationDTO;
+import by.vstu.dean.mapper.v1.SpecializationMapper;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.repo.SpecializationModelRepository;
 import by.vstu.dean.services.SpecializationService;

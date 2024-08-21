@@ -2,8 +2,8 @@ package by.vstu.dean.controllers.v1.rooms;
 
 import by.vstu.dean.controllers.v1.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.dto.mapper.ClassroomMapper;
 import by.vstu.dean.dto.v1.rooms.ClassroomDTO;
+import by.vstu.dean.mapper.v1.ClassroomMapper;
 import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.repo.ClassroomModelRepository;
 import by.vstu.dean.services.ClassroomService;

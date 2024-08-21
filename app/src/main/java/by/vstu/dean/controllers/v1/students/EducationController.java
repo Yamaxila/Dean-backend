@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.EducationMapper;
 import by.vstu.dean.dto.v1.students.EducationDTO;
+import by.vstu.dean.mapper.v1.EducationMapper;
 import by.vstu.dean.models.students.EducationModel;
 import by.vstu.dean.repo.EducationModelRepository;
 import by.vstu.dean.services.EducationService;

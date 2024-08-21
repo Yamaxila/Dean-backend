@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.common;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.FacultyMapper;
 import by.vstu.dean.dto.v1.FacultyDTO;
+import by.vstu.dean.mapper.v1.FacultyMapper;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;

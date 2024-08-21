@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.lessons;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.DisciplineMapper;
 import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
+import by.vstu.dean.mapper.v1.DisciplineMapper;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.repo.DisciplineModelRepository;
 import by.vstu.dean.services.DisciplineService;

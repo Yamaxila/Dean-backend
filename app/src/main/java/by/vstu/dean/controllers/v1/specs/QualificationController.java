@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.specs;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.QualificationMapper;
 import by.vstu.dean.dto.v1.specs.QualificationDTO;
+import by.vstu.dean.mapper.v1.QualificationMapper;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.repo.QualificationModelRepository;
 import by.vstu.dean.services.QualificationService;

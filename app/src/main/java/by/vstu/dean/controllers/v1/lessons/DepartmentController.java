@@ -2,10 +2,10 @@ package by.vstu.dean.controllers.v1.lessons;
 
 import by.vstu.dean.controllers.v1.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.dto.mapper.DepartmentMapper;
-import by.vstu.dean.dto.mapper.TeacherMapper;
 import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.dto.v1.lessons.TeacherDTO;
+import by.vstu.dean.mapper.v1.DepartmentMapper;
+import by.vstu.dean.mapper.v1.TeacherMapper;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.merge.TeacherDepartmentMerge;
 import by.vstu.dean.repo.DepartmentModelRepository;

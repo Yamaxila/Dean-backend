@@ -2,10 +2,10 @@ package by.vstu.dean.controllers.v1.hostels;
 
 import by.vstu.dean.controllers.v1.BaseController;
 import by.vstu.dean.core.enums.EStatus;
-import by.vstu.dean.dto.mapper.HostelRoomMapper;
-import by.vstu.dean.dto.mapper.StudentMapper;
 import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
 import by.vstu.dean.dto.v1.students.StudentDTO;
+import by.vstu.dean.mapper.v1.HostelRoomMapper;
+import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
 import by.vstu.dean.services.HostelRoomService;

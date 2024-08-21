@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.mapper.CitizenshipMapper;
 import by.vstu.dean.dto.v1.students.CitizenshipDTO;
+import by.vstu.dean.mapper.v1.CitizenshipMapper;
 import by.vstu.dean.models.students.CitizenshipModel;
 import by.vstu.dean.repo.CitizenshipModelRepository;
 import by.vstu.dean.services.CitizenshipService;
