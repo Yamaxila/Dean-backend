@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
 public @interface ReflectionField {
 
     //Имена полей для маппинга
-    String[] value() default {};
+    String value() default "";
+
+    Class<?> clazz() default Class.class;
 
     boolean trim() default true;
 }

@@ -5,7 +5,9 @@ import by.vstu.dean.enums.ExamType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -17,6 +19,8 @@ import javax.validation.constraints.NotNull;
  * Модель объекта зачетной единицы.
  */
 @Entity
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "exams")
@@ -36,22 +40,6 @@ public class ExamModel extends DBBaseModel {
     @Enumerated(EnumType.ORDINAL)
     @NotNull
     private ExamType type;
-
-    public @NotNull String getName() {
-        return this.name;
-    }
-
-    public @NotNull ExamType getType() {
-        return this.type;
-    }
-
-    public void setName(@NotNull String name) {
-        this.name = name;
-    }
-
-    public void setType(@NotNull ExamType type) {
-        this.type = type;
-    }
 
     public String toString() {
         return "ExamModel(name=" + this.getName() + ", type=" + this.getType() + ")";

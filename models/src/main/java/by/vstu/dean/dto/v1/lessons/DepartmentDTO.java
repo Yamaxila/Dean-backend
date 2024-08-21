@@ -1,7 +1,9 @@
 package by.vstu.dean.dto.v1.lessons;
 
+import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.dto.v1.FacultyDTO;
+import by.vstu.dean.models.lessons.DepartmentModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -20,6 +22,7 @@ public final class DepartmentDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Название кафедры")
+    @ReflectionField(clazz = DepartmentModel.class)
     private String name;
 
     /**
@@ -27,6 +30,7 @@ public final class DepartmentDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Краткое название кафедры")
+    @ReflectionField(clazz = DepartmentModel.class)
     private String shortName;
 
     /**

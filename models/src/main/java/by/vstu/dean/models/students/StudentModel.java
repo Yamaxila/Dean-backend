@@ -4,7 +4,6 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.specs.SpecializationModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;

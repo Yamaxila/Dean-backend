@@ -1,6 +1,5 @@
 package by.vstu.dean.old.models;
 
-import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.old.OldDBBaseModel;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,7 +16,6 @@ import java.time.LocalDateTime;
 })
 public class DFacultyModel extends OldDBBaseModel {
     @Column(name = "fak", nullable = false, length = 10)
-    @ReflectionField("")
     private String shortName;
 
     @Column(name = "fak_name", length = 50)

@@ -1,6 +1,8 @@
 package by.vstu.dean.dto.v1.lessons;
 
+import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
+import by.vstu.dean.models.lessons.TeacherModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -18,6 +20,7 @@ public final class TeacherDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Фамилия преподавателя")
+    @ReflectionField(clazz = TeacherModel.class)
     private String surname;
 
     /**
@@ -25,6 +28,7 @@ public final class TeacherDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Имя преподавателя")
+    @ReflectionField(clazz = TeacherModel.class)
     private String name;
 
     /**
@@ -32,6 +36,7 @@ public final class TeacherDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Отчество преподавателя")
+    @ReflectionField(clazz = TeacherModel.class)
     private String patronymic;
 
     /**

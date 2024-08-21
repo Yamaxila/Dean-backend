@@ -141,4 +141,12 @@ public class FacultyModel extends DBBaseModel {
     @Deprecated
     private Integer educationType;
 
+
+    @Override
+    public String toString() {
+        return "FacultyModel{" +
+                "name='" + name + '\'' +
+                ", shortName='" + shortName + '\'' +
+                '}';
+    }
 }

@@ -1,6 +1,8 @@
 package by.vstu.dean.dto.v1.lessons;
 
+import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
+import by.vstu.dean.models.lessons.DisciplineModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +21,7 @@ public final class DisciplineDTO extends BaseDTO {
      */
     @ApiModelProperty(notes = "Название дисциплины")
     @NotNull
+    @ReflectionField(clazz = DisciplineModel.class)
     private String name;
 
     /**
@@ -26,6 +29,7 @@ public final class DisciplineDTO extends BaseDTO {
      */
     @ApiModelProperty(notes = "Краткое название дисциплины")
     @NotNull
+    @ReflectionField(clazz = DisciplineModel.class)
     private String shortName;
 
     /**

@@ -1,5 +1,6 @@
 package by.vstu.dean.dto.v1;
 
+import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.models.FacultyModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -17,12 +18,14 @@ public class FacultyDTO extends BaseDTO {
      * Краткое название факультета.
      */
     @ApiModelProperty(notes = "Краткое название")
+    @ReflectionField(value = "shortName", clazz = FacultyModel.class)
     private String shortName;
 
     /**
      * Полное название факультета.
      */
     @ApiModelProperty(notes = "Полное название")
+    @ReflectionField(value = "name", clazz = FacultyModel.class)
     private String name;
 
 

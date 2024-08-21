@@ -1,6 +1,8 @@
 package by.vstu.dean.dto.v1.specs;
 
+import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
+import by.vstu.dean.models.specs.QualificationModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,6 +21,7 @@ public class QualificationDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Название квалификации")
+    @ReflectionField(clazz = QualificationModel.class)
     private String name;
 
     /**
@@ -26,6 +29,7 @@ public class QualificationDTO extends BaseDTO {
      */
     @NotNull
     @ApiModelProperty(notes = "Название квалификации в родительном падеже")
+    @ReflectionField(clazz = QualificationModel.class)
     private String nameGenitive;
 
 }

@@ -2,6 +2,7 @@ package by.vstu.dean.core.models.mapper;
 
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.core.utils.ReflectionUtils;
 import org.mapstruct.BeanMapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
@@ -40,7 +41,13 @@ public interface BaseMapperInterface<D extends BaseDTO, O extends DBBaseModel> {
      * @return Обновленная сущность базы данных.
      */
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-    O partialUpdate(D dto, @MappingTarget O entity);
+    default O partialUpdate(D dto, @MappingTarget O entity) {
+        if(dto == null) {
+            return null;
+        }
+
+        return (O) ReflectionUtils.mapObject(entity, dto, true, true);
+    }
 
     /**
      * Преобразует список DTO в список сущностей базы данных.
@@ -48,7 +55,12 @@ public interface BaseMapperInterface<D extends BaseDTO, O extends DBBaseModel> {
      * @param all Список DTO для преобразования.
      * @return Список сущностей базы данных, соответствующих переданным DTO.
      */
-    List<O> toEntity(List<D> all);
+    default List<O> toEntity(List<D> all) {
+        if (all == null) {
+            return null;
+        }
+        return all.stream().map(this::toEntity).toList();
+    }
 
     /**
      * Преобразует список сущностей базы данных в список DTO.
@@ -56,6 +68,11 @@ public interface BaseMapperInterface<D extends BaseDTO, O extends DBBaseModel> {
      * @param all Список сущностей для преобразования.
      * @return Список DTO, соответствующих переданным сущностям.
      */
-    List<D> toDto(List<O> all);
+    default List<D> toDto(List<O> all) {
+        if (all == null) {
+            return null;
+        }
+        return all.stream().map(this::toDto).toList();
+    }
 }
 
