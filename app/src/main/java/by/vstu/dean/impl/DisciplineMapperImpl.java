@@ -1,8 +1,8 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
 import by.vstu.dean.dto.mapper.DepartmentMapper;
 import by.vstu.dean.dto.mapper.DisciplineMapper;
+import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

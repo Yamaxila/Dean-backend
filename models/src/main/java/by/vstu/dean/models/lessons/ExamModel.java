@@ -1,7 +1,7 @@
 package by.vstu.dean.models.lessons;
 
-import by.vstu.dean.enums.ExamType;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.enums.ExamType;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

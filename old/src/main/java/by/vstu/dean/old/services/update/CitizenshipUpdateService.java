@@ -1,13 +1,11 @@
 package by.vstu.dean.old.services.update;
 
-import by.vstu.dean.dto.v1.students.CitizenshipDTO;
-import by.vstu.dean.dto.mapper.CitizenshipMapper;
 import by.vstu.dean.models.students.CitizenshipModel;
-import by.vstu.dean.repo.CitizenshipModelRepository;
 import by.vstu.dean.old.models.DCitizenshipModel;
 import by.vstu.dean.old.repo.DCitizenshipModelRepository;
-import by.vstu.dean.services.CitizenshipService;
 import by.vstu.dean.old.services.migrate.CitizenshipMigrateService;
+import by.vstu.dean.repo.CitizenshipModelRepository;
+import by.vstu.dean.services.CitizenshipService;
 import org.springframework.stereotype.Service;
 
 /**
@@ -15,7 +13,7 @@ import org.springframework.stereotype.Service;
  * Расширяет базовый класс BaseUpdateService, предоставляя функциональность для сравнения и обновления данных гражданства.
  */
 @Service
-public class CitizenshipUpdateService extends BaseUpdateService<CitizenshipDTO, DCitizenshipModel, DCitizenshipModelRepository, CitizenshipModel, CitizenshipMapper, CitizenshipModelRepository, CitizenshipService, CitizenshipMigrateService> {
+public class CitizenshipUpdateService extends BaseUpdateService<DCitizenshipModel, DCitizenshipModelRepository, CitizenshipModel, CitizenshipModelRepository, CitizenshipService, CitizenshipMigrateService> {
 
     /**
      * Конструктор для класса CitizenshipUpdateService.

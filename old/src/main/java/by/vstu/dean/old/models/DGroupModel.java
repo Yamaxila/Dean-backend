@@ -24,6 +24,7 @@ public class DGroupModel extends OldDBBaseModel implements Serializable {
 
     @JoinColumn(name = "dmetodist_id")
     @ManyToOne
+    @NotFound(action = NotFoundAction.IGNORE)
     private DMethodistModel methodist;
 
     @Column(name = "gr", nullable = false, length = 8)

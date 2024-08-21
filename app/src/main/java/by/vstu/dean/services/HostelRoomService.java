@@ -1,30 +1,74 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
-import by.vstu.dean.dto.mapper.HostelRoomMapper;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
-import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.hostels.HostelRoomModel;
+import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Cacheable("hostel")
-public class HostelRoomService extends BaseService<HostelRoomDTO, HostelRoomModel, HostelRoomMapper, HostelRoomModelRepository> {
+public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomModelRepository> {
 
 
-    public HostelRoomService(HostelRoomModelRepository repo, HostelRoomMapper mapper) {
-        super(repo, mapper);
+    private final StudentService studentService;
+
+    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService) {
+        super(repo);
+        this.studentService = studentService;
     }
 
+    public HostelRoomModel setStudent(HostelRoomModel hostelRoom, Long studentId) {
+        Optional<StudentModel> oStudent = studentService.getById(studentId);
+
+        if(oStudent.isEmpty())
+            return null;
+
+        StudentModel student = oStudent.get();
+
+        student.setHostelRoom(hostelRoom);
+        student.setCheckInDate(LocalDate.now());
+        this.studentService.save(student);
+
+//        Set<StudentModel> students = hostelRoom.getStudents();
+//        List<StudentModel> students = hostelRoom.getStudents();
+//        students.add(student);
+//        hostelRoom.setStudents(students);
+
+        return hostelRoom;
+    }
+    //FIXME: Нужно обновлять приходящую модель
+    public HostelRoomModel removeStudent(HostelRoomModel hostelRoom, Long studentId) {
+        Optional<StudentModel> oStudent = studentService.getById(studentId);
+
+        if(oStudent.isEmpty())
+            return null;
+
+        StudentModel student = oStudent.get();
+
+        student.setHostelRoom(null);
+        student.setEvictionDate(LocalDate.now());
+        studentService.save(student);
+
+//        Set<StudentModel> students = hostelRoom.getStudents();
+//        students = students.stream().filter(studentModel -> !studentModel.getId().equals(studentId)).collect(Collectors.toSet());
+//        List<StudentModel> students = hostelRoom.getStudents();
+//        students = students.stream().filter(studentModel -> !studentModel.getId().equals(studentId)).toList();
+//        hostelRoom.setStudents(students);
+
+        return hostelRoom;
+    }
     @PostConstruct()
     @Order(7)
     public void init() {

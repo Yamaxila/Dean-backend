@@ -2,12 +2,12 @@ package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.TeacherModel;
-import by.vstu.dean.repo.TeacherDegreeModelRepository;
-import by.vstu.dean.repo.TeacherModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
 import by.vstu.dean.old.repo.DTeacherModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.TeacherDegreeModelRepository;
+import by.vstu.dean.repo.TeacherModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

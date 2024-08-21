@@ -7,9 +7,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -29,9 +27,12 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "futureEntityManagerFactory",
         transactionManagerRef = "futureTransactionManager",
-        basePackages = {"by.vstu.dean"}
+        basePackages = {"by.vstu.dean"},
+        excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = "by.vstu.dean.old.*")}
+
 )
 @AutoConfigurationPackage(basePackages = {"by.vstu.dean"})
+@Profile({"default", "prod", "noMigrate"})
 public class DeanFutureDBConfig {
 
     /**

@@ -1,13 +1,13 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.lessons.DisciplineModel;
-import by.vstu.dean.repo.DepartmentModelRepository;
-import by.vstu.dean.repo.DisciplineModelRepository;
 import by.vstu.dean.old.models.DDisciplineModel;
 import by.vstu.dean.old.repo.DDisciplineModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.DepartmentModelRepository;
+import by.vstu.dean.repo.DisciplineModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -111,7 +111,10 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
     @Override
     public List<DisciplineModel> convertList(List<DDisciplineModel> t) {
         List<DisciplineModel> out = new ArrayList<>();
-        t.forEach(citizenship -> out.add(this.convertSingle(citizenship)));
+        t.forEach(discipline -> out.add(this.convertSingle(discipline)));
+
+        this.departments.clear();
+
         return out;
     }
 

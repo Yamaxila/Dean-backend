@@ -1,17 +1,17 @@
 package by.vstu.dean.old.services.migrate;
 
-import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.lessons.AbsenceModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.repo.AbsenceModelRepository;
 import by.vstu.dean.old.models.DAbsenceModel;
 import by.vstu.dean.old.models.DStudentModel;
 import by.vstu.dean.old.repo.DAbsenceModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
+import by.vstu.dean.repo.AbsenceModelRepository;
 import by.vstu.dean.services.DepartmentService;
 import by.vstu.dean.services.DisciplineService;
 import by.vstu.dean.services.StudentService;
@@ -53,6 +53,20 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     public List<AbsenceModel> convertNotExistsFromDB() {
         return this.convertList(this.dAbsenceModelRepository.findAllByIdAfter(this.getLastDBId()));
     }
+
+    @Override
+    public List<AbsenceModel> convertList(List<DAbsenceModel> dAbsenceModels) {
+        List<AbsenceModel> out = new ArrayList<>();
+        dAbsenceModels.forEach(a -> out.add(this.convertSingle(a)));
+
+        this.students.clear();
+        this.teachers.clear();
+        this.disciplines.clear();
+        this.departments.clear();
+
+        return out;
+    }
+
 
     @Override
     public AbsenceModel convertSingle(DAbsenceModel dAbsenceModel, boolean update) {
@@ -124,7 +138,8 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
         absenceModel.setLessonType(dAbsenceModel.getLessonType().equalsIgnoreCase("практ.") ? ELessonType.PRACTICE : ELessonType.LAB);
         absenceModel.setLessonNumber(0);
-        absenceModel.setStatus(dAbsenceModel.getCompleted() != null && !dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
+        //TODO: Нужно перепроверить dAbsenceModel.getCompleted().equalsIgnoreCase. Мне кажется, что тут нужно добавить инверсию
+        absenceModel.setStatus(dAbsenceModel.getCompleted() != null && dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
         absenceModel.setSourceId(dAbsenceModel.getId());
 
         if (!update)

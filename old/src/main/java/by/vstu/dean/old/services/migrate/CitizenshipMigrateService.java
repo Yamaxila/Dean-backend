@@ -2,9 +2,9 @@ package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.students.CitizenshipModel;
-import by.vstu.dean.repo.CitizenshipModelRepository;
 import by.vstu.dean.old.models.DCitizenshipModel;
 import by.vstu.dean.old.repo.DCitizenshipModelRepository;
+import by.vstu.dean.repo.CitizenshipModelRepository;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.RequiredArgsConstructor;

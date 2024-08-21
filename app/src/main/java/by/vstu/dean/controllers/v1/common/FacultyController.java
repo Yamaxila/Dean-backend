@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.common;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.FacultyDTO;
 import by.vstu.dean.dto.mapper.FacultyMapper;
+import by.vstu.dean.dto.v1.FacultyDTO;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;
@@ -25,8 +25,8 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
      *
      * @param service Сервис факультетов
      */
-    public FacultyController(FacultyService service) {
-        super(service);
+    public FacultyController(FacultyService service, FacultyMapper mapper) {
+        super(service, mapper);
     }
 
     /**

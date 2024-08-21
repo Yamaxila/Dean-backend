@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.rooms.ClassroomDTO;
 import by.vstu.dean.dto.mapper.ClassroomMapper;
+import by.vstu.dean.dto.v1.rooms.ClassroomDTO;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.repo.ClassroomModelRepository;
@@ -63,6 +63,7 @@ public class ClassroomMapperImpl implements ClassroomMapper {
         classroomDTO.setStatus(entity.getStatus());
         classroomDTO.setRoomNumber(entity.getRoomNumber());
         classroomDTO.setSquare(entity.getSquare());
+        classroomDTO.setSeatsNumber(entity.getSeatsNumber());
         if (entity.getDepartment() != null)
             classroomDTO.setDepartmentId(entity.getDepartment().getId());
         classroomDTO.setFrame(entity.getFrame());

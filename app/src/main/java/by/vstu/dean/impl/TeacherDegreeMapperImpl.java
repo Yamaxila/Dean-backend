@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.lessons.TeacherDegreeDTO;
 import by.vstu.dean.dto.mapper.TeacherDegreeMapper;
+import by.vstu.dean.dto.v1.lessons.TeacherDegreeDTO;
 import by.vstu.dean.models.lessons.TeacherDegreeModel;
 import by.vstu.dean.repo.TeacherDegreeModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;

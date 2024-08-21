@@ -1,11 +1,11 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.TeacherDegreeModel;
-import by.vstu.dean.repo.TeacherDegreeModelRepository;
 import by.vstu.dean.old.models.DTeacherModel;
 import by.vstu.dean.old.repo.DTeacherModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.TeacherDegreeModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -68,6 +68,9 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     public List<TeacherDegreeModel> convertList(List<DTeacherModel> t) {
         List<TeacherDegreeModel> out = new ArrayList<>();
         t.stream().filter(p -> p.getDegree() != null).forEach(teacherModel -> out.add(this.convertSingle(teacherModel)));
+
+        this.teacherDegreeModels.clear();
+
         return out;
     }
 

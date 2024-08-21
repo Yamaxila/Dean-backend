@@ -1,9 +1,9 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.models.students.EducationModel;
+import by.vstu.dean.old.models.DStudentModel;
 import by.vstu.dean.repo.EducationModelRepository;
 import by.vstu.dean.repo.StudentModelRepository;
-import by.vstu.dean.old.models.DStudentModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

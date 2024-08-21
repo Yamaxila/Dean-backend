@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.*;
 import by.vstu.dean.dto.mapper.DocumentMapper;
+import by.vstu.dean.dto.v1.students.*;
 import by.vstu.dean.models.students.*;
 import org.springframework.stereotype.Component;
 

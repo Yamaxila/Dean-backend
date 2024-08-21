@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.lessons;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.lessons.StudyPlanDTO;
 import by.vstu.dean.dto.mapper.StudyPlanMapper;
+import by.vstu.dean.dto.v1.lessons.StudyPlanDTO;
 import by.vstu.dean.models.lessons.StudyPlanModel;
 import by.vstu.dean.repo.StudyPlanModelRepository;
 import by.vstu.dean.services.StudyPlanService;
@@ -23,7 +23,7 @@ public class StudyPlanController extends BaseController<StudyPlanDTO, StudyPlanM
      *
      * @param service Сервис учебных планов
      */
-    public StudyPlanController(StudyPlanService service) {
-        super(service);
+    public StudyPlanController(StudyPlanService service, StudyPlanMapper mapper) {
+        super(service, mapper);
     }
 }

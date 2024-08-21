@@ -1,11 +1,11 @@
 package by.vstu.dean.controllers.v1.students;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
-import by.vstu.dean.dto.v1.students.GroupDTO;
+import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.dto.mapper.DepartmentMapper;
 import by.vstu.dean.dto.mapper.GroupMapper;
+import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
+import by.vstu.dean.dto.v1.students.GroupDTO;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.services.GroupService;
@@ -33,10 +33,11 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
      * Конструктор контроллера.
      *
      * @param service          Сервис групп студентов
-     * @param departmentMapper Саппер
+     * @param mapper маппер групп
+     * @param departmentMapper маппер кафедр
      */
-    public GroupController(GroupService service, DepartmentMapper departmentMapper) {
-        super(service);
+    public GroupController(GroupService service, GroupMapper mapper, DepartmentMapper departmentMapper) {
+        super(service, mapper);
         this.departmentMapper = departmentMapper;
     }
 
@@ -54,7 +55,7 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
     @ApiOperation(value = "byYear", notes = "Отправляет все группы из базы по году окончания")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<GroupDTO>> getAllByYearEnd(@RequestParam Integer year, @RequestParam(required = false, defaultValue = "true") Boolean is) {
-        return new ResponseEntity<>(this.service.toDto(this.service.getAllActive(is)).stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.getAllActive(is)).stream().filter(p -> p.getYearEnd().equals(year)).toList(), HttpStatus.OK);
     }
 
     /**
@@ -71,7 +72,7 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
     @ApiOperation(value = "getByName")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<GroupDTO> getByName(@RequestParam String name) {
-        return new ResponseEntity<>(this.service.toDto(this.service.findByName(name)), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.findByName(name)), HttpStatus.OK);
     }
 
     /**
@@ -100,4 +101,24 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
 
         return new ResponseEntity<>(this.departmentMapper.toDto(group.getSpec().getDepartment()), HttpStatus.OK);
     }
+
+    /**
+     * Получение всех групп дневного отделения.
+     *
+     * @return Список групп дневного отделения
+     */
+    @RequestMapping(value = "/daytime",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @ApiOperation(value = "getAllDaytime", notes = "Отправляет все группы из базы, обучающиеся на дневном отделении")
+    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    public ResponseEntity<List<GroupDTO>> getAllDaytime(@RequestParam(required = false, defaultValue = "true") Boolean active) {
+        return new ResponseEntity<>(this.mapper.toDto(
+                this.service.getAllActive(active).stream().filter( //FIXME: почему-то объект FacultyModel не имеет метода isDaytimeFaculty
+                        gr -> gr.getFaculty().getFacultyType() == 0 || gr.getFaculty().getId() != 7).toList()
+        ), HttpStatus.OK);
+    }
+
+
 }

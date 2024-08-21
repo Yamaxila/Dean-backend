@@ -4,7 +4,6 @@ import by.vstu.dean.old.services.update.MainUpdateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class MainMigrateService {
     private final TeacherDepartmentMigrateService teacherDepartmentMigrateService;
     private final MainUpdateService mainUpdateService;
 
-    @PostConstruct
+//    @PostConstruct
     public void migrate() {
         long startTime = System.currentTimeMillis();
 

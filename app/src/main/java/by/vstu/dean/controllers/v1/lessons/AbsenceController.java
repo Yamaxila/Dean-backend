@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.lessons;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.lessons.AbsenceDTO;
 import by.vstu.dean.dto.mapper.AbsenceMapper;
+import by.vstu.dean.dto.v1.lessons.AbsenceDTO;
 import by.vstu.dean.models.lessons.AbsenceModel;
 import by.vstu.dean.repo.AbsenceModelRepository;
 import by.vstu.dean.services.AbsenceService;
@@ -24,7 +24,7 @@ public class AbsenceController extends BaseController<AbsenceDTO, AbsenceModel, 
      *
      * @param service Сервис для работы с отработками.
      */
-    public AbsenceController(AbsenceService service) {
-        super(service);
+    public AbsenceController(AbsenceService service, AbsenceMapper mapper) {
+        super(service, mapper);
     }
 }

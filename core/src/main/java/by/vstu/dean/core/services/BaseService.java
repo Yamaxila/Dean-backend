@@ -1,13 +1,12 @@
 package by.vstu.dean.core.services;
 
-import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
-import by.vstu.dean.core.models.mapper.BaseMapperInterface;
-import by.vstu.dean.core.rsql.CustomRsqlVisitor;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
+import by.vstu.dean.core.rsql.CustomRsqlVisitor;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -17,23 +16,17 @@ import java.util.Optional;
 /**
  * Базовый сервис с общими методами для работы с моделями базы данных.
  *
- * @param <D> Тип DTO объекта модели базы данных
  * @param <O> Тип объекта модели базы данных.
- * @param <M> Маппер модель-DTO и обратно.
  * @param <R> Тип репозитория для объекта модели базы данных.
  */
 @RequiredArgsConstructor
-public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>> {
+public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRepository<O>> {
 
     /**
      * Репозиторий для работы с моделью базы данных.
      */
+    @Getter
     protected final R repo;
-
-    /**
-     * Маппер.
-     */
-    protected final M mapper;
 
     /**
      * Получает все объекты модели из базы данных.
@@ -94,12 +87,6 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
         return this.repo.saveAndFlush(o);
     }
 
-    public D update(D dto) {
-        if (this.repo.findById(dto.getId()).isEmpty())
-            return this.mapper.toDto(this.save(this.mapper.toEntity(dto)));
-        return this.mapper.toDto(this.repo.saveAndFlush(this.mapper.partialUpdate(dto, this.repo.findById(dto.getId()).get())));
-    }
-
     /**
      * Сохраняет список объектов модели в базу данных.
      *
@@ -123,7 +110,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
 
         o.setStatus(EStatus.DELETED);
 
-        return this.repo.saveAndFlush(o);
+        return this.save(o);
     }
 
     /**
@@ -133,7 +120,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
      * @return Удаленный объект модели.
      */
     public O delete(Long id) {
-        Optional<O> o = this.repo.findById(id);
+        Optional<O> o = this.getById(id);
 
         if (o.isEmpty())
             return null;
@@ -141,22 +128,7 @@ public abstract class BaseService<D extends BaseDTO, O extends DBBaseModel, M ex
         O o1 = o.get();
         o1.setStatus(EStatus.DELETED);
 
-        return this.repo.saveAndFlush(o1);
+        return this.save(o1);
     }
 
-    public O toEntity(D dto) {
-        return this.mapper.toEntity(dto);
-    }
-
-    public List<O> toEntity(List<D> dto) {
-        return this.mapper.toEntity(dto);
-    }
-
-    public D toDto(O o) {
-        return this.mapper.toDto(o);
-    }
-
-    public List<D> toDto(List<O> o) {
-        return this.mapper.toDto(o);
-    }
 }

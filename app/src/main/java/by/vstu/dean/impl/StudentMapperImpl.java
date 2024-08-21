@@ -1,9 +1,9 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.dto.mapper.GroupMapper;
 import by.vstu.dean.dto.mapper.SpecializationMapper;
 import by.vstu.dean.dto.mapper.StudentMapper;
+import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;

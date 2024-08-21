@@ -1,9 +1,9 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.GroupDTO;
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.dto.mapper.GroupMapper;
 import by.vstu.dean.dto.mapper.SpecialityMapper;
-import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.dto.v1.students.GroupDTO;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.services.FacultyService;
@@ -62,6 +62,7 @@ public class GroupMapperImpl implements GroupMapper {
         groupDTO.setFacultyId(entity.getFaculty().getId());
         int course = LocalDate.now().getYear() - entity.getYearStart() - (LocalDate.now().getMonth().getValue() < 7 ? -1 : 0);
         groupDTO.setCurrentCourse(entity.getStatus().equals(EStatus.DELETED) ? entity.getYearEnd()-entity.getYearStart() : course);
+
         return groupDTO;
     }
 

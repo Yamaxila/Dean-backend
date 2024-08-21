@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.InstitutionDTO;
 import by.vstu.dean.dto.mapper.InstitutionMapper;
+import by.vstu.dean.dto.v1.students.InstitutionDTO;
 import by.vstu.dean.models.students.InstitutionModel;
 import by.vstu.dean.repo.InstitutionModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;

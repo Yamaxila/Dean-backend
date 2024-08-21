@@ -1,11 +1,11 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.QualificationModel;
-import by.vstu.dean.repo.QualificationModelRepository;
 import by.vstu.dean.old.models.DQualificationModel;
 import by.vstu.dean.old.repo.DQualificationModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.QualificationModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

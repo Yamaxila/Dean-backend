@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.DeviationDTO;
 import by.vstu.dean.dto.mapper.DeviationMapper;
+import by.vstu.dean.dto.v1.students.DeviationDTO;
 import by.vstu.dean.models.students.DeviationModel;
 import org.springframework.stereotype.Component;
 

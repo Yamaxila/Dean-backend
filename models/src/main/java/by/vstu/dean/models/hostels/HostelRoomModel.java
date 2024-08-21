@@ -1,8 +1,8 @@
 package by.vstu.dean.models.hostels;
 
+import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
-import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.students.StudentModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;

@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.specs;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.specs.SpecialityDTO;
 import by.vstu.dean.dto.mapper.SpecialityMapper;
+import by.vstu.dean.dto.v1.specs.SpecialityDTO;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.repo.SpecialityModelRepository;
 import by.vstu.dean.services.SpecialityService;
@@ -22,8 +22,9 @@ public class SpecialityController extends BaseController<SpecialityDTO, Speciali
      * Конструктор контроллера.
      *
      * @param service Сервис специальностей
+     * @param mapper Сервис специальностей
      */
-    public SpecialityController(SpecialityService service) {
-        super(service);
+    public SpecialityController(SpecialityService service, SpecialityMapper mapper) {
+        super(service, mapper);
     }
 }

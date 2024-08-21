@@ -1,8 +1,8 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.lessons.TeacherDTO;
 import by.vstu.dean.dto.mapper.TeacherDegreeMapper;
 import by.vstu.dean.dto.mapper.TeacherMapper;
+import by.vstu.dean.dto.v1.lessons.TeacherDTO;
 import by.vstu.dean.models.lessons.TeacherModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -13,8 +13,6 @@ import java.util.List;
 @Component
 public class TeacherMapperImpl implements TeacherMapper {
 
-    //    @Autowired
-//    private TeacherService teacherService;
     @Autowired
     private TeacherDegreeMapper teacherDegreeMapper;
 

@@ -1,9 +1,9 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
-import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.dto.mapper.HostelRoomMapper;
 import by.vstu.dean.dto.mapper.StudentMapper;
+import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
+import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import org.springframework.beans.factory.annotation.Autowired;

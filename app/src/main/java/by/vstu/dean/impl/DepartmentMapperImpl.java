@@ -1,9 +1,9 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.dto.mapper.DepartmentMapper;
 import by.vstu.dean.dto.mapper.FacultyMapper;
 import by.vstu.dean.dto.mapper.TeacherMapper;
+import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.repo.DepartmentModelRepository;

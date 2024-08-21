@@ -1,8 +1,8 @@
 package by.vstu.dean.impl;
 
+import by.vstu.dean.dto.mapper.SpecializationMapper;
 import by.vstu.dean.dto.v1.specs.SpecialityDTO;
 import by.vstu.dean.dto.v1.specs.SpecializationDTO;
-import by.vstu.dean.dto.mapper.SpecializationMapper;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.models.specs.SpecializationModel;
 import org.springframework.stereotype.Component;

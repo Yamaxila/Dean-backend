@@ -4,15 +4,15 @@ import cz.jirutka.rsql.parser.ast.ComparisonOperator;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import org.jetbrains.annotations.NotNull;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.*;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static by.vstu.dean.core.rsql.RsqlSearchOperation.*;
+import static by.vstu.dean.core.rsql.RsqlSearchOperation.getSimpleOperator;
 
 @AllArgsConstructor
 @Setter
@@ -23,89 +23,92 @@ public class GenericRsqlSpecification<T> implements Specification<T> {
     private ComparisonOperator operator;
     private List<String> arguments;
 
+    //FIXME: Мне кажется, что здесь что-то сломано. Мужно смотреть на реальном примере
     @Override
-    public Predicate toPredicate(@NotNull Root<T> root, @NotNull CriteriaQuery<?> query, @NotNull CriteriaBuilder builder) {
-        Path<String> propertyExpression = parseProperty(root);
-        List<Object> args = castArguments(propertyExpression);
+    public Predicate toPredicate(Root<T> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+        List<Object> args = castArguments(root);
         Object argument = args.get(0);
-
         switch (Objects.requireNonNull(getSimpleOperator(operator))) {
-            case EQUAL:
-                if (argument instanceof String)
-                    return builder.like(builder.lower(propertyExpression),
-                            argument.toString().replace('*', '%').toLowerCase());
-                else if (argument == null)
-                    return builder.isNull(propertyExpression);
-                else return builder.equal(propertyExpression, argument);
-            case NOT_EQUAL:
-                if (argument instanceof String)
-                    return builder.notLike(propertyExpression,
-                            argument.toString().replace('*', '%'));
-                else if (argument == null)
-                    return builder.isNotNull(propertyExpression);
-                else return builder.notEqual(propertyExpression, argument);
 
-            case GREATER_THAN:
-                return builder.greaterThan(propertyExpression,
-                        argument.toString());
-
-            case GREATER_THAN_OR_EQUAL:
-                return builder.greaterThanOrEqualTo(propertyExpression,
-                        argument.toString());
-
-            case LESS_THAN:
-                return builder.lessThan(propertyExpression,
-                        argument.toString());
-
-            case LESS_THAN_OR_EQUAL:
-                return builder.lessThanOrEqualTo(propertyExpression,
-                        argument.toString());
+            case EQUAL: {
+                if (argument instanceof String) {
+                    return builder.like(getPath(root), argument.toString().replace('*', '%'));
+                } else if (argument == null) {
+                    return builder.isNull(getPath(root));
+                } else {
+                    return builder.equal(getPath(root), argument);
+                }
+            }
+            case NOT_EQUAL: {
+                if (argument instanceof String) {
+                    return builder.notLike(getPath(root), argument.toString().replace('*', '%'));
+                } else if (argument == null) {
+                    return builder.isNotNull(getPath(root));
+                } else {
+                    return builder.notEqual(getPath(root), argument);
+                }
+            }
+            case GREATER_THAN: {
+                if (getProperty(root).equals(LocalDate.class)) {
+                    return builder.greaterThan(getPath(root).as(LocalDate.class), (LocalDate) argument);
+                }
+                return builder.greaterThan(getPath(root), argument.toString());
+            }
+            case GREATER_THAN_OR_EQUAL: {
+                if (getProperty(root).equals(LocalDate.class)) {
+                    return builder.greaterThanOrEqualTo(getPath(root).as(LocalDate.class), (LocalDate) argument);
+                }
+                return builder.greaterThanOrEqualTo(getPath(root), argument.toString());
+            }
+            case LESS_THAN: {
+                if (getProperty(root).equals(LocalDate.class)) {
+                    return builder.lessThan(getPath(root).as(LocalDate.class), (LocalDate) argument);
+                }
+                return builder.lessThan(getPath(root), argument.toString());
+            }
+            case LESS_THAN_OR_EQUAL: {
+                if (getProperty(root).equals(LocalDate.class)) {
+                    return builder.lessThanOrEqualTo(getPath(root).as(LocalDate.class), (LocalDate) argument);
+                }
+                return builder.lessThanOrEqualTo(getPath(root), argument.toString());
+            }
             case IN:
-                return propertyExpression.in(args);
+                return getPath(root).in(args);
             case NOT_IN:
-                return builder.not(propertyExpression.in(args));
+                return builder.not(getPath(root).in(args));
         }
 
         return null;
     }
 
-    // This method will help us diving deep into nested property using the dot convention
-    // The originial tutorial did not have this, so it can only parse the shallow properties.
-    private Path<String> parseProperty(Root<T> root) {
-        Path<String> path;
+    private Path<String> getPath(final Root<T> root) {
         if (property.contains(".")) {
-            // Nested properties
-            String[] pathSteps = property.split("\\.");
-            String step = pathSteps[0];
-            path = root.get(step);
-
-            for (int i = 1; i <= pathSteps.length - 1; i++) {
-                path = path.get(pathSteps[i]);
+            Path<String> path = (Path<String>) root;
+            String[] tempProperty = property.split("\\.");
+            for (String field : tempProperty) {
+                path = path.get(field);
             }
-        } else {
-            path = root.get(property);
+            return path;
         }
-        return path;
+        return root.get(property);
     }
 
-    private List<Object> castArguments(Path<?> propertyExpression) {
-        Class<?> type = propertyExpression.getJavaType();
+    private Class<?> getProperty(final Root<T> root) {
+        return getPath(root).getJavaType();
+    }
+
+    private List<Object> castArguments(final Root<T> root) {
+
+        Class<?> type = getProperty(root);
 
         return arguments.stream().map(arg -> {
+            if (type.equals(Short.class)) return Short.parseShort(arg);
             if (type.equals(Integer.class)) return Integer.parseInt(arg);
-            else if (type.equals(Long.class)) return Long.parseLong(arg);
-            else if (type.equals(Byte.class)) return Byte.parseByte(arg);
-            //FIXME: Add support for enums
-//            else if (type.isEnum()) {
-//                if (type.equals(EFrame.class))
-//                    return StringUtils.canBeInt(arg) ? EFrame.valueOf(Integer.parseInt(arg)) : EFrame.valueOf(arg);
-//                else if (type.equals(ELessonType.class))
-//                    return StringUtils.canBeInt(arg) ? ELessonType.valueOf(Integer.parseInt(arg)) : ELessonType.valueOf(arg);
-//                else if (type.equals(EClassroomType.class))
-//                    return StringUtils.canBeInt(arg) ? EClassroomType.valueOf(Integer.parseInt(arg)) : EClassroomType.valueOf(arg);
-//                else return Enum.valueOf((Class<? extends Enum>) type, arg);
-//            }
-            else return arg;
+            if (type.equals(Long.class)) return Long.parseLong(arg);
+            if (type.equals(Boolean.class)) return Boolean.getBoolean(arg);
+            if (type.equals(LocalDate.class)) return LocalDate.parse(arg);
+            if (type.isEnum()) return Enum.valueOf((Class<? extends Enum>) type, arg);
+            return arg;
         }).collect(Collectors.toList());
     }
 }

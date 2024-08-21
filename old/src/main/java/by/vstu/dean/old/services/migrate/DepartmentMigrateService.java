@@ -3,10 +3,10 @@ package by.vstu.dean.old.services.migrate;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
-import by.vstu.dean.repo.DepartmentModelRepository;
-import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.old.models.DDepartmentModel;
 import by.vstu.dean.old.repo.DDepartmentModelRepository;
+import by.vstu.dean.repo.DepartmentModelRepository;
+import by.vstu.dean.repo.FacultyModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -83,6 +83,9 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
     public List<DepartmentModel> convertList(List<DDepartmentModel> t) {
         List<DepartmentModel> out = new ArrayList<>();
         t.forEach(citizenship -> out.add(this.convertSingle(citizenship)));
+
+        this.facultyModels.clear();
+
         return out;
     }
 

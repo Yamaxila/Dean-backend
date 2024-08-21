@@ -1,8 +1,6 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.dto.v1.students.DocumentDTO;
-import by.vstu.dean.dto.mapper.DocumentMapper;
 import by.vstu.dean.models.students.DocumentModel;
 import by.vstu.dean.repo.DocumentModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,16 +13,20 @@ import java.util.Optional;
  */
 @Service
 @Cacheable("document")
-public class DocumentService extends BaseService<DocumentDTO, DocumentModel, DocumentMapper, DocumentModelRepository> {
+public class DocumentService extends BaseService<DocumentModel, DocumentModelRepository> {
 
 
-    public DocumentService(DocumentModelRepository repo, DocumentMapper mapper) {
-        super(repo, mapper);
+    public DocumentService(DocumentModelRepository repo) {
+        super(repo);
     }
 
+    //FIXME: А зачем? АААА. Я понял. Это были попытки в ОПТИМИЗАЦИЮ
     @Override
     @Cacheable(value = "documents", key = "id")
     public Optional<DocumentModel> getById(Long id) {
         return super.getById(id);
     }
+
+
+
 }

@@ -23,8 +23,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 @EnableResourceServer
 @EnableWebSecurity
 @Import({MethodSecurityConfiguration.class})
+//TODO: Нужно это переписать, т.к. при переходе на SpringBoot 3.x, скорее всего этого уже не будет
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
-    @Value("${token.signing.key}")
+
+                                    @Value("${token.signing.key}")
     private String signingKey;
 
     public void configure(ResourceServerSecurityConfigurer config) {
@@ -33,7 +35,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
     @Bean
     public TokenStore tokenStore() {
-        return (TokenStore) new JwtTokenStore(accessTokenConverter());
+        return new JwtTokenStore(accessTokenConverter());
     }
 
     @Bean
@@ -52,7 +54,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     }
 
     public void configure(HttpSecurity http) throws Exception {
-        ((HttpSecurity) ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) ((ExpressionUrlAuthorizationConfigurer.AuthorizedUrl) ((HttpSecurity) http.csrf().disable())
+        ((HttpSecurity) ((ExpressionUrlAuthorizationConfigurer<?>.AuthorizedUrl) ((ExpressionUrlAuthorizationConfigurer<?>.AuthorizedUrl) http.csrf().disable()
                 .cors().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.OPTIONS).permitAll()

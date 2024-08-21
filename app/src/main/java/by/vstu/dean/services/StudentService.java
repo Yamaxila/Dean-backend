@@ -1,8 +1,6 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.dto.v1.students.StudentDTO;
-import by.vstu.dean.dto.mapper.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StudentModelRepository;
 import org.springframework.cache.annotation.Cacheable;
@@ -15,10 +13,10 @@ import java.util.List;
  */
 @Service
 @Cacheable("student")
-public class StudentService extends BaseService<StudentDTO, StudentModel, StudentMapper, StudentModelRepository> {
+public class StudentService extends BaseService<StudentModel, StudentModelRepository> {
 
-    public StudentService(StudentModelRepository repo, StudentMapper mapper) {
-        super(repo, mapper);
+    public StudentService(StudentModelRepository repo) {
+        super(repo);
     }
 
     /**

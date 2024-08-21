@@ -2,13 +2,13 @@ package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.SpecializationModel;
+import by.vstu.dean.old.models.DSpecializationModel;
+import by.vstu.dean.old.repo.DSpecializationModelRepository;
 import by.vstu.dean.repo.QualificationModelRepository;
 import by.vstu.dean.repo.SpecialityModelRepository;
 import by.vstu.dean.repo.SpecializationModelRepository;
-import by.vstu.dean.old.models.DSpecializationModel;
-import by.vstu.dean.old.repo.DSpecializationModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

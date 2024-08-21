@@ -1,8 +1,8 @@
 package by.vstu.dean.models.rooms;
 
+import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
-import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,10 +1,6 @@
 HELP.md
 target/
 /src/
-models/target/
-core/target/
-app/target/
-old/target/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -38,7 +34,8 @@ build/
 .vscode/
 
 ### Project specific ###
-application.properties
+*.properties
+/app/src/main/resources/application.properties
 /.jpb/
 /.mvn/
 /mvnw

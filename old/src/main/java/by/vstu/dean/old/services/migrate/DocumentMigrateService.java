@@ -1,13 +1,13 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.students.*;
+import by.vstu.dean.old.models.DStudentModel;
 import by.vstu.dean.repo.CitizenshipModelRepository;
-import by.vstu.dean.repo.DocumentModelRepository;
 import by.vstu.dean.repo.InstitutionModelRepository;
 import by.vstu.dean.repo.StudentLanguageModelRepository;
-import by.vstu.dean.old.models.DStudentModel;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.services.DocumentService;
 import by.vstu.dean.services.EducationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +16,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -25,17 +26,19 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     private final InstitutionModelRepository institutionModelRepository;
     private final CitizenshipModelRepository citizenshipModelRepository;
     private final StudentLanguageModelRepository studentLanguageModelRepository;
-    private final DocumentModelRepository documentModelRepository;
     private final EducationMigrateService educationMigrateService;
     private final EducationService educationService;
 
     private final ArrayList<CitizenshipModel> citizenshipModels = new ArrayList<>();
     private final ArrayList<StudentLanguageModel> studentLanguageModels = new ArrayList<>();
     private final ArrayList<InstitutionModel> institutionModels = new ArrayList<>();
+    private final ArrayList<DocumentModel> documentModels = new ArrayList<>();
+
+    private final DocumentService documentService;
 
     @Override
     public Long getLastDBId() {
-        return this.documentModelRepository.findTopByOrderByIdDesc() == null ? 19000 : this.documentModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.documentService.getRepo().findTopByOrderByIdDesc() == null ? 19000 : this.documentService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -92,7 +95,7 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
         List<EducationModel> educations = this.educationService.getAllBySourceId(dStudentModel.getId());
 
         if(educations == null || educations.isEmpty()) {
-
+            educations = new ArrayList<>();
 
             EducationModel education1 = new EducationModel();
             EducationModel education2 = new EducationModel();
@@ -131,6 +134,11 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
 
             this.educationMigrateService.insertAll(educations);
         }
+
+        documentModel.setNeedHostel(!(dStudentModel.getHostel() == null ||
+                dStudentModel.getHostel().isEmpty() ||
+                dStudentModel.getHostel().isBlank() ||
+                dStudentModel.getHostel().equals("0")));
 
         documentModel.setEducationString(dStudentModel.getEducationString() == null || dStudentModel.getEducationString().isEmpty() ? "" : StringUtils.safeTrim(dStudentModel.getEducationString()));
         documentModel.setEducationYearEnd(dStudentModel.getEducationYearEnd());
@@ -180,20 +188,41 @@ public class DocumentMigrateService extends BaseMigrateService<DocumentModel, DS
     @Override
     public List<DocumentModel> convertList(List<DStudentModel> t) {
         List<DocumentModel> out = new ArrayList<>();
-
         t.forEach(student -> out.add(this.convertSingle(student)));
+
+        this.citizenshipModels.clear();
+        this.studentLanguageModels.clear();
+        this.institutionModels.clear();
 
         return out;
     }
 
     @Override
     public DocumentModel insertSingle(DocumentModel t) {
-        return this.documentModelRepository.saveAndFlush(t);
+        return this.documentService.save(t);
     }
 
     @Override
     public List<DocumentModel> insertAll(List<DocumentModel> t) {
-        return this.documentModelRepository.saveAllAndFlush(t);
+        return this.documentService.saveAll(t);
+    }
+
+    public Optional<DocumentModel> tryFindDocument(DStudentModel dStudent) {
+        if(this.documentModels.isEmpty())
+            this.documentModels.addAll(this.documentService.getAll());
+
+
+        return this.documentModels.stream().filter(p ->
+                        Objects.equals(p.getSourceId(), dStudent.getId())
+                        || p.getPassportId().equalsIgnoreCase(dStudent.getPassportId())
+                ).findFirst();
+    }
+
+    public void cleanup() {
+        this.institutionModels.clear();
+        this.citizenshipModels.clear();
+        this.studentLanguageModels.clear();
+        this.documentModels.clear();
     }
 
     @Override

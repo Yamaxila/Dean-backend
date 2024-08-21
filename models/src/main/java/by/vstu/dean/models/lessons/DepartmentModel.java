@@ -2,6 +2,7 @@ package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.FacultyModel;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.AllArgsConstructor;
@@ -63,5 +64,6 @@ public class DepartmentModel extends DBBaseModel {
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "department_id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
+    @JsonManagedReference
     private Set<TeacherModel> teachers;
 }

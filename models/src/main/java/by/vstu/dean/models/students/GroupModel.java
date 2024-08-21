@@ -1,8 +1,8 @@
 package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
-import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.specs.SpecialityModel;
 import com.google.gson.annotations.JsonAdapter;

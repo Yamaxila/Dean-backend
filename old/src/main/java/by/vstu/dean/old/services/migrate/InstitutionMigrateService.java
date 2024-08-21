@@ -2,9 +2,9 @@ package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.students.InstitutionModel;
-import by.vstu.dean.repo.InstitutionModelRepository;
 import by.vstu.dean.old.models.DInstitutionModel;
 import by.vstu.dean.old.repo.DInstitutionModelRepository;
+import by.vstu.dean.repo.InstitutionModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

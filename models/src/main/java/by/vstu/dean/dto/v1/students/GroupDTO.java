@@ -32,6 +32,12 @@ public final class GroupDTO extends BaseDTO {
     private Long facultyId;
 
     /**
+     * Название факультета, связанного с данной группой.
+     */
+    @ApiModelProperty(notes = "Факультет")
+    private String facultyName;
+
+    /**
      * Год поступления группы.
      */
     @ApiModelProperty(notes = "Год поступления")

@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.lessons;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
 import by.vstu.dean.dto.mapper.DisciplineMapper;
+import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.repo.DisciplineModelRepository;
 import by.vstu.dean.services.DisciplineService;
@@ -22,8 +22,9 @@ public class DisciplineController extends BaseController<DisciplineDTO, Discipli
      * Конструктор контроллера.
      *
      * @param service Сервис дисциплин
+     * @param mapper Маппер
      */
-    public DisciplineController(DisciplineService service) {
-        super(service);
+    public DisciplineController(DisciplineService service, DisciplineMapper mapper) {
+        super(service, mapper);
     }
 }

@@ -2,16 +2,16 @@ package by.vstu.dean.old.services.migrate;
 
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.DocumentModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
+import by.vstu.dean.old.models.DStudentModel;
+import by.vstu.dean.old.repo.DStudentModelRepository;
 import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.repo.SpecializationModelRepository;
 import by.vstu.dean.repo.StudentModelRepository;
-import by.vstu.dean.old.models.DStudentModel;
-import by.vstu.dean.old.repo.DStudentModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.services.DocumentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -58,7 +59,14 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         });
 
-        return out;
+        this.groups.clear();
+        this.specializations.clear();
+
+        return out.stream().collect(Collectors.toMap(
+                StudentModel::getSourceId,
+                studentModel -> studentModel,
+                (s1, s2) -> s2.getLastDocument().getId() > s1.getLastDocument().getId() ? s2 : s1
+        )).values().stream().toList();
     }
 
     @Override
@@ -93,6 +101,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         studentModel.setAddressRegion(StringUtils.safeTrim(dStudentModel.getAddressRegion()));
         studentModel.setAddressFlat(StringUtils.safeTrim(dStudentModel.getAddressFlat()));
         studentModel.setPhone(StringUtils.safeTrim(dStudentModel.getPhone()));
+        studentModel.setBenefits(StringUtils.safeTrim(dStudentModel.getBenefits()   ));
         studentModel.setSex((dStudentModel.getSex() != null && dStudentModel.getSex().equals("М")) ? 1 : 0);
         studentModel.setSourceId(dStudentModel.getId());
         studentModel.setApproved(false);
@@ -104,12 +113,11 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
             else
                 studentModel.setSpecialization(this.specializations.stream().filter(p -> p.getSourceId().equals(dStudentModel.getSpecialization().getId())).findAny().orElse(null));
 
-        DocumentModel documentModel = this.documentService.getBySourceId(studentModel.getSourceId());
+        DocumentModel documentModel;
+        Optional<DocumentModel> oDocument = this.documentMigrateService.tryFindDocument(dStudentModel);
 
-        if(documentModel == null)
-            documentModel = documentMigrateService.convertSingle(dStudentModel);
-
-        studentModel.setLastDocument(documentModel);
+        documentModel = oDocument.orElseGet(() -> documentMigrateService.convertSingle(dStudentModel));
+            studentModel.setLastDocument(documentModel);
 
         if (!update)
             studentModel.setCreated(LocalDateTime.now());

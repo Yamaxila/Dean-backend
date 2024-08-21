@@ -1,43 +1,38 @@
 package by.vstu.dean.old.services.update;
 
-import by.vstu.dean.core.dto.BaseDTO;
-import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
+import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.OldDBBaseModelRepository;
-import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.old.services.migrate.BaseMigrateService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
  * Абстрактный базовый класс для служб обновления (update service).
  * Этот класс предоставляет основные методы для сравнения и обновления данных в будущей и старой версиях моделей.
  *
- * @param <U> Тип DTO (Data Transfer Object), представляющий будущую версию модели.
  * @param <D> Тип модели старой версии.
  * @param <Y> Репозиторий для работы с моделями старой версии.
  * @param <O> Тип модели будущей версии.
- * @param <I> Интерфейс маппера для преобразования между DTO и моделью будущей версии.
  * @param <R> Репозиторий для работы с моделями будущей версии.
  * @param <S> Сервис для работы с моделями будущей версии.
  * @param <M> Сервис миграции данных между старой и будущей версией моделей.
  */
 @RequiredArgsConstructor
 public abstract class BaseUpdateService<
-        U extends BaseDTO
-        , D extends OldDBBaseModel
+          D extends OldDBBaseModel
         , Y extends OldDBBaseModelRepository<D>
         , O extends DBBaseModel
-        , I extends BaseMapperInterface<U, O>
         , R extends DBBaseModelRepository<O>
-        , S extends BaseService<U, O, I, R>
+        , S extends BaseService<O, R>
         , M extends BaseMigrateService<O, D>>
         implements IUpdateExecutor {
 
@@ -59,11 +54,13 @@ public abstract class BaseUpdateService<
      */
     public boolean isEqual(O future, O old) throws IllegalAccessException {
         Class<?> clazz = future.getClass();
-
+        boolean equals = true;
+//  && !p.getName().equalsIgnoreCase("status")
+//  clazz.getDeclaredFields()
+        //TODO: нужно смотреть на super-класс и испольовать аннотации
         for (Field field : Arrays.stream(clazz.getDeclaredFields()).filter(p ->
                 !p.getName().equalsIgnoreCase("id")
                         && !p.getName().equalsIgnoreCase("updated")
-                        && !p.getName().equalsIgnoreCase("status")
                         && !p.getName().equalsIgnoreCase("created")
                         && !p.getName().equalsIgnoreCase("sourceId")
                         && !p.getName().equalsIgnoreCase("approved")
@@ -82,18 +79,18 @@ public abstract class BaseUpdateService<
             if (value1 instanceof DBBaseModel && value2 instanceof DBBaseModel) {
                 if (!((DBBaseModel) value1).getSourceId().equals(((DBBaseModel) value2).getSourceId())) {
                     field.set(future, value2);
-                    return false;
+                    equals = false;
                 }
             } else {
                 if (!(value1 instanceof DBBaseModel)) {
                     if (!Objects.equals(value1, value2)) {
                         field.set(future, value2);
-                        return false;
+                        equals = false;
                     }
                 }
             }
         }
-        return true;
+        return equals;
     }
 
     /**
@@ -115,8 +112,13 @@ public abstract class BaseUpdateService<
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException(e);
                 }
+            } else {
+                //НЕЛЬЗЯ УДАЛЯТЬ ДАННЫЕ
+                row.setStatus(EStatus.DELETED);
+                out.add(row);
             }
         });
+        out.forEach(o -> o.setUpdated(LocalDateTime.now()));
         return out;
     }
 
@@ -149,6 +151,9 @@ public abstract class BaseUpdateService<
         System.err.print(this.getClass());
         List<O> updated = this.getUpdated();
         System.err.println("  -  " + updated.size());
+
+        System.err.println(Arrays.toString(updated.stream().map(DBBaseModel::getId).toArray()));
+
         this.service.saveAll(updated);
     }
 

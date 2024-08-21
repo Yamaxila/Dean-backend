@@ -1,7 +1,7 @@
 package by.vstu.dean.core.repo;
 
-import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.models.DBBaseModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.repository.NoRepositoryBean;

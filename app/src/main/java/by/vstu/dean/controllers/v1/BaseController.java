@@ -2,8 +2,8 @@ package by.vstu.dean.controllers.v1;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.dto.BaseDTO;
-import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.models.DBBaseModel;
+import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
 import io.swagger.annotations.ApiOperation;
@@ -27,12 +27,17 @@ import java.util.Optional;
  * @param <S> Тип сервиса
  */
 @RequiredArgsConstructor
-public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<D, O, M, R>> {
+public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>> {
 
     /**
      * Сервис для работы с объектами.
      */
     protected final S service;
+
+    /**
+     * Маппер.
+     */
+    protected final M mapper;
 
     /**
      * Получает все объекты из базы данных.
@@ -46,7 +51,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "getAll", notes = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAll() {
-        return new ResponseEntity<>(this.service.toDto(this.service.getAll()), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()), HttpStatus.OK);
     }
 
     /**
@@ -76,7 +81,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "dto_rsql", notes = "Получает DTO из базы данных через rsql-запрос")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllRSqlDTO(@RequestParam(required = false, defaultValue = "id>0") String sql) {
-        return new ResponseEntity<>(this.service.toDto(this.service.rsql(sql)), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.rsql(sql)), HttpStatus.OK);
     }
 
     /**
@@ -92,7 +97,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
-        return new ResponseEntity<>(this.service.toDto(this.service.getAllActive(is)), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.getAllActive(is)), HttpStatus.OK);
     }
 
     /**
@@ -109,7 +114,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<D> getById(@PathVariable Long id) {
         Optional<O> groupModel = this.service.getById(id);
-        return groupModel.map(model -> new ResponseEntity<>(this.service.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return groupModel.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -125,8 +130,8 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "put", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> put(@RequestBody D dto) {
-        return new ResponseEntity<>(this.service.toDto(this.service.save(this.service.toEntity(dto))), HttpStatus.OK);
-    }
+        return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
+    } //FIXME: Возможно стоит добавить ещё иля обычных моделей и добавить проверку @NotNull полей
 
     /**
      * Помечает объект в базе данных по его id как удаленный и возвращает его с установленным статусом DELETED.
@@ -144,7 +149,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
         if (id == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 
-        return new ResponseEntity<>(this.service.toDto(this.service.delete(id)), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.delete(id)), HttpStatus.OK);
     }
 
 }

@@ -58,7 +58,7 @@ public class TokenRequest {
     public String getToken() {
 
         // Проверяем, есть ли действующий токен и не истек ли его срок действия.
-        if (System.getProperty("expires_at") != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis()) {
+        if (System.getProperty("expires_at", null) != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis()) {
             return System.getProperty("accessToken");
         }
 
@@ -85,8 +85,10 @@ public class TokenRequest {
 
 
         // Сохраняем полученный токен и его срок действия в системных свойствах.
+        System.clearProperty("accessToken");
+        System.clearProperty("expires_at");
         System.setProperty("accessToken", tokenModel.getAccessToken());
-        System.setProperty("expires_at", tokenModel.getExpiresIn() + System.currentTimeMillis());
+        System.setProperty("expires_at", String.valueOf((Long.parseLong(tokenModel.getExpiresIn())*1000L) + System.currentTimeMillis()));
 
         // Возвращаем полученный токен аутентификации.
         return tokenModel.getAccessToken();

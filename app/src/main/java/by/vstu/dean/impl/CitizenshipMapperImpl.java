@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.CitizenshipDTO;
 import by.vstu.dean.dto.mapper.CitizenshipMapper;
+import by.vstu.dean.dto.v1.students.CitizenshipDTO;
 import by.vstu.dean.models.students.CitizenshipModel;
 import org.springframework.stereotype.Component;
 

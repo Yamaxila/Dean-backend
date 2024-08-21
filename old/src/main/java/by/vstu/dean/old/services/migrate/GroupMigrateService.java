@@ -1,17 +1,18 @@
 package by.vstu.dean.old.services.migrate;
 
-import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
-import by.vstu.dean.repo.FacultyModelRepository;
-import by.vstu.dean.repo.GroupModelRepository;
-import by.vstu.dean.repo.StudentModelRepository;
+import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.old.models.DGroupModel;
+import by.vstu.dean.old.repo.DGroupModelRepository;
 import by.vstu.dean.old.repo.DStudentModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.FacultyModelRepository;
+import by.vstu.dean.repo.GroupModelRepository;
+import by.vstu.dean.repo.StudentModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +29,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     private final FacultyModelRepository facultyModelRepository;
 
     private final DStudentModelRepository dStudentModelRepository;
+    private final DGroupModelRepository dGroupModelRepository;
 
     @Override
     public Long getLastDBId() {
@@ -37,7 +39,11 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     @Override
     public List<GroupModel> convertNotExistsFromDB() {
 
-        List<DGroupModel> dGroupModels = this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList();
+//        List<DGroupModel> dGroupModels = this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList();
+
+        List<DGroupModel> dGroupModels = new ArrayList<>(this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList());
+        dGroupModels.addAll(this.dGroupModelRepository.findAllByIdAfter(1000L));
+        dGroupModels = dGroupModels.stream().distinct().toList();
         List<Long> ids = this.groupRepo.findAll().stream().map(DBBaseModel::getSourceId).toList();
 
         return this.convertList(dGroupModels.stream().filter(p -> !ids.contains(p.getId())).toList());

@@ -129,4 +129,8 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);
         return this.request.run(this.params);
     }
+
+    public void setToken(String token) {
+        this.request.setToken(token);
+    }
 }

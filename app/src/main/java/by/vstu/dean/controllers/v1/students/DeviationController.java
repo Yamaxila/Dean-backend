@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.students.DeviationDTO;
 import by.vstu.dean.dto.mapper.DeviationMapper;
+import by.vstu.dean.dto.v1.students.DeviationDTO;
 import by.vstu.dean.models.students.DeviationModel;
 import by.vstu.dean.repo.DeviationModelRepository;
 import by.vstu.dean.services.DeviationService;
@@ -22,8 +22,9 @@ public class DeviationController extends BaseController<DeviationDTO, DeviationM
      * Конструктор контроллера.
      *
      * @param service Сервис отклонений студентов
+     * @param mapper Маппер
      */
-    public DeviationController(DeviationService service) {
-        super(service);
+    public DeviationController(DeviationService service, DeviationMapper mapper) {
+        super(service, mapper);
     }
 }

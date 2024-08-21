@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.students.StudentLanguageDTO;
 import by.vstu.dean.dto.mapper.StudentLanguageMapper;
+import by.vstu.dean.dto.v1.students.StudentLanguageDTO;
 import by.vstu.dean.models.students.StudentLanguageModel;
 import by.vstu.dean.repo.StudentLanguageModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;

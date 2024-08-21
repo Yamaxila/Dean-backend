@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.students.EducationDTO;
 import by.vstu.dean.dto.mapper.EducationMapper;
+import by.vstu.dean.dto.v1.students.EducationDTO;
 import by.vstu.dean.models.students.EducationModel;
 import by.vstu.dean.repo.EducationModelRepository;
 import by.vstu.dean.services.EducationService;
@@ -22,8 +22,9 @@ public class EducationController extends BaseController<EducationDTO, EducationM
      * Конструктор контроллера.
      *
      * @param service Сервис предыдущих образований студентов
+     * @param mapper Маппер
      */
-    public EducationController(EducationService service) {
-        super(service);
+    public EducationController(EducationService service, EducationMapper mapper) {
+        super(service, mapper);
     }
 }

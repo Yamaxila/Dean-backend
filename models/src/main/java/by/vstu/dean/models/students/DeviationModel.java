@@ -2,6 +2,7 @@ package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.adapters.LocalDateTimeTypeAdapter;
 import by.vstu.dean.core.models.DBBaseModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -29,6 +30,7 @@ public class DeviationModel extends DBBaseModel {
     @JoinColumn(name = "student_id")
     @ManyToOne
     @ApiModelProperty(notes = "Студент")
+    @JsonIgnore
     private StudentModel student;
     @ApiModelProperty(notes = "Тип сообщения")
     private String msgType;

@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.lessons.ExamTypeDTO;
 import by.vstu.dean.dto.mapper.ExamTypeMapper;
+import by.vstu.dean.dto.v1.lessons.ExamTypeDTO;
 import by.vstu.dean.models.lessons.ExamModel;
 import by.vstu.dean.repo.ExamModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.specs.QualificationDTO;
 import by.vstu.dean.dto.mapper.QualificationMapper;
+import by.vstu.dean.dto.v1.specs.QualificationDTO;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.repo.QualificationModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;

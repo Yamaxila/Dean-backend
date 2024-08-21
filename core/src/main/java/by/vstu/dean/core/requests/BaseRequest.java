@@ -100,7 +100,7 @@ public class BaseRequest<B> {
         byte[] encodedAuth = Base64.encodeBase64(
                 (AUTH_CLIENT_ID + ":" + AUTH_CLIENT_SECRET).getBytes(StandardCharsets.US_ASCII));
 
-        this.headers.add(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
+        this.headers.set(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
         return this;
     }
 
@@ -111,7 +111,7 @@ public class BaseRequest<B> {
      * @return Объект BaseRequest с установленным токеном авторизации.
      */
     public BaseRequest<B> setToken(String token) {
-        this.headers.add(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+        this.headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + token);
         return this;
     }
 

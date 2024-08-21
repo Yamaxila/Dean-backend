@@ -3,6 +3,7 @@ package by.vstu.dean.models.students;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.specs.SpecializationModel;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,6 +13,7 @@ import org.hibernate.annotations.NotFoundAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.time.LocalDate;
 
 /**
  * Класс, представляющий объект студента.
@@ -127,6 +129,13 @@ public class StudentModel extends DBBaseModel {
     private String phone;
 
     /**
+     * Льготы студента.
+     */
+    @ApiModelProperty(notes = "Льготы")
+    private String benefits;
+
+
+    /**
      * Является ли город студента деревней.
      */
     @ApiModelProperty(notes = "Является ли город - деревней")
@@ -136,7 +145,7 @@ public class StudentModel extends DBBaseModel {
      * Последний документ студента.
      */
     @JoinColumn(name = "last_document_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @ApiModelProperty(notes = "Последний документ")
     private DocumentModel lastDocument;
 
@@ -172,10 +181,22 @@ public class StudentModel extends DBBaseModel {
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
     @ApiModelProperty(notes = "Комната")
-    @JsonIgnore
+    @JsonBackReference
     private HostelRoomModel hostelRoom;
 
-    @Column(name = "approved")
+    /**
+     * Дата заселения студента.
+     */
+    @ApiModelProperty(notes = "Дата заселения")
+    private LocalDate checkInDate;
+
+    /**
+     * Дата выселения студента.
+     */
+    @ApiModelProperty(notes = "Дата выселения")
+    private LocalDate evictionDate;
+
+    @Column(name = "approved", columnDefinition = "boolean default false")
     @NotNull
     private boolean isApproved = false;
 }

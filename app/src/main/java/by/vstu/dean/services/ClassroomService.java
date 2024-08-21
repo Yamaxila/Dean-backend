@@ -1,11 +1,9 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.dto.v1.rooms.ClassroomDTO;
-import by.vstu.dean.dto.mapper.ClassroomMapper;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
-import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.repo.ClassroomModelRepository;
 import org.apache.poi.ss.usermodel.*;
@@ -20,16 +18,11 @@ import java.util.List;
 
 @Service
 @Cacheable("classroom")
-public class ClassroomService extends BaseService<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository> {
+public class ClassroomService extends BaseService<ClassroomModel, ClassroomModelRepository> {
 
-    @SuppressWarnings("unused")
-    private final DepartmentService departmentService;
-
-    public ClassroomService(ClassroomModelRepository repo, ClassroomMapper mapper, DepartmentService departmentService) {
-        super(repo, mapper);
-        this.departmentService = departmentService;
+    public ClassroomService(ClassroomModelRepository repo) {
+        super(repo);
     }
-
 
     public List<ClassroomModel> updateFromExcel(String filePath) {
 

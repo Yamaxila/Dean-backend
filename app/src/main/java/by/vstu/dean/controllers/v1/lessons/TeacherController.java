@@ -1,9 +1,9 @@
 package by.vstu.dean.controllers.v1.lessons;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.lessons.TeacherDTO;
+import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.dto.mapper.TeacherMapper;
+import by.vstu.dean.dto.v1.lessons.TeacherDTO;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.merge.TeacherDepartmentMerge;
 import by.vstu.dean.repo.TeacherDepartmentMergeRepository;
@@ -37,9 +37,10 @@ public class TeacherController extends BaseController<TeacherDTO, TeacherModel, 
      * Конструктор контроллера.
      *
      * @param service Сервис преподавателей
+     * @param mapper Маппер
      */
-    public TeacherController(TeacherService service) {
-        super(service);
+    public TeacherController(TeacherService service, TeacherMapper mapper) {
+        super(service, mapper);
     }
 
 

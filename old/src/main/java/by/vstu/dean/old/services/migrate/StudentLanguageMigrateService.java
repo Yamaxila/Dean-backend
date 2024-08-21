@@ -1,11 +1,11 @@
 package by.vstu.dean.old.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.students.StudentLanguageModel;
-import by.vstu.dean.repo.StudentLanguageModelRepository;
 import by.vstu.dean.old.models.DStudentLanguageModel;
 import by.vstu.dean.old.repo.DStudentLanguageModelRepository;
-import by.vstu.dean.core.utils.StringUtils;
+import by.vstu.dean.repo.StudentLanguageModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

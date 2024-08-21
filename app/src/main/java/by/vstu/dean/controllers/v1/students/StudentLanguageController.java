@@ -1,8 +1,8 @@
 package by.vstu.dean.controllers.v1.students;
 
 import by.vstu.dean.controllers.v1.BaseController;
-import by.vstu.dean.dto.v1.students.StudentLanguageDTO;
 import by.vstu.dean.dto.mapper.StudentLanguageMapper;
+import by.vstu.dean.dto.v1.students.StudentLanguageDTO;
 import by.vstu.dean.models.students.StudentLanguageModel;
 import by.vstu.dean.repo.StudentLanguageModelRepository;
 import by.vstu.dean.services.StudentLanguageService;
@@ -22,8 +22,9 @@ public class StudentLanguageController extends BaseController<StudentLanguageDTO
      * Конструктор контроллера.
      *
      * @param service Сервис языков студентов
+     * @param mapper Маппер
      */
-    public StudentLanguageController(StudentLanguageService service) {
-        super(service);
+    public StudentLanguageController(StudentLanguageService service, StudentLanguageMapper mapper) {
+        super(service, mapper);
     }
 }

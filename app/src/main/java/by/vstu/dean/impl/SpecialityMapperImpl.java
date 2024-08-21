@@ -1,7 +1,7 @@
 package by.vstu.dean.impl;
 
-import by.vstu.dean.dto.v1.specs.SpecialityDTO;
 import by.vstu.dean.dto.mapper.SpecialityMapper;
+import by.vstu.dean.dto.v1.specs.SpecialityDTO;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.repo.SpecialityModelRepository;
 import by.vstu.dean.services.DepartmentService;
