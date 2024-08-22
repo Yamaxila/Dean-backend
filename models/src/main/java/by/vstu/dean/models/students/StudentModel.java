@@ -20,7 +20,6 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
-@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
@@ -63,6 +62,7 @@ public class StudentModel extends DBBaseModel {
     /**
      * Адрес студента (устаревшее поле, используйте отдельные поля для адреса).
      */
+    @SuppressWarnings("DeprecatedIsStillUsed")
     @ApiModelProperty(notes = "Адрес")
     @Deprecated
     private String address;
@@ -151,6 +151,7 @@ public class StudentModel extends DBBaseModel {
     /**
      * Последнее отклонение студента.
      */
+    @SuppressWarnings({"deprecation"})
     @JoinColumn(name = "last_deviation_id")
     @ManyToOne
     @ApiModelProperty(notes = "Последнее отклонение")
@@ -198,4 +199,35 @@ public class StudentModel extends DBBaseModel {
     @Column(name = "approved", columnDefinition = "boolean default false")
     @NotNull
     private boolean isApproved = false;
+
+    @Override
+    public String toString() {
+        return "StudentModel{" +
+                "lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", sex=" + sex +
+                ", cityType=" + cityType +
+                ", address='" + address + '\'' +
+                ", addressCountry='" + addressCountry + '\'' +
+                ", addressIndex='" + addressIndex + '\'' +
+                ", addressState='" + addressState + '\'' +
+                ", addressRegion='" + addressRegion + '\'' +
+                ", addressCity='" + addressCity + '\'' +
+                ", addressStreet='" + addressStreet + '\'' +
+                ", addressHouse='" + addressHouse + '\'' +
+                ", addressHousePart='" + addressHousePart + '\'' +
+                ", addressFlat='" + addressFlat + '\'' +
+                ", phone='" + phone + '\'' +
+                ", benefits='" + benefits + '\'' +
+                ", cityIsVillage=" + cityIsVillage +
+                ", lastDeviation=" + lastDeviation +
+                ", specialization=" + specialization +
+                ", group=" + group +
+                ", hostelRoom=" + hostelRoom +
+                ", checkInDate=" + checkInDate +
+                ", evictionDate=" + evictionDate +
+                ", isApproved=" + isApproved +
+                '}';
+    }
 }

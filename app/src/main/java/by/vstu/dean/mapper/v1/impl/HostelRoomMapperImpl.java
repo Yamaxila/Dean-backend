@@ -3,16 +3,14 @@ package by.vstu.dean.mapper.v1.impl;
 import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
 import by.vstu.dean.mapper.v1.HostelRoomMapper;
-import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.hostels.HostelRoomModel;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class HostelRoomMapperImpl implements HostelRoomMapper {
-
-    @Autowired
-    private StudentMapper studentMapper;
+//
+//    @Autowired
+//    private StudentMapper studentMapper;
 
     public HostelRoomModel toEntity(HostelRoomDTO dto) {
         if (dto == null) {
@@ -29,7 +27,8 @@ public class HostelRoomMapperImpl implements HostelRoomMapper {
             return null;
         }
         HostelRoomDTO hostelRoomDTO = HostelRoomMapper.super.toDto(entity);
-        hostelRoomDTO.setStudents(this.studentMapper.toDto(entity.getStudents().stream().toList()));
+        //Тут косяк с studentMapper
+//        hostelRoomDTO.setStudents(this.studentMapper.toDto(entity.getStudents().stream().toList()));
         return hostelRoomDTO;
 
     }

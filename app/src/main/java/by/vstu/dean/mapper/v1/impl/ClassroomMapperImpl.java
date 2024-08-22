@@ -40,6 +40,9 @@ public class ClassroomMapperImpl implements ClassroomMapper {
 
     @Override
     public ClassroomModel partialUpdate(ClassroomDTO dto, ClassroomModel entity) {
+        if(dto == null)
+            return null;
+
         ClassroomModel classroomModel = ClassroomMapper.super.partialUpdate(dto, entity);
 
         if(dto.getDepartmentId() != null)

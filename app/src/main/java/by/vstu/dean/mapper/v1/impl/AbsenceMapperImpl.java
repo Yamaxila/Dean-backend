@@ -47,6 +47,9 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
     @Override
     public AbsenceDTO toDto(AbsenceModel entity) {
+        if(entity == null)
+            return null;
+
         AbsenceDTO absenceDTO = AbsenceMapper.super.toDto(entity);
 
         absenceDTO.setDiscipline(this.disciplineMapper.toDto(entity.getDiscipline()));
@@ -59,6 +62,8 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
     @Override
     public AbsenceModel partialUpdate(AbsenceDTO dto, AbsenceModel entity) {
+        if(dto == null)
+            return null;
 
         entity = AbsenceMapper.super.partialUpdate(dto, entity);
 

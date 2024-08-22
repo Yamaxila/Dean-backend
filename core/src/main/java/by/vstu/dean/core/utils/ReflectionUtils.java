@@ -32,12 +32,13 @@ public class ReflectionUtils {
             tField.setAccessible(true);
             field.setAccessible(true);
 
+
             try {
                 if(reverseTarget) {
-                    if(field.get(o1) != null || !partialUpdate)
+                    if(field.get(o2) != null || !partialUpdate)
                         tField.set(o1, field.get(o2));
                 } else {
-                    if (field.get(o2) != null || !partialUpdate)
+                    if (tField.get(o1) != null || !partialUpdate)
                         field.set(o2, tField.get(o1));
                 }
             } catch (IllegalAccessException e) {

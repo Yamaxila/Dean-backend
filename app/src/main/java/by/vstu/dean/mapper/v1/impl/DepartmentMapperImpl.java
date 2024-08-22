@@ -45,6 +45,9 @@ public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Override
     public DepartmentDTO toDto(DepartmentModel entity) {
+        if(entity == null)
+            return null;
+
         DepartmentDTO departmentDTO = DepartmentMapper.super.toDto(entity);
         departmentDTO.setFaculty(this.facultyMapper.toDto(entity.getFaculty()));
         return departmentDTO;
@@ -52,7 +55,8 @@ public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Override
     public DepartmentModel partialUpdate(DepartmentDTO dto, DepartmentModel entity) {
-
+        if(dto == null)
+            return null;
         entity = DepartmentMapper.super.partialUpdate(dto, entity);
 
         entity.setFaculty(this.facultyMapper.partialUpdate(dto.getFaculty(), entity.getFaculty()));

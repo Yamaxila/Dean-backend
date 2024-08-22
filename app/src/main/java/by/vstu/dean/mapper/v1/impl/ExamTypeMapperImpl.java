@@ -19,16 +19,15 @@ public class ExamTypeMapperImpl implements ExamTypeMapper {
     public ExamModel toEntity(ExamTypeDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-
-            Optional<ExamModel> optionalExamModel = this.examModelRepository.findById(dto.getId());
-            ExamModel examModel = new ExamModel();
-
-            if (optionalExamModel.isPresent())
-                examModel = optionalExamModel.get();
-
-            return (ExamModel) ReflectionUtils.mapObject(examModel, dto, true, optionalExamModel.isPresent());
         }
+
+        Optional<ExamModel> optionalExamModel = this.examModelRepository.findById(dto.getId());
+        ExamModel examModel = new ExamModel();
+
+        if (optionalExamModel.isPresent())
+            examModel = optionalExamModel.get();
+
+        return (ExamModel) ReflectionUtils.mapObject(examModel, dto, true, optionalExamModel.isPresent());
     }
 
 }

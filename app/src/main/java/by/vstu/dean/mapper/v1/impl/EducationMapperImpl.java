@@ -19,16 +19,15 @@ public class EducationMapperImpl implements EducationMapper {
     public EducationModel toEntity(EducationDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-
-            Optional<EducationModel> optionalEducationModel = this.educationModelRepository.findById(dto.getId());
-            EducationModel educationModel = new EducationModel();
-
-            if (optionalEducationModel.isPresent())
-                educationModel = optionalEducationModel.get();
-
-
-            return (EducationModel) ReflectionUtils.mapObject(educationModel, dto, true, optionalEducationModel.isPresent());
         }
+
+        Optional<EducationModel> optionalEducationModel = this.educationModelRepository.findById(dto.getId());
+        EducationModel educationModel = new EducationModel();
+
+        if (optionalEducationModel.isPresent())
+            educationModel = optionalEducationModel.get();
+
+
+        return (EducationModel) ReflectionUtils.mapObject(educationModel, dto, true, optionalEducationModel.isPresent());
     }
 }

@@ -19,13 +19,12 @@ public class StudentLanguageMapperImpl implements StudentLanguageMapper {
     public StudentLanguageModel toEntity(StudentLanguageDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-            Optional<StudentLanguageModel> optionalStudentLanguageModel = this.studentLanguageService.findById(dto.getId());
-            StudentLanguageModel studentLanguageModel = new StudentLanguageModel();
-            if (optionalStudentLanguageModel.isPresent())
-                studentLanguageModel = optionalStudentLanguageModel.get();
-
-            return (StudentLanguageModel) ReflectionUtils.mapObject(studentLanguageModel, dto, true, false);
         }
+        Optional<StudentLanguageModel> optionalStudentLanguageModel = this.studentLanguageService.findById(dto.getId());
+        StudentLanguageModel studentLanguageModel = new StudentLanguageModel();
+        if (optionalStudentLanguageModel.isPresent())
+            studentLanguageModel = optionalStudentLanguageModel.get();
+
+        return (StudentLanguageModel) ReflectionUtils.mapObject(studentLanguageModel, dto, true, false);
     }
 }

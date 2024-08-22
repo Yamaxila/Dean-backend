@@ -31,4 +31,18 @@ public class SpecializationMapperImpl implements SpecializationMapper {
         specializationDTO.setSpec(this.mapper.toDto(entity.getSpec()));
         return specializationDTO;
     }
+
+
+    @Override
+    public SpecializationModel partialUpdate(SpecializationDTO dto, SpecializationModel entity) {
+        if (dto == null)
+            return null;
+
+        entity = SpecializationMapper.super.partialUpdate(dto, entity);
+
+        if(dto.getSpec() != null)
+            entity.setSpec(this.mapper.partialUpdate(dto.getSpec(), entity.getSpec()));
+
+        return entity;
+    }
 }

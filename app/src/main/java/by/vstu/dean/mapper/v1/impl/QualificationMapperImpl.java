@@ -19,16 +19,15 @@ public class QualificationMapperImpl implements QualificationMapper {
     public QualificationModel toEntity(QualificationDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-
-            Optional<QualificationModel> optionalQualification = this.qualificationModelRepository.findById(dto.getId());
-            QualificationModel qualificationModel = new QualificationModel();
-            if (optionalQualification.isPresent())
-                qualificationModel = optionalQualification.get();
-
-
-            return (QualificationModel) ReflectionUtils.mapObject(qualificationModel, dto, true, optionalQualification.isPresent());
         }
+
+        Optional<QualificationModel> optionalQualification = this.qualificationModelRepository.findById(dto.getId());
+        QualificationModel qualificationModel = new QualificationModel();
+        if (optionalQualification.isPresent())
+            qualificationModel = optionalQualification.get();
+
+
+        return (QualificationModel) ReflectionUtils.mapObject(qualificationModel, dto, true, optionalQualification.isPresent());
     }
 
 }

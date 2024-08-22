@@ -19,16 +19,15 @@ public class FacultyMapperImpl implements FacultyMapper {
     public FacultyModel toEntity(FacultyDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-            Optional<FacultyModel> optionalFacultyModel = this.facultyModelRepository.getById(dto.getId());
-
-            FacultyModel facultyModel = new FacultyModel();
-
-            if(optionalFacultyModel.isPresent())
-                facultyModel = optionalFacultyModel.get();
-
-            return (FacultyModel) ReflectionUtils.mapObject(facultyModel, dto, true, optionalFacultyModel.isPresent());
         }
+        Optional<FacultyModel> optionalFacultyModel = this.facultyModelRepository.getById(dto.getId());
+
+        FacultyModel facultyModel = new FacultyModel();
+
+        if(optionalFacultyModel.isPresent())
+            facultyModel = optionalFacultyModel.get();
+
+        return (FacultyModel) ReflectionUtils.mapObject(facultyModel, dto, true, optionalFacultyModel.isPresent());
     }
 
 }

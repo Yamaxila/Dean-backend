@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Component
 public class DisciplineMapperImpl implements DisciplineMapper {
@@ -28,6 +27,8 @@ public class DisciplineMapperImpl implements DisciplineMapper {
     }
 
     public DisciplineDTO toDto(DisciplineModel entity) {
+        if(entity == null)
+            return null;
 
         DisciplineDTO disciplineDTO = (DisciplineDTO) ReflectionUtils.mapObject(entity, new DisciplineDTO(), false, false);
         disciplineDTO.setDepartment(this.departmentMapper.toDto(entity.getDepartment()));
@@ -38,49 +39,35 @@ public class DisciplineMapperImpl implements DisciplineMapper {
     public DisciplineModel partialUpdate(DisciplineDTO dto, DisciplineModel entity) {
         if (dto == null) {
             return null;
-        } else {
-            if (dto.getId() != null) {
-                entity.setId(dto.getId());
-            }
-
-            if (dto.getStatus() != null) {
-                entity.setStatus(dto.getStatus());
-            }
-
-            if (dto.getUpdated() != null) {
-                entity.setUpdated(LocalDateTime.now());
-            }
-
-            if (dto.getName() != null) {
-                entity.setName(dto.getName());
-            }
-
-            if (dto.getShortName() != null) {
-                entity.setShortName(dto.getShortName());
-            }
-
-            if (dto.getDepartment() != null) {
-                if (entity.getDepartment() == null) {
-                    entity.setDepartment(null);
-                } else
-                    entity.setDepartment(this.departmentMapper.partialUpdate(dto.getDepartment(), entity.getDepartment()));
-            }
-
-            return entity;
         }
+        if (dto.getId() != null) {
+            entity.setId(dto.getId());
+        }
+
+        if (dto.getStatus() != null) {
+            entity.setStatus(dto.getStatus());
+        }
+
+        if (dto.getUpdated() != null) {
+            entity.setUpdated(LocalDateTime.now());
+        }
+
+        if (dto.getName() != null) {
+            entity.setName(dto.getName());
+        }
+
+        if (dto.getShortName() != null) {
+            entity.setShortName(dto.getShortName());
+        }
+
+        if (dto.getDepartment() != null) {
+            if (entity.getDepartment() == null) {
+                entity.setDepartment(null);
+            } else
+                entity.setDepartment(this.departmentMapper.partialUpdate(dto.getDepartment(), entity.getDepartment()));
+        }
+
+        return entity;
     }
 
-    public List<DisciplineDTO> toDto(List<DisciplineModel> all) {
-        if (all == null) {
-            return null;
-        }
-        return all.stream().map(this::toDto).toList();
-    }
-
-    public List<DisciplineModel> toEntity(List<DisciplineDTO> all) {
-        if (all == null) {
-            return null;
-        }
-        return all.stream().map(this::toEntity).toList();
-    }
 }

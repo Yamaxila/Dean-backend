@@ -51,6 +51,9 @@ public class DocumentMapperImpl implements DocumentMapper {
 
     @Override
     public DocumentModel partialUpdate(DocumentDTO dto, DocumentModel entity) {
+        if(dto == null)
+            return null;
+
         entity = DocumentMapper.super.partialUpdate(dto, entity);
 
         if(dto.getCitizenship() != null)

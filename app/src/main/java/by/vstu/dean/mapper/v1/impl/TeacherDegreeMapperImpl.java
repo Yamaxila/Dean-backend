@@ -19,15 +19,14 @@ public class TeacherDegreeMapperImpl implements TeacherDegreeMapper {
     public TeacherDegreeModel toEntity(TeacherDegreeDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-
-            Optional<TeacherDegreeModel> optionalTeacherDegreeModel = this.teacherDegreeModelRepository.findById(dto.getId());
-            TeacherDegreeModel teacherDegreeModel = new TeacherDegreeModel();
-
-            if (optionalTeacherDegreeModel.isPresent())
-                teacherDegreeModel = optionalTeacherDegreeModel.get();
-
-            return (TeacherDegreeModel) ReflectionUtils.mapObject(teacherDegreeModel, dto, true, optionalTeacherDegreeModel.isPresent());
         }
+
+        Optional<TeacherDegreeModel> optionalTeacherDegreeModel = this.teacherDegreeModelRepository.findById(dto.getId());
+        TeacherDegreeModel teacherDegreeModel = new TeacherDegreeModel();
+
+        if (optionalTeacherDegreeModel.isPresent())
+            teacherDegreeModel = optionalTeacherDegreeModel.get();
+
+        return (TeacherDegreeModel) ReflectionUtils.mapObject(teacherDegreeModel, dto, true, optionalTeacherDegreeModel.isPresent());
     }
 }

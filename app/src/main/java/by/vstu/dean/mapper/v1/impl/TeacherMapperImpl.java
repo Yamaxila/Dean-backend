@@ -17,12 +17,11 @@ public class TeacherMapperImpl implements TeacherMapper {
     public TeacherModel toEntity(TeacherDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-            TeacherModel teacherModel = (TeacherModel) ReflectionUtils.mapObject(new TeacherModel(), dto, true, true);
-
-            teacherModel.setDegree(this.teacherDegreeMapper.toEntity(dto.getDegree()));
-            return teacherModel;
         }
+        TeacherModel teacherModel = (TeacherModel) ReflectionUtils.mapObject(new TeacherModel(), dto, true, true);
+
+        teacherModel.setDegree(this.teacherDegreeMapper.toEntity(dto.getDegree()));
+        return teacherModel;
     }
 
     public TeacherDTO toDto(TeacherModel entity) {
@@ -37,15 +36,14 @@ public class TeacherMapperImpl implements TeacherMapper {
     public TeacherModel partialUpdate(TeacherDTO dto, TeacherModel entity) {
         if (dto == null) {
             return null;
-        } else {
-
-            entity = TeacherMapper.super.partialUpdate(dto, entity);
-
-            if (dto.getDegree() != null) {
-                entity.setDegree(this.teacherDegreeMapper.partialUpdate(dto.getDegree(), entity.getDegree()));
-            }
-
-            return entity;
         }
+
+        entity = TeacherMapper.super.partialUpdate(dto, entity);
+
+        if (dto.getDegree() != null) {
+            entity.setDegree(this.teacherDegreeMapper.partialUpdate(dto.getDegree(), entity.getDegree()));
+        }
+
+        return entity;
     }
 }

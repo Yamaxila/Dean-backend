@@ -19,15 +19,14 @@ public class InstitutionMapperImpl implements InstitutionMapper {
     public InstitutionModel toEntity(InstitutionDTO dto) {
         if (dto == null) {
             return null;
-        } else {
-
-            Optional<InstitutionModel> optionalInstitutionModel = this.institutionModelRepository.findById(dto.getId());
-            InstitutionModel institutionModel = new InstitutionModel();
-
-            if (optionalInstitutionModel.isPresent())
-                institutionModel = optionalInstitutionModel.get();
-
-            return (InstitutionModel) ReflectionUtils.mapObject(institutionModel, dto, true, optionalInstitutionModel.isPresent());
         }
+
+        Optional<InstitutionModel> optionalInstitutionModel = this.institutionModelRepository.findById(dto.getId());
+        InstitutionModel institutionModel = new InstitutionModel();
+
+        if (optionalInstitutionModel.isPresent())
+            institutionModel = optionalInstitutionModel.get();
+
+        return (InstitutionModel) ReflectionUtils.mapObject(institutionModel, dto, true, optionalInstitutionModel.isPresent());
     }
 }

@@ -27,6 +27,10 @@ public class GroupMapperImpl implements GroupMapper {
     @Override
     public GroupModel toEntity(GroupDTO dto) {
 
+        if(dto == null)
+            return null;
+
+
         Optional<GroupModel> optionalGroupModel = this.groupModelRepository.findById(dto.getId());
         GroupModel groupModel = new GroupModel();
 
@@ -43,6 +47,8 @@ public class GroupMapperImpl implements GroupMapper {
 
     @Override
     public GroupDTO toDto(GroupModel entity) {
+        if(entity == null)
+            return null;
         GroupDTO groupDTO = GroupMapper.super.toDto(entity);
 
         groupDTO.setSpec(this.specialityMapper.toDto(entity.getSpec()));
