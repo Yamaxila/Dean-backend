@@ -21,11 +21,15 @@ public class SpringFoxConfig {
 
     @Value("${auth.url}")
     private String authURL;
+    @Value("${app.version}")
+    private String version;
+
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
                 .title("Dean Rest Api")
                 .description("Описание API деканата ВГТУ")
+                .version(version)
                 .build();
     }
 
@@ -54,7 +58,7 @@ public class SpringFoxConfig {
                 .defaultModelExpandDepth(1)
                 .defaultModelRendering(ModelRendering.EXAMPLE)
                 .displayRequestDuration(false)
-                .docExpansion(DocExpansion.NONE)
+                .docExpansion(DocExpansion.LIST)
                 .filter(false)
                 .maxDisplayedTags(null)
                 .operationsSorter(OperationsSorter.METHOD)

@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.lessons;
 
-import by.vstu.dean.controllers.v1.BaseController;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.dto.v1.lessons.TeacherDTO;
@@ -57,7 +57,7 @@ public class DepartmentController extends BaseController<DepartmentDTO, Departme
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDTO>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
-        return o.map(departmentModel -> new ResponseEntity<>(this.teacherMapper.toDto(departmentModel.getTeachers().stream().toList()).stream().toList(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return o.map(departmentModel -> new ResponseEntity<>(this.teacherMapper.toDto(departmentModel.getTeachers().stream().toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -75,7 +75,7 @@ public class DepartmentController extends BaseController<DepartmentDTO, Departme
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<DepartmentDTO> getDepartmentByTeacher(@RequestParam Long teacherId) {
         Optional<TeacherDepartmentMerge> o = this.mergeRepo.findByTeacherId(teacherId);
-        return o.map(tdm -> new ResponseEntity<>(this.mapper.toDto(tdm.getDepartment()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.BAD_REQUEST));
+        return o.map(tdm -> new ResponseEntity<>(this.mapper.toDto(tdm.getDepartment()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

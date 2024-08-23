@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.students;
 
-import by.vstu.dean.controllers.v1.BaseController;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.dto.v1.students.StudentDTO;
@@ -127,11 +127,8 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<StudentDTO> setApproved(@PathVariable Long id, @RequestParam boolean approved) {
         Optional<StudentModel> s = this.service.getById(id);
-
         if (s.isEmpty()) return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
         s.get().setApproved(approved);
-        ;
         return new ResponseEntity<>(this.mapper.toDto(this.service.save(s.get())), HttpStatus.OK);
     }
 

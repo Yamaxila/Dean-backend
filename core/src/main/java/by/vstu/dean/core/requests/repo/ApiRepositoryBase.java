@@ -74,14 +74,12 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
      * @param host         Хост API.
      * @param endpoint     Конечная точка API.
      * @param params       Параметры запроса.
-     * @param tokenRequest Запрос для получения токена.
      * @param targetClass  Класс целевой модели.
      */
-    protected ApiRepositoryBase(String host, String endpoint, String params, TokenRequest tokenRequest, Class<O> targetClass) {
+    protected ApiRepositoryBase(String host, String endpoint, String params, Class<O> targetClass) {
         this.request = new BaseRequest<>(host + "/" + endpoint);
         this.request.setMediaType(MediaType.APPLICATION_JSON);
         this.defaultUrl = this.request.getUrl();
-        this.tokenRequest = tokenRequest;
         this.params = params;
         this.targetTypeList = new TypeToken<ArrayList<O>>() {
         }.where(new TypeParameter<O>() {

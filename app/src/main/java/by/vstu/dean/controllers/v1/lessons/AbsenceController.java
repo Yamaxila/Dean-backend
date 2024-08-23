@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.lessons;
 
-import by.vstu.dean.controllers.v1.BaseController;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.dto.v1.lessons.AbsenceDTO;
 import by.vstu.dean.mapper.v1.AbsenceMapper;
 import by.vstu.dean.models.lessons.AbsenceModel;

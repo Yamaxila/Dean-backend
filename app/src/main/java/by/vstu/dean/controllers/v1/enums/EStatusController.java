@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.enums;
 
-import by.vstu.dean.controllers.v1.EnumController;
+import by.vstu.dean.core.controllers.EnumController;
 import by.vstu.dean.core.enums.EStatus;
 import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.RequestMapping;

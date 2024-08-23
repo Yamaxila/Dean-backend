@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.hostels;
 
-import by.vstu.dean.controllers.v1.BaseController;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.dto.v1.hostels.HostelRoomDTO;
 import by.vstu.dean.dto.v1.students.StudentDTO;

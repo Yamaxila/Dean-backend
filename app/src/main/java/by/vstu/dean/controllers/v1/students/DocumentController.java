@@ -1,6 +1,6 @@
 package by.vstu.dean.controllers.v1.students;
 
-import by.vstu.dean.controllers.v1.BaseController;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.dto.v1.students.DocumentDTO;
 import by.vstu.dean.mapper.v1.DocumentMapper;
 import by.vstu.dean.models.students.DocumentModel;

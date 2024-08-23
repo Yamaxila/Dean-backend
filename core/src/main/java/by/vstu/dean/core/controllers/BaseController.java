@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.v1;
+package by.vstu.dean.core.controllers;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.dto.BaseDTO;
@@ -113,8 +113,8 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "getById", notes = "Отправляет объект по его id из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<D> getById(@PathVariable Long id) {
-        Optional<O> groupModel = this.service.getById(id);
-        return groupModel.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        Optional<O> byId = this.service.getById(id);
+        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
     /**
@@ -130,6 +130,8 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "put", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> put(@RequestBody D dto) {
+        if(dto == null)
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
     }
 
@@ -146,6 +148,8 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "putModel", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> putModel(@RequestBody O model) {
+        if(model == null)
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(this.service.save(model), HttpStatus.OK);
     }
 
@@ -164,8 +168,8 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
         if (id == null)
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>(this.mapper.toDto(this.service.delete(id)), HttpStatus.OK);
+        Optional<O> byId = this.service.getById(id);
+        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
 }

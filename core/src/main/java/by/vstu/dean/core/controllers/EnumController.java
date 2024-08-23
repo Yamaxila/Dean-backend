@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.v1;
+package by.vstu.dean.core.controllers;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.enums.BaseEnum;
