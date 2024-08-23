@@ -6,19 +6,24 @@
       "description": "auth-service full url."
     },
     {
-      "name": "auth.clientId",
+      "name": "dean.api.clientId",
       "type": "java.lang.String",
-      "description": "auth-service clientId."
+      "description": "dean API clientId."
     },
     {
-      "name": "auth.clientSecret",
+      "name": "dean.api.clientSecret",
       "type": "java.lang.String",
-      "description": "auth-service clientSecret."
+      "description": "dean API clientSecret."
     },
     {
-      "name": "auth.loginData",
+      "name": "dean.api.login",
       "type": "java.lang.String",
-      "description": "auth-service login data."
+      "description": "dean API login"
+    },
+    {
+      "name": "dean.api.password",
+      "type": "java.lang.String",
+      "description": "dean API password"
     }
   ]
 }

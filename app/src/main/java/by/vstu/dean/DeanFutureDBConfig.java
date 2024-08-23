@@ -44,7 +44,6 @@ public class DeanFutureDBConfig {
     @Bean(name = "futureDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.future")
     public DataSource futureDataSource() {
-//        System.err.println("future ds");
         return DataSourceBuilder.create().build();
     }
 
@@ -75,7 +74,6 @@ public class DeanFutureDBConfig {
     @Bean(name = "futureTransactionManager")
     public PlatformTransactionManager futureTransactionManager(
             @Qualifier("futureEntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
-
         return new JpaTransactionManager(primaryEntityManagerFactory);
     }
 

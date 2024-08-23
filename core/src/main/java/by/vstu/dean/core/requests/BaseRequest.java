@@ -4,10 +4,7 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
+import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.nio.charset.StandardCharsets;
@@ -18,14 +15,15 @@ import java.nio.charset.StandardCharsets;
 @ApiModel(description = "Базовый класс для выполнения HTTP-запросов")
 public class BaseRequest<B> {
 
-    private String AUTH_CLIENT_ID = "DEAN", AUTH_CLIENT_SECRET = "DEAN";
-
     @Getter
     @ApiModelProperty(value = "URL для выполнения запроса")
     private String url;
 
     private final HttpHeaders headers;
     private HttpMethod method = HttpMethod.POST;
+
+    @Getter
+    private HttpStatus responseStatusCode;
 
     /**
      * Конструктор класса BaseRequest.
@@ -35,19 +33,6 @@ public class BaseRequest<B> {
     public BaseRequest(String url) {
         this.url = url;
         this.headers = new HttpHeaders();
-    }
-
-    /**
-     * Установить данные аутентификации.
-     *
-     * @param clientId     Идентификатор клиента.
-     * @param clientSecret Секрет клиента.
-     * @return Объект BaseRequest с установленными данными аутентификации.
-     */
-    public BaseRequest<B> setAuthData(String clientId, String clientSecret) {
-        this.AUTH_CLIENT_ID = clientId;
-        this.AUTH_CLIENT_SECRET = clientSecret;
-        return this;
     }
 
     /**
@@ -63,7 +48,16 @@ public class BaseRequest<B> {
         HttpEntity<B> request =
                 new HttpEntity<>(entity, headers);
 
-        return restTemplate.exchange(this.url, this.method, request, String.class).getBody();
+        ResponseEntity<String> response = restTemplate.exchange(this.url, this.method, request, String.class);
+
+        this.responseStatusCode = response.getStatusCode();
+
+        if (response.getStatusCodeValue() != 200) {
+            return null;
+        }
+
+
+        return response.getBody();
     }
 
     /**
@@ -93,12 +87,15 @@ public class BaseRequest<B> {
     /**
      * Установить аутентификационные заголовки Basic.
      *
+     * @param clientId Id клиента
+     * @param clientSecret Секретный ключ клиента
+     *
      * @return Объект BaseRequest с установленными аутентификационными заголовками Basic.
      */
-    public BaseRequest<B> setAuthHeaders() {
+    public BaseRequest<B> setAuthHeaders(String clientId, String clientSecret) {
 
         byte[] encodedAuth = Base64.encodeBase64(
-                (AUTH_CLIENT_ID + ":" + AUTH_CLIENT_SECRET).getBytes(StandardCharsets.US_ASCII));
+                (clientId + ":" + clientSecret).getBytes(StandardCharsets.US_ASCII));
 
         this.headers.set(HttpHeaders.AUTHORIZATION, "Basic " + new String(encodedAuth));
         return this;

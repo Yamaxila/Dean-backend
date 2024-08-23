@@ -4,8 +4,13 @@ import by.vstu.dean.core.adapters.json.LocalDateTimeJsonAdapter;
 import by.vstu.dean.core.models.TokenModel;
 import com.google.gson.GsonBuilder;
 import io.swagger.annotations.ApiModel;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.TypeToken;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -13,53 +18,50 @@ import java.time.LocalDateTime;
  * Класс для получения токена аутентификации.
  */
 @ApiModel(description = "Класс для получения токена аутентификации")
+@Component
+@Getter
+@Slf4j
 public class TokenRequest {
 
-    private String login, password;
-    private String clientId, clientSecret;
-
+    @Value("${dean.api.login}")
+    @Setter
+    private String login;
+    @Value("${dean.api.password}")
+    @Setter
+    private String password;
+    @Value("${dean.api.clientId}")
+    @Setter
+    private String clientId;
+    @Value("${dean.api.clientSecret}")
+    @Setter
+        private String clientSecret;
+    @Value("${auth.url}")
+    @Setter
     private String authUrl;
 
-    /**
-     * Конструктор класса TokenRequest.
-     *
-     * @param url       URL для аутентификации.
-     * @param login     Логин пользователя.
-     * @param password  Пароль пользователя.
-     * @param clientId     Идентифик        атор клиента.
-     * @param clientSecret Секрет клиента.
-     */
-    public TokenRequest(String url, String login, String password, String clientId, String clientSecret) {
-        this.login = login;
-        this.password = password;
-        this.clientId = clientId;
-        this.clientSecret = clientSecret;
-        this.authUrl = url;
-    }
-
-    /**
-     * Конструктор класса TokenRequest без использования клиентских данных.
-     *
-     * @param url      URL для аутентификации.
-     * @param login    Логин пользователя.
-     * @param password Пароль пользователя.
-     */
-    public TokenRequest(String url, String login, String password) {
-        this.login = login;
-        this.password = password;
-        this.authUrl = url;
-    }
+    private TokenModel token;
 
     /**
      * Получить токен аутентификации.
      *
+     * @param force принудительное обновление токена
+     *
      * @return Токен аутентификации.
      */
-    public String getToken() {
+    public TokenModel getToken(boolean force) {
+
+        if(force)
+            log.debug("forcing getToken()");
 
         // Проверяем, есть ли действующий токен и не истек ли его срок действия.
-        if (System.getProperty("expires_at", null) != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis()) {
-            return System.getProperty("accessToken");
+        if (!force && (System.getProperty("accessToken", null) != null && System.getProperty("expires_at", null) != null && Long.parseLong(System.getProperty("expires_at")) > System.currentTimeMillis())) {
+            log.info("using stored token");
+            TokenModel model = this.toModel(System.getProperty("accessToken"));
+
+            if(this.token == null)
+                this.token = model;
+
+            return token;
         }
 
         // Создаем экземпляр BaseRequest для выполнения запроса.
@@ -67,30 +69,43 @@ public class TokenRequest {
                 .setMediaType(MediaType.APPLICATION_FORM_URLENCODED);
 
         // Если предоставлены данные клиента, добавляем их в запрос.
-        if (this.clientId != null && this.password != null) {
-            request.setAuthData(clientId, clientSecret);
+        if (this.clientId != null && this.clientSecret != null) {
+            request.setAuthHeaders(clientId, clientSecret);
         }
-
-        // Устанавливаем заголовки для аутентификации.
-        request.setAuthHeaders();
+        log.info("sending request to auth service");
 
         // Выполняем POST-запрос для получения токена аутентификации.
         String json = request.run(String.format("username=%s&password=%s", this.login, this.password));
 
         // Десериализуем полученный JSON-ответ, преобразовывая его в объект TokenModel.
-        TokenModel tokenModel = new GsonBuilder()
-                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter()).create()
-                .fromJson(json, new TypeToken<TokenModel>() {
-                }.getType());
-
+        this.token = this.toModel(json);
 
         // Сохраняем полученный токен и его срок действия в системных свойствах.
         System.clearProperty("accessToken");
         System.clearProperty("expires_at");
-        System.setProperty("accessToken", tokenModel.getAccessToken());
-        System.setProperty("expires_at", String.valueOf((Long.parseLong(tokenModel.getExpiresIn())*1000L) + System.currentTimeMillis()));
+        System.setProperty("accessToken", json);
+        System.setProperty("expires_at", String.valueOf((Long.parseLong(token.getExpiresIn())*1000L) + System.currentTimeMillis()));
+
+        log.debug("new token: {}", token.getAccessToken());
 
         // Возвращаем полученный токен аутентификации.
-        return tokenModel.getAccessToken();
+        return token;
+    }
+
+    private TokenModel toModel(String json) {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter()).create()
+                .fromJson(json, new TypeToken<TokenModel>() {
+                }.getType());
+    }
+
+    private String toStringToken(TokenModel token) {
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter()).create()
+                .toJson(token);
+    }
+
+    public TokenModel getToken() {
+        return this.getToken(false);
     }
 }

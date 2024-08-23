@@ -138,8 +138,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
         absenceModel.setLessonType(dAbsenceModel.getLessonType().equalsIgnoreCase("практ.") ? ELessonType.PRACTICE : ELessonType.LAB);
         absenceModel.setLessonNumber(0);
-        //TODO: Нужно перепроверить dAbsenceModel.getCompleted().equalsIgnoreCase. Мне кажется, что тут нужно добавить инверсию
-        absenceModel.setStatus(dAbsenceModel.getCompleted() != null && dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
+        absenceModel.setStatus(dAbsenceModel.getCompleted() != null && !dAbsenceModel.getCompleted().equalsIgnoreCase("нет") ? EStatus.ACTIVE : EStatus.DELETED);
         absenceModel.setSourceId(dAbsenceModel.getId());
 
         if (!update)

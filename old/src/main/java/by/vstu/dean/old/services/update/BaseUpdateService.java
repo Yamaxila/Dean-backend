@@ -4,6 +4,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.OldDBBaseModelRepository;
 import by.vstu.dean.old.services.migrate.BaseMigrateService;
@@ -55,10 +56,8 @@ public abstract class BaseUpdateService<
     public boolean isEqual(O future, O old) throws IllegalAccessException {
         Class<?> clazz = future.getClass();
         boolean equals = true;
-//  && !p.getName().equalsIgnoreCase("status")
-//  clazz.getDeclaredFields()
-        //TODO: нужно смотреть на super-класс и испольовать аннотации
-        for (Field field : Arrays.stream(clazz.getDeclaredFields()).filter(p ->
+
+        for (Field field : ReflectionUtils.getAllFields(clazz).stream().filter(p ->
                 !p.getName().equalsIgnoreCase("id")
                         && !p.getName().equalsIgnoreCase("updated")
                         && !p.getName().equalsIgnoreCase("created")

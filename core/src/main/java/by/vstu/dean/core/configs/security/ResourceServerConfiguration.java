@@ -26,7 +26,7 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 //TODO: Нужно это переписать, т.к. при переходе на SpringBoot 3.x, скорее всего этого уже не будет
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-                                    @Value("${token.signing.key}")
+    @Value("${token.signing.key}")
     private String signingKey;
 
     public void configure(ResourceServerSecurityConfigurer config) {

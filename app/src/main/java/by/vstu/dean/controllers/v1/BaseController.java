@@ -131,7 +131,23 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> put(@RequestBody D dto) {
         return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
-    } //FIXME: Возможно стоит добавить ещё иля обычных моделей и добавить проверку @NotNull полей
+    }
+
+    /**
+     * Сохраняет объект в базу данных и возвращает его с установленным id.
+     *
+     * @param model Объект для сохранения
+     * @return Сохраненный объект с установленным id
+     */
+    @RequestMapping(value = "/model",
+            produces = {"application/json"},
+            method = RequestMethod.PUT)
+    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
+    @ApiOperation(value = "putModel", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
+    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
+    public ResponseEntity<O> putModel(@RequestBody O model) {
+        return new ResponseEntity<>(this.service.save(model), HttpStatus.OK);
+    }
 
     /**
      * Помечает объект в базе данных по его id как удаленный и возвращает его с установленным статусом DELETED.

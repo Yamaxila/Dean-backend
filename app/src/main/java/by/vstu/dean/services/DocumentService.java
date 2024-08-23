@@ -20,9 +20,7 @@ public class DocumentService extends BaseService<DocumentModel, DocumentModelRep
         super(repo);
     }
 
-    //FIXME: А зачем? АААА. Я понял. Это были попытки в ОПТИМИЗАЦИЮ
     @Override
-    @Cacheable(value = "documents", key = "id")
     public Optional<DocumentModel> getById(Long id) {
         return super.getById(id);
     }

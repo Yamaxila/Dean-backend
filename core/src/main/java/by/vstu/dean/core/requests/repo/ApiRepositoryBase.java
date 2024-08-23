@@ -6,6 +6,7 @@ import by.vstu.dean.core.adapters.json.LocalDateJsonAdapter;
 import by.vstu.dean.core.adapters.json.LocalDateTimeJsonAdapter;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.requests.BaseRequest;
+import by.vstu.dean.core.requests.TokenRequest;
 import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -13,6 +14,7 @@ import com.google.gson.GsonBuilder;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
@@ -33,6 +35,12 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
      * Запрос для выполнения HTTP-запросов к API.
      */
     protected BaseRequest<String> request;
+
+    /**
+     * Запрос для получения токена.
+     */
+    @Setter
+    private TokenRequest tokenRequest;
 
     /**
      * Объект Gson для сериализации и десериализации JSON.
@@ -63,17 +71,17 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
     /**
      * Конструктор класса ApiRepositoryBase.
      *
-     * @param host        Хост API.
-     * @param endpoint    Конечная точка API.
-     * @param params      Параметры запроса.
-     * @param token       Токен авторизации.
-     * @param targetClass Класс целевой модели.
+     * @param host         Хост API.
+     * @param endpoint     Конечная точка API.
+     * @param params       Параметры запроса.
+     * @param tokenRequest Запрос для получения токена.
+     * @param targetClass  Класс целевой модели.
      */
-    protected ApiRepositoryBase(String host, String endpoint, String params, String token, Class<O> targetClass) {
+    protected ApiRepositoryBase(String host, String endpoint, String params, TokenRequest tokenRequest, Class<O> targetClass) {
         this.request = new BaseRequest<>(host + "/" + endpoint);
         this.request.setMediaType(MediaType.APPLICATION_JSON);
-        this.request.setToken(token);
         this.defaultUrl = this.request.getUrl();
+        this.tokenRequest = tokenRequest;
         this.params = params;
         this.targetTypeList = new TypeToken<ArrayList<O>>() {
         }.where(new TypeParameter<O>() {
@@ -113,7 +121,13 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
     public List<O> rsql(String rsql) {
         this.request.setMethod(HttpMethod.GET);
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);
+        this.setToken(this.tokenRequest.getToken(false).getAccessToken());
+
         String json = this.request.run(this.params);
+
+        if (this.request.getResponseStatusCode().value() == 401) {
+            this.setToken(this.tokenRequest.getToken(true).getAccessToken());
+        }
         return gson.fromJson(json, targetTypeList.getType());
     }
 
@@ -127,10 +141,19 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
     public String rawRSQl(String rsql) {
         this.request.setMethod(HttpMethod.GET);
         this.request.setUrl(this.defaultUrl + "rsql?sql=" + rsql);
-        return this.request.run(this.params);
+        this.setToken(this.tokenRequest.getToken(false).getAccessToken());
+
+        String string = this.request.run(this.params);
+
+        if (this.request.getResponseStatusCode().value() == 401) {
+            this.setToken(this.tokenRequest.getToken(true).getAccessToken());
+        }
+
+        return string;
     }
 
     public void setToken(String token) {
         this.request.setToken(token);
     }
+
 }

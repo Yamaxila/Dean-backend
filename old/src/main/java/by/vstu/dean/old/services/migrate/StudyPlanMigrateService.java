@@ -115,7 +115,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
                 tdms.add(tdm);
         });
 
-        this.teacherDepartmentMergeRepository.saveAll(tdms); //FIXME: дубликаты в статическом листе
+        this.teacherDepartmentMergeRepository.saveAll(tdms.stream().distinct().toList());
         teacherDepartmentMerges.clear();
         return out;
     }

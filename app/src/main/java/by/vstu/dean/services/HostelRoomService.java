@@ -8,11 +8,11 @@ import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
+import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -24,9 +24,12 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
 
     private final StudentService studentService;
 
-    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService) {
+    private final EntityManager manager;
+
+    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService, EntityManager manager) {
         super(repo);
         this.studentService = studentService;
+        this.manager = manager;
     }
 
     public HostelRoomModel setStudent(HostelRoomModel hostelRoom, Long studentId) {
@@ -41,14 +44,11 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
         student.setCheckInDate(LocalDate.now());
         this.studentService.save(student);
 
-//        Set<StudentModel> students = hostelRoom.getStudents();
-//        List<StudentModel> students = hostelRoom.getStudents();
-//        students.add(student);
-//        hostelRoom.setStudents(students);
+        this.manager.refresh(hostelRoom);
 
         return hostelRoom;
     }
-    //FIXME: Нужно обновлять приходящую модель
+
     public HostelRoomModel removeStudent(HostelRoomModel hostelRoom, Long studentId) {
         Optional<StudentModel> oStudent = studentService.getById(studentId);
 
@@ -61,16 +61,10 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
         student.setEvictionDate(LocalDate.now());
         studentService.save(student);
 
-//        Set<StudentModel> students = hostelRoom.getStudents();
-//        students = students.stream().filter(studentModel -> !studentModel.getId().equals(studentId)).collect(Collectors.toSet());
-//        List<StudentModel> students = hostelRoom.getStudents();
-//        students = students.stream().filter(studentModel -> !studentModel.getId().equals(studentId)).toList();
-//        hostelRoom.setStudents(students);
+        this.manager.refresh(hostelRoom);
 
         return hostelRoom;
     }
-    @PostConstruct()
-    @Order(7)
     public void init() {
 
         long count = this.repo.count();
@@ -118,6 +112,8 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
                 hostelRoomModelLittle.setRoomType(EHostelRoomType.LITTLE);
                 hostelRoomModelLittle.setRoomNumber(floor * 100 + room);
                 hostelRoomModelLittle.setStatus(EStatus.ACTIVE);
+                hostelRoomModelLittle.setCreated(LocalDateTime.now());
+                hostelRoomModelLittle.setUpdated(LocalDateTime.now());
                 hostelRoomModelLittle.setSourceId(0L);
 
                 HostelRoomModel hostelRoomModelBig = new HostelRoomModel();
@@ -127,6 +123,8 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
                 hostelRoomModelBig.setRoomType(EHostelRoomType.BIG);
                 hostelRoomModelBig.setRoomNumber(floor * 100 + room);
                 hostelRoomModelBig.setStatus(EStatus.ACTIVE);
+                hostelRoomModelBig.setCreated(LocalDateTime.now());
+                hostelRoomModelBig.setUpdated(LocalDateTime.now());
                 hostelRoomModelBig.setSourceId(0L);
 
                 out.add(hostelRoomModelLittle);
