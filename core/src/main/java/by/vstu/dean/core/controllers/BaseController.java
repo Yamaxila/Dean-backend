@@ -6,8 +6,10 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.utils.ValidationUtils;
 import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
@@ -27,6 +29,7 @@ import java.util.Optional;
  * @param <S> Тип сервиса
  */
 @RequiredArgsConstructor
+@Slf4j
 public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>> {
 
     /**
@@ -51,7 +54,21 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "getAll", notes = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAll() {
-        return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()), HttpStatus.OK);
+        List<O> tempO = this.service.getAll();
+
+        if(!ValidationUtils.isObjectValid(tempO)) {
+            log.error("Can't get data from database!");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        List<D> tempD = this.mapper.toDto(tempO);
+
+        if(!ValidationUtils.isObjectValid(tempO)) {
+            log.error("List mapping error!");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(tempD, HttpStatus.OK);
     }
 
     /**
@@ -66,7 +83,12 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "rsql", notes = "Получает объекты из базы данных через rsql-запрос")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<O>> getAllRSql(@RequestParam(required = false, defaultValue = "id>0") String sql) {
-        return new ResponseEntity<>(this.service.rsql(sql), HttpStatus.OK);
+        try {
+            return new ResponseEntity<>(this.service.rsql(sql), HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Can't execute rsql!");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -81,7 +103,27 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "dto_rsql", notes = "Получает DTO из базы данных через rsql-запрос")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllRSqlDTO(@RequestParam(required = false, defaultValue = "id>0") String sql) {
-        return new ResponseEntity<>(this.mapper.toDto(this.service.rsql(sql)), HttpStatus.OK);
+        try {
+
+            List<O> tempO = this.service.rsql(sql);
+
+            if(!ValidationUtils.isObjectValid(tempO)) {
+                log.error("Can't execute rsql before dto mapping!");
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            List<D> tempD = this.mapper.toDto(tempO);
+
+            if(!ValidationUtils.isObjectValid(tempO)) {
+                log.error("List from rsql request mapping error!");
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+
+            return new ResponseEntity<>(tempD, HttpStatus.OK);
+        } catch (Exception e) {
+            log.error("Can't execute rsql!");
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     /**
@@ -97,7 +139,22 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
-        return new ResponseEntity<>(this.mapper.toDto(this.service.getAllActive(is)), HttpStatus.OK);
+
+        List<O> tempO = this.service.getAllActive(is);
+
+        if(!ValidationUtils.isObjectValid(tempO)) {
+            log.error("Can't get active={} data from database!", is);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        List<D> tempD = this.mapper.toDto(tempO);
+
+        if(!ValidationUtils.isObjectValid(tempO)) {
+            log.error("List mapping error! active={}", is);
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return new ResponseEntity<>(tempD, HttpStatus.OK);
     }
 
     /**
@@ -130,8 +187,10 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "put", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> put(@RequestBody D dto) {
-        if(dto == null)
+        if(dto == null) {
+            log.warn("DTO is empty!");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
     }
 
@@ -148,8 +207,10 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "putModel", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> putModel(@RequestBody O model) {
-        if(model == null)
-                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        if(model == null) {
+            log.warn("entity is empty!");
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(this.service.save(model), HttpStatus.OK);
     }
 
@@ -166,9 +227,15 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @ApiOperation(value = "deleteById", notes = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
-        if (id == null)
+        if (id == null) {
+            log.warn("id is null!");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
         Optional<O> byId = this.service.getById(id);
+
+        if (byId.isEmpty())
+            log.warn("Cannot to find entity with id {}", id);
+
         return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 

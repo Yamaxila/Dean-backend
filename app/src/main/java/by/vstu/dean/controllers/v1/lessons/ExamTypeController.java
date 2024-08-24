@@ -8,6 +8,7 @@ import by.vstu.dean.repo.ExamModelRepository;
 import by.vstu.dean.services.ExamTypeService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/plans/exams/")
-@Api(tags = {"ExamTypes"}, description = "Типы экзаментов")
+@Api(tags = {"ExamTypes"}, description = "Типы экзаменов")
 public class ExamTypeController extends BaseController<ExamTypeDTO, ExamModel, ExamTypeMapper, ExamModelRepository, ExamTypeService> {
 
     /**
@@ -31,21 +32,19 @@ public class ExamTypeController extends BaseController<ExamTypeDTO, ExamModel, E
 
     /**
      * @param facultyModel Модель типа экзамена
-     * @throws SecurityException Can't execute this!
      */
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<ExamTypeDTO> put(ExamTypeDTO facultyModel) {
-        throw new SecurityException("Can't execute this!");
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     /**
      * @param id Идентификатор типа экзамена
-     * @throws SecurityException Can't execute this!
      */
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<ExamTypeDTO> deleteById(Long id) {
-        throw new SecurityException("Can't execute this!");
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

@@ -8,6 +8,7 @@ import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -36,7 +37,7 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<FacultyDTO> put(FacultyDTO facultyModel) {
-        throw new SecurityException("Can't execute this!");
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 
     /**
@@ -46,6 +47,6 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
     @Override
     @ApiOperation(value = "", hidden = true)
     public ResponseEntity<FacultyDTO> deleteById(Long id) {
-        throw new SecurityException("Can't execute this!");
+        return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
 }

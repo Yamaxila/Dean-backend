@@ -98,10 +98,6 @@ public class ReflectionUtils {
 
         Optional<Field> tempField = fieldList.stream().filter(p -> p.getName().equals(currentField)).findFirst();
 
-//        if(tempName.contains(".") && tempField.isPresent())
-//            return findField(tempName, tempField.get().getType());
-//
-//
         if(tempField.isEmpty())
             return Optional.empty();
 
@@ -112,14 +108,26 @@ public class ReflectionUtils {
     }
 
     public static List<Field> getAllFields(Class<?> clazz) {
-
         List<Field> fields = new ArrayList<>(List.of(clazz.getDeclaredFields()));
-
         if (clazz.getSuperclass() != null) {
             fields.addAll(getAllFields(clazz.getSuperclass()));
         }
-
         return fields;
+    }
+
+    public static boolean validateObject(Object o) {
+
+        if(o == null)
+            return false;
+
+        return ReflectionUtils.getAllFields(o.getClass()).stream().map(m -> {
+            m.setAccessible(true);
+            try {
+                return m.get(o);
+            } catch (IllegalAccessException e) {
+                return new Object();
+            }
+        }).noneMatch(Objects::isNull);
     }
 
 
