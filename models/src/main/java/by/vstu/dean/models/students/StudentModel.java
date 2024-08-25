@@ -6,7 +6,10 @@ import by.vstu.dean.models.specs.SpecializationModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -200,6 +203,12 @@ public class StudentModel extends DBBaseModel {
     @NotNull
     private boolean isApproved = false;
 
+    /**
+     * URL-адрес фото студента.
+     */
+    @ApiModelProperty(notes = "URL-адрес фото студента")
+    private String photoUrl;
+
     @Override
     public String toString() {
         return "StudentModel{" +
@@ -228,6 +237,7 @@ public class StudentModel extends DBBaseModel {
                 ", checkInDate=" + checkInDate +
                 ", evictionDate=" + evictionDate +
                 ", isApproved=" + isApproved +
+                ", photoUrl=" + photoUrl +
                 '}';
     }
 }
