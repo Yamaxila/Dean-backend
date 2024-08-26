@@ -1,7 +1,7 @@
 package by.vstu.dean.controllers.v1.students;
 
-import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.anotations.ApiSecurity;
+import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.dto.v1.students.GroupDTO;
 import by.vstu.dean.mapper.v1.DepartmentMapper;
