@@ -17,6 +17,7 @@ public class SocketClient {
     private final boolean reconnect;
     private final long reconnectTimeout = 5000;
     private final String key;
+    private boolean running = true;
 
     public SocketClient(String serverAddress, int port, String key, boolean reconnect) {
         this.serverAddress = serverAddress;
@@ -26,12 +27,14 @@ public class SocketClient {
     }
 
     public void connect() throws IOException {
+        this.running = true;
         socket = new Socket(serverAddress, port);
         writer = new PrintWriter(socket.getOutputStream(), true);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
     }
 
     public void disconnect() throws IOException {
+        this.running = false;
         if (reader != null) reader.close();
         if (writer != null) writer.close();
         if (socket != null) socket.close();
@@ -46,7 +49,7 @@ public class SocketClient {
         new Thread(() -> {
             Thread.currentThread().setName("Callback thread");
             String line;
-            while (true) {
+            while (this.running) {
                 try {
                     line = this.reader.readLine();
                     if(line != null) {
@@ -61,7 +64,7 @@ public class SocketClient {
                                 Thread.sleep(this.reconnectTimeout);
                                 System.out.println("SocketClient: reconnecting to server... Attempt: " + ++attempt);
                                 this.connect();
-                            } while(!this.socket.isConnected());
+                            } while(!this.socket.isConnected() && this.running);
                         }
                         break; // Handle server shutdown
                     }
