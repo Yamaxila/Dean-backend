@@ -9,8 +9,6 @@ import by.vstu.dean.services.SpecialityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 
 @Component
 public class SpecialityMapperImpl implements SpecialityMapper {
@@ -26,13 +24,12 @@ public class SpecialityMapperImpl implements SpecialityMapper {
             return null;
         }
 
-        Optional<SpecialityModel> oSpecialityModel = this.specialityService.getById(dto.getId());
         SpecialityModel specialityModel = new SpecialityModel();
 
-        if (oSpecialityModel.isPresent())
-            specialityModel = oSpecialityModel.get();
+        if (dto.getId() != null)
+            specialityModel = this.specialityService.getById(dto.getId()).orElse(new SpecialityModel());
 
-        specialityModel = (SpecialityModel) ReflectionUtils.mapObject(specialityModel, dto, true, oSpecialityModel.isPresent());
+        specialityModel = (SpecialityModel) ReflectionUtils.mapObject(specialityModel, dto, true, dto.getId() != null);
 
         specialityModel.setDepartment(this.departmentService.getById(dto.getDepartmentId()).orElseThrow());
 

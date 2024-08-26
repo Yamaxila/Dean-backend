@@ -32,7 +32,6 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
 
     /**
      * @param facultyModel Модель факультета
-     * @throws SecurityException Can't execute this!
      */
     @Override
     @ApiOperation(value = "", hidden = true)
@@ -42,7 +41,6 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
 
     /**
      * @param id Идентификатор факультета
-     * @throws SecurityException Can't execute this!
      */
     @Override
     @ApiOperation(value = "", hidden = true)

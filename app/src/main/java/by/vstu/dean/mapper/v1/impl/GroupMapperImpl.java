@@ -6,19 +6,18 @@ import by.vstu.dean.dto.v1.students.GroupDTO;
 import by.vstu.dean.mapper.v1.GroupMapper;
 import by.vstu.dean.mapper.v1.SpecialityMapper;
 import by.vstu.dean.models.students.GroupModel;
-import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.services.FacultyService;
+import by.vstu.dean.services.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.Optional;
 
 @Component
 public class GroupMapperImpl implements GroupMapper {
 
     @Autowired
-    private GroupModelRepository groupModelRepository;
+    private GroupService groupService;
     @Autowired
     private FacultyService facultyService;
     @Autowired
@@ -31,13 +30,12 @@ public class GroupMapperImpl implements GroupMapper {
             return null;
 
 
-        Optional<GroupModel> optionalGroupModel = this.groupModelRepository.findById(dto.getId());
         GroupModel groupModel = new GroupModel();
 
-        if (optionalGroupModel.isPresent())
-            groupModel = optionalGroupModel.get();
+        if (dto.getId() != null)
+            groupModel = this.groupService.getById(dto.getId()).orElse(new GroupModel());
 
-        groupModel = (GroupModel) ReflectionUtils.mapObject(groupModel, dto, true, optionalGroupModel.isPresent());
+        groupModel = (GroupModel) ReflectionUtils.mapObject(groupModel, dto, true, dto.getId() != null);
 
         groupModel.setFaculty(this.facultyService.getById(dto.getFacultyId()).orElseThrow());
         groupModel.setSpec(this.specialityMapper.toEntity(dto.getSpec()));

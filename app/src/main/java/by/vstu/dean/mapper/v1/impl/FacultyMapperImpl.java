@@ -8,26 +8,23 @@ import by.vstu.dean.services.FacultyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
-
 @Component
 public class FacultyMapperImpl implements FacultyMapper {
 
     @Autowired
-    private FacultyService facultyModelRepository;
+    private FacultyService facultyService;
 
     public FacultyModel toEntity(FacultyDTO dto) {
         if (dto == null) {
             return null;
         }
-        Optional<FacultyModel> optionalFacultyModel = this.facultyModelRepository.getById(dto.getId());
 
         FacultyModel facultyModel = new FacultyModel();
 
-        if(optionalFacultyModel.isPresent())
-            facultyModel = optionalFacultyModel.get();
+        if(dto.getId() != null)
+            facultyModel = this.facultyService.getById(dto.getId()).orElse(new FacultyModel());
 
-        return (FacultyModel) ReflectionUtils.mapObject(facultyModel, dto, true, optionalFacultyModel.isPresent());
+        return (FacultyModel) ReflectionUtils.mapObject(facultyModel, dto, true, dto.getId() != null);
     }
 
 }

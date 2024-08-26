@@ -4,30 +4,27 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.EducationDTO;
 import by.vstu.dean.mapper.v1.EducationMapper;
 import by.vstu.dean.models.students.EducationModel;
-import by.vstu.dean.repo.EducationModelRepository;
+import by.vstu.dean.services.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class EducationMapperImpl implements EducationMapper {
 
     @Autowired
-    private EducationModelRepository educationModelRepository;
+    private EducationService educationService;
 
     public EducationModel toEntity(EducationDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        Optional<EducationModel> optionalEducationModel = this.educationModelRepository.findById(dto.getId());
         EducationModel educationModel = new EducationModel();
 
-        if (optionalEducationModel.isPresent())
-            educationModel = optionalEducationModel.get();
+        if (dto.getId() != null)
+            educationModel = this.educationService.getById(dto.getId()).orElse(new EducationModel());
 
 
-        return (EducationModel) ReflectionUtils.mapObject(educationModel, dto, true, optionalEducationModel.isPresent());
+        return (EducationModel) ReflectionUtils.mapObject(educationModel, dto, true, dto.getId() != null);
     }
 }

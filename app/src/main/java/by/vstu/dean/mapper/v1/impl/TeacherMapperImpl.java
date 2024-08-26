@@ -5,11 +5,15 @@ import by.vstu.dean.dto.v1.lessons.TeacherDTO;
 import by.vstu.dean.mapper.v1.TeacherDegreeMapper;
 import by.vstu.dean.mapper.v1.TeacherMapper;
 import by.vstu.dean.models.lessons.TeacherModel;
+import by.vstu.dean.services.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TeacherMapperImpl implements TeacherMapper {
+
+    @Autowired
+    private TeacherService teacherService;
 
     @Autowired
     private TeacherDegreeMapper teacherDegreeMapper;
@@ -18,7 +22,13 @@ public class TeacherMapperImpl implements TeacherMapper {
         if (dto == null) {
             return null;
         }
-        TeacherModel teacherModel = (TeacherModel) ReflectionUtils.mapObject(new TeacherModel(), dto, true, true);
+
+        TeacherModel teacherModel = new TeacherModel();
+
+        if(dto.getId() != null)
+            teacherModel = this.teacherService.getById(dto.getId()).orElse(new TeacherModel());
+
+        teacherModel = (TeacherModel) ReflectionUtils.mapObject(teacherModel, dto, true, dto.getId() != null);
 
         teacherModel.setDegree(this.teacherDegreeMapper.toEntity(dto.getDegree()));
         return teacherModel;

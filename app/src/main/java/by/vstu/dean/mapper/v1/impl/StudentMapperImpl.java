@@ -7,17 +7,15 @@ import by.vstu.dean.mapper.v1.HostelRoomMapper;
 import by.vstu.dean.mapper.v1.SpecializationMapper;
 import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.repo.StudentModelRepository;
+import by.vstu.dean.services.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class StudentMapperImpl implements StudentMapper {
 
     @Autowired
-    private StudentModelRepository studentModelRepository;
+    private StudentService studentService;
 
     @Autowired
     private SpecializationMapper specializationMapper;
@@ -34,14 +32,12 @@ public class StudentMapperImpl implements StudentMapper {
         if (dto == null)
             return null;
 
-        Optional<StudentModel> optionalStudentModel = this.studentModelRepository.findById(dto.getId());
-
         StudentModel studentModel = new StudentModel();
 
-        if (optionalStudentModel.isPresent())
-            studentModel = optionalStudentModel.get();
+        if (dto.getId() != null)
+            studentModel = this.studentService.getById(dto.getId()).orElse(new StudentModel());
 
-        studentModel = (StudentModel) ReflectionUtils.mapObject(studentModel, dto, true, optionalStudentModel.isPresent());
+        studentModel = (StudentModel) ReflectionUtils.mapObject(studentModel, dto, true, dto.getId() != null);
 
         studentModel.setSpecialization(this.specializationMapper.toEntity(dto.getSpecialization()));
         studentModel.setGroup(this.groupMapper.toEntity(dto.getGroup()));

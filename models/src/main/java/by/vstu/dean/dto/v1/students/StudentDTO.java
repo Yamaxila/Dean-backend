@@ -149,7 +149,7 @@ public final class StudentDTO extends BaseDTO {
     @JsonIgnore
     private HostelRoomDTO hostelRoom;
 
-    @ReflectionField(value = "isApproved", clazz = StudentModel.class)
-    private boolean isApproved;
+    @ReflectionField(clazz = StudentModel.class)
+    private boolean approved;
 
 }

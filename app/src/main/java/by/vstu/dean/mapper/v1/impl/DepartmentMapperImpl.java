@@ -4,25 +4,19 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.lessons.DepartmentDTO;
 import by.vstu.dean.mapper.v1.DepartmentMapper;
 import by.vstu.dean.mapper.v1.FacultyMapper;
-import by.vstu.dean.mapper.v1.TeacherMapper;
 import by.vstu.dean.models.lessons.DepartmentModel;
-import by.vstu.dean.repo.DepartmentModelRepository;
+import by.vstu.dean.services.DepartmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 
 @Component
 public class DepartmentMapperImpl implements DepartmentMapper {
 
     @Autowired
-    private DepartmentModelRepository departmentModelRepository;
+    private DepartmentService departmentService;
     @Autowired
     private FacultyMapper facultyMapper;
-    @Autowired
-    private TeacherMapper teacherMapper;
-
 
     @Override
     public DepartmentModel toEntity(DepartmentDTO dto) {
@@ -30,13 +24,12 @@ public class DepartmentMapperImpl implements DepartmentMapper {
             return null;
         }
 
-        Optional<DepartmentModel> optionalDepartmentModel = this.departmentModelRepository.findById(dto.getId());
         DepartmentModel departmentModel = new DepartmentModel();
 
-        if (optionalDepartmentModel.isPresent())
-            departmentModel = optionalDepartmentModel.get();
+        if (dto.getId() != null)
+            departmentModel = this.departmentService.getById(dto.getId()).orElse(new DepartmentModel());
 
-        departmentModel = (DepartmentModel) ReflectionUtils.mapObject(departmentModel, dto, true, true);
+        departmentModel = (DepartmentModel) ReflectionUtils.mapObject(departmentModel, dto, true, dto.getId() != null);
 
         departmentModel.setFaculty(this.facultyMapper.toEntity(dto.getFaculty()));
 

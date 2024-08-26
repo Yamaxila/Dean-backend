@@ -4,29 +4,26 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.lessons.TeacherDegreeDTO;
 import by.vstu.dean.mapper.v1.TeacherDegreeMapper;
 import by.vstu.dean.models.lessons.TeacherDegreeModel;
-import by.vstu.dean.repo.TeacherDegreeModelRepository;
+import by.vstu.dean.services.TeacherDegreeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class TeacherDegreeMapperImpl implements TeacherDegreeMapper {
 
     @Autowired
-    private TeacherDegreeModelRepository teacherDegreeModelRepository;
+    private TeacherDegreeService teacherDegreeService;
 
     public TeacherDegreeModel toEntity(TeacherDegreeDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        Optional<TeacherDegreeModel> optionalTeacherDegreeModel = this.teacherDegreeModelRepository.findById(dto.getId());
         TeacherDegreeModel teacherDegreeModel = new TeacherDegreeModel();
 
-        if (optionalTeacherDegreeModel.isPresent())
-            teacherDegreeModel = optionalTeacherDegreeModel.get();
+        if (dto.getId() != null)
+            teacherDegreeModel = this.teacherDegreeService.getById(dto.getId()).orElse(new TeacherDegreeModel());
 
-        return (TeacherDegreeModel) ReflectionUtils.mapObject(teacherDegreeModel, dto, true, optionalTeacherDegreeModel.isPresent());
+        return (TeacherDegreeModel) ReflectionUtils.mapObject(teacherDegreeModel, dto, true, dto.getId() != null);
     }
 }

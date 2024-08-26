@@ -4,6 +4,7 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.lessons.AbsenceDTO;
 import by.vstu.dean.mapper.v1.*;
 import by.vstu.dean.models.lessons.AbsenceModel;
+import by.vstu.dean.services.AbsenceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,8 @@ public class AbsenceMapperImpl implements AbsenceMapper {
     private TeacherMapper teacherMapper;
     @Autowired
     private StudentMapper studentMapper;
+    @Autowired
+    private AbsenceService absenceService;
 
     @Override
     public AbsenceModel toEntity(AbsenceDTO dto) {
@@ -27,7 +30,10 @@ public class AbsenceMapperImpl implements AbsenceMapper {
 
         AbsenceModel absenceModel = new AbsenceModel();
 
-        absenceModel = (AbsenceModel) ReflectionUtils.mapObject(absenceModel, dto, true, false);
+        if(dto.getId() != null)
+            absenceModel = this.absenceService.getById(dto.getId()).orElse(new AbsenceModel());
+
+        absenceModel = (AbsenceModel) ReflectionUtils.mapObject(absenceModel, dto, true, dto.getId() != null);
 
         if (dto.getDiscipline() != null) {
             absenceModel.setDiscipline(this.disciplineMapper.toEntity(dto.getDiscipline()));

@@ -201,7 +201,7 @@ public class StudentModel extends DBBaseModel {
 
     @Column(name = "approved", columnDefinition = "boolean default false")
     @NotNull
-    private boolean isApproved = false;
+    private boolean approved;
 
     /**
      * URL-адрес фото студента.
@@ -236,7 +236,7 @@ public class StudentModel extends DBBaseModel {
                 ", hostelRoom=" + hostelRoom +
                 ", checkInDate=" + checkInDate +
                 ", evictionDate=" + evictionDate +
-                ", isApproved=" + isApproved +
+                ", isApproved=" + approved +
                 ", photoUrl=" + photoUrl +
                 '}';
     }

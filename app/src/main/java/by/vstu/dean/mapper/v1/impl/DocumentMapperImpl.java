@@ -4,6 +4,7 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.DocumentDTO;
 import by.vstu.dean.mapper.v1.*;
 import by.vstu.dean.models.students.DocumentModel;
+import by.vstu.dean.services.DocumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +16,7 @@ public class DocumentMapperImpl implements DocumentMapper {
     private final StudentLanguageMapper studentLanguageMapper;
     private final EducationMapper educationMapper;
     private final InstitutionMapper institutionMapper;
+    private final DocumentService documentService;
 
     @Override
     public DocumentModel toEntity(DocumentDTO dto) {
@@ -22,13 +24,21 @@ public class DocumentMapperImpl implements DocumentMapper {
             return null;
         }
 
-        DocumentModel documentModel = (DocumentModel) ReflectionUtils.mapObject(new DocumentModel(), dto, true, false);
+        DocumentModel documentModel = new DocumentModel();
 
-        documentModel.setCitizenship(this.citizenshipMapper.toEntity(dto.getCitizenship()));
-        documentModel.setStudentLanguage(this.studentLanguageMapper.toEntity(dto.getStudentLanguage()));
-        documentModel.setEducations(this.educationMapper.toEntity(dto.getEducations()));
-        documentModel.setInstitution(this.institutionMapper.toEntity(dto.getInstitution()));
+        if(dto.getId() != null)
+            documentModel = this.documentService.getById(dto.getId()).orElse(new DocumentModel());
 
+        documentModel = (DocumentModel) ReflectionUtils.mapObject(documentModel, dto, true, dto.getId() != null);
+
+        if(dto.getCitizenship() != null)
+            documentModel.setCitizenship(this.citizenshipMapper.toEntity(dto.getCitizenship()));
+        if(dto.getStudentLanguage() != null)
+            documentModel.setStudentLanguage(this.studentLanguageMapper.toEntity(dto.getStudentLanguage()));
+        if(dto.getEducations() != null)
+            documentModel.setEducations(this.educationMapper.toEntity(dto.getEducations()));
+        if(dto.getInstitution() != null)
+            documentModel.setInstitution(this.institutionMapper.toEntity(dto.getInstitution()));
 
         return documentModel;
     }

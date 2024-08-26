@@ -5,6 +5,7 @@ import by.vstu.dean.dto.v1.lessons.DisciplineDTO;
 import by.vstu.dean.mapper.v1.DepartmentMapper;
 import by.vstu.dean.mapper.v1.DisciplineMapper;
 import by.vstu.dean.models.lessons.DisciplineModel;
+import by.vstu.dean.services.DisciplineService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -14,14 +15,25 @@ import java.time.LocalDateTime;
 public class DisciplineMapperImpl implements DisciplineMapper {
 
     @Autowired
+    private DisciplineService disciplineService;
+    @Autowired
     private DepartmentMapper departmentMapper;
 
     public DisciplineModel toEntity(DisciplineDTO dto) {
         if (dto == null) {
             return null;
         }
-        DisciplineModel disciplineModel = (DisciplineModel) ReflectionUtils.mapObject(new DisciplineModel(), dto, true, true);
-        disciplineModel.setDepartment(this.departmentMapper.toEntity(dto.getDepartment()));
+
+        DisciplineModel disciplineModel = new DisciplineModel();
+
+        if(dto.getId() != null)
+            disciplineModel = this.disciplineService.getById(dto.getId()).orElse(new DisciplineModel());
+
+        disciplineModel = (DisciplineModel) ReflectionUtils.mapObject(disciplineModel, dto, true, dto.getId() != null);
+
+        if(dto.getDepartment() != null)
+            disciplineModel.setDepartment(this.departmentMapper.toEntity(dto.getDepartment()));
+
         return disciplineModel;
 
     }

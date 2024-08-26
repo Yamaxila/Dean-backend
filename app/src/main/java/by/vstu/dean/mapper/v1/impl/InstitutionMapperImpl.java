@@ -4,29 +4,26 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.InstitutionDTO;
 import by.vstu.dean.mapper.v1.InstitutionMapper;
 import by.vstu.dean.models.students.InstitutionModel;
-import by.vstu.dean.repo.InstitutionModelRepository;
+import by.vstu.dean.services.InstitutionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.Optional;
 
 @Component
 public class InstitutionMapperImpl implements InstitutionMapper {
 
     @Autowired
-    private InstitutionModelRepository institutionModelRepository;
+    private InstitutionService institutionService;
 
     public InstitutionModel toEntity(InstitutionDTO dto) {
         if (dto == null) {
             return null;
         }
 
-        Optional<InstitutionModel> optionalInstitutionModel = this.institutionModelRepository.findById(dto.getId());
         InstitutionModel institutionModel = new InstitutionModel();
 
-        if (optionalInstitutionModel.isPresent())
-            institutionModel = optionalInstitutionModel.get();
+        if (dto.getId() != null)
+            institutionModel = this.institutionService.getById(dto.getId()).orElse(new InstitutionModel());
 
-        return (InstitutionModel) ReflectionUtils.mapObject(institutionModel, dto, true, optionalInstitutionModel.isPresent());
+        return (InstitutionModel) ReflectionUtils.mapObject(institutionModel, dto, true, dto.getId() != null);
     }
 }

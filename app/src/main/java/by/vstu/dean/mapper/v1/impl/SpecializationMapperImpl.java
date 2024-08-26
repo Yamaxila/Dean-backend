@@ -5,11 +5,15 @@ import by.vstu.dean.dto.v1.specs.SpecializationDTO;
 import by.vstu.dean.mapper.v1.SpecialityMapper;
 import by.vstu.dean.mapper.v1.SpecializationMapper;
 import by.vstu.dean.models.specs.SpecializationModel;
+import by.vstu.dean.services.SpecializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class SpecializationMapperImpl implements SpecializationMapper {
+
+    @Autowired
+    private SpecializationService specializationService;
 
     @Autowired
     private SpecialityMapper mapper;
@@ -18,7 +22,13 @@ public class SpecializationMapperImpl implements SpecializationMapper {
         if (dto == null) {
             return null;
         }
-        SpecializationModel specializationModel = (SpecializationModel) ReflectionUtils.mapObject(new SpecializationModel(), dto, true, false);
+
+        SpecializationModel specializationModel = new SpecializationModel();
+
+        if(dto.getId() != null)
+            specializationModel = this.specializationService.getById(dto.getId()).orElse(new SpecializationModel());
+
+        specializationModel = (SpecializationModel) ReflectionUtils.mapObject(specializationModel, dto, true, dto.getId() != null);
         specializationModel.setSpec(this.mapper.toEntity(dto.getSpec()));
         return specializationModel;
     }
