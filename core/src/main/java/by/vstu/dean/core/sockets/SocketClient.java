@@ -1,9 +1,6 @@
 package by.vstu.dean.core.sockets;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
 import java.util.function.Function;
 
@@ -40,9 +37,32 @@ public class SocketClient {
         if (socket != null) socket.close();
     }
 
+    public void sendUnsafeMessage(String message) {
+        this.writer.println(message);
+        this.writer.flush();
+    }
+
     public void sendMessage(String message) {
         this.writer.println(SocketSecurity.encrypt(message, this.key));
         this.writer.flush();
+    }
+
+    public void sendFile(File file) throws IOException {
+        this.sendUnsafeMessage("file:start");
+        FileInputStream fileInputStream = new FileInputStream(file);
+        DataOutputStream dos = new DataOutputStream(this.socket.getOutputStream());
+
+        dos.writeLong(file.length());
+
+        byte[] buffer = new byte[4 * 1024];
+        while (fileInputStream.read(buffer) != -1) {
+            byte[] temp = SocketSecurity.encrypt(buffer, this.key);
+
+            dos.write(temp, 0, temp.length);
+            dos.flush();
+        }
+            fileInputStream.close();
+        dos.flush();
     }
 
     public void setCallback(Function<String, String> function) {

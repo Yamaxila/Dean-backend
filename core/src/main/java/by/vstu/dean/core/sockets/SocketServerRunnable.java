@@ -2,25 +2,16 @@ package by.vstu.dean.core.sockets;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.ServerSocket;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 @Getter
+@Slf4j
 public abstract class SocketServerRunnable implements Runnable {
 
-//    private static final boolean DEBUG = Boolean.parseBoolean(System.getProperty("yamaxila.sockets.debug", "false"));
-//    private static final boolean DEBUG = true;
-
-    private final Logger logger = LoggerFactory.getLogger(SocketServerRunnable.class);
-
-    private ServerSocket serverSocket;
     @Setter
     private Socket socket;
 
@@ -30,23 +21,44 @@ public abstract class SocketServerRunnable implements Runnable {
     private IBaseSocketService service;
 
     private BufferedReader br;
-    private PrintWriter out;
+    private OutputStream out;
 
+    private boolean bytesTransfer = false;
 
     @Override
     public void run() {
-        this.logger.debug("Connected: {}", socket);
+        log.debug("Connected: {}", socket);
 
         try {
             this.br = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-            this.out = new PrintWriter(this.socket.getOutputStream());
+            this.out = this.socket.getOutputStream();
 
             String line;
+            File tempFile;
             do {
+
+                if(this.bytesTransfer) {
+
+                    tempFile = this.readRequest(new DataInputStream(this.socket.getInputStream()));
+                    if(!tempFile.exists()) {
+                        log.error("file does not exist: {}", tempFile.getAbsolutePath());
+                        continue;
+                    }
+
+                    this.service.handleRequest(this, tempFile);
+                    this.bytesTransfer = false;
+                    continue;
+                }
+
                 line = this.readRequest(br);
 
                 if(line == null)
                     break;
+
+                if(line.startsWith("file:start")) {
+                    this.bytesTransfer = true;
+                    continue;
+                }
 
                 Object obj = this.parse(line);
                 String response;
@@ -62,16 +74,39 @@ public abstract class SocketServerRunnable implements Runnable {
             socket.close();
 
             this.onError();
-            this.logger.debug("Connection closed for {}", this.socket);
+            log.debug("Connection closed for {}", this.socket);
         } catch (Exception ignored) {
             this.onError();
         }
     }
 
     public void sendMessage(String message) {
-        this.out.println(SocketSecurity.encrypt(message, this.key));
-        this.out.flush();
+        try {
+            this.out.write(SocketSecurity.encrypt(message, this.key).getBytes(StandardCharsets.UTF_8));
+            this.out.flush();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
     }
+
+    private File readRequest(DataInputStream din) throws IOException {
+
+        FileOutputStream fos = new FileOutputStream("./tempfile");
+
+        int bytes;
+        long size = din.readLong();
+        byte[] buffer = new byte[4 * 1024];
+        while (size > 0
+                && (bytes = din.read(buffer, 0, (int)Math.min(buffer.length, size))) != -1) {
+
+            fos.write(buffer, 0, bytes);
+            size -= bytes;
+        }
+        fos.close();
+        return new File("./tempfile") ;
+    }
+
 
     private String readRequest(BufferedReader din) {
         String line;
@@ -83,10 +118,7 @@ public abstract class SocketServerRunnable implements Runnable {
             return null;
         }
 
-
-
-
-        return line == null ? null :     SocketSecurity.decrypt(line, this.key);
+        return line == null ? null : SocketSecurity.decrypt(line, this.key);
     }
 
     public abstract Object parse(String message);
