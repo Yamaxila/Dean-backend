@@ -39,7 +39,11 @@
             <artifactId>app</artifactId>
             <version>${app.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>by.vstu.dean</groupId>
+            <artifactId>telegram</artifactId>
+            <version>${app.version}</version>
+        </dependency>
 
     </dependencies>
 
