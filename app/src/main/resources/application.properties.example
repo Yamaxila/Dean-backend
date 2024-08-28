@@ -1,0 +1,54 @@
+#App Defaults
+spring.application.name=dean
+app.version=@project.version@
+app.upload.dir=/home/yamaxila/test-upload/
+spring.servlet.multipart.max-file-size=50MB
+spring.servlet.multipart.max-request-size=10MB
+logging.level.root=INFO
+logging.file.name=logs/.dean.log
+
+#New DB
+spring.datasource.url=jdbc:postgresql://127.0.0.1:5432/dean
+spring.datasource.username=postgres
+spring.datasource.password=testpass
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.datasource.setNetworkTimeout=0
+
+#Old DB
+spring.datasource.old.jdbc-url=jdbc:jtds:sqlserver://localhost:1433/temp;encrypt=false;trustServerCertificate=false
+spring.datasource.old.username=user
+spring.datasource.old.password=password
+spring.datasource.old.driver-class-name=net.sourceforge.jtds.jdbc.Driver
+
+#JPA Settings
+spring.jpa.database=default
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.show-sql=false
+
+#Swagger
+spring.mvc.pathmatch.matching-strategy=ant_path_matcher
+springdoc.swagger-ui.disable-swagger-default-url=true
+springdoc.swagger-ui.path=/docs
+springdoc.packages-to-scan=*
+springdoc.paths-to-match=/*
+
+#Spring Security
+auth.url=http://localhost:9989/token?grant_type=password
+token.signing.key=SINGING.KEY
+
+#Dean RepoAPI (for other projects)
+dean.api.login=login
+dean.api.password=pass
+dean.api.clientId=deanClient
+dean.api.clientSecret=StrongPassword
+
+#Manager sockets
+manager.host=localhost
+manager.port=59898
+manager.secretKey=secretkey1234567
+
+#Telegram
+dean.bot.token=telegram:api.token
+
+#DevTools
+spring.devtools.livereload.enabled=false

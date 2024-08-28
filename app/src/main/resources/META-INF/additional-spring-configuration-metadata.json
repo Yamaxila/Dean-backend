@@ -18,12 +18,32 @@
     {
       "name": "dean.api.login",
       "type": "java.lang.String",
-      "description": "dean API login"
+      "description": "dean API login."
     },
     {
       "name": "dean.api.password",
       "type": "java.lang.String",
-      "description": "dean API password"
+      "description": "dean API password."
+    },
+    {
+      "name": "manager.host",
+      "type": "java.lang.String",
+      "description": "Адрес менеджера сервисов."
+    },
+    {
+      "name": "manager.port",
+      "type": "java.lang.String",
+      "description": "Порт менеджера сервисов."
+    },
+    {
+      "name": "manager.secretKey",
+      "type": "java.lang.String",
+      "description": "Секретный ключ менеджера сервисов."
+    },
+    {
+      "name": "dean.bot.token",
+      "type": "java.lang.String",
+      "description": "Токен бота деканата."
     }
   ]
 }
