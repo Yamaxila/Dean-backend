@@ -64,6 +64,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Optional, содержащий объект модели, если найден, иначе пустой Optional.
      */
     public Optional<O> getById(Long id) {
+        if(id == null)
+            return Optional.empty();
         return this.repo.findById(id);
     }
 

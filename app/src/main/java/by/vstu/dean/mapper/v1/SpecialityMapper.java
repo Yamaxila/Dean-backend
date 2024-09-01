@@ -12,7 +12,7 @@ public interface SpecialityMapper extends BaseMapperInterface<SpecialityDTO, Spe
 
     @Override
     default SpecialityDTO toDto(SpecialityModel entity) {
-        return entity == null ? null : (SpecialityDTO) ReflectionUtils.mapObject(entity, new SpecialityModel(), false, false);
+        return entity == null ? null : (SpecialityDTO) ReflectionUtils.mapObject(entity, new SpecialityDTO(), false, false);
     }
 
 }

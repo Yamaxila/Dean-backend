@@ -22,6 +22,7 @@
         <dokka.version>1.9.0</dokka.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <poi.version>5.2.5</poi.version>
         <app.version>1.0.1</app.version>
         <!--        <repo.url>${repoUrl}</repo.url>-->
     </properties>
@@ -97,12 +98,12 @@
             <artifactId>modelmapper-module-record</artifactId>
             <version>1.0.0</version>
         </dependency>
-    <!--        <dependency>-->
-    <!--            <groupId>org.springframework.boot</groupId>-->
-    <!--            <artifactId>spring-boot-devtools</artifactId>-->
-    <!--            <scope>runtime</scope>-->
-    <!--            <optional>true</optional>-->
-    <!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.springframework.boot</groupId>-->
+        <!--            <artifactId>spring-boot-devtools</artifactId>-->
+        <!--            <scope>runtime</scope>-->
+        <!--            <optional>true</optional>-->
+        <!--        </dependency>-->
         <dependency>
             <groupId>cz.jirutka.rsql</groupId>
             <artifactId>rsql-parser</artifactId>
@@ -184,6 +185,17 @@
             <artifactId>telegrambots-client</artifactId>
             <version>7.7.1</version>
         </dependency>
+        <dependency>
+            <groupId>pl.jsolve</groupId>
+            <artifactId>templ4docx</artifactId>
+            <version>2.0.2</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/org.openjdk.nashorn/nashorn-core -->
+        <dependency>
+            <groupId>org.openjdk.nashorn</groupId>
+            <artifactId>nashorn-core</artifactId>
+            <version>15.4</version>
+        </dependency>
 
         <!-- фиксы уязвимостей -->
         <dependency>
@@ -227,16 +239,25 @@
             <artifactId>sysout-over-slf4j</artifactId>
             <version>1.0.2</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-compress</artifactId>
+            <version>1.26.2</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi</artifactId>
-            <version>5.2.3</version>
+            <version>${poi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.poi</groupId>
             <artifactId>poi-ooxml</artifactId>
-            <version>5.2.2</version>
+            <version>${poi.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-scratchpad</artifactId>
+            <version>${poi.version}</version>
         </dependency>
         <dependency>
             <groupId>org.mapstruct</groupId>

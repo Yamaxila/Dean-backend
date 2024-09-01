@@ -31,7 +31,8 @@ public class SpecialityMapperImpl implements SpecialityMapper {
 
         specialityModel = (SpecialityModel) ReflectionUtils.mapObject(specialityModel, dto, true, dto.getId() != null);
 
-        specialityModel.setDepartment(this.departmentService.getById(dto.getDepartmentId()).orElseThrow());
+        if(dto.getDepartmentId() != null)
+            specialityModel.setDepartment(this.departmentService.getById(dto.getDepartmentId()).orElseThrow());
 
         return specialityModel;
 

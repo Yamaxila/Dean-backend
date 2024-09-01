@@ -11,8 +11,11 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -24,17 +27,21 @@ import java.util.Set;
 public class HostelRoomModel extends DBBaseModel {
 
     @ApiModelProperty(value = "Номер комнаты", example = "302")
+    @NotNull
     private int roomNumber;
 
     @Enumerated(EnumType.ORDINAL)
     @ApiModelProperty(value = "Тип комнаты", example = "LITTLE")
+    @NotNull
     private EHostelRoomType roomType;
 
     @ApiModelProperty(value = "Этаж", example = "2")
-    private int floor;
+    @NotNull
+    private Integer floor;
 
     @Enumerated(EnumType.ORDINAL)
     @ApiModelProperty(value = "Общежитие", example = "1")
+    @NotNull
     private EHostel hostel;
 
     @JoinColumn(referencedColumnName = "id", name = "hostel_room_id")
@@ -44,4 +51,19 @@ public class HostelRoomModel extends DBBaseModel {
 //    @JsonIgnore
     private Set<StudentModel> students;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        HostelRoomModel that = (HostelRoomModel) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

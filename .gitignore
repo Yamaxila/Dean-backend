@@ -42,6 +42,9 @@ build/
 /mvnw.cmd
 amplicode.xml
 /logs/
+/temp/
+/templates/
+/scripts/
 
 # Ignore Gradle project-specific cache directory
 .gradle

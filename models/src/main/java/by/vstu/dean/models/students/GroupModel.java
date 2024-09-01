@@ -8,9 +8,12 @@ import by.vstu.dean.models.specs.SpecialityModel;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.*;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * Класс, представляющий объект группы.
@@ -28,6 +31,7 @@ public class GroupModel extends DBBaseModel {
      * Название группы.
      */
     @ApiModelProperty(notes = "Группа")
+    @NotNull
     private String name;
 
     /**
@@ -36,6 +40,7 @@ public class GroupModel extends DBBaseModel {
     @ManyToOne
     @JoinColumn(name = "spec_id")
     @ApiModelProperty(notes = "Специальность")
+    @NotNull
     private SpecialityModel spec;
 
     /**
@@ -44,6 +49,7 @@ public class GroupModel extends DBBaseModel {
     @ManyToOne
     @JoinColumn(name = "faculty_id")
     @ApiModelProperty(notes = "Факультет")
+    @NotNull
     private FacultyModel faculty;
 
     /**
@@ -84,4 +90,19 @@ public class GroupModel extends DBBaseModel {
     @ApiModelProperty(notes = "Средний балл")
     private Double score;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        GroupModel that = (GroupModel) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

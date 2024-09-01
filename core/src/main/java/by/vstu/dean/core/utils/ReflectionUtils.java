@@ -3,6 +3,7 @@ package by.vstu.dean.core.utils;
 import by.vstu.dean.core.anotations.ReflectionField;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.validation.constraints.NotNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
@@ -43,14 +44,15 @@ public class ReflectionUtils {
             field.setAccessible(true);
 
             try {
+                Object value = reverseTarget ? ReflectionUtils.getValue(field, o2) : ReflectionUtils.getValue(tField, o1);
                 if(reverseTarget) {
-                    if(field.get(o2) != null || !partialUpdate)
-                        tField.set(o1, field.get(o2));
+                    if(value != null || !partialUpdate)
+                        ReflectionUtils.setValue(tField, value, o1);
                 } else {
-                    if (tField.get(o1) != null || !partialUpdate)
-                        field.set(o2, tField.get(o1));
+                    if (value != null || !partialUpdate)
+                        ReflectionUtils.setValue(field, value, o2);
                 }
-            } catch (IllegalAccessException e) {
+            } catch (Exception e) {
                 log.error("Can't set value for field {} in class {}", field.getName(), field.getDeclaringClass().getName());
                 throw new RuntimeException(e);
             }
@@ -96,7 +98,7 @@ public class ReflectionUtils {
                                 //Записываем поле в Map
                                 map.put(field, oField.get());
                             } else
-                                log.warn("Cannot to find field {} in class {}", fName, aClazz.getSimpleName());
+                                log.warn("mapObject(): Cannot to find field {} in class {}", fName, aClazz.getSimpleName());
                         } else
                             log.warn("Annotation class is empty for field {}", field.getName());
 
@@ -137,6 +139,67 @@ public class ReflectionUtils {
         else // если нет - возвращаем поле
             return tempField;
     }
+
+    public static Object findFieldAndGet(@NotNull String path, @NotNull Object o) {
+        Optional<Field> field = findField(path, o.getClass());
+
+        if(field.isEmpty())
+            return null;
+        field.get().setAccessible(true);
+
+        try {
+            return field.get().get(o);
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static Object getValue(Field field, Object o) {
+        try {
+            field.setAccessible(true);
+            if(field.getDeclaringClass().equals(o.getClass()) || field.getDeclaringClass().equals(o.getClass().getSuperclass()))
+                return field.get(o);
+
+            Optional<Field> foundField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getType().equals(field.getDeclaringClass()) && p.getDeclaringClass().equals(field.getDeclaringClass())).findFirst();
+
+            if(foundField.isPresent()) {
+                foundField.get().setAccessible(true);
+                Object value = foundField.get().get(o);
+                return field.get(value);
+            }
+
+            log.warn("getValue(): Cannot to find field {} in class {}", field.getName(), o.getClass().getSimpleName());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+        return null;
+    }
+
+    public static void setValue(Field field, Object value, Object o) {
+        try {
+            field.setAccessible(true);
+            if(field.getDeclaringClass().equals(o.getClass()) || field.getDeclaringClass().equals(o.getClass().getSuperclass())) {
+                field.set(o, value);
+                return;
+            }
+
+            Optional<Field> foundField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getType().equals(field.getDeclaringClass()) && p.getDeclaringClass().equals(field.getDeclaringClass())).findFirst();
+
+            if(foundField.isPresent()) {
+                foundField.get().setAccessible(true);
+                field.set(foundField.get().get(o), value);
+                return;
+            }
+
+            log.warn("setValue(): Cannot to find field {} in class {}", field.getName(), o.getClass().getSimpleName());
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+    }
+
     /**
      * Собирает список всех полей класса+super-класса с помощью ReflectionAPI.
      *

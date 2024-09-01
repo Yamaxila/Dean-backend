@@ -9,10 +9,13 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.proxy.HibernateProxy;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Setter
@@ -23,8 +26,10 @@ import java.util.List;
 public class DocumentModel extends DBBaseModel {
 
     @ApiModelProperty(notes = "Полное имя(латиница)")
+    @NotNull
     private String fullNameL;
     @ApiModelProperty(notes = "Имя(Латиница)")
+    @NotNull
     private String firstNameL;
     @ApiModelProperty(notes = "Номер договора/Студенческого")
     private Long caseNo;
@@ -35,6 +40,7 @@ public class DocumentModel extends DBBaseModel {
     @JoinColumn(name = "citizenship")
     @ManyToOne
     @ApiModelProperty(notes = "Гражданство")
+    @NotNull
     private CitizenshipModel citizenship;
     @ApiModelProperty(notes = "Иностранный язык")
     @Deprecated
@@ -42,13 +48,17 @@ public class DocumentModel extends DBBaseModel {
     @JoinColumn(name = "student_language")
     @ManyToOne
     @ApiModelProperty(notes = "Иностранный язык")
+    @NotNull
     private StudentLanguageModel studentLanguage;
     @JsonAdapter(LocalDateTypeAdapter.class)
     @ApiModelProperty(notes = "Дата рождения")
+    @NotNull
     private LocalDate birthDate;
     @ApiModelProperty(notes = "Место рождения")
+    @NotNull
     private String birthPlace;
     @ApiModelProperty(notes = "Образование")
+    @NotNull
     private String educationString;
 
     @JoinColumn(name = "institution")
@@ -91,16 +101,21 @@ public class DocumentModel extends DBBaseModel {
     @ApiModelProperty(notes = "Тип отклонения")
     private Integer deviationType;
     @ApiModelProperty(notes = "Серия паспорта")
+    @NotNull
     private String passportSerial;
     @ApiModelProperty(notes = "Номер паспорта")
+    @NotNull
     private String passportNumber;
 
     @JsonAdapter(LocalDateTypeAdapter.class)
     @ApiModelProperty(notes = "Дата выдачи паспорта")
+    @NotNull
     private LocalDate passportIssueDate;
     @ApiModelProperty(notes = "Кем выдан паспорт")
+    @NotNull
     private String passportIssueString;
     @ApiModelProperty(notes = "ID паспорта")
+    @NotNull
     private String passportId;
     @ApiModelProperty(notes = "Полное имя отца")
     private String fatherFullName;
@@ -133,7 +148,7 @@ public class DocumentModel extends DBBaseModel {
     private String lastSurname;
     @ApiModelProperty(notes = "???")
     private String enrollStudentScore;
-    @ApiModelProperty(notes = "Норме студента")
+    @ApiModelProperty(notes = "Номер студента по списку")
     private String studentNumber;
     @ApiModelProperty(notes = "Свободный диплом")
     private String unbound;
@@ -152,4 +167,19 @@ public class DocumentModel extends DBBaseModel {
     @ApiModelProperty(notes = "Дата миграции")
     private LocalDate migrateDate;
 
+    @Override
+    public final boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null) return false;
+        Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
+        Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
+        if (thisEffectiveClass != oEffectiveClass) return false;
+        DocumentModel that = (DocumentModel) o;
+        return getId() != null && Objects.equals(getId(), that.getId());
+    }
+
+    @Override
+    public final int hashCode() {
+        return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
+    }
 }

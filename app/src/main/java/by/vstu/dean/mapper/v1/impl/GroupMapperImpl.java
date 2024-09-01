@@ -5,6 +5,7 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.GroupDTO;
 import by.vstu.dean.mapper.v1.GroupMapper;
 import by.vstu.dean.mapper.v1.SpecialityMapper;
+import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.services.FacultyService;
 import by.vstu.dean.services.GroupService;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Component
 public class GroupMapperImpl implements GroupMapper {
@@ -37,8 +39,10 @@ public class GroupMapperImpl implements GroupMapper {
 
         groupModel = (GroupModel) ReflectionUtils.mapObject(groupModel, dto, true, dto.getId() != null);
 
-        groupModel.setFaculty(this.facultyService.getById(dto.getFacultyId()).orElseThrow());
-        groupModel.setSpec(this.specialityMapper.toEntity(dto.getSpec()));
+        if(dto.getFacultyId() != null)
+            groupModel.setFaculty(this.facultyService.getById(dto.getFacultyId()).orElseThrow());
+        if(dto.getSpec() != null)
+            groupModel.setSpec(this.specialityMapper.toEntity(dto.getSpec()));
 
         return groupModel;
     }
@@ -51,7 +55,8 @@ public class GroupMapperImpl implements GroupMapper {
 
         groupDTO.setSpec(this.specialityMapper.toDto(entity.getSpec()));
         int course = LocalDate.now().getYear() - entity.getYearStart() - (LocalDate.now().getMonth().getValue() < 7 ? -1 : 0);
-        groupDTO.setCurrentCourse(entity.getStatus().equals(EStatus.DELETED) ? entity.getYearEnd()-entity.getYearStart() : course);
+        if(entity.getStatus() != null)
+            groupDTO.setCurrentCourse(entity.getStatus().equals(EStatus.DELETED) ? entity.getYearEnd()-entity.getYearStart() : course);
 
         return groupDTO;
     }
@@ -66,6 +71,12 @@ public class GroupMapperImpl implements GroupMapper {
 
         if(dto.getSpec() != null) {
             entity.setSpec(this.specialityMapper.partialUpdate(dto.getSpec(), entity.getSpec()));
+        }
+
+        if(dto.getFacultyId() != null) {
+            Optional<FacultyModel> optionalFacultyModel = this.facultyService.getById(dto.getFacultyId());
+            if (optionalFacultyModel.isPresent())
+                entity.setFaculty(optionalFacultyModel.get());
         }
 
         return entity;
