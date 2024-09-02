@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.EducationMapper;
 import by.vstu.dean.models.students.EducationModel;
 import by.vstu.dean.repo.EducationModelRepository;
 import by.vstu.dean.services.EducationService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/students/educations/")
-@Api(tags = {"Educations"}, description = "Предыдущие образования")
+@Tag(name = "Educations", description = "Предыдущие образования")
 public class EducationController extends BaseController<EducationDTO, EducationModel, EducationMapper, EducationModelRepository, EducationService> {
 
     /**

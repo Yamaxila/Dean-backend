@@ -5,11 +5,10 @@ import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import by.vstu.dean.models.rooms.ClassroomModel;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 
 /**
  * DTO for {@link by.vstu.dean.models.rooms.ClassroomModel}

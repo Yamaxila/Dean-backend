@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.DisciplineMapper;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.repo.DisciplineModelRepository;
 import by.vstu.dean.services.DisciplineService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/disciplines/")
-@Api(tags = "Disciplines", description = "Дисциплины")
+@Tag(name = "Disciplines", description = "Дисциплины")
 public class DisciplineController extends BaseController<DisciplineDTO, DisciplineModel, DisciplineMapper, DisciplineModelRepository, DisciplineService> {
 
     /**

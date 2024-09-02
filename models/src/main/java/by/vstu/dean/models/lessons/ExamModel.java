@@ -2,19 +2,18 @@ package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.ExamType;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -26,13 +25,13 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "exams")
-@ApiModel(description = "Объект зачетной единицы")
+@Schema(description = "Объект зачетной единицы")
 public class ExamModel extends DBBaseModel {
 
     /**
      * Название зачетной единицы.
      */
-    @ApiModelProperty(notes = "Название зачетной единицы")
+    @Schema(title = "Название зачетной единицы")
     @NotNull
     private String name;
 

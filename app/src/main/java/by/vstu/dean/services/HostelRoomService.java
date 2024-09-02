@@ -7,10 +7,10 @@ import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityManager;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

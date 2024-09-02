@@ -9,8 +9,8 @@ import by.vstu.dean.models.merge.TeacherDepartmentMerge;
 import by.vstu.dean.repo.TeacherDepartmentMergeRepository;
 import by.vstu.dean.repo.TeacherModelRepository;
 import by.vstu.dean.services.TeacherService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/teachers/")
-@Api(tags = "Teachers", description = "Преподаватели")
+@Tag(name = "Teachers", description = "Преподаватели")
 public class TeacherController extends BaseController<TeacherDTO, TeacherModel, TeacherMapper, TeacherModelRepository, TeacherService> {
 
     @Autowired
@@ -48,7 +48,7 @@ public class TeacherController extends BaseController<TeacherDTO, TeacherModel, 
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllTeacherDepartmentMerge", notes = "Отправляет все объекты из базы")
+    @Operation(method = "getAllTeacherDepartmentMerge", description = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDepartmentMerge>> getAllTeacherDepartmentMerge() {
         return new ResponseEntity<>(this.teacherDepartmentMergeRepository.findAll(), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class TeacherController extends BaseController<TeacherDTO, TeacherModel, 
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "merges", notes = "Отправляет все объекты из базы")
+    @Operation(method = "merges", description = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDepartmentMerge>> putMerges(@RequestBody List<TeacherDepartmentMerge> teacherDepartmentMerges) {
         return new ResponseEntity<>(this.teacherDepartmentMergeRepository.saveAllAndFlush(teacherDepartmentMerges), HttpStatus.OK);

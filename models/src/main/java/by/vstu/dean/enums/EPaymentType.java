@@ -1,8 +1,7 @@
 package by.vstu.dean.enums;
 
 import by.vstu.dean.core.enums.BaseEnum;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,16 +9,16 @@ import java.util.List;
 /**
  * Перечисление, реализующее типы оплаты обучения.
  */
-@ApiModel(description = "Enum реализующий тип оплаты обучения")
+@Schema(description = "Enum реализующий тип оплаты обучения")
 public enum EPaymentType implements BaseEnum<EPaymentType> {
 
-    @ApiModelProperty(notes = "Бесплатное обучение")
+    @Schema(title = "Бесплатное обучение")
     NOT_PAID(0),
 
-    @ApiModelProperty(notes = "Платное обучение")
+    @Schema(title = "Платное обучение")
     PAID(1),
 
-    @ApiModelProperty(notes = "Целевое обучение")
+    @Schema(title = "Целевое обучение")
     DIRECTIONAL(2);
 
     /**

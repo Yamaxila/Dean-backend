@@ -8,10 +8,10 @@ import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.old.OldDBBaseModel;
 import by.vstu.dean.old.OldDBBaseModelRepository;
 import by.vstu.dean.old.services.migrate.BaseMigrateService;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
 
-import javax.annotation.PostConstruct;
 import java.lang.reflect.Field;
 import java.time.LocalDateTime;
 import java.util.*;

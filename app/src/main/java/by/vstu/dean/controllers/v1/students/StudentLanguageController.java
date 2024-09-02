@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.StudentLanguageMapper;
 import by.vstu.dean.models.students.StudentLanguageModel;
 import by.vstu.dean.repo.StudentLanguageModelRepository;
 import by.vstu.dean.services.StudentLanguageService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/students/langs/")
-@Api(tags = {"Languages"}, description = "Языки")
+@Tag(name = "Languages", description = "Языки")
 public class StudentLanguageController extends BaseController<StudentLanguageDTO, StudentLanguageModel, StudentLanguageMapper, StudentLanguageModelRepository, StudentLanguageService> {
 
     /**

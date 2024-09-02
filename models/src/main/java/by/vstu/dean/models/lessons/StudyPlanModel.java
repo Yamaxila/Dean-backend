@@ -2,19 +2,18 @@ package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.students.GroupModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -24,7 +23,7 @@ import java.util.Objects;
 @Table(name = "study_plan")
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "Объект учебных планов")
+@Schema(description = "Объект учебных планов")
 @Getter
 @Setter
 public class StudyPlanModel extends DBBaseModel {
@@ -35,37 +34,37 @@ public class StudyPlanModel extends DBBaseModel {
     @NotNull
     @JoinColumn(name = "group_id", nullable = false)
     @ManyToOne
-    @ApiModelProperty(notes = "Группа")
+    @Schema(title = "Группа")
     private GroupModel group;
 
     /**
      * Начало учебного года.
      */
-    @ApiModelProperty(notes = "Начало учебного года")
+    @Schema(title = "Начало учебного года")
     private Integer yearStart;
 
     /**
      * Конец учебного года.
      */
-    @ApiModelProperty(notes = "Конец учебного года")
+    @Schema(title = "Конец учебного года")
     private Integer yearEnd;
 
     /**
      * Номер семестра.
      */
-    @ApiModelProperty(notes = "Номер семестра")
+    @Schema(title = "Номер семестра")
     private Integer semesterNumber;
 
     /**
      * Семестр.
      */
-    @ApiModelProperty(notes = "Семестр")
+    @Schema(title = "Семестр")
     private String semester;
 
     /**
      * Курс группы.
      */
-    @ApiModelProperty(notes = "Курс группы")
+    @Schema(title = "Курс группы")
     private Integer course;
 
     /**
@@ -74,7 +73,7 @@ public class StudyPlanModel extends DBBaseModel {
     @NotNull
     @JoinColumn(name = "exam_type_id", nullable = false)
     @ManyToOne
-    @ApiModelProperty(notes = "Тип зачетной единицы")
+    @Schema(title = "Тип зачетной единицы")
     private ExamModel exam;
 
     /**
@@ -83,7 +82,7 @@ public class StudyPlanModel extends DBBaseModel {
     @NotNull
     @JoinColumn(name = "discipline_id", nullable = false)
     @ManyToOne
-    @ApiModelProperty(notes = "Дисциплина")
+    @Schema(title = "Дисциплина")
     private DisciplineModel discipline;
 
     /**
@@ -92,7 +91,7 @@ public class StudyPlanModel extends DBBaseModel {
     @NotNull
     @JoinColumn(name = "teacher_id", nullable = false)
     @ManyToOne
-    @ApiModelProperty(notes = "Преподаватель")
+    @Schema(title = "Преподаватель")
     private TeacherModel teacher;
 
     public String toString() {

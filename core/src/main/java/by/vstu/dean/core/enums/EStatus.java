@@ -1,7 +1,6 @@
 package by.vstu.dean.core.enums;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,16 +8,16 @@ import java.util.List;
 /**
  * Перечисление, реализующее статусы объектов.
  */
-@ApiModel(description = "Enum реализующий статус объекта")
+@Schema(description = "Enum реализующий статус объекта")
 public enum EStatus implements BaseEnum<EStatus> {
 
-    @ApiModelProperty(notes = "Активный статус")
+    @Schema(title = "Активный статус")
     ACTIVE(0),
 
-    @ApiModelProperty(notes = "Удаленный статус")
+    @Schema(title = "Удаленный статус")
     DELETED(1),
 
-    @ApiModelProperty(notes = "Неизвестный статус")
+    @Schema(title = "Неизвестный статус")
     UNKNOWN(-1);
 
     /**

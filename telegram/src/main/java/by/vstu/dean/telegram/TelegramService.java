@@ -1,6 +1,11 @@
 package by.vstu.dean.telegram;
 
-import by.vstu.dean.telegram.commands.*;
+import by.vstu.dean.telegram.commands.BaseCommand;
+import by.vstu.dean.telegram.commands.LogCommand;
+import by.vstu.dean.telegram.commands.RestartCommand;
+import by.vstu.dean.telegram.commands.StatusCommand;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,8 +22,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 import org.telegram.telegrambots.meta.generics.TelegramClient;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -60,7 +63,6 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         this.telegramThread.start();
         TelegramService.commands.add(new StatusCommand(this.context));
         TelegramService.commands.add(new LogCommand());
-        TelegramService.commands.add(new ExceptionMessage());
         TelegramService.commands.add(new RestartCommand(this.context));
 
         Thread.setDefaultUncaughtExceptionHandler(TelegramService.this::sendException);

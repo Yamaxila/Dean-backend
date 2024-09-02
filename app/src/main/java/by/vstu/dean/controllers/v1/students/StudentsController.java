@@ -8,8 +8,8 @@ import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StudentModelRepository;
 import by.vstu.dean.services.StudentService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +23,7 @@ import java.util.Optional;
  */
 @RestController
 @RequestMapping("/api/v1/students")
-@Api(tags = "Students", description = "Студенты")
+@Tag(name = "Students", description = "Студенты")
 public class StudentsController extends BaseController<StudentDTO, StudentModel, StudentMapper, StudentModelRepository, StudentService> {
 
     /**
@@ -59,7 +59,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllByGroup", notes = "Отправляет все объекты из базы по id группы")
+    @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllByGroup(@PathVariable Long id) {
         return new ResponseEntity<>(this.service.findAllByGroupId(id), HttpStatus.OK);
@@ -75,7 +75,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllByGroup", notes = "Отправляет все объекты из базы по id группы")
+    @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllActiveByGroup(@PathVariable Long id) {
         return new ResponseEntity<>(this.service.findAllByGroupId(id).stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).toList(), HttpStatus.OK);
@@ -91,7 +91,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "getById", notes = "Отправляет объект из базы по id")
+    @Operation(method = "getById", description = "Отправляет объект из базы по id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<StudentDTO> getById(@PathVariable Long id) {
         return super.getById(id);
@@ -106,7 +106,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllHomeless", notes = "Отправляет все объекты из базы, которые нуждаются в общежитии")
+    @Operation(method = "getAllHomeless", description = "Отправляет все объекты из базы, которые нуждаются в общежитии")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentDTO>> getAllHomeless() {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll().stream().filter(s -> s.getLastDocument().isNeedHostel() && s.getStatus().equals(EStatus.ACTIVE)).toList()), HttpStatus.OK);
@@ -123,7 +123,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
             produces = {"application/json"},
             method = RequestMethod.POST)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "setApproved", notes = "Устанавливает поле approved для объекта по id")
+    @Operation(method = "setApproved", description = "Устанавливает поле approved для объекта по id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<StudentDTO> setApproved(@PathVariable Long id, @RequestParam boolean approved) {
         Optional<StudentModel> s = this.service.getById(id);

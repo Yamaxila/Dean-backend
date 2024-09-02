@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.DocumentMapper;
 import by.vstu.dean.models.students.DocumentModel;
 import by.vstu.dean.repo.DocumentModelRepository;
 import by.vstu.dean.services.DocumentService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/students/documents/")
-@Api(tags = {"Documents"}, description = "Документы")
+@Tag(name = "Documents", description = "Документы")
 public class DocumentController extends BaseController<DocumentDTO, DocumentModel, DocumentMapper, DocumentModelRepository, DocumentService> {
 
     /**

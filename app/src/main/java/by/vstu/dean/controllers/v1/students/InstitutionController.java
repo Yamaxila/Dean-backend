@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.InstitutionMapper;
 import by.vstu.dean.models.students.InstitutionModel;
 import by.vstu.dean.repo.InstitutionModelRepository;
 import by.vstu.dean.services.InstitutionService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/institutions/")
-@Api(tags = "Institutions", description = "Учреждения образования")
+@Tag(name = "Institutions", description = "Учреждения образования")
 public class InstitutionController extends BaseController<InstitutionDTO, InstitutionModel, InstitutionMapper, InstitutionModelRepository, InstitutionService> {
 
     /**

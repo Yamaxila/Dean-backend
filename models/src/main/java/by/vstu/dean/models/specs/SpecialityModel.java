@@ -2,8 +2,9 @@ package by.vstu.dean.models.specs;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,8 +13,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -25,27 +24,27 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "specialities")
-@ApiModel(description = "Объект специальности")
+@Schema(description = "Объект специальности")
 public class SpecialityModel extends DBBaseModel {
 
     /**
      * Название специальности.
      */
-    @ApiModelProperty(notes = "Название специальности")
+    @Schema(title = "Название специальности")
     @NotNull
     private String name;
 
     /**
      * Краткое название специальности.
      */
-    @ApiModelProperty(notes = "Краткое название")
+    @Schema(title = "Краткое название")
     @NotNull
     private String shortName;
 
     /**
      * Код специальности.
      */
-    @ApiModelProperty(notes = "Код специальности")
+    @Schema(title = "Код специальности")
     @NotNull
     private String specCode;
 
@@ -55,7 +54,7 @@ public class SpecialityModel extends DBBaseModel {
     @NotFound(action = NotFoundAction.IGNORE)
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
-    @ApiModelProperty(notes = "Кафедра, привязанная к специальности")
+    @Schema(title = "Кафедра, привязанная к специальности")
     private DepartmentModel department;
 
     @Override

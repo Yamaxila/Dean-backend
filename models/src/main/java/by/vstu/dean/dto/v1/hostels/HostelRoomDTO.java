@@ -6,13 +6,12 @@ import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.models.hostels.HostelRoomModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import java.util.List;
 
 /**
@@ -21,27 +20,27 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@ApiModel(description = "DTO для представления информации о комнате в общежитии")
+@Schema(description = "DTO для представления информации о комнате в общежитии")
 public class HostelRoomDTO extends BaseDTO {
 
-    @ApiModelProperty(value = "Номер комнаты", example = "302")
+    @Schema(title = "Номер комнаты", example = "302")
     @ReflectionField(clazz = HostelRoomModel.class)
     private int roomNumber;
 
     @Enumerated(EnumType.STRING)
-    @ApiModelProperty(value = "Тип комнаты", example = "LITTLE")
+    @Schema(title = "Тип комнаты", example = "LITTLE")
     @ReflectionField(clazz = HostelRoomModel.class)
     private EHostelRoomType roomType;
 
-    @ApiModelProperty(value = "Этаж", example = "2")
+    @Schema(title = "Этаж", example = "2")
     @ReflectionField(clazz = HostelRoomModel.class)
     private int floor;
 
     @Enumerated(EnumType.ORDINAL)
-    @ApiModelProperty(value = "Общежитие", example = "1")
+    @Schema(title = "Общежитие", example = "1")
     @ReflectionField(clazz = HostelRoomModel.class)
     private EHostel hostel;
 
-    @ApiModelProperty(value = "Cтуденты")
+    @Schema(title = "Cтуденты")
     private List<StudentDTO> students;
 }

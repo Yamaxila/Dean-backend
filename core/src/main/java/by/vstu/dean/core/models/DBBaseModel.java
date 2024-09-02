@@ -2,8 +2,8 @@ package by.vstu.dean.core.models;
 
 import by.vstu.dean.core.enums.EStatus;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,7 +13,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.annotation.ReadOnlyProperty;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
 
 /**
@@ -25,15 +24,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
-@ApiModel(description = "Базовый объект")
+@Schema(description = "Базовый объект")
 public abstract class DBBaseModel {
 
     /**
      * Идентификатор из источника данных деканата.
      */
     @ReadOnlyProperty
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @ApiModelProperty(notes = "Id из базы деканата")
+    @Schema(title = "Id из базы деканата")
     private Long sourceId;
 
     /**
@@ -49,15 +47,15 @@ public abstract class DBBaseModel {
      */
     @Enumerated(EnumType.ORDINAL)
     @Column(name = "status")
-    @ApiModelProperty(notes = "Статус")
+    @Schema(title = "Статус")
     private EStatus status;
 
-    @ApiModelProperty(notes = "Дата создания записи")
+    @Schema(title = "Дата создания записи")
     @CreatedDate
     @JsonIgnore
     private LocalDateTime created;
 
-    @ApiModelProperty(notes = "Дата обновления записи")
+    @Schema(title = "Дата обновления записи")
     @LastModifiedDate
     @JsonIgnore
     private LocalDateTime updated;

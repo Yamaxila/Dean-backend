@@ -1,17 +1,16 @@
 package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.models.DBBaseModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -23,20 +22,20 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ApiModel(description = "Объект учреждения образования")
+@Schema(description = "Объект учреждения образования")
 public class InstitutionModel extends DBBaseModel {
 
     /**
      * Полное название учреждения образования.
      */
-    @ApiModelProperty(notes = "Полное название")
+    @Schema(title = "Полное название")
     @NotNull
     private String fullName;
 
     /**
      * Краткое название учреждения образования.
      */
-    @ApiModelProperty(notes = "Краткое название")
+    @Schema(title = "Краткое название")
     private String shortName;
 
     @Override

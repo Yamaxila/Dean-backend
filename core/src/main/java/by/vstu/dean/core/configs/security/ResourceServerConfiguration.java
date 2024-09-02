@@ -1,66 +1,72 @@
 package by.vstu.dean.core.configs.security;
 
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.jwk.OctetSequenceKey;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Import;
-import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.ExpressionUrlAuthorizationConfigurer;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
-import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
-import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
-import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationProvider;
+import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
-@EnableResourceServer
 @EnableWebSecurity
-@Import({MethodSecurityConfiguration.class})
-//TODO: Нужно это переписать, т.к. при переходе на SpringBoot 3.x, скорее всего этого уже не будет
-public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+public class ResourceServerConfiguration{
 
     @Value("${token.signing.key}")
     private String signingKey;
 
-    public void configure(ResourceServerSecurityConfigurer config) {
-        config.tokenServices((ResourceServerTokenServices) tokenServices()).resourceId("dean");
+    @Bean
+    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        http
+                .csrf(AbstractHttpConfigurer::disable)
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                .requestMatchers(HttpMethod.OPTIONS).permitAll()
+                                .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                                .anyRequest().authenticated()
+                )
+                .oauth2ResourceServer(oauth2ResourceServer ->
+                        oauth2ResourceServer
+                                .jwt(c -> c.decoder(jwtDecoder()))
+                )
+                .authenticationProvider(jwtAuthenticationProvider())
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                );
+
+        return http.build();
     }
 
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(accessTokenConverter());
+    private JwtAuthenticationProvider jwtAuthenticationProvider() {
+        JwtAuthenticationProvider provider = new JwtAuthenticationProvider(jwtDecoder());
+        provider.setJwtAuthenticationConverter(jwtAuthenticationConverter());
+        return provider;
     }
 
-    @Bean
-    public JwtAccessTokenConverter accessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey(this.signingKey);
+    private JwtAuthenticationConverter jwtAuthenticationConverter() {
+        JwtAuthenticationConverter converter = new JwtAuthenticationConverter();
+        converter.setJwtGrantedAuthoritiesConverter(new CustomAuthoritiesConverter());
         return converter;
     }
 
     @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
-        return defaultTokenServices;
+    public JwtDecoder jwtDecoder() {
+        return NimbusJwtDecoder.withSecretKey(new OctetSequenceKey.Builder(this.signingKey.getBytes())
+                .algorithm(JWSAlgorithm.parse("HS256"))
+                .build().toSecretKey()
+        ).build();
     }
 
-    public void configure(HttpSecurity http) throws Exception {
-        ((HttpSecurity) ((ExpressionUrlAuthorizationConfigurer<?>.AuthorizedUrl) ((ExpressionUrlAuthorizationConfigurer<?>.AuthorizedUrl) http.csrf().disable()
-                .cors().and()
-                .authorizeRequests()
-                .antMatchers(HttpMethod.OPTIONS).permitAll()
-                .antMatchers(new String[]{"/swagger-ui/**", "/swagger-resources/**", "/v2/api-docs"})).permitAll()
-                .anyRequest()).authenticated()
-                .and())
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    @Bean
+    public JwtTokenFilter authenticationJwtTokenFilter() {
+        return new JwtTokenFilter();
     }
 }

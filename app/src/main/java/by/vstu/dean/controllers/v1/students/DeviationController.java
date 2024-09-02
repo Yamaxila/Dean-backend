@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.DeviationMapper;
 import by.vstu.dean.models.students.DeviationModel;
 import by.vstu.dean.repo.DeviationModelRepository;
 import by.vstu.dean.services.DeviationService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/students/deviations/")
-@Api(tags = {"Deviations"}, description = "Отклонения")
+@Tag(name = "Deviations", description = "Отклонения")
 public class DeviationController extends BaseController<DeviationDTO, DeviationModel, DeviationMapper, DeviationModelRepository, DeviationService> {
 
     /**

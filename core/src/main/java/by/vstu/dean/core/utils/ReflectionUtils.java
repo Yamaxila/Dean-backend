@@ -1,9 +1,9 @@
 package by.vstu.dean.core.utils;
 
 import by.vstu.dean.core.anotations.ReflectionField;
+import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.validation.constraints.NotNull;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;

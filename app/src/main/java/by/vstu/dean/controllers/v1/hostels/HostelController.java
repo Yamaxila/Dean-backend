@@ -9,8 +9,8 @@ import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
 import by.vstu.dean.services.HostelRoomService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +22,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/hostels/")
-@Api(tags = "HostelController", description = "Общежития и комнаты")
+@Tag(name = "HostelController", description = "Общежития и комнаты")
 public class HostelController extends BaseController<HostelRoomDTO, HostelRoomModel, HostelRoomMapper, HostelRoomModelRepository, HostelRoomService> {
     @Autowired
     private StudentMapper studentMapper;
@@ -39,7 +39,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "{id}/rooms", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllRooms", notes = "Отправляет все комнаты указанного общежития")
+    @Operation(method = "getAllRooms", description = "Отправляет все комнаты указанного общежития")
     public ResponseEntity<List<HostelRoomDTO>> findAllByHostelId(@PathVariable int id) {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()).stream().filter(p -> p.getHostel().ordinal() == id).toList(), HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "{id}/rooms/active", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllRoomsActive", notes = "Отправляет все активные комнаты указанного общежития")
+    @Operation(method = "getAllRoomsActive", description = "Отправляет все активные комнаты указанного общежития")
     public ResponseEntity<List<HostelRoomDTO>> findAllByHostelIdActive(@PathVariable int id, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAllActive(is)).stream().filter(p -> p.getHostel().ordinal() == id).toList(), HttpStatus.OK);
     }
@@ -67,7 +67,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "{id}/floors/{floor}", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllByHostelAndFloor", notes = "Отправляет все активные комнаты указанного общежития по этажу")
+    @Operation(method = "getAllByHostelAndFloor", description = "Отправляет все активные комнаты указанного общежития по этажу")
     public ResponseEntity<List<HostelRoomDTO>> findAllByHostelIdAndFloor(@PathVariable int id, @PathVariable int floor) {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()).stream().filter(p -> p.getHostel().ordinal() == id && p.getFloor() == floor).toList(), HttpStatus.OK);
     }
@@ -81,7 +81,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
     @Override
     @RequestMapping(value = "/rooms/{roomId}", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllRooms", notes = "Отправляет комнату по её id")
+    @Operation(method = "getAllRooms", description = "Отправляет комнату по её id")
     public ResponseEntity<HostelRoomDTO> getById(@PathVariable Long roomId) {
         return super.getById(roomId);
     }
@@ -94,7 +94,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "/rooms/{id}/students", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllRooms", notes = "Отправляет всех студентов, проживавших в комнате")
+    @Operation(method = "getAllRooms", description = "Отправляет всех студентов, проживавших в комнате")
     public ResponseEntity<List<StudentDTO>> getAllRoomStudents(@PathVariable Long id) {
         Optional<HostelRoomModel> o = this.service.getById(id);
         return o.map(hostelRoomModel -> new ResponseEntity<>(this.studentMapper.toDto(hostelRoomModel.getStudents().stream().toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -109,12 +109,8 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
 
     @RequestMapping(value = "/rooms/{roomId}/students/active", produces = {"application/json"}, method = RequestMethod.GET)
-
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-
-    @ApiOperation(value = "getAllRooms", notes = "Отправляет всех активных(или нет) студентов, проживавших в комнате")
-
-
+    @Operation(method = "getAllRooms", description = "Отправляет всех активных(или нет) студентов, проживавших в комнате")
     public ResponseEntity<List<StudentDTO>> getAllRoomStudentsActive(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
 
@@ -130,7 +126,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "/rooms/{roomId}/students/approved", produces = {"application/json"}, method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllRooms", notes = "Отправляет всех подтвержденных(или нет) студентов, проживавших в комнате")
+    @Operation(method = "getAllRooms", description = "Отправляет всех подтвержденных(или нет) студентов, проживавших в комнате")
     public ResponseEntity<List<StudentDTO>> getAllRoomStudentsApproved(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
         return o.map(hostelRoomModel -> new ResponseEntity<>(this.studentMapper.toDto(hostelRoomModel.getStudents().stream().filter(p -> p.isApproved() == is).toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -145,7 +141,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "/rooms/{roomId}/students", produces = {"application/json"}, method = RequestMethod.POST)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "postStudent", notes = "Прикрепляет студента к комнате")
+    @Operation(method = "postStudent", description = "Прикрепляет студента к комнате")
     public ResponseEntity<HostelRoomDTO> postStudent(@PathVariable Long roomId, @RequestParam Long studentId) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
         return o.map(hostelRoomModel -> new ResponseEntity<>(this.mapper.toDto(this.service.setStudent(hostelRoomModel, studentId)), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -161,7 +157,7 @@ public class HostelController extends BaseController<HostelRoomDTO, HostelRoomMo
      */
     @RequestMapping(value = "/rooms/{roomId}/students", produces = {"application/json"}, method = RequestMethod.DELETE)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "removeStudent", notes = "Открепляет студента от комнаты")
+    @Operation(method = "removeStudent", description = "Открепляет студента от комнаты")
     public ResponseEntity<HostelRoomDTO> deleteStudent(@PathVariable Long roomId, @RequestParam Long studentId) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
         return o.map(hostelRoomModel -> new ResponseEntity<>(this.mapper.toDto(this.service.removeStudent(hostelRoomModel, studentId)), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));

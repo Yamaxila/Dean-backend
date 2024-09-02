@@ -11,8 +11,7 @@ import com.google.common.reflect.TypeParameter;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.repository.NoRepositoryBean;
@@ -28,7 +27,7 @@ import java.util.List;
  * Базовый класс репозитория для API сущностей.
  */
 @NoRepositoryBean
-@ApiModel(description = "Базовый класс репозитория для API сущностей")
+@Schema(description = "Базовый класс репозитория для API сущностей")
 public abstract class ApiRepositoryBase<O extends DBBaseModel> {
 
     /**
@@ -46,7 +45,7 @@ public abstract class ApiRepositoryBase<O extends DBBaseModel> {
      * Объект Gson для сериализации и десериализации JSON.
      */
     @Getter
-    @ApiModelProperty(value = "Объект Gson для сериализации и десериализации JSON")
+    @Schema(title = "Объект Gson для сериализации и десериализации JSON")
     protected final Gson gson = new GsonBuilder()
             .registerTypeAdapter(LocalDateTime.class, new LocalDateTimeJsonAdapter())
             .registerTypeAdapter(LocalDate.class, new LocalDateJsonAdapter())

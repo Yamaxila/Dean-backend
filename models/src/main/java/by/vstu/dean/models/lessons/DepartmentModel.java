@@ -3,8 +3,9 @@ package by.vstu.dean.models.lessons;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.FacultyModel;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,8 +14,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
@@ -27,27 +26,27 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "departments")
-@ApiModel(description = "Объект кафедры")
+@Schema(description = "Объект кафедры")
 public class DepartmentModel extends DBBaseModel {
 
     /**
      * Название кафедры.
      */
-    @ApiModelProperty(notes = "Название кафедры")
+    @Schema(title = "Название кафедры")
     @NotNull
     private String name;
 
     /**
      * Краткое название кафедры.
      */
-    @ApiModelProperty(notes = "Краткое название кафедры")
+    @Schema(title = "Краткое название кафедры")
     @NotNull
     private String shortName;
 
     /**
      * Аудитория, где находится кафедра.
      */
-    @ApiModelProperty(notes = "Аудитория, где находится кафедра")
+    @Schema(title = "Аудитория, где находится кафедра")
     @NotNull
     private String room;
 
@@ -57,7 +56,7 @@ public class DepartmentModel extends DBBaseModel {
     @JoinColumn(name = "faculty_id")
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE) //FIXME: почему?
-    @ApiModelProperty(notes = "Факультет кафедры")
+    @Schema(title = "Факультет кафедры")
     private FacultyModel faculty;
 
     /**
@@ -65,7 +64,7 @@ public class DepartmentModel extends DBBaseModel {
      */
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "department_id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
-    @ApiModelProperty(notes = "Все преподаватели, работающие на данной кафедре")
+    @Schema(title = "Все преподаватели, работающие на данной кафедре")
     @JsonManagedReference
     private Set<TeacherModel> teachers;
 

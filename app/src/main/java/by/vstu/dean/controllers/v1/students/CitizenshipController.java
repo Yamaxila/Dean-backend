@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.CitizenshipMapper;
 import by.vstu.dean.models.students.CitizenshipModel;
 import by.vstu.dean.repo.CitizenshipModelRepository;
 import by.vstu.dean.services.CitizenshipService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/students/citizenship/")
-@Api(tags = "Citizenship's", description = "Гражданства")
+@Tag(name = "Citizenship's", description = "Гражданства")
 public class CitizenshipController extends BaseController<CitizenshipDTO, CitizenshipModel, CitizenshipMapper, CitizenshipModelRepository, CitizenshipService> {
 
     /**

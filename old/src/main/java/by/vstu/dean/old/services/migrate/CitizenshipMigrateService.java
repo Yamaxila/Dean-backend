@@ -5,8 +5,7 @@ import by.vstu.dean.models.students.CitizenshipModel;
 import by.vstu.dean.old.models.DCitizenshipModel;
 import by.vstu.dean.old.repo.DCitizenshipModelRepository;
 import by.vstu.dean.repo.CitizenshipModelRepository;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +16,7 @@ import java.util.List;
 /**
  * Сервис миграции данных для модели CitizenshipModel.
  */
-@ApiModel(description = "Сервис миграции данных для модели CitizenshipModel")
+@Schema(description = "Сервис миграции данных для модели CitizenshipModel")
 @Service
 @RequiredArgsConstructor
 public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipModel, DCitizenshipModel> {
@@ -30,7 +29,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      *
      * @return ID последней записи в базе данных.
      */
-    @ApiModelProperty(value = "Метод для получения ID последней записи в базе данных.")
+    @Schema(title = "Метод для получения ID последней записи в базе данных.")
     @Override
     public Long getLastDBId() {
         return this.citizenshipRepository.findTopByOrderByIdDesc() == null ? 0 : this.citizenshipRepository.findTopByOrderByIdDesc().getSourceId();
@@ -41,7 +40,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      *
      * @return Список CitizenshipModel, которые не существуют в базе данных.
      */
-    @ApiModelProperty(value = "Метод для преобразования неприсутствующих данных из базы данных.")
+    @Schema(title = "Метод для преобразования неприсутствующих данных из базы данных.")
     @Override
     public List<CitizenshipModel> convertNotExistsFromDB() {
         return this.convertList(this.dCitizenshipRepository.findAllByIdAfter(this.getLastDBId()));
@@ -54,7 +53,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      * @param update            Флаг обновления записи.
      * @return Преобразованная запись CitizenshipModel.
      */
-    @ApiModelProperty(value = "Метод для преобразования одной записи из базы данных.")
+    @Schema(title = "Метод для преобразования одной записи из базы данных.")
     @Override
     public CitizenshipModel convertSingle(DCitizenshipModel dCitizenshipModel, boolean update) {
         CitizenshipModel citizenshipModel = new CitizenshipModel(dCitizenshipModel.getName());
@@ -72,7 +71,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      * @param t Список исходных записей из базы данных.
      * @return Список преобразованных записей CitizenshipModel.
      */
-    @ApiModelProperty(value = "Метод для преобразования списка записей из базы данных.")
+    @Schema(title = "Метод для преобразования списка записей из базы данных.")
     @Override
     public List<CitizenshipModel> convertList(List<DCitizenshipModel> t) {
         List<CitizenshipModel> out = new ArrayList<>();
@@ -86,7 +85,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      * @param t Преобразованная запись CitizenshipModel.
      * @return Вставленная запись CitizenshipModel.
      */
-    @ApiModelProperty(value = "Метод для вставки одной записи CitizenshipModel в базу данных.")
+    @Schema(title = "Метод для вставки одной записи CitizenshipModel в базу данных.")
     @Override
     public CitizenshipModel insertSingle(CitizenshipModel t) {
         return this.citizenshipRepository.saveAndFlush(t);
@@ -98,7 +97,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
      * @param t Список преобразованных записей CitizenshipModel.
      * @return Список вставленных записей CitizenshipModel.
      */
-    @ApiModelProperty(value = "Метод для вставки всех записей CitizenshipModel в базу данных.")
+    @Schema(title = "Метод для вставки всех записей CitizenshipModel в базу данных.")
     @Override
     public List<CitizenshipModel> insertAll(List<CitizenshipModel> t) {
         return this.citizenshipRepository.saveAllAndFlush(t);
@@ -107,7 +106,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
     /**
      * Метод для выполнения миграции данных.
      */
-    @ApiModelProperty(value = "Метод для выполнения миграции данных.")
+    @Schema(title = "Метод для выполнения миграции данных.")
     @Override
     public void migrate() {
         System.err.println(this.getClass().getName());

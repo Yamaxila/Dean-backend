@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.StudyPlanMapper;
 import by.vstu.dean.models.lessons.StudyPlanModel;
 import by.vstu.dean.repo.StudyPlanModelRepository;
 import by.vstu.dean.services.StudyPlanService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/plans/")
-@Api(tags = "StudyPlans", description = "Учебные планы")
+@Tag(name = "StudyPlans", description = "Учебные планы")
 public class StudyPlanController extends BaseController<StudyPlanDTO, StudyPlanModel, StudyPlanMapper, StudyPlanModelRepository, StudyPlanService> {
 
     /**

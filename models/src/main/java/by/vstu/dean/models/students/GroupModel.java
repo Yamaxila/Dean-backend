@@ -6,12 +6,12 @@ import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.specs.SpecialityModel;
 import com.google.gson.annotations.JsonAdapter;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -30,7 +30,7 @@ public class GroupModel extends DBBaseModel {
     /**
      * Название группы.
      */
-    @ApiModelProperty(notes = "Группа")
+    @Schema(title = "Группа")
     @NotNull
     private String name;
 
@@ -39,7 +39,7 @@ public class GroupModel extends DBBaseModel {
      */
     @ManyToOne
     @JoinColumn(name = "spec_id")
-    @ApiModelProperty(notes = "Специальность")
+    @Schema(title = "Специальность")
     @NotNull
     private SpecialityModel spec;
 
@@ -48,14 +48,14 @@ public class GroupModel extends DBBaseModel {
      */
     @ManyToOne
     @JoinColumn(name = "faculty_id")
-    @ApiModelProperty(notes = "Факультет")
+    @Schema(title = "Факультет")
     @NotNull
     private FacultyModel faculty;
 
     /**
      * Год поступления группы.
      */
-    @ApiModelProperty(notes = "Год поступления")
+    @Schema(title = "Год поступления")
     private Integer yearStart;
 
     /**
@@ -67,27 +67,27 @@ public class GroupModel extends DBBaseModel {
     /**
      * Год окончания обучения группы.
      */
-    @ApiModelProperty(notes = "Год окончания")
+    @Schema(title = "Год окончания")
     private Integer yearEnd;
 
     /**
      * Дата начала обучения группы.
      */
     @JsonAdapter(LocalDateTypeAdapter.class)
-    @ApiModelProperty(notes = "Дата поступления???") //FIXME
+    @Schema(title = "Дата поступления???") //FIXME
     private LocalDate dateStart;
 
     /**
      * Дата окончания обучения группы.
      */
     @JsonAdapter(LocalDateTypeAdapter.class)
-    @ApiModelProperty(notes = "Дата окончания")
+    @Schema(title = "Дата окончания")
     private LocalDate dateEnd;
 
     /**
      * Средний балл студентов в группе.
      */
-    @ApiModelProperty(notes = "Средний балл")
+    @Schema(title = "Средний балл")
     private Double score;
 
     @Override

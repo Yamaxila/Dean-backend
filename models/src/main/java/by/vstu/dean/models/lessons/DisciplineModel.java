@@ -1,16 +1,15 @@
 package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -23,20 +22,20 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "disciplines")
-@ApiModel(description = "Объект дисциплины")
+@Schema(description = "Объект дисциплины")
 public class DisciplineModel extends DBBaseModel {
 
     /**
      * Название дисциплины.
      */
-    @ApiModelProperty(notes = "Название дисциплины")
+    @Schema(title = "Название дисциплины")
     @NotNull
     private String name;
 
     /**
      * Краткое название дисциплины.
      */
-    @ApiModelProperty(notes = "Краткое название дисциплины")
+    @Schema(title = "Краткое название дисциплины")
     @NotNull
     private String shortName;
 
@@ -45,7 +44,7 @@ public class DisciplineModel extends DBBaseModel {
      */
     @JoinColumn(name = "department_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Кафедра")
+    @Schema(title = "Кафедра")
     private DepartmentModel department;
 
     @Override

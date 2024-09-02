@@ -3,17 +3,16 @@ package by.vstu.dean.models;
 import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
 import by.vstu.dean.core.models.DBBaseModel;
 import com.google.gson.annotations.JsonAdapter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -26,123 +25,123 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "faculties")
-@ApiModel(description = "Объект факультета")
+@Schema(description = "Объект факультета")
 public class FacultyModel extends DBBaseModel {
 
     /**
      * Краткое название факультета.
      */
-    @ApiModelProperty(notes = "Краткое название")
+    @Schema(title = "Краткое название")
     @NotNull
     private String shortName;
 
     /**
      * Полное название факультета.
      */
-    @ApiModelProperty(notes = "Полное название")
+    @Schema(title = "Полное название")
     @NotNull
     private String name;
 
     /**
      * Название факультета в родительном падеже.
      */
-    @ApiModelProperty(notes = "Название в родительном падеже")
+    @Schema(title = "Название в родительном падеже")
     private String nameGenitive;
 
     /**
      * Название факультета в дательном падеже.
      */
-    @ApiModelProperty(notes = "Название в дательном падеже")
+    @Schema(title = "Название в дательном падеже")
     private String nameDative;
 
     /**
      * Ректор факультета.
      */
-    @ApiModelProperty(notes = "Ректор")
+    @Schema(title = "Ректор")
     private String rectorName;
 
     /**
      * Декан факультета.
      */
-    @ApiModelProperty(notes = "Декан")
+    @Schema(title = "Декан")
     private String dean;
 
     /**
      * Методист/Секретарь факультета.
      */
-    @ApiModelProperty(notes = "Методист/Секретарь")
+    @Schema(title = "Методист/Секретарь")
     private String clerkName;
 
     /**
      * Приказ о зачислении платников.
      */
-    @ApiModelProperty(notes = "Приказ о зачислении платников")
+    @Schema(title = "Приказ о зачислении платников")
     private String enrollMsgPaid;
 
-    @ApiModelProperty(notes = "Дата зачисления бесплатников")
+    @Schema(title = "Дата зачисления бесплатников")
     @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDatePaid;
 
     /**
      * Приказ о зачислении бесплатников.
      */
-    @ApiModelProperty(notes = "Приказ о зачислении бесплатников")
+    @Schema(title = "Приказ о зачислении бесплатников")
     private String enrollMsgNotPaid;
 
     /**
      * Дата зачисления бесплатников.
      */
-    @ApiModelProperty(notes = "Дата зачисления бесплатников")
+    @Schema(title = "Дата зачисления бесплатников")
     @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDateNotPaid;
 
     /**
      * Тип журнала (ведется на год, семестр)... со слов Зуевой.
      */
-    @ApiModelProperty(notes = "Тип журнала (ведется на год, семестр)... со слов Зуевой...")
+    @Schema(title = "Тип журнала (ведется на год, семестр)... со слов Зуевой...")
     private Integer journalType;
 
     /**
      * Тип факультета.
      */
-    @ApiModelProperty(notes = "Тип факультета")
+    @Schema(title = "Тип факультета")
     private Integer facultyType;
 
     /**
      * Год начала семестра.
      */
-    @ApiModelProperty(notes = "Год начала семестра")
+    @Schema(title = "Год начала семестра")
     private Integer semesterStartYear;
 
     /**
      * Год конца семестра.
      */
-    @ApiModelProperty(notes = "Год конца семестра")
+    @Schema(title = "Год конца семестра")
     private Integer semesterEndYear;
 
     /**
      * Семестр.
      */
-    @ApiModelProperty(notes = "Семестр")
+    @Schema(title = "Семестр")
     private String semester;
 
     /**
      * Приказ о переводе.
      */
-    @ApiModelProperty(notes = "Приказ о переводе")
+    @Schema(title = "Приказ о переводе")
     private String moveMsgNumber;
 
     /**
      * Дата приказа о переводе.
      */
-    @ApiModelProperty(notes = "Дата приказа о переводе")
+    @Schema(title = "Дата приказа о переводе")
     @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate moveMsgDate;
 
     /**
      * Тип образования (устаревшее поле).
      */
-    @ApiModelProperty(notes = "Тип образования")
+    @Schema(title = "Тип образования")
     @Deprecated
     private Integer educationType;
 

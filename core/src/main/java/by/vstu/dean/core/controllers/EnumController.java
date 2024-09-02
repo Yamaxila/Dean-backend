@@ -2,7 +2,7 @@ package by.vstu.dean.core.controllers;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.enums.BaseEnum;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public abstract class EnumController<E extends BaseEnum<E>>{
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER'))")
-    @ApiOperation(value = "getAll", notes = "Отправляет все типы")
+    @Operation(method = "getAll", description = "Отправляет все типы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER"})
     public ResponseEntity<List<E>> getAll() {
         return new ResponseEntity<>(this.eEnum.getValues(), HttpStatus.OK);

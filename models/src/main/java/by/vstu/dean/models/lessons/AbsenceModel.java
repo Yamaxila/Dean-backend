@@ -3,12 +3,12 @@ package by.vstu.dean.models.lessons;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.students.StudentModel;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 

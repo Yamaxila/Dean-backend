@@ -4,17 +4,16 @@ import by.vstu.dean.core.adapters.LocalDateTimeTypeAdapter;
 import by.vstu.dean.core.models.DBBaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.JsonAdapter;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.time.LocalDateTime;
 
 @Entity
@@ -23,48 +22,48 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "deviations")
-@ApiModel(description = "Объект отклонений")
+@Schema(description = "Объект отклонений")
 @Deprecated
 public class DeviationModel extends DBBaseModel {
 
     @JoinColumn(name = "student_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Студент")
+    @Schema(title = "Студент")
     @JsonIgnore
     private StudentModel student;
-    @ApiModelProperty(notes = "Тип сообщения")
+    @Schema(title = "Тип сообщения")
     private String msgType;
-    @ApiModelProperty(notes = "Отчислен")
+    @Schema(title = "Отчислен")
     private String expelled;
-    @ApiModelProperty(notes = "Номер причины")
+    @Schema(title = "Номер причины")
     private Integer reasonNumber;
-    @ApiModelProperty(notes = "Сообщение")
+    @Schema(title = "Сообщение")
     private String deviationMsg;
-    @ApiModelProperty(notes = "Дата сообщения")
+    @Schema(title = "Дата сообщения")
     @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime msgDate;
-    @ApiModelProperty(notes = "Дата начала")
+    @Schema(title = "Дата начала")
     @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateStart;
-    @ApiModelProperty(notes = "Дата конца")
+    @Schema(title = "Дата конца")
     @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateEnd;
-    @ApiModelProperty(notes = "Новая фамилия")
+    @Schema(title = "Новая фамилия")
     private String lastNameNew;
-    @ApiModelProperty(notes = "Новая группа")
+    @Schema(title = "Новая группа")
     private String groupNameNew;
-    @ApiModelProperty(notes = "Сообщение 1")
+    @Schema(title = "Сообщение 1")
     private String msg1;
-    @ApiModelProperty(notes = "Сообщение 2")
+    @Schema(title = "Сообщение 2")
     private String msg2;
-    @ApiModelProperty(notes = "Приказ")
+    @Schema(title = "Приказ")
     private String commandMsg1;
-    @ApiModelProperty(notes = "Приказ")
+    @Schema(title = "Приказ")
     private String commandMsg;
-    @ApiModelProperty(notes = "Дата ликвидации")
+    @Schema(title = "Дата ликвидации")
     @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateLiquidation;
-    @ApiModelProperty(notes = "Взыскание")
+    @Schema(title = "Взыскание")
     private Integer penalty;
 
 }

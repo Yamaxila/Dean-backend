@@ -1,12 +1,12 @@
 package by.vstu.dean.enums;
 
 import by.vstu.dean.core.enums.BaseEnum;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.List;
 
-@ApiModel(description = "Enum реализующий тип внутреннего сообщения")
+@Schema(description = "Enum реализующий тип внутреннего сообщения")
 public enum EMessageType implements BaseEnum<EMessageType> {
 
     INFO(0),

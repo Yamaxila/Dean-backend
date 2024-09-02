@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.SpecialityMapper;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.repo.SpecialityModelRepository;
 import by.vstu.dean.services.SpecialityService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/specs/")
-@Api(tags = "Specialities", description = "Специальности")
+@Tag(name = "Specialities", description = "Специальности")
 public class SpecialityController extends BaseController<SpecialityDTO, SpecialityModel, SpecialityMapper, SpecialityModelRepository, SpecialityService> {
 
     /**

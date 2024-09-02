@@ -7,7 +7,7 @@ import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.utils.ValidationUtils;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,19 +51,19 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAll", notes = "Отправляет все объекты из базы")
+    @Operation(method = "getAll", description = "Отправляет все объекты из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAll() {
         List<O> tempO = this.service.getAll();
 
-        if(!ValidationUtils.isObjectValid(tempO)) {
+        if(tempO == null) {
             log.error("Can't get data from database!");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         List<D> tempD = this.mapper.toDto(tempO);
 
-        if(!ValidationUtils.isObjectValid(tempO)) {
+        if(tempD == null) {
             log.error("List mapping error!");
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
@@ -80,7 +80,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "rsql", notes = "Получает объекты из базы данных через rsql-запрос")
+    @Operation(method = "rsql", description = "Получает объекты из базы данных через rsql-запрос")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<O>> getAllRSql(@RequestParam(required = false, defaultValue = "id>0") String sql) {
         try {
@@ -100,7 +100,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "dto_rsql", notes = "Получает DTO из базы данных через rsql-запрос")
+    @Operation(method = "dto_rsql", description = "Получает DTO из базы данных через rsql-запрос")
     @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllRSqlDTO(@RequestParam(required = false, defaultValue = "id>0") String sql) {
         try {
@@ -136,7 +136,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getAllActive", notes = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
+    @Operation(method = "getAllActive", description = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<D>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
 
@@ -160,17 +160,17 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     /**
      * Получает объект по его id из базы данных.
      *
-     * @param id Идентификатор объекта
+     * @param entity Идентификатор объекта
      * @return Объект с заданным id
      */
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/{<entity>id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "getById", notes = "Отправляет объект по его id из базы")
+    @Operation(method = "getById", description = "Отправляет объект по его id из базы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<D> getById(@PathVariable Long id) {
-        Optional<O> byId = this.service.getById(id);
+    public ResponseEntity<D> getById(@PathVariable Long entity) {
+        Optional<O> byId = this.service.getById(entity);
         return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -184,7 +184,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "put", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
+    @Operation(method = "put", description = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> put(@RequestBody D dto) {
         if(dto == null) {
@@ -204,7 +204,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "putModel", notes = "Сохраняет объект в базу данных и возвращает его же с установленным id")
+    @Operation(method = "putModel", description = "Сохраняет объект в базу данных и возвращает его же с установленным id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<O> putModel(@RequestBody O model) {
         if(model == null) {
@@ -220,11 +220,11 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
      * @param id Идентификатор объекта для удаления
      * @return Объект с установленным статусом DELETED
      */
-    @RequestMapping(value = "/{id}",
+    @RequestMapping(value = "/{<entity>id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "deleteById", notes = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
+    @Operation(method = "deleteById", description = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
         if (id == null) {

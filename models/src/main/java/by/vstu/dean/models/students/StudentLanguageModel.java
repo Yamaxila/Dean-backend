@@ -1,16 +1,16 @@
 package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.models.DBBaseModel;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -22,7 +22,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "student_language")
-@ApiModel(description = "Объект иностранного языка")
+@Schema(description = "Объект иностранного языка")
 public class StudentLanguageModel extends DBBaseModel {
 
     /**

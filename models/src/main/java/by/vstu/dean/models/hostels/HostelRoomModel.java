@@ -4,17 +4,15 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.models.students.StudentModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 import java.util.Set;
 
@@ -26,29 +24,27 @@ import java.util.Set;
 @NoArgsConstructor
 public class HostelRoomModel extends DBBaseModel {
 
-    @ApiModelProperty(value = "Номер комнаты", example = "302")
+    @Schema(title = "Номер комнаты", example = "302")
     @NotNull
     private int roomNumber;
 
     @Enumerated(EnumType.ORDINAL)
-    @ApiModelProperty(value = "Тип комнаты", example = "LITTLE")
+    @Schema(title = "Тип комнаты", example = "LITTLE")
     @NotNull
     private EHostelRoomType roomType;
 
-    @ApiModelProperty(value = "Этаж", example = "2")
+    @Schema(title = "Этаж", example = "2")
     @NotNull
     private Integer floor;
 
     @Enumerated(EnumType.ORDINAL)
-    @ApiModelProperty(value = "Общежитие", example = "1")
+    @Schema(title = "Общежитие", example = "1")
     @NotNull
     private EHostel hostel;
 
     @JoinColumn(referencedColumnName = "id", name = "hostel_room_id")
     @OneToMany
-    @NotFound(action = NotFoundAction.IGNORE)
-    @ApiModelProperty(value = "Список студентов в комнате")
-//    @JsonIgnore
+    @Schema(title = "Список студентов в комнате")
     private Set<StudentModel> students;
 
     @Override

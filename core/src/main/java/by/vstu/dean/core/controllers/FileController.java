@@ -2,9 +2,9 @@ package by.vstu.dean.core.controllers;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.services.FileService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("/api/v1/files")
-@Api(tags = {"Files"}, description = "Файлы")
+@Tag(name = "Files", description = "Файлы")
 @AllArgsConstructor
 public class FileController {
 
@@ -31,7 +31,7 @@ public class FileController {
             produces = {"application/text"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "upload", notes = "Загружает файл на сервер")
+    @Operation(method = "upload", description = "Загружает файл на сервер")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         if(file == null)
@@ -50,7 +50,7 @@ public class FileController {
             produces = {"application/text"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @ApiOperation(value = "download", notes = "Отдает файл с сервера")
+    @Operation(method = "download", description = "Отдает файл с сервера")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<?> download(@RequestBody String filename) {
         if(filename == null)

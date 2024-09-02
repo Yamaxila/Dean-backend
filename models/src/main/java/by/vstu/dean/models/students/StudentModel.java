@@ -4,8 +4,9 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.specs.SpecializationModel;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,8 +15,6 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.util.Objects;
 
@@ -28,121 +27,121 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "students")
-@ApiModel(description = "Объект студента")
+@Schema(description = "Объект студента")
 public class StudentModel extends DBBaseModel {
 
     /**
      * Фамилия студента.
      */
     @NotNull
-    @ApiModelProperty(notes = "Фамилия")
+    @Schema(title = "Фамилия")
     private String lastName;
 
     /**
      * Имя студента.
      */
     @NotNull
-    @ApiModelProperty(notes = "Имя")
+    @Schema(title = "Имя")
     private String firstName;
 
     /**
      * Отчество студента.
      */
     @NotNull
-    @ApiModelProperty(notes = "Отчество")
+    @Schema(title = "Отчество")
     private String secondName;
 
     /**
      * Пол студента.
      */
-    @ApiModelProperty(notes = "Пол")
+    @Schema(title = "Пол")
     private Integer sex;
 
     /**
      * Тип города студента.
      */
-    @ApiModelProperty(notes = "Тип города")
+    @Schema(title = "Тип города")
     private Integer cityType;
 
     /**
      * Адрес студента (устаревшее поле, используйте отдельные поля для адреса).
      */
     @SuppressWarnings("DeprecatedIsStillUsed")
-    @ApiModelProperty(notes = "Адрес")
+    @Schema(title = "Адрес")
     @Deprecated
     private String address;
 
     /**
      * Страна, в которой проживает студент.
      */
-    @ApiModelProperty(notes = "Страна")
+    @Schema(title = "Страна")
     private String addressCountry;
 
     /**
      * Почтовый индекс адреса студента.
      */
-    @ApiModelProperty(notes = "Почтовый индекс")
+    @Schema(title = "Почтовый индекс")
     private String addressIndex;
 
     /**
      * Область адреса студента.
      */
-    @ApiModelProperty(notes = "Область")
+    @Schema(title = "Область")
     private String addressState;
 
     /**
      * Район адреса студента.
      */
-    @ApiModelProperty(notes = "Район")
+    @Schema(title = "Район")
     private String addressRegion;
 
     /**
      * Город адреса студента.
      */
-    @ApiModelProperty(notes = "Город")
+    @Schema(title = "Город")
     private String addressCity;
 
     /**
      * Улица адреса студента.
      */
-    @ApiModelProperty(notes = "Улица")
+    @Schema(title = "Улица")
     private String addressStreet;
 
     /**
      * Дом адреса студента.
      */
-    @ApiModelProperty(notes = "Дом")
+    @Schema(title = "Дом")
     private String addressHouse;
 
     /**
      * Корпус адреса студента.
      */
-    @ApiModelProperty(notes = "Корпус")
+    @Schema(title = "Корпус")
     private String addressHousePart;
 
     /**
      * Квартира адреса студента.
      */
-    @ApiModelProperty(notes = "Квартира")
+    @Schema(title = "Квартира")
     private String addressFlat;
 
     /**
      * Телефон студента.
      */
-    @ApiModelProperty(notes = "Телефон")
+    @Schema(title = "Телефон")
     private String phone;
 
     /**
      * Льготы студента.
      */
-    @ApiModelProperty(notes = "Льготы")
+    @Schema(title = "Льготы")
     private String benefits;
 
 
     /**
      * Является ли город студента деревней.
      */
-    @ApiModelProperty(notes = "Является ли город - деревней")
+    @Schema(title = "Является ли город - деревней")
     private boolean cityIsVillage;
 
     /**
@@ -150,7 +149,7 @@ public class StudentModel extends DBBaseModel {
      */
     @JoinColumn(name = "last_document_id")
     @ManyToOne(cascade = CascadeType.MERGE)
-    @ApiModelProperty(notes = "Последний документ")
+    @Schema(title = "Последний документ")
     @NotNull
     private DocumentModel lastDocument;
 
@@ -160,7 +159,7 @@ public class StudentModel extends DBBaseModel {
     @SuppressWarnings({"deprecation"})
     @JoinColumn(name = "last_deviation_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Последнее отклонение")
+    @Schema(title = "Последнее отклонение")
     private DeviationModel lastDeviation;
 
     /**
@@ -168,7 +167,7 @@ public class StudentModel extends DBBaseModel {
      */
     @JoinColumn(name = "spez_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Специализация")
+    @Schema(title = "Специализация")
     private SpecializationModel specialization;
 
     /**
@@ -177,7 +176,7 @@ public class StudentModel extends DBBaseModel {
     @JoinColumn(name = "group_id")
     @ManyToOne
     @NotNull
-    @ApiModelProperty(notes = "Группа")
+    @Schema(title = "Группа")
     private GroupModel group;
 
     /**
@@ -186,20 +185,20 @@ public class StudentModel extends DBBaseModel {
     @JoinColumn(name = "hostel_room_id")
     @ManyToOne
     @NotFound(action = NotFoundAction.IGNORE)
-    @ApiModelProperty(notes = "Комната")
+    @Schema(title = "Комната")
     @JsonBackReference
     private HostelRoomModel hostelRoom;
 
     /**
      * Дата заселения студента.
      */
-    @ApiModelProperty(notes = "Дата заселения")
+    @Schema(title = "Дата заселения")
     private LocalDate checkInDate;
 
     /**
      * Дата выселения студента.
      */
-    @ApiModelProperty(notes = "Дата выселения")
+    @Schema(title = "Дата выселения")
     private LocalDate evictionDate;
 
     @Column(name = "approved", columnDefinition = "boolean default false")
@@ -209,7 +208,7 @@ public class StudentModel extends DBBaseModel {
     /**
      * URL-адрес фото студента.
      */
-    @ApiModelProperty(notes = "URL-адрес фото студента")
+    @Schema(title = "URL-адрес фото студента")
     private String photoUrl;
 
     @Override

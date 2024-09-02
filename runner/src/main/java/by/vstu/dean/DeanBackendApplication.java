@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 /**
@@ -16,7 +15,6 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
  */
 @SpringBootApplication
 @EnableAspectJAutoProxy
-@EnableSwagger2
 @EnableCaching
 @EnableJpaRepositories("by.vstu.dean.*")
 @ComponentScan(basePackages = { "by.vstu.dean.*" },

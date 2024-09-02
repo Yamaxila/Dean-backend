@@ -1,7 +1,6 @@
 package by.vstu.dean.core.requests;
 
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.*;
@@ -12,18 +11,18 @@ import java.nio.charset.StandardCharsets;
 /**
  * Базовый класс для выполнения HTTP-запросов.
  */
-@ApiModel(description = "Базовый класс для выполнения HTTP-запросов")
+@Schema(description = "Базовый класс для выполнения HTTP-запросов")
 public class BaseRequest<B> {
 
     @Getter
-    @ApiModelProperty(value = "URL для выполнения запроса")
+    @Schema(title = "URL для выполнения запроса")
     private String url;
 
     private final HttpHeaders headers;
     private HttpMethod method = HttpMethod.POST;
 
     @Getter
-    private HttpStatus responseStatusCode;
+    private HttpStatusCode responseStatusCode;
 
     /**
      * Конструктор класса BaseRequest.

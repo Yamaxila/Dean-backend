@@ -6,7 +6,7 @@ import by.vstu.dean.mapper.v1.QualificationMapper;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.repo.QualificationModelRepository;
 import by.vstu.dean.services.QualificationService;
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/qualifications/")
-@Api(tags = "Qualification", description = "Квалификация")
+@Tag(name = "Qualification", description = "Квалификация")
 public class QualificationController extends BaseController<QualificationDTO, QualificationModel, QualificationMapper, QualificationModelRepository, QualificationService> {
 
     /**

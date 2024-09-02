@@ -3,7 +3,7 @@ package by.vstu.dean.core.requests;
 import by.vstu.dean.core.adapters.json.LocalDateTimeJsonAdapter;
 import by.vstu.dean.core.models.TokenModel;
 import com.google.gson.GsonBuilder;
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 /**
  * Класс для получения токена аутентификации.
  */
-@ApiModel(description = "Класс для получения токена аутентификации")
+@Schema(description = "Класс для получения токена аутентификации")
 @Component
 @Getter
 @Slf4j

@@ -1,17 +1,16 @@
 package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -20,7 +19,7 @@ import java.util.Objects;
 @Getter
 @Entity
 @Table(name = "teacher_degrees")
-@ApiModel(description = "Объект должности преподавателя")
+@Schema(description = "Объект должности преподавателя")
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,14 +28,14 @@ public class TeacherDegreeModel extends DBBaseModel {
     /**
      * Название должности.
      */
-    @ApiModelProperty(notes = "Название должности")
+    @Schema(title = "Название должности")
     @NotNull
     private String name;
 
     /**
      * Оплата за 1 час
      */
-    @ApiModelProperty(notes = "Оплата за 1 час")
+    @Schema(title = "Оплата за 1 час")
     private Double hourPrice;
 
     public String toString() {

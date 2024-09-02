@@ -6,8 +6,8 @@ import by.vstu.dean.mapper.v1.FacultyMapper;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/api/v1/faculties/")
-@Api(tags = "Faculties", description = "Факультеты")
+@Tag(name = "Faculties", description = "Факультеты")
 public class FacultyController extends BaseController<FacultyDTO, FacultyModel, FacultyMapper, FacultyModelRepository, FacultyService> {
 
     /**
@@ -34,7 +34,7 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
      * @param facultyModel Модель факультета
      */
     @Override
-    @ApiOperation(value = "", hidden = true)
+    @Operation(method = "", hidden = true)
     public ResponseEntity<FacultyDTO> put(FacultyDTO facultyModel) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }
@@ -43,7 +43,7 @@ public class FacultyController extends BaseController<FacultyDTO, FacultyModel, 
      * @param id Идентификатор факультета
      */
     @Override
-    @ApiOperation(value = "", hidden = true)
+    @Operation(method = "", hidden = true)
     public ResponseEntity<FacultyDTO> deleteById(Long id) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
     }

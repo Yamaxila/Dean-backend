@@ -3,19 +3,18 @@ package by.vstu.dean.models.merge;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.lessons.TeacherModel;
-import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -27,7 +26,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 @Getter
-@ApiModel(description = "Связующий объект преподаватель-кафедра")
+@Schema(description = "Связующий объект преподаватель-кафедра")
 public class TeacherDepartmentMerge extends DBBaseModel {
 
     /**
@@ -35,7 +34,7 @@ public class TeacherDepartmentMerge extends DBBaseModel {
      */
     @JoinColumn(name = "teacher_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Преподаватель")
+    @Schema(title = "Преподаватель")
     @NotNull
     private TeacherModel teacher;
 
@@ -44,7 +43,7 @@ public class TeacherDepartmentMerge extends DBBaseModel {
      */
     @JoinColumn(name = "department_id")
     @ManyToOne
-    @ApiModelProperty(notes = "Кафедра")
+    @Schema(title = "Кафедра")
     @NotNull
     private DepartmentModel department;
 

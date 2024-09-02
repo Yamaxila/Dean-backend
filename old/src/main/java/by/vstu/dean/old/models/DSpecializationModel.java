@@ -1,12 +1,11 @@
 package by.vstu.dean.old.models;
 
 import by.vstu.dean.old.OldDBBaseModel;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
-
-import javax.persistence.*;
 
 @Getter
 @Setter

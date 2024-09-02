@@ -1,12 +1,12 @@
 package by.vstu.dean.core.rsql;
 
 import cz.jirutka.rsql.parser.ast.ComparisonOperator;
+import jakarta.persistence.criteria.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.*;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;

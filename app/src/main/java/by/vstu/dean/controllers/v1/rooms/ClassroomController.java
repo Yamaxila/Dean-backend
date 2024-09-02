@@ -7,8 +7,8 @@ import by.vstu.dean.mapper.v1.ClassroomMapper;
 import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.repo.ClassroomModelRepository;
 import by.vstu.dean.services.ClassroomService;
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/api/v1/classes/")
-@Api(tags = "Classrooms", description = "Аудитории")
+@Tag(name = "Classrooms", description = "Аудитории")
 public class ClassroomController extends BaseController<ClassroomDTO, ClassroomModel, ClassroomMapper, ClassroomModelRepository, ClassroomService> {
     /**
      * Конструктор контроллера аудиторий.
@@ -46,7 +46,7 @@ public class ClassroomController extends BaseController<ClassroomDTO, ClassroomM
      */
     @RequestMapping(value = "/update", produces = {"application/json"}, method = RequestMethod.POST)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @ApiOperation(value = "update", notes = "Обновляет данные из базы", hidden = true)
+    @Operation(method = "update", description = "Обновляет данные из базы", hidden = true)
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<ClassroomModel>> updateRoomListFromFile() {
         return new ResponseEntity<>(this.service.updateFromExcel("./rooms.xlsx"), HttpStatus.OK);

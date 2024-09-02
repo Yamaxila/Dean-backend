@@ -3,11 +3,10 @@ package by.vstu.dean.dto.v1.specs;
 import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.models.specs.QualificationModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * DTO for {@link by.vstu.dean.models.specs.QualificationModel}
@@ -20,7 +19,7 @@ public class QualificationDTO extends BaseDTO {
      * Название квалификации.
      */
     @NotNull
-    @ApiModelProperty(notes = "Название квалификации")
+    @Schema(title = "Название квалификации")
     @ReflectionField(clazz = QualificationModel.class)
     private String name;
 
@@ -28,7 +27,7 @@ public class QualificationDTO extends BaseDTO {
      * Название квалификации в родительном падеже.
      */
     @NotNull
-    @ApiModelProperty(notes = "Название квалификации в родительном падеже")
+    @Schema(title = "Название квалификации в родительном падеже")
     @ReflectionField(clazz = QualificationModel.class)
     private String nameGenitive;
 

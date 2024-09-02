@@ -2,18 +2,18 @@ package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import java.util.Objects;
 
 /**
@@ -33,35 +33,35 @@ public class EducationModel extends DBBaseModel {
     @JoinColumn(name = "student_id")
     @ManyToOne
     @JsonIgnore
-    @ApiModelProperty(notes = "Студент")
+    @Schema(title = "Студент")
     @NotNull
     private StudentModel student;
 
     /**
      * Учреждение образования.
      */
-    @ApiModelProperty(notes = "Учреждение образования")
+    @Schema(title = "Учреждение образования")
     @NotNull
     private String education;
 
     /**
      * Тип документа об образовании.
      */
-    @ApiModelProperty(notes = "Тип документа об образовании")
+    @Schema(title = "Тип документа об образовании")
     @NotNull
     private String educationDocumentType;
 
     /**
      * Серия документа об образовании.
      */
-    @ApiModelProperty(notes = "Серия документа об образовании")
+    @Schema(title = "Серия документа об образовании")
     @NotNull
     private String educationDocumentSerial;
 
     /**
      * Номер документа об образовании.
      */
-    @ApiModelProperty(notes = "Номер документа об образовании")
+    @Schema(title = "Номер документа об образовании")
     @NotNull
     private String educationDocumentNumber;
 

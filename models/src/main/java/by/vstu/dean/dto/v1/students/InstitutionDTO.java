@@ -3,7 +3,7 @@ package by.vstu.dean.dto.v1.students;
 import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.models.students.InstitutionModel;
-import io.swagger.annotations.ApiModelProperty;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -17,14 +17,14 @@ public class InstitutionDTO extends BaseDTO {
     /**
      * Полное название учреждения образования.
      */
-    @ApiModelProperty(notes = "Полное название")
+    @Schema(title = "Полное название")
     @ReflectionField(clazz = InstitutionModel.class)
     private String fullName;
 
     /**
      * Краткое название учреждения образования.
      */
-    @ApiModelProperty(notes = "Краткое название")
+    @Schema(title = "Краткое название")
     @ReflectionField(clazz = InstitutionModel.class)
     private String shortName;
 

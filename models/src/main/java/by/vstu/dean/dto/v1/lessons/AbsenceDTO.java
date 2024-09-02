@@ -5,10 +5,10 @@ import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.lessons.AbsenceModel;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 /**

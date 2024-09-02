@@ -4,9 +4,8 @@ import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.enums.EMessageType;
 import by.vstu.dean.models.internal.MessageModel;
+import jakarta.validation.constraints.Size;
 import lombok.*;
-
-import javax.validation.constraints.Size;
 
 /**
  * DTO for {@link by.vstu.dean.models.internal.MessageModel}
