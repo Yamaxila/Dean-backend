@@ -1,5 +1,6 @@
 package by.vstu.dean.core.services;
 
+import by.vstu.dean.core.utils.StringUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,6 +70,7 @@ public class FileService {
     }
 
     public ResponseEntity<?> downloadFile(@NotNull String filename) {
+        filename = StringUtils.safeTrim(filename); // нам может прийти всё, что угодно
         // Определяем путь к файлу
         Path filePath = Paths.get(this.uploadDir).resolve(filename).normalize();
         Resource file;

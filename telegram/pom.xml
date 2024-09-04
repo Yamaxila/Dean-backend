@@ -7,8 +7,9 @@
         <groupId>by.vstu</groupId>
         <artifactId>Dean-backend</artifactId>
         <version>1.0.1</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
-
+<!--    <packaging>pom</packaging>-->
     <groupId>by.vstu.dean</groupId>
     <artifactId>telegram</artifactId>
 

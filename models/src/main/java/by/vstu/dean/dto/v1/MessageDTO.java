@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 /**
- * DTO for {@link by.vstu.dean.models.internal.MessageModel}
+ * DTO for {@link MessageModel}
  */
 @NoArgsConstructor
 @AllArgsConstructor

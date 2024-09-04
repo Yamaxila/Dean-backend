@@ -5,6 +5,7 @@ import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
@@ -27,12 +28,19 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "futureEntityManagerFactory",
         transactionManagerRef = "futureTransactionManager",
-        basePackages = {"by.vstu.dean"},
-        excludeFilters = {@ComponentScan.Filter(type = FilterType.REGEX, pattern = "by.vstu.dean.old.*")}
-
+        basePackages = {
+                "by.vstu.dean"
+        }
 )
-@AutoConfigurationPackage(basePackages = {"by.vstu.dean"})
-@Profile({"default", "prod", "noMigrate"})
+@ComponentScan(basePackages = {
+        "by.vstu.dean"
+})
+@EntityScan(basePackages = {
+        "by.vstu.dean"
+})
+@AutoConfigurationPackage(basePackages = {
+        "by.vstu.dean"
+})
 public class DeanFutureDBConfig {
 
     /**
@@ -60,7 +68,10 @@ public class DeanFutureDBConfig {
                                                                              @Qualifier("futureDataSource") DataSource primaryDataSource) {
         return builder
                 .dataSource(primaryDataSource)
-                .packages("by.vstu.dean")
+                .packages(
+                        "by.vstu.dean"
+
+                )
                 .properties(jpaProperties())
                 .build();
     }

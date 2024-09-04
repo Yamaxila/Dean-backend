@@ -15,7 +15,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 /**
- * DTO for {@link by.vstu.dean.models.students.DocumentModel}
+ * DTO for {@link DocumentModel}
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

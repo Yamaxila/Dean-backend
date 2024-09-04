@@ -11,7 +11,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * DTO for {@link by.vstu.dean.models.rooms.ClassroomModel}
+ * DTO for {@link ClassroomModel}
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

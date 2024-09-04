@@ -9,7 +9,6 @@
         <version>1.0.1</version>
         <relativePath/>
     </parent>
-
     <groupId>by.vstu.dean</groupId>
     <artifactId>models</artifactId>
 
@@ -23,7 +22,7 @@
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>core</artifactId>
-            <version>${app.version}</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>
@@ -41,7 +40,6 @@
                         </exclude>
                     </excludes>
                     <classifier>original</classifier>
-                    <!--                    <skip>true</skip>-->
                 </configuration>
             </plugin>
         </plugins>

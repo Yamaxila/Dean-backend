@@ -10,7 +10,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
 
 /**
- * DTO for {@link by.vstu.dean.models.lessons.ExamModel}
+ * DTO for {@link ExamModel}
  */
 public final class ExamTypeDTO extends BaseDTO {
 

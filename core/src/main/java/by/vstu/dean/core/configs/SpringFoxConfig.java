@@ -24,7 +24,7 @@ public class SpringFoxConfig {
     public GroupedOpenApi v1Api() {
         return GroupedOpenApi.builder()
                 .group("v1")
-                .packagesToScan("by.vstu.dean.controllers.v1.common", "by.vstu.dean.controllers.v1.enums", "by.vstu.dean.controllers.v1.students")
+                .packagesToScan("by.vstu.dean.controllers.v1")
                 .pathsToMatch("/swagger-ui/**")
                 .build();
     }

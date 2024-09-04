@@ -26,8 +26,10 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
 
         String token = resolveToken(request);
 
-        if(token == null)
+        if(token == null) {
             filterChain.doFilter(request, response);
+            return;
+        }
 
         Jwt jwt = this.decoder.decode(token);
 

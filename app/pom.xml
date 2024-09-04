@@ -7,8 +7,8 @@
         <groupId>by.vstu</groupId>
         <artifactId>Dean-backend</artifactId>
         <version>1.0.1</version>
+        <relativePath/>
     </parent>
-
     <groupId>by.vstu.dean</groupId>
     <artifactId>app</artifactId>
     <version>1.0.1</version>
@@ -22,13 +22,13 @@
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>models</artifactId>
-            <version>${app.version}</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>core</artifactId>
-            <version>${app.version}</version>
+            <version>1.0.1</version>
             <scope>compile</scope>
         </dependency>
 

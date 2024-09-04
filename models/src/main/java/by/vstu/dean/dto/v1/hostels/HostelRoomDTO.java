@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
 import java.util.List;
 
 /**
- * DTO for {@link by.vstu.dean.models.hostels.HostelRoomModel}
+ * DTO for {@link HostelRoomModel}
  */
 
 @EqualsAndHashCode(callSuper = true)

@@ -7,8 +7,8 @@
         <groupId>by.vstu</groupId>
         <artifactId>Dean-backend</artifactId>
         <version>1.0.1</version>
+        <relativePath/>
     </parent>
-
     <groupId>by.vstu.dean</groupId>
     <artifactId>core</artifactId>
 
@@ -31,7 +31,6 @@
                         </exclude>
                     </excludes>
                     <classifier>original</classifier>
-<!--                    <skip>true</skip>-->
                 </configuration>
             </plugin>
         </plugins>

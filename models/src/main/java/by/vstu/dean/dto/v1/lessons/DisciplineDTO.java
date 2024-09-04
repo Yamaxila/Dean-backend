@@ -9,7 +9,7 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * DTO for {@link by.vstu.dean.models.lessons.DisciplineModel}
+ * DTO for {@link DisciplineModel}
  */
 @EqualsAndHashCode(callSuper = true)
 @Data

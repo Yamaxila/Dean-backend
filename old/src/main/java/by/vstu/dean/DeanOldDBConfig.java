@@ -10,7 +10,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -29,9 +28,8 @@ import java.util.Map;
 @EnableJpaRepositories(
         entityManagerFactoryRef = "deanEntityManagerFactory",
         transactionManagerRef = "deanTransactionManager",
-        basePackages = {"by.vstu.dean.old"}
+        basePackages = {"by.vstu.old.dean"}
 )
-@Profile({"default", "prod", "noMigrate"})
 public class DeanOldDBConfig {
 
     /**
@@ -42,9 +40,7 @@ public class DeanOldDBConfig {
     @Bean(name = "deanDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.old")
     public DataSource deanDataSource() {
-        System.err.println("Old dean dataSource");
         HikariDataSource ds = (HikariDataSource) DataSourceBuilder.create().build();
-
         ds.setConnectionTestQuery("SELECT 1");
         return ds;
     }
@@ -61,7 +57,7 @@ public class DeanOldDBConfig {
                                                                            @Qualifier("deanDataSource") DataSource deanDataSource) {
             return builder
                 .dataSource(deanDataSource)
-                .packages("by.vstu.dean.old")
+                .packages("by.vstu.old.dean")
                 .properties(jpaProperties())
                 .build();
     }
@@ -75,8 +71,6 @@ public class DeanOldDBConfig {
     @Bean(name = "deanTransactionManager")
     public PlatformTransactionManager deanTransactionManager(
             @Qualifier("deanEntityManagerFactory") EntityManagerFactory deanEntityManagerFactory) {
-        System.out.println("ssssssssssssssssssssssssss");
-
         return new JpaTransactionManager(deanEntityManagerFactory);
     }
 
@@ -87,8 +81,6 @@ public class DeanOldDBConfig {
      */
     protected Map<String, Object> jpaProperties() {
         Map<String, Object> props = new HashMap<>();
-        System.out.println("ssssssssssssssssssssssssss");
-
         props.put("hibernate.physical_naming_strategy", PhysicalNamingStrategyStandardImpl.class.getName());
         props.put("hibernate.implicit_naming_strategy", ImplicitNamingStrategyLegacyJpaImpl.class.getName());
         return props;

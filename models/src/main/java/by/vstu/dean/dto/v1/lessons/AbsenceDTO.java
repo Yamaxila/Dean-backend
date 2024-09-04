@@ -12,7 +12,7 @@ import lombok.EqualsAndHashCode;
 import java.time.LocalDate;
 
 /**
- * DTO for {@link by.vstu.dean.models.lessons.AbsenceModel}
+ * DTO for {@link AbsenceModel}
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
