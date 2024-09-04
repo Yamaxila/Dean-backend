@@ -25,7 +25,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "faculties")
-@Schema(description = "Объект факультета")
+@Schema(title = "Модель факультета")
 public class FacultyModel extends DBBaseModel {
 
     /**

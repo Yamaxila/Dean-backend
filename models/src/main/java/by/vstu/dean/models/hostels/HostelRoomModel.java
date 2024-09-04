@@ -22,6 +22,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(title = "Модель комнаты общежития")
 public class HostelRoomModel extends DBBaseModel {
 
     @Schema(title = "Номер комнаты", example = "302")

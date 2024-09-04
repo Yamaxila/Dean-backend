@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Перечисление, реализующее типы экзаменов.
  */
-@Schema(description = "Enum реализующий тип экзамена")
+@Schema(title = "Тип экзамена")
 public enum ExamType implements BaseEnum<ExamType> {
 
     @Schema(title = "Экзамен")

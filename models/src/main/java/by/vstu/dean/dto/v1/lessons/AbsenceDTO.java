@@ -5,6 +5,7 @@ import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.lessons.AbsenceModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,6 +17,7 @@ import java.time.LocalDate;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(title = "DTO Отработки")
 public class AbsenceDTO extends BaseDTO {
     @ReflectionField(clazz = AbsenceModel.class)
     private LocalDate date;

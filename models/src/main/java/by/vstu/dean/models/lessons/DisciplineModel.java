@@ -22,7 +22,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "disciplines")
-@Schema(description = "Объект дисциплины")
+@Schema(title = "Модель дисциплины")
 public class DisciplineModel extends DBBaseModel {
 
     /**

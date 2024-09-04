@@ -1,11 +1,13 @@
 package by.vstu.dean.enums;
 
 import by.vstu.dean.core.enums.BaseEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Schema(title = "Тип аудитории")
 public enum EClassroomType implements BaseEnum<EClassroomType> {
 
 

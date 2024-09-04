@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(title = "DTO Группы")
 public final class GroupDTO extends BaseDTO {
     /**
      * Название группы.

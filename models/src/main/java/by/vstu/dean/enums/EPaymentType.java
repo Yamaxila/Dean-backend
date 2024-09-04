@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Перечисление, реализующее типы оплаты обучения.
  */
-@Schema(description = "Enum реализующий тип оплаты обучения")
+@Schema(title = "Тип оплаты обучения")
+@SuppressWarnings("unused")
 public enum EPaymentType implements BaseEnum<EPaymentType> {
 
     @Schema(title = "Бесплатное обучение")

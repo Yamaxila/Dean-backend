@@ -23,9 +23,9 @@ import java.util.Objects;
 @Table(name = "study_plan")
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Объект учебных планов")
 @Getter
 @Setter
+@Schema(title = "Модель учебного плана")
 public class StudyPlanModel extends DBBaseModel {
 
     /**

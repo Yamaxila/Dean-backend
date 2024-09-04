@@ -25,6 +25,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 @Getter
+@Schema(title = "Модель образования студента")
 public class EducationModel extends DBBaseModel {
 
     /**

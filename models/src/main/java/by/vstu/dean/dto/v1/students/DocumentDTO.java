@@ -19,6 +19,7 @@ import java.util.List;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(title = "DTO Документа студента")
 public class DocumentDTO extends BaseDTO {
 
     @Schema(title = "Полное имя(латиница)")

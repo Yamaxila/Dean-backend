@@ -25,6 +25,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "groups")
+@Schema(title = "Модель группы")
 public class GroupModel extends DBBaseModel {
 
     /**

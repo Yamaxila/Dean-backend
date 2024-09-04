@@ -1,6 +1,5 @@
 package by.vstu.dean.core.controllers;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
@@ -8,6 +7,10 @@ import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -51,8 +54,15 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @Operation(method = "getAll", description = "Отправляет все объекты из базы")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    @Operation(method = "getAll", description = "Отправляет все объекты из базы",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Объекты найдены."),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права read у клиента или ролей USER, ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"read", "ROLE_USER", "ROLE_ADMIN"})
+    )
     public ResponseEntity<List<D>> getAll() {
         List<O> tempO = this.service.getAll();
 
@@ -80,8 +90,15 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "rsql", description = "Получает объекты из базы данных через rsql-запрос")
-    @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
+    @Operation(method = "rsql", description = "Получает объекты из базы данных через rsql-запрос",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Объекты найдены."),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает прав rsql у клиента или роли ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"rsql", "ROLE_ADMIN"})
+    )
     public ResponseEntity<List<O>> getAllRSql(@RequestParam(required = false, defaultValue = "id>0") String sql) {
         try {
             return new ResponseEntity<>(this.service.rsql(sql), HttpStatus.OK);
@@ -100,8 +117,15 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "dto_rsql", description = "Получает DTO из базы данных через rsql-запрос")
-    @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_ADMIN"})
+    @Operation(method = "dto_rsql", description = "Получает DTO из базы данных через rsql-запрос",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "DTO найдены."),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права rsql у клиента или роли ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"rsql", "ROLE_ADMIN"})
+    )
     public ResponseEntity<List<D>> getAllRSqlDTO(@RequestParam(required = false, defaultValue = "id>0") String sql) {
         try {
 
@@ -136,8 +160,15 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             method = RequestMethod.GET)
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @Operation(method = "getAllActive", description = "Отправляет все объекты из базы со статусом \"ACTIVE\"")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    @Operation(method = "getAllActive", description = "Отправляет все объекты из базы со статусом \"ACTIVE\"",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Объекты найдены."),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права read у клиента.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"read", "ROLE_USER", "ROLE_ADMIN"})
+    )
     public ResponseEntity<List<D>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
 
         List<O> tempO = this.service.getAllActive(is);
@@ -160,17 +191,26 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     /**
      * Получает объект по его id из базы данных.
      *
-     * @param entity Идентификатор объекта
+     * @param id Идентификатор объекта
      * @return Объект с заданным id
      */
-    @RequestMapping(value = "/{<entity>id}",
+    @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @Operation(method = "getById", description = "Отправляет объект по его id из базы")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
-    public ResponseEntity<D> getById(@PathVariable Long entity) {
-        Optional<O> byId = this.service.getById(entity);
+    @Operation(method = "getById", description = "Отправляет объект по его id из базы",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Объект найден."),
+                    @ApiResponse(responseCode = "400", description = "Не передан id.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права read у клиента.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "404", description = "Не найден объект с заданным id.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"read", "ROLE_USER", "ROLE_ADMIN"})
+    )
+    public ResponseEntity<D> getById(@PathVariable Long id) {
+        Optional<O> byId = this.service.getById(id);
         return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
@@ -180,12 +220,21 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
      * @param dto Объект для сохранения
      * @return Сохраненный объект с установленным id
      */
-    @RequestMapping(value = "/",
+    @RequestMapping(value = "/dto",
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "put", description = "Сохраняет объект в базу данных и возвращает его же с установленным id")
-    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
+    @Operation(method = "put",
+            description = "Сохраняет объект в базу данных и возвращает его же с установленным id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Успешное сохранение DTO."),
+                    @ApiResponse(responseCode = "400", description = "Не передан dto.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права write у клиента или роли ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
+    )
     public ResponseEntity<D> put(@RequestBody D dto) {
         if(dto == null) {
             log.warn("DTO is empty!");
@@ -204,8 +253,17 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             produces = {"application/json"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "putModel", description = "Сохраняет объект в базу данных и возвращает его же с установленным id")
-    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
+    @Operation(method = "putModel",
+            description = "Сохраняет объект в базу данных и возвращает его же с установленным id",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Успешное сохранение объекта."),
+                    @ApiResponse(responseCode = "400", description = "Не передана модель.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права write у клиента или роли ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
+    )
     public ResponseEntity<O> putModel(@RequestBody O model) {
         if(model == null) {
             log.warn("entity is empty!");
@@ -220,12 +278,22 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
      * @param id Идентификатор объекта для удаления
      * @return Объект с установленным статусом DELETED
      */
-    @RequestMapping(value = "/{<entity>id}",
+    @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "deleteById", description = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED")
-    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
+    @Operation(method = "deleteById",
+            description = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Успешное удаление из базы."),
+                    @ApiResponse(responseCode = "400", description = "Не передан id.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права write у клиента или роли ADMIN.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "404", description = "Не найден объект с заданным id.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
+            },
+            security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
+    )
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
         if (id == null) {
             log.warn("id is null!");

@@ -13,6 +13,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(title = "DTO Специальности")
 public final class SpecialityDTO extends BaseDTO {
 
 

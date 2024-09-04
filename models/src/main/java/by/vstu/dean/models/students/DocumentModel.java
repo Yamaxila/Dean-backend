@@ -21,7 +21,7 @@ import java.util.Objects;
 @Getter
 @NoArgsConstructor
 @Table(name = "documents")
-@Schema(description = "Объект документа/договора студента")
+@Schema(title = "Модель документа/договора студента")
 public class DocumentModel extends DBBaseModel {
 
     @Schema(title = "Полное имя(латиница)")

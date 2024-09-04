@@ -9,7 +9,8 @@ import java.util.List;
 /**
  * Перечисление, реализующее типы обучения.
  */
-@Schema(description = "Enum реализующий тип обучения")
+@Schema(title = "Форма образования")
+@SuppressWarnings("unused")
 public enum EEducationType implements BaseEnum<EEducationType> {
 
     @Schema(title = "Дневное обучение")

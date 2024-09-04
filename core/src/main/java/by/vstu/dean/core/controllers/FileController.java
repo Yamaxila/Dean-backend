@@ -28,7 +28,7 @@ public class FileController {
      * @return Имя файла на сервере
      */
     @RequestMapping(value = "/upload",
-            produces = {"application/text"},
+            produces = {"text/plain"},
             method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "upload", description = "Загружает файл на сервер")
@@ -47,7 +47,7 @@ public class FileController {
      * @return Запрашиваемый файл
      */
     @RequestMapping(value = "/download",
-            produces = {"application/text"},
+            produces = {"image/jpeg", "image/png"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "download", description = "Отдает файл с сервера")

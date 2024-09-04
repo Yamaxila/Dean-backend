@@ -3,6 +3,7 @@ package by.vstu.dean.models.lessons;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.students.StudentModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Table(name = "absences")
 @Setter
 @Getter
+@Schema(title = "Модель отработки")
 public class AbsenceModel extends DBBaseModel {
 
     private LocalDate date;

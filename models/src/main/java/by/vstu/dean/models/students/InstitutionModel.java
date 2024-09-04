@@ -22,7 +22,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Schema(description = "Объект учреждения образования")
+@Schema(title = "Модель учреждения образования")
 public class InstitutionModel extends DBBaseModel {
 
     /**

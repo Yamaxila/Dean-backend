@@ -4,6 +4,7 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import by.vstu.dean.models.lessons.DepartmentModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -16,6 +17,7 @@ import java.util.Objects;
 @Table(name = "rooms")
 @Setter
 @Getter
+@Schema(title = "Модель аудитории")
 public class ClassroomModel extends DBBaseModel {
 
     @Enumerated(EnumType.ORDINAL)

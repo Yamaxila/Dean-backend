@@ -6,7 +6,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Arrays;
 import java.util.List;
 
-@Schema(description = "Enum реализующий тип внутреннего сообщения")
+@Schema(title = "Тип внутреннего сообщения")
 public enum EMessageType implements BaseEnum<EMessageType> {
 
     INFO(0),

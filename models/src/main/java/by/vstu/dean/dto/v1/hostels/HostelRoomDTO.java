@@ -20,7 +20,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Schema(description = "DTO для представления информации о комнате в общежитии")
+@Schema(title = "DTO Комнаты общежития")
 public class HostelRoomDTO extends BaseDTO {
 
     @Schema(title = "Номер комнаты", example = "302")

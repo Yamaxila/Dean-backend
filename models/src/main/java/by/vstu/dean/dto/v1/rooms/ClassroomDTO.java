@@ -5,6 +5,7 @@ import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import by.vstu.dean.models.rooms.ClassroomModel;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.Data;
@@ -15,6 +16,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
+@Schema(title = "DTO Аудитории")
 public class ClassroomDTO extends BaseDTO {
 
     @Enumerated(EnumType.STRING)

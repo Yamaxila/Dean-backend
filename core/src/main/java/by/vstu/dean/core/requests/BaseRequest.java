@@ -51,7 +51,7 @@ public class BaseRequest<B> {
 
         this.responseStatusCode = response.getStatusCode();
 
-        if (response.getStatusCodeValue() != 200) {
+        if (response.getStatusCode().value() != 200) {
             return null;
         }
 

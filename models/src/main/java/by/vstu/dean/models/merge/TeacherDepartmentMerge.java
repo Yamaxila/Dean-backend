@@ -26,7 +26,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 @Getter
-@Schema(description = "Связующий объект преподаватель-кафедра")
+@Schema(title = "Модель связи преподаватель-кафедра")
 public class TeacherDepartmentMerge extends DBBaseModel {
 
     /**

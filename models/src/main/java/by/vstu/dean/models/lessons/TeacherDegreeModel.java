@@ -19,10 +19,10 @@ import java.util.Objects;
 @Getter
 @Entity
 @Table(name = "teacher_degrees")
-@Schema(description = "Объект должности преподавателя")
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(title = "Модель звания преподавателя")
 public class TeacherDegreeModel extends DBBaseModel {
 
     /**

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "deviations")
-@Schema(description = "Объект отклонений")
+@Schema(title = "Модель отклонения")
 @Deprecated
 public class DeviationModel extends DBBaseModel {
 

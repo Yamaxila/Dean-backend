@@ -12,6 +12,7 @@ import jakarta.validation.constraints.NotNull;
 /**
  * DTO for {@link ExamModel}
  */
+@Schema(title = "DTO Типа зачетной единицы")
 public final class ExamTypeDTO extends BaseDTO {
 
     /**

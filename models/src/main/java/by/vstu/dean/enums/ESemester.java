@@ -1,10 +1,12 @@
 package by.vstu.dean.enums;
 
 import by.vstu.dean.core.enums.BaseEnum;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
 import java.util.List;
 
+@Schema(title = "Семестр")
 public enum ESemester implements BaseEnum<ESemester> {
 
     SPRING(0),

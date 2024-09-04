@@ -26,7 +26,7 @@ import java.util.Objects;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "internal_messages")
-@Schema(description = "Объект внутреннего сообщения")
+@Schema(title = "Модель внутреннего сообщения")
 public class MessageModel extends DBBaseModel {
 
     @Size(max = 255)
