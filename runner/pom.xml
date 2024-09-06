@@ -47,5 +47,19 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.graalvm.buildtools</groupId>
+                <artifactId>native-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>by.vstu.dean.DeanBackendApplication</mainClass>
+                    <environment>
+                        <GRAALVM_HOME>/usr/lib/jvm/java-17-graalvm/</GRAALVM_HOME>
+                    </environment>
 
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

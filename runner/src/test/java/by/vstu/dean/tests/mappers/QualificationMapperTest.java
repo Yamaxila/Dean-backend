@@ -6,6 +6,7 @@ import by.vstu.dean.mapper.v1.QualificationMapper;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.services.QualificationService;
 import by.vstu.dean.tests.BaseMapperTest;
+import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,6 +17,10 @@ public class QualificationMapperTest extends BaseMapperTest<QualificationModel, 
 
     @Autowired
     private QualificationService qualificationService;
+
+    public QualificationMapperTest() {
+        super(JaversBuilder.javers().build());
+    }
 
     @Override
     public QualificationModel getNewEntity() {

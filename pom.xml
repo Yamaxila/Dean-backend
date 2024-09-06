@@ -102,6 +102,11 @@
             <artifactId>modelmapper-module-record</artifactId>
             <version>1.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>org.javers</groupId>
+            <artifactId>javers-spring-boot-starter-sql</artifactId>
+            <version>7.6.1</version>
+        </dependency>
         <!--        <dependency>-->
         <!--            <groupId>org.springframework.boot</groupId>-->
         <!--            <artifactId>spring-boot-devtools</artifactId>-->
@@ -342,6 +347,7 @@
 
                 </configuration>
             </plugin>
+
         </plugins>
         <extensions>
             <extension>
@@ -351,16 +357,16 @@
             </extension>
         </extensions>
     </build>
-<!--    <distributionManagement>-->
-<!--        <repository>-->
-<!--            <id>repository</id>-->
-<!--            &lt;!&ndash;            <url>${repo.url}</url>&ndash;&gt;-->
-<!--            <uniqueVersion>false</uniqueVersion>-->
-<!--            <layout>default</layout>-->
-<!--            <releases>-->
-<!--                <enabled>true</enabled>-->
-<!--            </releases>-->
-<!--        </repository>-->
-<!--    </distributionManagement>-->
+    <!--    <distributionManagement>-->
+    <!--        <repository>-->
+    <!--            <id>repository</id>-->
+    <!--            &lt;!&ndash;            <url>${repo.url}</url>&ndash;&gt;-->
+    <!--            <uniqueVersion>false</uniqueVersion>-->
+    <!--            <layout>default</layout>-->
+    <!--            <releases>-->
+    <!--                <enabled>true</enabled>-->
+    <!--            </releases>-->
+    <!--        </repository>-->
+    <!--    </distributionManagement>-->
 
 </project>

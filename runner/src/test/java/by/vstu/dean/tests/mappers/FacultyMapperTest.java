@@ -6,6 +6,8 @@ import by.vstu.dean.mapper.v1.FacultyMapper;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.services.FacultyService;
 import by.vstu.dean.tests.BaseMapperTest;
+import by.vstu.dean.tests.ServicesTest;
+import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,9 +18,17 @@ public class FacultyMapperTest extends BaseMapperTest<FacultyModel, FacultyDTO, 
 
     @Autowired
     private FacultyService facultyService;
+    @Autowired
+    private ServicesTest servicesTest;
+
+    public FacultyMapperTest() {
+        super(JaversBuilder.javers().build());
+    }
 
     @Override
     public FacultyModel getNewEntity() {
+        if (this.facultyService.getRepo().count() == 0)
+            this.servicesTest.saveFacultyModel();
         return this.facultyService.getRepo().findTopByOrderByIdDesc();
     }
 

@@ -14,6 +14,7 @@ import by.vstu.dean.tests.utils.ModelsGenUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+@Component
 public class ServicesTest {
 
     @Autowired
@@ -102,7 +104,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveCitizenshipModel() {
+    public void saveCitizenshipModel() {
         long countBefore = this.citizenshipService.getRepo().count();
         this.citizenshipService.save(this.modelsGenUtils.citizenshipModel());
         assertEquals(countBefore + 1, this.citizenshipService.getRepo().count());
@@ -110,7 +112,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveQualificationModel() {
+    public void saveQualificationModel() {
         long countBefore = this.qualificationService.getRepo().count();
         this.qualificationService.save(this.modelsGenUtils.qualificationModel());
         assertEquals(countBefore + 1, this.qualificationService.getRepo().count());
@@ -118,7 +120,7 @@ public class ServicesTest {
 
     @Test
     @Order(2)
-    void saveSpecialityModel() {
+    public void saveSpecialityModel() {
         long countBefore = this.specialityService.getRepo().count();
         this.specialityService.save(this.modelsGenUtils.specialityModel(this.departmentService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.specialityService.getRepo().count());
@@ -126,7 +128,7 @@ public class ServicesTest {
 
     @Test
     @Order(3)
-    void saveSpecializationModel() {
+    public void saveSpecializationModel() {
         long countBefore = this.specializationService.getRepo().count();
         this.specializationService.save(this.modelsGenUtils.specializationModel(this.specialityService.getRepo().findTopByOrderByIdDesc(), this.qualificationService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.specializationService.getRepo().count());
@@ -134,7 +136,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveFacultyModel() {
+    public void saveFacultyModel() {
         long countBefore = this.facultyService.getRepo().count();
         this.facultyService.save(this.modelsGenUtils.facultyModel());
         assertEquals(countBefore + 1, this.facultyService.getRepo().count());
@@ -142,7 +144,7 @@ public class ServicesTest {
 
     @Test
     @Order(2)
-    void saveDisciplineModel() {
+    public void saveDisciplineModel() {
         long countBefore = this.disciplineService.getRepo().count();
         this.disciplineService.save(this.modelsGenUtils.disciplineModel());
         assertEquals(countBefore + 1, this.disciplineService.getRepo().count());
@@ -150,7 +152,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveTeacherDegreeModel() {
+    public void saveTeacherDegreeModel() {
         long countBefore = this.teacherDegreeService.getRepo().count();
         this.teacherDegreeService.save(this.modelsGenUtils.teacherDegreeModel());
         assertEquals(countBefore + 1, this.teacherDegreeService.getRepo().count());
@@ -158,7 +160,7 @@ public class ServicesTest {
 
     @Test
     @Order(3)
-    void saveDepartmentModel() {
+    public void saveDepartmentModel() {
         long countBefore = this.departmentService.getRepo().count();
         this.departmentService.save(this.modelsGenUtils.departmentModel(this.facultyService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.departmentService.getRepo().count());
@@ -166,7 +168,7 @@ public class ServicesTest {
 
     @Test
     @Order(3)
-    void saveGroupModel() {
+    public void saveGroupModel() {
         long countBefore = this.groupService.getRepo().count();
         this.groupService.save(this.modelsGenUtils.groupModel(this.facultyService.getRepo().findTopByOrderByIdDesc(), this.specialityService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.groupService.getRepo().count());
@@ -174,7 +176,7 @@ public class ServicesTest {
 
     @Test
     @Order(2)
-    void saveTeacherModel() {
+    public void saveTeacherModel() {
         long countBefore = this.teacherService.getRepo().count();
         this.teacherService.save(this.modelsGenUtils.teacherModel(this.teacherDegreeService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.teacherService.getRepo().count());
@@ -184,7 +186,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveInstitutionModel() {
+    public void saveInstitutionModel() {
         long countBefore = this.institutionService.getRepo().count();
         this.institutionService.save(this.modelsGenUtils.institutionModel());
         assertEquals(countBefore + 1, this.institutionService.getRepo().count());
@@ -192,7 +194,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveStudentLanguageModel() {
+    public void saveStudentLanguageModel() {
         long countBefore = this.studentLanguageService.getRepo().count();
         this.studentLanguageService.save(this.modelsGenUtils.studentLanguageModel());
         assertEquals(countBefore + 1, this.studentLanguageService.getRepo().count());
@@ -200,7 +202,7 @@ public class ServicesTest {
 
     @Test
     @Order(2)
-    void saveDocumentModel() {
+    public void saveDocumentModel() {
         long countBefore = this.documentService.getRepo().count();
         this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.documentService.getRepo().count());
@@ -208,7 +210,7 @@ public class ServicesTest {
 
     @Test
     @Order(5)
-    void saveStudentModel() {
+    public void saveStudentModel() {
         long countBefore = this.studentService.getRepo().count();
         this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.studentService.getRepo().count());
@@ -216,14 +218,14 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveExamTypeModel() {
+    public void saveExamTypeModel() {
         long countBefore = this.examTypeService.getRepo().count();
         this.examTypeService.save(this.modelsGenUtils.examTypeModel());
         assertEquals(countBefore + 1, this.examTypeService.getRepo().count());}
 
     @Test
     @Order(6)
-    void saveEducationModel() {
+    public void saveEducationModel() {
         long countBefore = this.educationService.getRepo().count();
         this.educationService.save(this.modelsGenUtils.educationModel(this.studentService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.educationService.getRepo().count());
@@ -231,7 +233,7 @@ public class ServicesTest {
 
     @Test
     @Order(1)
-    void saveClassroomModel() {
+    public void saveClassroomModel() {
         long countBefore = this.classroomService.getRepo().count();
         this.classroomService.save(this.modelsGenUtils.classroomModel());
         assertEquals(countBefore + 1, this.classroomService.getRepo().count());

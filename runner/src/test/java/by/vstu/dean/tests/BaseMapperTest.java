@@ -3,16 +3,19 @@ package by.vstu.dean.tests;
 import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
-import by.vstu.dean.core.utils.ReflectionUtils;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
+import org.javers.core.Javers;
+import org.javers.core.diff.Change;
+import org.javers.core.diff.Diff;
+import org.javers.core.diff.changetype.ValueChange;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
-import java.util.Objects;
+import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Slf4j
 public abstract class BaseMapperTest<M extends DBBaseModel, D extends BaseDTO, T extends BaseMapperInterface<D, M>> {
@@ -21,7 +24,13 @@ public abstract class BaseMapperTest<M extends DBBaseModel, D extends BaseDTO, T
     @Setter
     protected T mapper;
 
+    protected final Javers javers;
+
     protected String[] notEqualsFields;
+
+    protected BaseMapperTest(Javers javers) {
+        this.javers = javers;
+    }
 
     @Test
     public void testToEntity() {
@@ -67,7 +76,7 @@ public abstract class BaseMapperTest<M extends DBBaseModel, D extends BaseDTO, T
 
     }
 
-    public static boolean areObjectsEqual(Object obj1, Object obj2, String... notEqualsFields) {
+    public boolean areObjectsEqual(Object obj1, Object obj2, String... notEqualsFields) {
         if (obj1 == obj2) {
             return true;
         }
@@ -79,33 +88,52 @@ public abstract class BaseMapperTest<M extends DBBaseModel, D extends BaseDTO, T
         }
         if(notEqualsFields == null)
             notEqualsFields = new String[]{};
-        try {
 
-            Field[] fields = ReflectionUtils.getAllFields(obj1.getClass()).toArray(new Field[0]);
-            for (Field field : fields) {
-                field.setAccessible(true);
-                Object value1 = field.get(obj1);
-                Object value2 = field.get(obj2);
-                if (!Objects.equals(value1, value2)) {
-                    if(value1 instanceof DBBaseModel && value2 instanceof DBBaseModel)
-                        return BaseMapperTest.areObjectsEqual(value1, value2, notEqualsFields);
-                    else {
-                        boolean equal = Arrays.stream(notEqualsFields).anyMatch(p -> p.equals(field.getName()));
+        Diff diff = this.javers.compare(obj1, obj2);
 
-                        if(!equal)
-                            log.warn("Field {} in {} not equal for object {}", field.getName(), obj1.getClass(), obj2.getClass());
+        AtomicBoolean equals = new AtomicBoolean(true);
 
-                        return equal;
-                    }
-                }
+        String[] finalNotEqualsFields = notEqualsFields;
+        diff.groupByObject().forEach(changesByObject -> {
+            List<Change> changes = changesByObject.get();
+
+            if (changes == null || changes.isEmpty()) {
+                equals.set(true);
+                return;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
+            changes.stream()
+                    .filter(p -> p instanceof ValueChange)
+                    .map(m -> (ValueChange) m).forEach(change -> {
+                        if (Arrays.stream(finalNotEqualsFields).noneMatch(f -> f.equals(change.getPropertyName()))) {
+                            equals.set(false);
+                            return;
+                        }
+
+                    });
+        });
+
+        this.printDiff(obj1, obj2);
+
+        return equals.get();
+    }
+
+    public void printDiff(Object obj1, Object obj2) {
+        if (obj1 == obj2) {
+            return;
+        }
+        if (obj1 == null || obj2 == null) {
+            return;
+        }
+        if (obj1.getClass() != obj2.getClass()) {
+            return;
         }
 
-        return true;
+        Diff diff = javers.compare(obj1, obj2);
+
+
+        log.info("Diff: \n{}", diff.prettyPrint());
+
     }
 
     public abstract M getNewEntity();

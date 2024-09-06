@@ -6,6 +6,7 @@ import by.vstu.dean.mapper.v1.GroupMapper;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.services.GroupService;
 import by.vstu.dean.tests.BaseMapperTest;
+import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,6 +17,10 @@ public class GroupMapperTest extends BaseMapperTest<GroupModel, GroupDTO, GroupM
 
     @Autowired
     private GroupService groupService;
+
+    public GroupMapperTest() {
+        super(JaversBuilder.javers().build());
+    }
 
     @Override
     public GroupModel getNewEntity() {

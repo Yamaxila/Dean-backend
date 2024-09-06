@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class FakeApplication {
 
     public static void main(String[] args) {
-        throw new RuntimeException("Use real main-class for running");
+        System.out.println("Use real main-class for running");
     }
 
 }

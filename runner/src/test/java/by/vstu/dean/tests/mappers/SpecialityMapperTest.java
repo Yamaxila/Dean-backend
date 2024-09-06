@@ -6,6 +6,7 @@ import by.vstu.dean.mapper.v1.SpecialityMapper;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.services.SpecialityService;
 import by.vstu.dean.tests.BaseMapperTest;
+import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -17,6 +18,7 @@ public class SpecialityMapperTest extends BaseMapperTest<SpecialityModel, Specia
     private SpecialityService specialityService;
 
     public SpecialityMapperTest() {
+        super(JaversBuilder.javers().build());
         this.notEqualsFields = new String[] {"id", "specCode"};
     }
 

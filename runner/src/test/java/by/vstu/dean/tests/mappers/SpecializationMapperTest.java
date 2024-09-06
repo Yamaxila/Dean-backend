@@ -6,6 +6,7 @@ import by.vstu.dean.mapper.v1.SpecializationMapper;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.services.SpecializationService;
 import by.vstu.dean.tests.BaseMapperTest;
+import org.javers.core.JaversBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ContextConfiguration;
@@ -16,6 +17,10 @@ public class SpecializationMapperTest extends BaseMapperTest<SpecializationModel
 
     @Autowired
     private SpecializationService specializationService;
+
+    public SpecializationMapperTest() {
+        super(JaversBuilder.javers().build());
+    }
 
     @Override
     public SpecializationModel getNewEntity() {
