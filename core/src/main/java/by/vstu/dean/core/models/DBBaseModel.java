@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 /**
- * Абстрактный базовый объект базы данных.
+ * Базовый объект базы данных.
  */
 @Setter
 @Getter
@@ -28,7 +28,7 @@ import java.time.LocalDateTime;
 public abstract class DBBaseModel {
 
     /**
-     * Идентификатор из источника данных деканата.
+     * Идентификатор из старой базы данных деканата.
      */
     @ReadOnlyProperty
     @Schema(title = "Id из базы деканата")
@@ -50,11 +50,17 @@ public abstract class DBBaseModel {
     @Schema(title = "Статус")
     private EStatus status;
 
+    /**
+     * Дата создания записи.
+     */
     @Schema(title = "Дата создания записи")
     @CreatedDate
     @JsonIgnore
     private LocalDateTime created;
 
+    /**
+     * Дата обновления записи.
+     */
     @Schema(title = "Дата обновления записи")
     @LastModifiedDate
     @JsonIgnore

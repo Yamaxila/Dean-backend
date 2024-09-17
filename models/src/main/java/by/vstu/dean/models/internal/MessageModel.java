@@ -18,7 +18,10 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 
 /**
- * Класс, представляющий объект внутреннего сообщения.
+ * Модель внутреннего сообщения.
+ * <p>
+ *     Внутренние сообщения - это сообщения, которые отправляются студентам
+ *     в личный кабинет.
  */
 @Entity
 @Setter
@@ -29,16 +32,59 @@ import java.util.Objects;
 @Schema(title = "Модель внутреннего сообщения")
 public class MessageModel extends DBBaseModel {
 
+    /**
+     * Заголовок сообщения.
+     * <i>
+     * Максимум 255 символов.
+     */
     @Size(max = 255)
     @NotNull
+    @Schema(title = "Заголовок сообщения",
+            description = "Максимум 255 символов",
+            example = "Важное сообщение")
     private String title;
+    /**
+     * Текст сообщения.
+     * <i>
+     * Максимум 4096 символов.
+     */
     @Size(max = 4096)
     @NotNull
+    @Schema(title = "Текст сообщения",
+            description = "Максимум 4096 символов",
+            example = "Важное сообщение, которое нужно прочитать")
     private String message;
+    /**
+     * Флаг, указывающий, является ли сообщение неактивным.
+     * <i>
+     *     true - сообщение неактивно, false - активно.
+     */
+    @Schema(title = "Флаг, указывающий, является ли сообщение неактивным",
+            description = "true - сообщение неактивно, false - активно",
+            example = "false")
     private boolean inactive;
+    /**
+     * CRON-выражение для планирования отправки сообщения.
+     * <i>
+     *     Формат - <a href="https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html">...</a>
+     */
+    @Schema(title = "CRON-выражение для планирования отправки сообщения",
+            description = "Формат - https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/scheduling/support/CronSequenceGenerator.html",
+            example = "0 0 12 * * ?")
     private String cronExpression;
+    /**
+     * Тип сообщения.
+     * <i>
+     *     {@link EMessageType#INFO} - информационное сообщение,
+     *     {@link EMessageType#WARNING} - предупреждение,
+     *     {@link EMessageType#ERROR} - ошибка,
+     *     {@link EMessageType#SCHEDULED} - запланированное сообщение.
+     */
     @Enumerated(EnumType.ORDINAL)
     @NotNull
+    @Schema(title = "Тип сообщения",
+            description = "Тип сообщения: предупреждение, ошибка или запланированное сообщение",
+            example = "INFO")
     private EMessageType messageType;
 
     @Override
