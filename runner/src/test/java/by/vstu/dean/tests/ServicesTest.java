@@ -8,8 +8,14 @@ import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.models.specs.SpecializationModel;
-import by.vstu.dean.models.students.*;
+import by.vstu.dean.models.students.GroupModel;
+import by.vstu.dean.models.students.StudentModel;
+import by.vstu.dean.models.students.internal.CitizenshipModel;
+import by.vstu.dean.models.students.internal.EducationModel;
+import by.vstu.dean.models.students.internal.InstitutionModel;
+import by.vstu.dean.models.students.internal.StudentLanguageModel;
 import by.vstu.dean.services.*;
+import by.vstu.dean.services.students.*;
 import by.vstu.dean.tests.utils.ModelsGenUtils;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +47,6 @@ public class ServicesTest {
 
     @Autowired
     private DisciplineService disciplineService;
-
-    @Autowired
-    private DocumentService documentService;
 
     @Autowired
     private EducationService educationService;
@@ -200,19 +203,19 @@ public class ServicesTest {
         assertEquals(countBefore + 1, this.studentLanguageService.getRepo().count());
     }
 
-    @Test
-    @Order(2)
-    public void saveDocumentModel() {
-        long countBefore = this.documentService.getRepo().count();
-        this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()));
-        assertEquals(countBefore + 1, this.documentService.getRepo().count());
-    }
+//    @Test
+//    @Order(2)
+//    public void saveDocumentModel() {
+//        long countBefore = this.documentService.getRepo().count();
+//        this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()));
+//        assertEquals(countBefore + 1, this.documentService.getRepo().count());
+//    }
 
     @Test
     @Order(5)
     public void saveStudentModel() {
         long countBefore = this.studentService.getRepo().count();
-        this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()));
+        this.studentService.save(this.modelsGenUtils.studentModel(this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()));
         assertEquals(countBefore + 1, this.studentService.getRepo().count());
     }
 
@@ -251,9 +254,8 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
 
-        final StudentModel studentModel = this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()));
+        final StudentModel studentModel = this.studentService.save(this.modelsGenUtils.studentModel(this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()));
         final StudentModel studentModelFromService = this.studentService.getById(studentModel.getId()).orElse(null);
         assertEquals(studentModel, studentModelFromService);
     }
@@ -269,12 +271,11 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
 
         final List<StudentModel> studentModels = List.of(
-                this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc())),
-                this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc())),
-                this.studentService.save(this.modelsGenUtils.studentModel(this.documentService.getRepo().findTopByOrderByIdDesc(), this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()))
+                this.studentService.save(this.modelsGenUtils.studentModel(this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc())),
+                this.studentService.save(this.modelsGenUtils.studentModel(this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc())),
+                this.studentService.save(this.modelsGenUtils.studentModel(this.groupService.getRepo().findTopByOrderByIdDesc(), this.specializationService.getRepo().findTopByOrderByIdDesc()))
         );
         final List<StudentModel> studentModelsFromService = this.studentService.getAll();
         assertEquals(studentModels, studentModelsFromService);
@@ -325,41 +326,41 @@ public class ServicesTest {
     }
 
 
-    @Test
-    @Order(16)
-    void getDocumentById() {
-        this.deleteAll();
-        this.saveCitizenshipModel();
-        this.saveStudentLanguageModel();
-        this.saveSpecialityModel();
-        this.saveQualificationModel();
-        this.saveSpecializationModel();
-        this.saveFacultyModel();
-        this.saveGroupModel();
-        final DocumentModel documentModel = this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()));
-        final DocumentModel documentModelFromService = this.documentService.getById(documentModel.getId()).orElse(null);
-        assertEquals(documentModel, documentModelFromService);
-    }
-
-    @Test
-    @Order(17)
-    void getAllDocuments() {
-        this.deleteAll();
-        this.saveCitizenshipModel();
-        this.saveStudentLanguageModel();
-        this.saveSpecialityModel();
-        this.saveQualificationModel();
-        this.saveSpecializationModel();
-        this.saveFacultyModel();
-        this.saveGroupModel();
-        final List<DocumentModel> documentModels = List.of(
-                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc())),
-                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc())),
-                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()))
-        );
-        final List<DocumentModel> documentModelsFromService = this.documentService.getAll();
-        assertEquals(documentModels, documentModelsFromService);
-    }
+//    @Test
+//    @Order(16)
+//    void getDocumentById() {
+//        this.deleteAll();
+//        this.saveCitizenshipModel();
+//        this.saveStudentLanguageModel();
+//        this.saveSpecialityModel();
+//        this.saveQualificationModel();
+//        this.saveSpecializationModel();
+//        this.saveFacultyModel();
+//        this.saveGroupModel();
+//        final DocumentModel documentModel = this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()));
+//        final DocumentModel documentModelFromService = this.documentService.getById(documentModel.getId()).orElse(null);
+//        assertEquals(documentModel, documentModelFromService);
+//    }
+//
+//    @Test
+//    @Order(17)
+//    void getAllDocuments() {
+//        this.deleteAll();
+//        this.saveCitizenshipModel();
+//        this.saveStudentLanguageModel();
+//        this.saveSpecialityModel();
+//        this.saveQualificationModel();
+//        this.saveSpecializationModel();
+//        this.saveFacultyModel();
+//        this.saveGroupModel();
+//        final List<DocumentModel> documentModels = List.of(
+//                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc())),
+//                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc())),
+//                this.documentService.save(this.modelsGenUtils.documentModel(this.studentLanguageService.getRepo().findTopByOrderByIdDesc(), this.citizenshipService.getRepo().findTopByOrderByIdDesc(), this.institutionService.getRepo().findTopByOrderByIdDesc()))
+//        );
+//        final List<DocumentModel> documentModelsFromService = this.documentService.getAll();
+//        assertEquals(documentModels, documentModelsFromService);
+//    }
 
     @Test
     @Order(18)
@@ -372,7 +373,6 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
         this.saveStudentModel();
         final EducationModel educationModel = this.educationService.save(this.modelsGenUtils.educationModel(this.studentService.getRepo().findTopByOrderByIdDesc()));
         final EducationModel educationModelFromService = this.educationService.getById(educationModel.getId()).orElse(null);
@@ -390,7 +390,6 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
         this.saveStudentModel();
         final List<EducationModel> educationModels = List.of(
                 this.educationService.save(this.modelsGenUtils.educationModel(this.studentService.getRepo().findTopByOrderByIdDesc())),
@@ -435,7 +434,6 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
         this.saveStudentModel();
         this.saveDepartmentModel();
         this.saveTeacherModel();
@@ -457,7 +455,6 @@ public class ServicesTest {
         this.saveSpecializationModel();
         this.saveFacultyModel();
         this.saveGroupModel();
-        this.saveDocumentModel();
         this.saveStudentModel();
         this.saveDepartmentModel();
         this.saveTeacherModel();
@@ -658,7 +655,6 @@ public class ServicesTest {
         this.studyPlanService.getRepo().deleteAllInBatch();
         this.educationService.getRepo().deleteAllInBatch();
         this.studentService.getRepo().deleteAllInBatch();
-        this.documentService.getRepo().deleteAllInBatch();
         this.studentLanguageService.getRepo().deleteAllInBatch();
         this.groupService.getRepo().deleteAllInBatch();
         this.specializationService.getRepo().deleteAllInBatch();

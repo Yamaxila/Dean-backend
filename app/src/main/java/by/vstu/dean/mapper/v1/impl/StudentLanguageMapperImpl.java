@@ -3,8 +3,8 @@ package by.vstu.dean.mapper.v1.impl;
 import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.StudentLanguageDTO;
 import by.vstu.dean.mapper.v1.StudentLanguageMapper;
-import by.vstu.dean.models.students.StudentLanguageModel;
-import by.vstu.dean.services.StudentLanguageService;
+import by.vstu.dean.models.students.internal.StudentLanguageModel;
+import by.vstu.dean.services.students.StudentLanguageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

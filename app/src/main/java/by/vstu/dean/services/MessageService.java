@@ -3,14 +3,15 @@ package by.vstu.dean.services;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.models.internal.MessageModel;
 import by.vstu.dean.repo.MessageModelRepository;
+import org.javers.core.Javers;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 public class MessageService extends BaseService<MessageModel, MessageModelRepository> {
-    public MessageService(MessageModelRepository repo) {
-        super(repo);
+    public MessageService(MessageModelRepository repo, Javers javers) {
+        super(repo, javers);
     }
 
 

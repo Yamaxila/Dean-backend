@@ -11,7 +11,12 @@ import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.models.specs.SpecializationModel;
-import by.vstu.dean.models.students.*;
+import by.vstu.dean.models.students.GroupModel;
+import by.vstu.dean.models.students.StudentModel;
+import by.vstu.dean.models.students.internal.CitizenshipModel;
+import by.vstu.dean.models.students.internal.EducationModel;
+import by.vstu.dean.models.students.internal.InstitutionModel;
+import by.vstu.dean.models.students.internal.StudentLanguageModel;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.springframework.stereotype.Component;
@@ -183,7 +188,7 @@ public class ModelsGenUtils {
         return classroomModel;
     }
 
-    public StudentModel studentModel(DocumentModel documentModel, GroupModel groupModel, SpecializationModel specializationModel) {
+    public StudentModel studentModel(GroupModel groupModel, SpecializationModel specializationModel) {
 
         StudentModel studentModel = (StudentModel) this.initModel(new StudentModel());
 
@@ -192,91 +197,31 @@ public class ModelsGenUtils {
         studentModel.setFirstName(RandomStringUtils.randomAlphanumeric(10, 20));
         studentModel.setSecondName(RandomStringUtils.randomAlphanumeric(10, 20));
         studentModel.setSex(1);
-        studentModel.setCityType(1);
-        studentModel.setAddress(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressCountry(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressIndex(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressState(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressRegion(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressCity(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressStreet(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressHouse(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressHousePart(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setAddressFlat(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setPhone(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setBenefits(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setCityIsVillage(true);
-        studentModel.setLastDocument(documentModel);
-        studentModel.setLastDeviation(null);
-        studentModel.setSpecialization(specializationModel);
-        studentModel.setGroup(groupModel);
-        studentModel.setHostelRoom(null);
-        studentModel.setCheckInDate(null);
+//        studentModel.setCityType(1);
+//        studentModel.setAddress(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressCountry(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressIndex(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressState(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressRegion(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressCity(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressStreet(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressHouse(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressHousePart(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setAddressFlat(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setPhone(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setBenefits(RandomStringUtils.randomAlphanumeric(10, 20));
+//        studentModel.setCityIsVillage(true);
+//        studentModel.setLastDocument(documentModel);
+//        studentModel.setLastDeviation(null);
+//        studentModel.setSpecialization(specializationModel);
+//        studentModel.setGroup(groupModel);
+//        studentModel.setHostelRoom(null);
+//        studentModel.setCheckInDate(null);
         studentModel.setEvictionDate(null);
         studentModel.setApproved(false);
         studentModel.setPhotoUrl(RandomStringUtils.randomAlphanumeric(10, 40));
 
         return studentModel;
-    }
-
-    public DocumentModel documentModel(StudentLanguageModel studentLanguageModel, CitizenshipModel citizenshipModel, InstitutionModel institutionModel) {
-
-        DocumentModel documentModel = (DocumentModel) this.initModel(new DocumentModel());
-
-        // Set some values
-        documentModel.setFullNameL(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setFirstNameL(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setCaseNo(1234567890L);
-        documentModel.setCitizenship(citizenshipModel);
-        documentModel.setStudentLanguage(studentLanguageModel);
-        documentModel.setBirthDate(LocalDate.now());
-        documentModel.setBirthPlace(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setEducationString(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setInstitution(institutionModel);
-        documentModel.setEducationYearEnd(2022);
-        documentModel.setRegCityType(1);
-        documentModel.setRegCity(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegIndex(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegState(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegRegion(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegCity2(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegStreet(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegHouse(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegHousePart(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setRegFlat(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setJob(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setJobExperience(85.5);
-        documentModel.setEnrollmentOrder(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setEnrollmentDate(LocalDate.now());
-        documentModel.setDeviationType(1);
-        documentModel.setPassportSerial(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setPassportNumber(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setPassportIssueDate(LocalDate.now());
-        documentModel.setPassportIssueString(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setPassportId(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setFatherFullName(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setFatherJob(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setFatherPhone(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setMotherFullName(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setMotherJob(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setMotherPhone(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setPaymentType(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setBenefits(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setEducations(null);
-        documentModel.setEnrollScore(85.5);
-        documentModel.setNeedHostel(true);
-        documentModel.setReEnroll(true);
-        documentModel.setLastSurname(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setEnrollStudentScore(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setStudentNumber(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setUnbound(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setStateSupport(true);
-        documentModel.setMove(true);
-        documentModel.setDocumentNumber(1234567890L);
-        documentModel.setEmail(RandomStringUtils.randomAlphanumeric(10, 20));
-        documentModel.setEnrollDate(LocalDate.now());
-        documentModel.setMigrateDate(LocalDate.now());
-        return documentModel;
     }
 
 

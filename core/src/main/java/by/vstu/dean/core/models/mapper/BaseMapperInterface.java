@@ -1,6 +1,6 @@
 package by.vstu.dean.core.models.mapper;
 
-import by.vstu.dean.core.dto.BaseDTO;
+import by.vstu.dean.core.dto.PublicDTO;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.utils.ReflectionUtils;
 import org.mapstruct.BeanMapping;
@@ -15,7 +15,7 @@ import java.util.List;
  * @param <D> Тип DTO.
  * @param <O> Тип сущности базы данных.
  */
-public interface BaseMapperInterface<D extends BaseDTO, O extends DBBaseModel> {
+public interface BaseMapperInterface<D extends PublicDTO, O extends DBBaseModel> {
 
     /**
      * Преобразует DTO в сущность базы данных.

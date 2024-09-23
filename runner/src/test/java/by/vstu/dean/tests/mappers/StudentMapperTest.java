@@ -4,7 +4,7 @@ import by.vstu.dean.DeanBackendApplication;
 import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.services.StudentService;
+import by.vstu.dean.services.students.StudentService;
 import by.vstu.dean.tests.BaseMapperTest;
 import by.vstu.dean.tests.ServicesTest;
 import org.javers.core.JaversBuilder;
@@ -45,7 +45,7 @@ public class StudentMapperTest extends BaseMapperTest<StudentModel, StudentDTO, 
             this.servicesTest.saveQualificationModel();
             this.servicesTest.saveSpecializationModel();
             this.servicesTest.saveGroupModel();
-            this.servicesTest.saveDocumentModel();
+//            this.servicesTest.saveDocumentModel();
             this.servicesTest.saveStudentModel();
         }
 

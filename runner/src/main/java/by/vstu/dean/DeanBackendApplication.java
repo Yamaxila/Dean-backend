@@ -13,7 +13,7 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableCaching
-@Import({DeanFutureDBConfig.class})
+@Import({DeanFutureDBConfig.class, DeanOldDBConfig.class})
 public class DeanBackendApplication {
 
     /**

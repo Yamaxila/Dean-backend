@@ -30,7 +30,7 @@ public class ResourceServerConfiguration{
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/api/v1/public/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->

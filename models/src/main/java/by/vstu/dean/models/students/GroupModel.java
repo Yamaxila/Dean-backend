@@ -41,7 +41,6 @@ public class GroupModel extends DBBaseModel {
     @ManyToOne
     @JoinColumn(name = "spec_id")
     @Schema(title = "Специальность")
-    @NotNull
     private SpecialityModel spec;
 
     /**

@@ -3,6 +3,7 @@ package by.vstu.dean.services;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.GroupModelRepository;
+import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Cacheable("group")
 public class GroupService extends BaseService<GroupModel, GroupModelRepository> {
 
-    public GroupService(GroupModelRepository repo) {
-        super(repo);
+    public GroupService(GroupModelRepository repo, Javers javers) {
+        super(repo, javers);
     }
 
     /**

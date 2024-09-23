@@ -7,7 +7,7 @@ import by.vstu.dean.mapper.v1.HostelRoomMapper;
 import by.vstu.dean.mapper.v1.SpecializationMapper;
 import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.services.StudentService;
+import by.vstu.dean.services.students.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

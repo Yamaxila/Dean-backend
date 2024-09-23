@@ -5,10 +5,13 @@ import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
 import org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.AutoConfigurationPackage;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
@@ -30,6 +33,13 @@ import java.util.Map;
         transactionManagerRef = "deanTransactionManager",
         basePackages = {"by.vstu.old.dean"}
 )
+@ComponentScan(basePackages = "by.vstu.old.dean")
+@EntityScan(basePackages = {
+        "by.vstu.old.dean"
+})
+@AutoConfigurationPackage(basePackages = {
+        "by.vstu.old.dean"
+})
 public class DeanOldDBConfig {
 
     /**

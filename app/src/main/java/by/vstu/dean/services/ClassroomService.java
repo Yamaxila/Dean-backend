@@ -8,6 +8,7 @@ import by.vstu.dean.models.rooms.ClassroomModel;
 import by.vstu.dean.repo.ClassroomModelRepository;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -20,8 +21,8 @@ import java.util.List;
 @Cacheable("classroom")
 public class ClassroomService extends BaseService<ClassroomModel, ClassroomModelRepository> {
 
-    public ClassroomService(ClassroomModelRepository repo) {
-        super(repo);
+    public ClassroomService(ClassroomModelRepository repo, Javers javers) {
+        super(repo, javers);
     }
 
     public List<ClassroomModel> updateFromExcel(String filePath) {

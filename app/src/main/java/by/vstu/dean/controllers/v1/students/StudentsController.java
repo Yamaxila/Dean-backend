@@ -7,7 +7,7 @@ import by.vstu.dean.dto.v1.students.StudentDTO;
 import by.vstu.dean.mapper.v1.StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StudentModelRepository;
-import by.vstu.dean.services.StudentService;
+import by.vstu.dean.services.students.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
@@ -109,7 +109,7 @@ public class StudentsController extends BaseController<StudentDTO, StudentModel,
     @Operation(method = "getAllHomeless", description = "Отправляет все объекты из базы, которые нуждаются в общежитии")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentDTO>> getAllHomeless() {
-        return new ResponseEntity<>(this.mapper.toDto(this.service.getAll().stream().filter(s -> s.getLastDocument().isNeedHostel() && s.getStatus().equals(EStatus.ACTIVE)).toList()), HttpStatus.OK);
+        return new ResponseEntity<>(this.mapper.toDto(this.service.getAll().stream().filter(s -> s.isNeedHostel() && s.getStatus().equals(EStatus.ACTIVE)).toList()), HttpStatus.OK);
     }
 
     /**

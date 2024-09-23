@@ -7,7 +7,9 @@ import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.models.hostels.HostelRoomModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.HostelRoomModelRepository;
+import by.vstu.dean.services.students.StudentService;
 import jakarta.persistence.EntityManager;
+import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +28,8 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
 
     private final EntityManager manager;
 
-    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService, EntityManager manager) {
-        super(repo);
+    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService, EntityManager manager, Javers javers) {
+        super(repo, javers);
         this.studentService = studentService;
         this.manager = manager;
     }

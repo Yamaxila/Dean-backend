@@ -158,10 +158,10 @@ public class ReflectionUtils {
     public static Object getValue(Field field, Object o) {
         try {
             field.setAccessible(true);
-            if(field.getDeclaringClass().equals(o.getClass()) || field.getDeclaringClass().equals(o.getClass().getSuperclass()))
+            if (isFieldAccessible(field, o.getClass()))
                 return field.get(o);
 
-            Optional<Field> foundField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getType().equals(field.getDeclaringClass()) && p.getDeclaringClass().equals(field.getDeclaringClass())).findFirst();
+            Optional<Field> foundField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getType().equals(field.getDeclaringClass())).findFirst();
 
             if(foundField.isPresent()) {
                 foundField.get().setAccessible(true);
@@ -180,7 +180,7 @@ public class ReflectionUtils {
     public static void setValue(Field field, Object value, Object o) {
         try {
             field.setAccessible(true);
-            if(field.getDeclaringClass().equals(o.getClass()) || field.getDeclaringClass().equals(o.getClass().getSuperclass())) {
+            if (isFieldAccessible(field, o.getClass())) {
                 field.set(o, value);
                 return;
             }
@@ -198,6 +198,16 @@ public class ReflectionUtils {
             e.printStackTrace();
 
         }
+    }
+
+    private static boolean isFieldAccessible(Field field, Class<?> clazz) {
+        if (field.getDeclaringClass().equals(clazz))
+            return true;
+
+        if (clazz.getSuperclass() != null)
+            return isFieldAccessible(field, clazz.getSuperclass());
+
+        return false;
     }
 
     /**

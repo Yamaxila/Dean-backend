@@ -3,7 +3,7 @@ package by.vstu.dean.mapper.v1;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.CitizenshipDTO;
-import by.vstu.dean.models.students.CitizenshipModel;
+import by.vstu.dean.models.students.internal.CitizenshipModel;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

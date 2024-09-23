@@ -8,6 +8,7 @@ import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.javers.core.Javers;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -27,6 +28,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      */
     @Getter
     protected final R repo;
+
+    protected final Javers javers;
 
     /**
      * Получает все объекты модели из базы данных.
@@ -86,7 +89,10 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Сохраненный объект модели.
      */
     public O save(O o) {
-        return this.repo.saveAndFlush(o);
+        o = this.repo.saveAndFlush(o);
+        if (o != null)
+            this.javers.commit("dean", o);
+        return o;
     }
 
     /**
@@ -96,7 +102,10 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Список сохраненных объектов модели.
      */
     public List<O> saveAll(List<O> o) {
-        return this.repo.saveAllAndFlush(o);
+        o = this.repo.saveAllAndFlush(o);
+        if (!o.isEmpty())
+            this.javers.commit("dean", o);
+        return o;
     }
 
     /**

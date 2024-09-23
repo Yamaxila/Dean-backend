@@ -3,8 +3,8 @@ package by.vstu.dean.mapper.v1.impl;
 import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.EducationDTO;
 import by.vstu.dean.mapper.v1.EducationMapper;
-import by.vstu.dean.models.students.EducationModel;
-import by.vstu.dean.services.EducationService;
+import by.vstu.dean.models.students.internal.EducationModel;
+import by.vstu.dean.services.students.EducationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

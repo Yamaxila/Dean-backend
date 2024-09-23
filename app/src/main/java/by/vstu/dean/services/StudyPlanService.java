@@ -3,6 +3,7 @@ package by.vstu.dean.services;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.models.lessons.StudyPlanModel;
 import by.vstu.dean.repo.StudyPlanModelRepository;
+import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class StudyPlanService extends BaseService<StudyPlanModel, StudyPlanModelRepository> {
 
 
-    public StudyPlanService(StudyPlanModelRepository repo) {
-        super(repo);
+    public StudyPlanService(StudyPlanModelRepository repo, Javers javers) {
+        super(repo, javers);
     }
 }

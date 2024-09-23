@@ -1,7 +1,7 @@
 package by.vstu.dean.repo;
 
 import by.vstu.dean.core.repo.DBBaseModelRepository;
-import by.vstu.dean.models.students.EducationModel;
+import by.vstu.dean.models.students.internal.EducationModel;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;

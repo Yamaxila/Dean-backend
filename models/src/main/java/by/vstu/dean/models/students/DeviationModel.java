@@ -2,7 +2,6 @@ package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.adapters.LocalDateTimeTypeAdapter;
 import by.vstu.dean.core.models.DBBaseModel;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Entity;
@@ -29,7 +28,6 @@ public class DeviationModel extends DBBaseModel {
     @JoinColumn(name = "student_id")
     @ManyToOne
     @Schema(title = "Студент")
-    @JsonIgnore
     private StudentModel student;
     @Schema(title = "Тип сообщения")
     private String msgType;

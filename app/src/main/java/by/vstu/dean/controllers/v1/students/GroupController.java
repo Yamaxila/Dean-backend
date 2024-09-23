@@ -32,7 +32,7 @@ public class GroupController extends BaseController<GroupDTO, GroupModel, GroupM
     /**
      * Конструктор контроллера.
      *
-     * @param service          Сервис групп студентов
+     * @param service Сервис групп студентов
      * @param mapper маппер групп
      * @param departmentMapper маппер кафедр
      */

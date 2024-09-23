@@ -129,18 +129,29 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
             String formattedDateTime = LocalDateTime.now().format(formatter);
             sb.append("EXCEPTION").append("\n");
-            sb.append("```Time").append(formattedDateTime).append("```").append("\n");
-            sb.append("```Thread").append(t.getName()).append("```").append("\n");
-            sb.append("```message").append(ex.getMessage()).append("```").append("\n");
+            sb.append("```Time ").append("\n").append(formattedDateTime).append("```").append("\n");
+            sb.append("```Thread").append("\n").append(t.getName()).append("```").append("\n");
+            sb.append("```message").append("\n").append(ex.getMessage()).append("```").append("\n");
             sb.append("Stacktrace").append("\n").append("```log").append("\n");
 
             Arrays.stream(ex.getStackTrace()).forEach(elm -> sb.append(elm.toString()).append("\n"));
 
             sb.append("```");
 
-            SendMessage message = SendMessage.builder().chatId(527440937L).parseMode(ParseMode.MARKDOWN).text(sb.toString()).build();
-            this.telegramClient.execute(message);
+            String text = sb.toString();
+            while (!text.isEmpty()) {
+                String part = text.substring(0, Math.min(text.length(), 4092));
 
+                if (!part.endsWith("```"))
+                    part += "```";
+                SendMessage message = SendMessage.builder().chatId(527440937L).parseMode(ParseMode.MARKDOWN).text(part).build();
+                try {
+                    this.telegramClient.execute(message);
+                } catch (TelegramApiException e) {
+                    log.error("Send message failed", e);
+                }
+                text = text.substring(part.length());
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }

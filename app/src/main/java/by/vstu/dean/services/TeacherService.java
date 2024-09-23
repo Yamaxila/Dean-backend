@@ -3,6 +3,7 @@ package by.vstu.dean.services;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.repo.TeacherModelRepository;
+import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +15,7 @@ import org.springframework.stereotype.Service;
 public class TeacherService extends BaseService<TeacherModel, TeacherModelRepository> {
 
 
-    public TeacherService(TeacherModelRepository repo) {
-        super(repo);
+    public TeacherService(TeacherModelRepository repo, Javers javers) {
+        super(repo, javers);
     }
 }
