@@ -1,8 +1,8 @@
 package by.vstu.dean.tests.mappers;
 
 import by.vstu.dean.DeanBackendApplication;
-import by.vstu.dean.dto.v1.specs.QualificationDTO;
-import by.vstu.dean.mapper.v1.QualificationMapper;
+import by.vstu.dean.dto.v1.specs.V1QualificationDTO;
+import by.vstu.dean.mapper.v1.V1QualificationMapper;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.services.QualificationService;
 import by.vstu.dean.tests.BaseMapperTest;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
-public class QualificationMapperTest extends BaseMapperTest<QualificationModel, QualificationDTO, QualificationMapper> {
+public class QualificationMapperTest extends BaseMapperTest<QualificationModel, V1QualificationDTO, V1QualificationMapper> {
 
     @Autowired
     private QualificationService qualificationService;
@@ -28,8 +28,8 @@ public class QualificationMapperTest extends BaseMapperTest<QualificationModel, 
     }
 
     @Override
-    public QualificationDTO getNewDTO() {
-        QualificationDTO qualificationDTO = new QualificationDTO();
+    public V1QualificationDTO getNewDTO() {
+        V1QualificationDTO qualificationDTO = new V1QualificationDTO();
         qualificationDTO.setId(this.getNewEntity().getId());
         qualificationDTO.setName("New Qualification Name");
         return qualificationDTO;

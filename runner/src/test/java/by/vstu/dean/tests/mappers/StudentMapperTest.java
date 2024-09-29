@@ -1,8 +1,8 @@
 package by.vstu.dean.tests.mappers;
 
 import by.vstu.dean.DeanBackendApplication;
-import by.vstu.dean.dto.v1.students.StudentDTO;
-import by.vstu.dean.mapper.v1.StudentMapper;
+import by.vstu.dean.dto.v1.students.V1StudentDTO;
+import by.vstu.dean.mapper.v1.V1StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.services.students.StudentService;
 import by.vstu.dean.tests.BaseMapperTest;
@@ -15,7 +15,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
-public class StudentMapperTest extends BaseMapperTest<StudentModel, StudentDTO, StudentMapper> {
+public class StudentMapperTest extends BaseMapperTest<StudentModel, V1StudentDTO, V1StudentMapper> {
 
     @Autowired
     private StudentService studentService;
@@ -53,8 +53,8 @@ public class StudentMapperTest extends BaseMapperTest<StudentModel, StudentDTO, 
     }
 
     @Override
-    public StudentDTO getNewDTO() {
-        StudentDTO studentDTO = new StudentDTO();
+    public V1StudentDTO getNewDTO() {
+        V1StudentDTO studentDTO = new V1StudentDTO();
         studentDTO.setId(this.getNewEntity().getId());
         studentDTO.setPhone("New Phone");
         studentDTO.setSurname("New Surname");

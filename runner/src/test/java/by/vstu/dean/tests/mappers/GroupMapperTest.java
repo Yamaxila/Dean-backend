@@ -1,8 +1,8 @@
 package by.vstu.dean.tests.mappers;
 
 import by.vstu.dean.DeanBackendApplication;
-import by.vstu.dean.dto.v1.students.GroupDTO;
-import by.vstu.dean.mapper.v1.GroupMapper;
+import by.vstu.dean.dto.v1.students.V1GroupDTO;
+import by.vstu.dean.mapper.v1.V1GroupMapper;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.services.GroupService;
 import by.vstu.dean.tests.BaseMapperTest;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
-public class GroupMapperTest extends BaseMapperTest<GroupModel, GroupDTO, GroupMapper> {
+public class GroupMapperTest extends BaseMapperTest<GroupModel, V1GroupDTO, V1GroupMapper> {
 
     @Autowired
     private GroupService groupService;
@@ -28,8 +28,8 @@ public class GroupMapperTest extends BaseMapperTest<GroupModel, GroupDTO, GroupM
     }
 
     @Override
-    public GroupDTO getNewDTO() {
-        GroupDTO groupDTO = new GroupDTO();
+    public V1GroupDTO getNewDTO() {
+        V1GroupDTO groupDTO = new V1GroupDTO();
         groupDTO.setId(this.getNewEntity().getId());
         groupDTO.setYearEnd(2024);
         return groupDTO;

@@ -1,8 +1,8 @@
 package by.vstu.dean.tests.mappers;
 
 import by.vstu.dean.DeanBackendApplication;
-import by.vstu.dean.dto.v1.FacultyDTO;
-import by.vstu.dean.mapper.v1.FacultyMapper;
+import by.vstu.dean.dto.v1.V1FacultyDTO;
+import by.vstu.dean.mapper.v1.V1FacultyMapper;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.services.FacultyService;
 import by.vstu.dean.tests.BaseMapperTest;
@@ -14,7 +14,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
-public class FacultyMapperTest extends BaseMapperTest<FacultyModel, FacultyDTO, FacultyMapper> {
+public class FacultyMapperTest extends BaseMapperTest<FacultyModel, V1FacultyDTO, V1FacultyMapper> {
 
     @Autowired
     private FacultyService facultyService;
@@ -33,8 +33,8 @@ public class FacultyMapperTest extends BaseMapperTest<FacultyModel, FacultyDTO, 
     }
 
     @Override
-    public FacultyDTO getNewDTO() {
-        FacultyDTO facultyDTO = new FacultyDTO();
+    public V1FacultyDTO getNewDTO() {
+        V1FacultyDTO facultyDTO = new V1FacultyDTO();
         facultyDTO.setId(this.getNewEntity().getId());
         facultyDTO.setName("Test");
         facultyDTO.setShortName("TestShortName");

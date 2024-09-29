@@ -1,8 +1,8 @@
 package by.vstu.dean.tests.mappers;
 
 import by.vstu.dean.DeanBackendApplication;
-import by.vstu.dean.dto.v1.specs.SpecialityDTO;
-import by.vstu.dean.mapper.v1.SpecialityMapper;
+import by.vstu.dean.dto.v1.specs.V1SpecialityDTO;
+import by.vstu.dean.mapper.v1.V1SpecialityMapper;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.services.SpecialityService;
 import by.vstu.dean.tests.BaseMapperTest;
@@ -13,7 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ContextConfiguration(classes= DeanBackendApplication.class)
-public class SpecialityMapperTest extends BaseMapperTest<SpecialityModel, SpecialityDTO, SpecialityMapper> {
+public class SpecialityMapperTest extends BaseMapperTest<SpecialityModel, V1SpecialityDTO, V1SpecialityMapper> {
     @Autowired
     private SpecialityService specialityService;
 
@@ -28,8 +28,8 @@ public class SpecialityMapperTest extends BaseMapperTest<SpecialityModel, Specia
     }
 
     @Override
-    public SpecialityDTO getNewDTO() {
-        SpecialityDTO specialityDTO = new SpecialityDTO();
+    public V1SpecialityDTO getNewDTO() {
+        V1SpecialityDTO specialityDTO = new V1SpecialityDTO();
         specialityDTO.setId(this.getNewEntity().getId());
         specialityDTO.setSpecCode("New Spec Code");
         return null;
