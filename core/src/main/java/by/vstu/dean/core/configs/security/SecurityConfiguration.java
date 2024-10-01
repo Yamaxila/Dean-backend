@@ -18,7 +18,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-public class ResourceServerConfiguration{
+public class SecurityConfiguration {
 
     @Value("${token.signing.key}")
     private String signingKey;
@@ -30,7 +30,8 @@ public class ResourceServerConfiguration{
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/api/v1/public/**").permitAll()
+                                .requestMatchers("/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/api/v1/public/**")
+                                .permitAll()
                                 .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2ResourceServer ->

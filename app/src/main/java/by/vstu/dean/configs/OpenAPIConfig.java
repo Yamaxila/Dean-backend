@@ -1,4 +1,4 @@
-package by.vstu.dean.core.configs;
+package by.vstu.dean.configs;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -18,21 +18,35 @@ import java.util.Arrays;
 @Configuration
 public class OpenAPIConfig {
 
-    @Value("${auth.url}")
-    private String authURL;
     @Value("${app.version}")
     private String version;
 
     @Bean
-    public GroupedOpenApi v1Api() {
+    public GroupedOpenApi v1PrivateApi() {
         return GroupedOpenApi.builder()
-                .group("v1")
-                .packagesToScan("by.vstu.dean.controllers.v1", "by.vstu.dean.core.controllers")
+                .group("v1-private")
+                .packagesToScan("by.vstu.dean.controllers.authorized.v1", "by.vstu.dean.core.controllers")
                 .build();
     }
 
     @Bean
-    public OpenAPI springShopOpenAPI() {
+    public GroupedOpenApi v1PublicApi() {
+        return GroupedOpenApi.builder()
+                .group("v1-public")
+                .packagesToScan("by.vstu.dean.controllers.enums.v1", "by.vstu.dean.controllers.nonauthorized.v1")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi v1RepoApi() {
+        return GroupedOpenApi.builder()
+                .group("v1-repo")
+                .packagesToScan("by.vstu.dean.controllers.repo.v1")
+                .build();
+    }
+
+    @Bean
+    public OpenAPI deanOpenAPI() {
         return new OpenAPI()
                 .components(new Components().addSecuritySchemes("bearer-jwt",
                         new SecurityScheme().type(SecurityScheme.Type.HTTP).scheme("bearer").bearerFormat("JWT")

@@ -20,7 +20,9 @@ public enum EPaymentType implements BaseEnum<EPaymentType> {
     PAID(1),
 
     @Schema(title = "Целевое обучение")
-    DIRECTIONAL(2);
+    DIRECTIONAL(2),
+    @Schema(title = "Неизвестно")
+    UNKNOWN(-1);
 
     /**
      * Конструктор с параметром.

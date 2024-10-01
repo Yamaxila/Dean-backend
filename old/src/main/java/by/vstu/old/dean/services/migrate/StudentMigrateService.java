@@ -5,6 +5,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.enums.EMobileOperatorType;
 import by.vstu.dean.enums.EPassportType;
+import by.vstu.dean.enums.EPaymentType;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
@@ -205,6 +206,14 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
                 .flat(StringUtils.safeTrim(dStudentModel.getAddressFlat()))
                 .postIndex(StringUtils.safeTrim(dStudentModel.getAddressIndex()))
                 .build();
+
+
+        if (StringUtils.safeTrim(dStudentModel.getPaymentType()).equalsIgnoreCase("бюджет"))
+            studentModel.setPaymentType(EPaymentType.NOT_PAID);
+        else if (StringUtils.safeTrim(dStudentModel.getPaymentType()).equalsIgnoreCase("платное"))
+            studentModel.setPaymentType(EPaymentType.PAID);
+        else
+            studentModel.setPaymentType(EPaymentType.UNKNOWN);
 
         if (!update) {
             address.setCreated(LocalDateTime.now());
