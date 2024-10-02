@@ -9,6 +9,7 @@ import cz.jirutka.rsql.parser.ast.Node;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.javers.core.Javers;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.List;
@@ -36,6 +37,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      *
      * @return Список объектов модели.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<O> getAll() {
         return this.repo.findAll();
     }
@@ -45,6 +47,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      *
      * @return Список объектов модели.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<O> rsql(String rsql) {
         Node rootNode = new RSQLParser().parse(rsql);
         Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<>());
@@ -56,6 +59,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      *
      * @return Список активных объектов модели.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<O> getAllActive(Boolean is) {
         return this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED));
     }
@@ -66,6 +70,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param id Идентификатор объекта модели.
      * @return Optional, содержащий объект модели, если найден, иначе пустой Optional.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
     public Optional<O> getById(Long id) {
         if(id == null)
             return Optional.empty();
@@ -75,11 +80,12 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     /**
      * Получает объект модели по идентификатору.
      *
-     * @param id Идентификатор объекта модели.
+     * @param sourceId Идентификатор объекта модели.
      * @return Объект модели, соответствующий идентификатору.
      */
-    public O getBySourceId(Long id) {
-        return this.repo.findBySourceId(id);
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
+    public O getBySourceId(Long sourceId) {
+        return this.repo.findBySourceId(sourceId);
     }
 
     /**
@@ -88,10 +94,13 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param o сущность.
      * @return Сохраненный объект модели.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
     public O save(O o) {
+        if (o == null)
+            return null;
+
         o = this.repo.saveAndFlush(o);
-        if (o != null)
-            this.javers.commit("dean", o);
+        this.javers.commit("dean", o);
         return o;
     }
 
@@ -101,10 +110,16 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param o Список объектов модели для сохранения.
      * @return Список сохраненных объектов модели.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<O> saveAll(List<O> o) {
+        if (o == null)
+            return null;
+
+        if (o.isEmpty())
+            return o;
+
         o = this.repo.saveAllAndFlush(o);
-        if (!o.isEmpty())
-            this.javers.commit("dean", o);
+        this.javers.commit("dean", o);
         return o;
     }
 

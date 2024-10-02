@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
  * Сервис для работы с объектами модели группы.
  */
 @Service
-@Cacheable("group")
+@Cacheable("groups")
 public class GroupService extends BaseService<GroupModel, GroupModelRepository> {
 
     public GroupService(GroupModelRepository repo, Javers javers) {
@@ -24,7 +24,9 @@ public class GroupService extends BaseService<GroupModel, GroupModelRepository> 
      * @param name Имя группы для поиска.
      * @return Объект модели группы, соответствующий имени.
      */
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null", key = "#name")
     public GroupModel findByName(String name) {
         return this.repo.findByName(name);
     }
+
 }

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -57,23 +58,17 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     @Override
     public List<StudentModel> convertNotExistsFromDB() {
 
-        List<StudentModel> out = new ArrayList<>();
         List<Long> ids = this.studentService.getRepo().findAllSourceIds();
 //        this.specializations.addAll(this.specializationModelRepository.findAll());
 //        this.groups.addAll(this.groupModelRepository.findAll());
-        this.groupService.getAll().forEach(group -> {
 
-            List<DStudentModel> temp = this.dStudentModelRepository.findAllByGroupId(group.getSourceId())
-                    .stream().filter(p -> !ids.contains(p.getId())).toList();
-
-            out.addAll(this.convertList(temp));
-
-        });
+        List<StudentModel> out = this.groupService.getAll().parallelStream()
+                .map(m -> this.convertList(this.dStudentModelRepository.findAllByGroupId(m.getSourceId())
+                        .stream().filter(p -> !ids.contains(p.getId())).toList())).flatMap(Collection::stream).toList();
 
         this.groups.clear();
         this.specializations.clear();
 
-//        return null;
         return out.stream().collect(Collectors.toMap(
                 StudentModel::getSourceId,
                 studentModel -> studentModel,

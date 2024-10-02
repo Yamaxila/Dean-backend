@@ -5,6 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.context.annotation.Import;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 
 /**
@@ -13,6 +14,7 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 @SpringBootApplication
 @EnableAspectJAutoProxy
 @EnableCaching
+@EnableScheduling
 @Import({DeanFutureDBConfig.class, DeanOldDBConfig.class})
 public class DeanBackendApplication {
 

@@ -56,77 +56,77 @@ public final class V1StudentDTO extends BaseDTO {
      */
     @Schema(title = "Адрес")
     @Deprecated
-    @ReflectionField(value = "address", clazz = StudentModel.class)
+    @ReflectionField(value = "address.address", clazz = StudentModel.class)
     private String address;
 
     /**
      * Страна, в которой проживает студент.
      */
     @Schema(title = "Страна")
-    @ReflectionField(value = "addressCountry", clazz = StudentModel.class)
+    @ReflectionField(value = "address.country", clazz = StudentModel.class)
     private String addressCountry;
 
     /**
      * Почтовый индекс адреса студента.
      */
     @Schema(title = "Почтовый индекс")
-    @ReflectionField(value = "addressIndex", clazz = StudentModel.class)
+    @ReflectionField(value = "address.postIndex", clazz = StudentModel.class)
     private String addressIndex;
 
     /**
      * Область адреса студента.
      */
     @Schema(title = "Область")
-    @ReflectionField(value = "addressState", clazz = StudentModel.class)
+    @ReflectionField(value = "address.state", clazz = StudentModel.class)
     private String addressState;
 
     /**
      * Район адреса студента.
      */
     @Schema(title = "Район")
-    @ReflectionField(value = "addressRegion", clazz = StudentModel.class)
+    @ReflectionField(value = "address.region", clazz = StudentModel.class)
     private String addressRegion;
 
     /**
      * Город адреса студента.
      */
     @Schema(title = "Город")
-    @ReflectionField(value = "addressCity", clazz = StudentModel.class)
+    @ReflectionField(value = "address.city", clazz = StudentModel.class)
     private String addressCity;
 
     /**
      * Улица адреса студента.
      */
     @Schema(title = "Улица")
-    @ReflectionField(value = "addressStreet", clazz = StudentModel.class)
+    @ReflectionField(value = "address.street", clazz = StudentModel.class)
     private String addressStreet;
 
     /**
      * Дом адреса студента.
      */
     @Schema(title = "Дом")
-    @ReflectionField(value = "addressHouse", clazz = StudentModel.class)
+    @ReflectionField(value = "address.house", clazz = StudentModel.class)
     private String addressHouse;
 
     /**
      * Корпус адреса студента.
      */
     @Schema(title = "Корпус")
-    @ReflectionField(value = "addressHousePart", clazz = StudentModel.class)
+    @ReflectionField(value = "address.housePart", clazz = StudentModel.class)
     private String addressHousePart;
 
     /**
      * Квартира адреса студента.
      */
     @Schema(title = "Квартира")
-    @ReflectionField(value = "addressFlat", clazz = StudentModel.class)
+    @ReflectionField(value = "address.flat", clazz = StudentModel.class)
     private String addressFlat;
 
     /**
      * Телефон студента.
      */
     @Schema(title = "Телефон")
-    @ReflectionField(value = "phone", clazz = StudentModel.class)
+    @ReflectionField(value = "phone.phone", clazz = StudentModel.class)
     private String phone;
 
     /**

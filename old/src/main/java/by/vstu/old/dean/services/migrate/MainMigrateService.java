@@ -57,7 +57,7 @@ public class MainMigrateService {
             services.add(this.specializationMigrateService);
             services.add(this.groupMigrateService);
             services.add(this.studentMigrateService);
-//            services.add(this.studyPlanMigrateService);
+            services.add(this.studyPlanMigrateService);
 //            services.add(this.absenceMigrateService);
 //            services.add(this.departmentSpecialityMergeService);
 //            services.add(this.teacherDepartmentMigrateService);

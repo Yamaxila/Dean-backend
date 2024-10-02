@@ -13,7 +13,6 @@ import java.util.List;
  * Сервис для работы с объектами модели студента.
  */
 @Service
-@Cacheable("student")
 public class StudentService extends BaseService<StudentModel, StudentModelRepository> {
 
     public StudentService(StudentModelRepository repo, Javers javers) {
@@ -23,11 +22,13 @@ public class StudentService extends BaseService<StudentModel, StudentModelReposi
     /**
      * Получает список студентов по идентификатору группы.
      *
-     * @param id Идентификатор группы.
+     * @param groupId Идентификатор группы.
      * @return Список студентов, принадлежащих указанной группе.
      */
-    public List<StudentModel> findAllByGroupId(long id) {
-        return this.repo.findAllByGroupId(id);
+
+    @Cacheable(value = "students", key = "#groupId")
+    public List<StudentModel> findAllByGroupId(long groupId) {
+        return this.repo.findAllByGroupId(groupId);
     }
 
 }
