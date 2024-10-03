@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -128,8 +129,7 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
     }
 
     @ExceptionHandler(Throwable.class)
-    public ResponseEntity<Object> handleException(
-            Exception ex, WebRequest req) throws Exception {
+    public ResponseEntity<Object> handleException(Exception ex, WebRequest req) {
 
         log.error("Request: {} raised exception", req.getContextPath(), ex);
 
@@ -152,18 +152,11 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
 
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
 
-        if (responseStatus == null)
-            return new ResponseEntity<>(String.format("""
-                    {
-                    "error": "Internal Server Error",
-                    "code": 500,
-                    "description": "An unexpected error occurred. Contact with CIT-team for more information and say that errorCode.",
-                    "errorCode": "%S"
-                    }
-                    """, errorCode), HttpStatus.INTERNAL_SERVER_ERROR);
-
-        return new ResponseEntity<>(String.format(
-                """
+        return ResponseEntity
+                .status(responseStatus == null ? HttpStatus.INTERNAL_SERVER_ERROR : responseStatus.value())
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(String.format(
+                        """
                         {
                         "error": "%s",
                         "code": %s,
@@ -171,19 +164,16 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
                         "errorCode": "%S"
                         }
                         """
-                , responseStatus.reason()
-                , responseStatus.value().value()
-                , errorCode)
+                        , responseStatus == null ? ex.getMessage() : responseStatus.reason()
+                        , responseStatus == null ? 500 : responseStatus.value().value()
+                        , errorCode));
 
-                , responseStatus.value());
     }
 
     private String buildParameters(Map<String, String[]> map) {
         StringBuilder sb = new StringBuilder();
 
-        map.forEach((key, value) -> {
-            sb.append(key).append(": ").append(Arrays.stream(value).map(String::valueOf).collect(Collectors.joining(", "))).append("\n");
-        });
+        map.forEach((key, value) -> sb.append(key).append(": ").append(Arrays.stream(value).map(String::valueOf).collect(Collectors.joining(", "))).append("\n"));
 
         return sb.toString().trim();
     }
