@@ -5,6 +5,9 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.trowable.DatabaseFetchException;
+import by.vstu.dean.core.trowable.EntityNotFoundException;
+import by.vstu.dean.core.trowable.MappingException;
 import by.vstu.dean.core.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -61,14 +64,14 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
 
         if (tempO == null) {
             log.error("Can't get data from database!");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DatabaseFetchException();
         }
 
         List<D> tempD = this.mapper.toDto(tempO);
 
         if (tempD == null) {
             log.error("List mapping error!");
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new MappingException();
         }
 
         return new ResponseEntity<>(tempD, HttpStatus.OK);
@@ -100,14 +103,14 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
 
         if (!ValidationUtils.isObjectValid(tempO)) {
             log.error("Can't get active={} data from database!", is);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new DatabaseFetchException();
         }
 
         List<D> tempD = this.mapper.toDto(tempO);
 
         if (!ValidationUtils.isObjectValid(tempO)) {
             log.error("List mapping error! active={}", is);
-            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new MappingException();
         }
 
         return new ResponseEntity<>(tempD, HttpStatus.OK);
@@ -134,8 +137,7 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
     )
     public ResponseEntity<D> getById(@PathVariable Long id) {
         Optional<O> byId = this.service.getById(id);
-        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseThrow(EntityNotFoundException::new);
     }
-
 
 }

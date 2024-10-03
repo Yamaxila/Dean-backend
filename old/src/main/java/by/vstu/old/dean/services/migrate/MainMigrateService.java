@@ -79,7 +79,7 @@ public class MainMigrateService {
         });
 
         migrateThread.setName("Migration");
-        migrateThread.start();
+//        migrateThread.start();
 
     }
 

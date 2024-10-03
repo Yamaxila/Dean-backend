@@ -11,7 +11,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.annotation.AnnotationUtils;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.ServletWebRequest;
+import org.springframework.web.context.request.WebRequest;
 import org.telegram.telegrambots.client.okhttp.OkHttpTelegramClient;
 import org.telegram.telegrambots.longpolling.TelegramBotsLongPollingApplication;
 import org.telegram.telegrambots.longpolling.util.LongPollingSingleThreadUpdateConsumer;
@@ -24,14 +32,13 @@ import org.telegram.telegrambots.meta.generics.TelegramClient;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("CallToPrintStackTrace")
 @Service
 @Slf4j
+@RestControllerAdvice
 public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
 
     @Getter
@@ -65,7 +72,7 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         TelegramService.commands.add(new LogCommand());
         TelegramService.commands.add(new RestartCommand(this.context));
 
-        Thread.setDefaultUncaughtExceptionHandler(TelegramService.this::sendException);
+        Thread.setDefaultUncaughtExceptionHandler((t, ex) -> this.sendException(t, ex, null));
     }
 
     @Override
@@ -120,7 +127,69 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         }
     }
 
-    public void sendException(Thread t, Throwable ex) {
+    @ExceptionHandler(Throwable.class)
+    public ResponseEntity<Object> handleException(
+            Exception ex, WebRequest req) throws Exception {
+
+        log.error("Request: {} raised exception", req.getContextPath(), ex);
+
+        String errorCode = UUID.randomUUID().toString().split("-")[0];
+        log.error("ErrorCode: {}", errorCode);
+
+        Map<String, String> args = new HashMap<>();
+
+        if (req instanceof ServletWebRequest request) {
+            args.put("URL", request.getRequest().getRequestURL().toString());
+            args.put("Method", request.getRequest().getMethod());
+            args.put("RemoteAddress", request.getRequest().getRemoteAddr());
+            args.put("UserAgent", request.getRequest().getHeader("user-agent"));
+        }
+
+        args.put("ErrorCode", errorCode);
+        args.put("Parameters", this.buildParameters(req.getParameterMap()));
+
+        this.sendException(Thread.currentThread(), ex, args);
+
+        ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
+
+        if (responseStatus == null)
+            return new ResponseEntity<>(String.format("""
+                    {
+                    "error": "Internal Server Error",
+                    "code": 500,
+                    "description": "An unexpected error occurred. Contact with CIT-team for more information and say that errorCode.",
+                    "errorCode": "%S"
+                    }
+                    """, errorCode), HttpStatus.INTERNAL_SERVER_ERROR);
+
+        return new ResponseEntity<>(String.format(
+                """
+                        {
+                        "error": "%s",
+                        "code": %s,
+                        "description": "An unexpected error occurred. Contact with CIT-team for more information and say that errorCode.",
+                        "errorCode": "%S"
+                        }
+                        """
+                , responseStatus.reason()
+                , responseStatus.value().value()
+                , errorCode)
+
+                , responseStatus.value());
+    }
+
+    private String buildParameters(Map<String, String[]> map) {
+        StringBuilder sb = new StringBuilder();
+
+        map.forEach((key, value) -> {
+            sb.append(key).append(": ").append(Arrays.stream(value).map(String::valueOf).collect(Collectors.joining(", "))).append("\n");
+        });
+
+        return sb.toString().trim();
+    }
+
+
+    public void sendException(Thread t, Throwable ex, Map<String, String> args) {
         ex.printStackTrace();
         try {
 
@@ -129,24 +198,35 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
             DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy HH:mm:ss");
             String formattedDateTime = LocalDateTime.now().format(formatter);
             sb.append("EXCEPTION").append("\n");
-            sb.append("```Time ").append("\n").append(formattedDateTime).append("```").append("\n");
-            sb.append("```Thread").append("\n").append(t.getName()).append("```").append("\n");
-            sb.append("```message").append("\n").append(ex.getMessage()).append("```").append("\n");
-            sb.append("Stacktrace").append("\n").append("```log").append("\n");
+            sb.append("```Time").append("\n").append(formattedDateTime).append("```").append(" ");
+
+            if (args != null && !args.isEmpty()) {
+                args.forEach((key, value) -> sb.append("```").append(key).append(" ").append(value).append("```").append("\n"));
+            }
+
+            sb.append("```Thread").append("\n").append(t.getName()).append("```").append(" ");
+            sb.append("```message").append("\n").append(ex.getMessage()).append("```").append(" ");
+            sb.append("Stacktrace").append("\n").append("```log");
 
             Arrays.stream(ex.getStackTrace()).forEach(elm -> sb.append(elm.toString()).append("\n"));
 
             sb.append("```");
 
             String text = sb.toString();
+            boolean add = false;
+
             while (!text.isEmpty()) {
                 String part = text.substring(0, Math.min(text.length(), 4092));
 
                 if (!part.endsWith("```"))
                     part += "```";
+                if (add)
+                    part = "```log\n" + part;
+
                 SendMessage message = SendMessage.builder().chatId(527440937L).parseMode(ParseMode.MARKDOWN).text(part).build();
                 try {
                     this.telegramClient.execute(message);
+                    add = true;
                 } catch (TelegramApiException e) {
                     log.error("Send message failed", e);
                 }
@@ -157,4 +237,6 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         }
 
     }
+
+
 }

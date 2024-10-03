@@ -10,7 +10,6 @@ import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.models.students.internal.*;
-import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.repo.SpecializationModelRepository;
 import by.vstu.dean.services.GroupService;
 import by.vstu.dean.services.SpecializationService;
@@ -32,7 +31,6 @@ import java.util.stream.Collectors;
 public class StudentMigrateService extends BaseMigrateService<StudentModel, DStudentModel> {
 
     private final SpecializationModelRepository specializationModelRepository;
-    private final GroupModelRepository groupModelRepository;
 
     private final CitizenshipService citizenshipService;
     private final InstitutionService institutionService;
@@ -227,20 +225,12 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         studentModel.setStatus(status);
         if (dStudentModel.getSpecialization() != null)
-            if (this.specializations.isEmpty())
-                studentModel.setSpecialization(this.specializationModelRepository.findBySourceId(dStudentModel.getSpecialization().getId()));
-            else
-                studentModel.setSpecialization(this.specializations.stream().filter(p -> p.getSourceId().equals(dStudentModel.getSpecialization().getId())).findAny().orElse(null));
-
-//        DocumentModel documentModel;
-//        Optional<DocumentModel> oDocument = this.documentMigrateService.tryFindDocument(dStudentModel);
-//
-//        documentModel = oDocument.orElseGet(() -> documentMigrateService.convertSingle(dStudentModel));
-//            studentModel.setLastDocument(documentModel);
+            studentModel.setSpecialization(this.specializationService.getBySourceId(dStudentModel.getSpecialization().getId()));
 
         if (!update) {
             studentModel.setCreated(LocalDateTime.now());
         }
+
         studentModel.setUpdated(LocalDateTime.now());
 
         return studentModel;

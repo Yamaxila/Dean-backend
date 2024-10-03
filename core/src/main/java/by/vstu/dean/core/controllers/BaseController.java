@@ -5,6 +5,8 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.trowable.BadRequestException;
+import by.vstu.dean.core.trowable.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -66,7 +68,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     public ResponseEntity<D> put(@RequestBody D dto) {
         if(dto == null) {
             log.warn("DTO is empty!");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new BadRequestException();
         }
         return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
     }
@@ -95,7 +97,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     public ResponseEntity<O> putModel(@RequestBody O model) {
         if(model == null) {
             log.warn("entity is empty!");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new BadRequestException();
         }
         return new ResponseEntity<>(this.service.save(model), HttpStatus.OK);
     }
@@ -125,14 +127,14 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
         if (id == null) {
             log.warn("id is null!");
-            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            throw new BadRequestException();
         }
         Optional<O> byId = this.service.getById(id);
 
         if (byId.isEmpty())
             log.warn("Cannot to find entity with id {}", id);
 
-        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseThrow(EntityNotFoundException::new);
     }
 
     /**
