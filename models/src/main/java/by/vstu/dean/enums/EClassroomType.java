@@ -10,25 +10,24 @@ import java.util.List;
 @Schema(title = "Тип аудитории")
 public enum EClassroomType implements BaseEnum<EClassroomType> {
 
+    UNKNOWN(0, "UNKNOWN"),
 
-    LECTURE(0, "лекционная"),
+    LECTURE(1, "лекционная"),
 
-    LAB(1, "лаборатория"),
+    LAB(2, "лаборатория"),
 
-    SPEC_LAB(2, "спец.лаборатория"),
+    SPEC_LAB(3, "спец.лаборатория"),
 
-    COMPUTER_CLASS(3, "комп.класс"),
+    COMPUTER_CLASS(4, "комп.класс"),
 
-    PICTURE(4, "рисунок"),
-    PICTURE_ART(5, "рисунок/живопись"),
-    ART(6, "живопись"),
+    PICTURE(5, "рисунок"),
+    PICTURE_ART(6, "рисунок/живопись"),
+    ART(7, "живопись"),
 
-    EMPTY(7, ""),
+    EMPTY(8, ""),
 
-    STUDY_CLASS(8, "учебная аудитория"),
-    GYM(9, "спортзал"),
-
-    UNKNOWN(-1, "UNKNOWN");
+    STUDY_CLASS(9, "учебная аудитория"),
+    GYM(10, "спортзал");
 
     final int id;
     @Getter

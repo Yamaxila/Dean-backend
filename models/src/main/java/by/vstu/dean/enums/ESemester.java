@@ -9,10 +9,11 @@ import java.util.List;
 @Schema(title = "Семестр")
 public enum ESemester implements BaseEnum<ESemester> {
 
-    SPRING(0),
-    AUTUMN(1),
+    UNKNOWN(0),
 
-    UNKNOWN(-1);
+    SPRING(1),
+    AUTUMN(2);
+
     @SuppressWarnings("unused")
     final int id;
     ESemester(int id) {

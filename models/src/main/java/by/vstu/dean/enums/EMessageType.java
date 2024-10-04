@@ -9,12 +9,13 @@ import java.util.List;
 @Schema(title = "Тип внутреннего сообщения")
 public enum EMessageType implements BaseEnum<EMessageType> {
 
-    INFO(0),
-    WARNING(1),
-    ERROR(2),
-    SCHEDULED(3),
+    UNKNOWN(0),
 
-    UNKNOWN(-1);
+    INFO(1),
+    WARNING(2),
+    ERROR(3),
+    SCHEDULED(4);
+
 
     EMessageType(int ignoredId) {
     }

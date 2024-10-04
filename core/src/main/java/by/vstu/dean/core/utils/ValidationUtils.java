@@ -7,6 +7,10 @@ import java.util.Objects;
 
 public class ValidationUtils {
 
+    public static boolean isLongValid(Long l) {
+        return l != null && l < Long.MAX_VALUE && l > Long.MIN_VALUE;
+    }
+
     public static boolean isEmpty(Object... objects) {
         if(objects == null || objects.length == 0)
             return true;

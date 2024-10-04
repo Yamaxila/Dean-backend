@@ -2,11 +2,12 @@ package by.vstu.dean.enums;
 
 public enum EMobileOperatorType {
 
-    MTS(0, "МТС"),
-    A1(1, "А1"),
-    LIFE(2, "Life ;)"),
+    UNKNOWN(0, "UNK"),
 
-    UNKNOWN(-1, "UNK");
+    MTS(1, "МТС"),
+    A1(2, "А1"),
+    LIFE(3, "Life ;)");
+
 
     EMobileOperatorType(int ignoredId, String ignoredName) {
     }

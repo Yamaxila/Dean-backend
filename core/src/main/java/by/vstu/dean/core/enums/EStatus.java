@@ -11,14 +11,14 @@ import java.util.List;
 @Schema(description = "Enum реализующий статус объекта")
 public enum EStatus implements BaseEnum<EStatus> {
 
+    @Schema(title = "Неизвестный статус")
+    UNKNOWN(1),
+
     @Schema(title = "Активный статус")
-    ACTIVE(0),
+    ACTIVE(2),
 
     @Schema(title = "Удаленный статус")
-    DELETED(1),
-
-    @Schema(title = "Неизвестный статус")
-    UNKNOWN(-1);
+    DELETED(3);
 
     /**
      * Конструктор с параметром.

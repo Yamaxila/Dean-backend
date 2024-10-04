@@ -9,7 +9,10 @@ import java.util.List;
 @Schema(title = "Тип комнаты общежития")
 public enum EHostelRoomType implements BaseEnum<EHostelRoomType> {
 
-    LITTLE(0), BIG(1), UNKNOWN(-1);
+    UNKNOWN(0),
+    LITTLE(1),
+    BIG(2);
+
 
     EHostelRoomType(int ignoredId) {
     }

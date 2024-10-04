@@ -9,7 +9,9 @@ import java.util.List;
 @Schema(title = "Общежитие")
 public enum EHostel implements BaseEnum<EHostel> {
 
-    HOSTEL_2(1), HOSTEL_3(2), UNKNOWN(-1);
+    UNKNOWN(0),
+    HOSTEL_2(1),
+    HOSTEL_3(2);
 
     public final int id;
 

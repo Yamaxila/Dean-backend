@@ -2,15 +2,16 @@ package by.vstu.dean.enums;
 
 public enum EPassportType {
 
-    PASSPORT(0),
+    UNKNOWN(0),
 
-    ID_CARD(1),
-    RESIDENT_CARD(2),
+    PASSPORT(1),
 
-    FOREIGN_PASSPORT(3),
-    FOREIGN_ID_CARD(4),
+    ID_CARD(2),
+    RESIDENT_CARD(3),
 
-    UNKNOWN(-1);
+    FOREIGN_PASSPORT(4),
+    FOREIGN_ID_CARD(5);
+
 
     EPassportType(int ignoredId) {
     }

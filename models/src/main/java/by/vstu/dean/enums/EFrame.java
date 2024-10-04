@@ -11,13 +11,11 @@ import java.util.List;
 @Schema(title = "Корпус")
 public enum EFrame implements BaseEnum<EFrame> {
 
+    UNKNOWN(0),
     FIRST(1),
     SECOND(2),
     FOURTH(4),
-    FIFTH(5),
-
-    UNKNOWN(-1);
-
+    FIFTH(5);
     final int id;
 
     EFrame(int id) {

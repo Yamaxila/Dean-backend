@@ -3,13 +3,13 @@ package by.vstu.old.dean.services.migrate;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.QualificationModel;
-import by.vstu.dean.repo.QualificationModelRepository;
+import by.vstu.dean.services.QualificationService;
 import by.vstu.old.dean.models.DQualificationModel;
 import by.vstu.old.dean.repo.DQualificationModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -22,7 +22,7 @@ import java.util.List;
 public class QualificationMigrateService extends BaseMigrateService<QualificationModel, DQualificationModel> {
 
     private final DQualificationModelRepository dQualificationRepo;
-    private final QualificationModelRepository qualificationRepo;
+    private final QualificationService qualificationService;
 
     /**
      * Метод для получения идентификатора последней записи в репозитории новой версии модели.
@@ -31,15 +31,12 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
      */
     @Override
     public Long getLastDBId() {
-        return this.qualificationRepo.findTopByOrderByIdDesc() == null ? 0 : this.qualificationRepo.findTopByOrderByIdDesc().getSourceId();
+        return this.qualificationService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.qualificationService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
     public List<QualificationModel> convertNotExistsFromDB() {
-
-        List<DQualificationModel> temp = new ArrayList<>();
-        temp.addAll(this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()));
-        return this.convertList(temp);
+        return this.convertList(this.dQualificationRepo.findAllByIdAfter(this.getLastDBId()));
     }
 
     /**
@@ -51,15 +48,19 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
      */
     @Override
     public QualificationModel convertSingle(DQualificationModel dQualificationModel, boolean update) {
-        // Ваш код здесь
 
         QualificationModel qualificationModel = new QualificationModel();
         qualificationModel.setName(StringUtils.safeTrim(dQualificationModel.getNamePart1()));
         qualificationModel.setNameGenitive(dQualificationModel.getNamePart2() == null ? "" : StringUtils.safeTrim(dQualificationModel.getNamePart2()));
         qualificationModel.setStatus(EStatus.ACTIVE);
         qualificationModel.setSourceId(dQualificationModel.getId());
+        qualificationModel.setUpdated(LocalDateTime.now());
 
-        // Ваш код продолжается
+        if (update)
+            qualificationModel.setId(dQualificationModel.getId());
+        if (!update)
+            qualificationModel.setCreated(LocalDateTime.now());
+
 
         return qualificationModel;
     }
@@ -72,13 +73,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
      */
     @Override
     public List<QualificationModel> convertList(List<DQualificationModel> t) {
-        // Ваш код здесь
-
-        List<QualificationModel> out = new ArrayList<>();
-
-        t.forEach(q -> out.add(this.convertSingle(q)));
-
-        return out;
+        return t.stream().map(this::convertSingle).toList();
     }
 
     /**
@@ -89,7 +84,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
      */
     @Override
     public QualificationModel insertSingle(QualificationModel t) {
-        return this.qualificationRepo.saveAndFlush(t);
+        return this.qualificationService.save(t);
     }
 
     /**
@@ -100,7 +95,7 @@ public class QualificationMigrateService extends BaseMigrateService<Qualificatio
      */
     @Override
     public List<QualificationModel> insertAll(List<QualificationModel> t) {
-        return this.qualificationRepo.saveAllAndFlush(t);
+        return this.qualificationService.saveAll(t);
     }
 
     /**

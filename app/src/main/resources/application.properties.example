@@ -51,3 +51,6 @@ dean.bot.token=telegram:api.token
 
 #DevTools
 spring.devtools.livereload.enabled=false
+
+#Cache settings
+caching.spring.ttl=60000

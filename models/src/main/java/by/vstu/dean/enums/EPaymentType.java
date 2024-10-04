@@ -13,16 +13,18 @@ import java.util.List;
 @SuppressWarnings("unused")
 public enum EPaymentType implements BaseEnum<EPaymentType> {
 
+    @Schema(title = "Неизвестно")
+    UNKNOWN(-1),
+
     @Schema(title = "Бесплатное обучение")
-    NOT_PAID(0),
+    NOT_PAID(1),
 
     @Schema(title = "Платное обучение")
-    PAID(1),
+    PAID(2),
 
     @Schema(title = "Целевое обучение")
-    DIRECTIONAL(2),
-    @Schema(title = "Неизвестно")
-    UNKNOWN(-1);
+    DIRECTIONAL(3);
+
 
     /**
      * Конструктор с параметром.

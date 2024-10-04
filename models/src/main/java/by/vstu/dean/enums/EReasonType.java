@@ -2,7 +2,7 @@ package by.vstu.dean.enums;
 
 public enum EReasonType {
 
-    UNKNOWN(-1);
+    UNKNOWN(0);
 
     EReasonType(int ignoredId) {
     }

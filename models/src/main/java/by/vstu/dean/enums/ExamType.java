@@ -12,14 +12,15 @@ import java.util.List;
 @Schema(title = "Тип экзамена")
 public enum ExamType implements BaseEnum<ExamType> {
 
+    @Schema(title = "Неизвестный тип экзамена")
+    UNKNOWN(0),
+
     @Schema(title = "Экзамен")
-    EXAM(0),
+    EXAM(1),
 
     @Schema(title = "Зачет")
-    TEST(1),
+    TEST(2);
 
-    @Schema(title = "Неизвестный тип экзамена")
-    UNKNOWN(-1);
 
     /**
      * Конструктор с параметром.

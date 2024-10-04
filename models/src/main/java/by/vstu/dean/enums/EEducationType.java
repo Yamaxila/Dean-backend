@@ -13,14 +13,14 @@ import java.util.List;
 @SuppressWarnings("unused")
 public enum EEducationType implements BaseEnum<EEducationType> {
 
+    @Schema(title = "Неизвестный тип обучения")
+    UNKNOWN(0),
+
     @Schema(title = "Дневное обучение")
-    DAYTIME(0),
+    DAYTIME(1),
 
     @Schema(title = "Заочное обучение")
-    EXTRAMURAL(1),
-
-    @Schema(title = "Неизвестный тип обучения")
-    UNKNOWN(-1);
+    EXTRAMURAL(2);
 
     /**
      * Конструктор с параметром.

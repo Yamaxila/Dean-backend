@@ -8,18 +8,18 @@ import java.util.List;
 
 @Schema(title = "Тип занятия")
 public enum ELessonType implements BaseEnum<ELessonType> {
+    UNKNOWN(0),
 
-    LECTURE(0),
-    PRACTICE(1),
-    LAB(2),
-    EXAM(3),
-    CONSULTATION(4),
-    SCORE(5),
-    DEFENSE(6),
-    EXAM_REVIEW(7),
-    CONSULT_EXAM(8),
+    LECTURE(1),
+    PRACTICE(2),
+    LAB(3),
+    EXAM(4),
+    CONSULTATION(5),
+    SCORE(6),
+    DEFENSE(7),
+    EXAM_REVIEW(8),
+    CONSULT_EXAM(9);
 
-    UNKNOWN(-1);
 
     final int id;
 
