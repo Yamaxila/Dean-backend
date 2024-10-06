@@ -2,6 +2,10 @@ package by.vstu.dean.controllers.authorized.v1.hostels;
 
 import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.trowable.BadRequestException;
+import by.vstu.dean.core.trowable.DatabaseFetchException;
+import by.vstu.dean.core.trowable.MappingException;
+import by.vstu.dean.core.utils.ValidationUtils;
 import by.vstu.dean.dto.v1.hostels.V1HostelRoomDTO;
 import by.vstu.dean.dto.v1.students.V1StudentDTO;
 import by.vstu.dean.mapper.v1.V1HostelRoomMapper;
@@ -112,9 +116,20 @@ public class V1HostelController extends BaseController<V1HostelRoomDTO, HostelRo
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAllRooms", description = "Отправляет всех активных(или нет) студентов, проживавших в комнате")
     public ResponseEntity<List<V1StudentDTO>> getAllRoomStudentsActive(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
+        if (ValidationUtils.isLongValid(roomId))
+            throw new BadRequestException("roomId is required");
+
         Optional<HostelRoomModel> o = this.service.getById(roomId);
 
-        return o.map(hostelRoomModel -> new ResponseEntity<>(this.studentMapper.toDto(hostelRoomModel.getStudents().stream().filter(p -> p.getStatus().equals(is ? EStatus.ACTIVE : EStatus.DELETED)).toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+        if (o.isEmpty())
+            throw new DatabaseFetchException(String.format("Room with id %s not found", roomId));
+
+        List<V1StudentDTO> out = this.studentMapper.toDto(o.get().getStudents().stream().filter(p -> p.getStatus().equals(is ? EStatus.ACTIVE : EStatus.DELETED)).toList());
+
+        if (out == null)
+            throw new MappingException("Cannot map HostelRoomModel to V1StudentDTO");
+
+        return ResponseEntity.ok(out);
     }
 
     /**
@@ -128,21 +143,34 @@ public class V1HostelController extends BaseController<V1HostelRoomDTO, HostelRo
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAllRooms", description = "Отправляет всех подтвержденных(или нет) студентов, проживавших в комнате")
     public ResponseEntity<List<V1StudentDTO>> getAllRoomStudentsApproved(@PathVariable Long roomId, @RequestParam(required = false, defaultValue = "true") Boolean is) {
+        if (ValidationUtils.isLongValid(roomId))
+            throw new BadRequestException("roomId is required");
+
         Optional<HostelRoomModel> o = this.service.getById(roomId);
-        return o.map(hostelRoomModel -> new ResponseEntity<>(this.studentMapper.toDto(hostelRoomModel.getStudents().stream().filter(p -> p.isApproved() == is).toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        if (o.isEmpty())
+            throw new DatabaseFetchException(String.format("Room with id %s not found", roomId));
+
+        List<V1StudentDTO> out = this.studentMapper.toDto(o.get().getStudents().stream().filter(p -> p.isApproved() == is).toList());
+
+        if (out == null)
+            throw new MappingException("Cannot map HostelRoomModel to V1StudentDTO");
+
+
+        return ResponseEntity.ok(out);
     }
 
     /**
-     * Назначает студента в комнату.
+     * Прикрепляет студента в комнату.
      *
      * @param roomId Идентификатор комнаты.
      * @param studentId Идентификатор студента, которого назначают в комнату.
-     * @return Комната, в которую назначают студента.
+     * @return Комната, в которую назначают студента с ним же.
      */
-    @RequestMapping(value = "/rooms/{roomId}/students", produces = {"application/json"}, method = RequestMethod.POST)
+    @RequestMapping(value = "/rooms/{roomId}/students", produces = {"application/json"}, method = RequestMethod.PUT)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
-    @Operation(method = "postStudent", description = "Прикрепляет студента к комнате")
-    public ResponseEntity<V1HostelRoomDTO> postStudent(@PathVariable Long roomId, @RequestParam Long studentId) {
+    @Operation(method = "putStudent", description = "Прикрепляет студента к комнате")
+    public ResponseEntity<V1HostelRoomDTO> putStudent(@PathVariable Long roomId, @RequestParam Long studentId) {
         Optional<HostelRoomModel> o = this.service.getById(roomId);
         return o.map(hostelRoomModel -> new ResponseEntity<>(this.mapper.toDto(this.service.setStudent(hostelRoomModel, studentId)), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
@@ -153,7 +181,7 @@ public class V1HostelController extends BaseController<V1HostelRoomDTO, HostelRo
      *
      * @param roomId Идентификатор комнаты.
      * @param studentId Идентификатор студента, которого открепляют от комнаты.
-     * @return Комната, от которой открепляют студента.
+     * @return Комната, от которой открепляют студента без него.
      */
     @RequestMapping(value = "/rooms/{roomId}/students", produces = {"application/json"}, method = RequestMethod.DELETE)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")

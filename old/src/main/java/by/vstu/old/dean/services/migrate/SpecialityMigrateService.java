@@ -4,7 +4,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.SpecialityModel;
-import by.vstu.dean.repo.SpecialityModelRepository;
+import by.vstu.dean.services.SpecialityService;
 import by.vstu.old.dean.models.DSpecialityModel;
 import by.vstu.old.dean.models.DSpecializationModel;
 import by.vstu.old.dean.repo.DStudentModelRepository;
@@ -19,18 +19,18 @@ import java.util.List;
 @Service
 public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel, DSpecialityModel> {
 
-    private final SpecialityModelRepository specialityRepo;
+    private final SpecialityService specialityService;
     private final DStudentModelRepository dStudentRepo;
 
     @Override
     public Long getLastDBId() {
-        return this.specialityRepo.findTopByOrderByIdDesc() == null ? 0 : this.specialityRepo.findTopByOrderByIdDesc().getSourceId();
+        return this.specialityService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.specialityService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
     public List<SpecialityModel> convertNotExistsFromDB() {
 
-        List<Long> ids = this.specialityRepo.findAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
+        List<Long> ids = this.specialityService.getAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
         List<SpecialityModel> out = new ArrayList<>();
 
         this.dStudentRepo.findAllSpecializations(14000L).stream()
@@ -69,12 +69,12 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
 
     @Override
     public SpecialityModel insertSingle(SpecialityModel t) {
-        return this.specialityRepo.saveAndFlush(t);
+        return this.specialityService.save(t);
     }
 
     @Override
     public List<SpecialityModel> insertAll(List<SpecialityModel> t) {
-        return this.specialityRepo.saveAllAndFlush(t);
+        return this.specialityService.saveAll(t);
     }
 
     @Override

@@ -2,7 +2,7 @@ package by.vstu.old.dean.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.students.internal.InstitutionModel;
-import by.vstu.dean.repo.InstitutionModelRepository;
+import by.vstu.dean.services.students.InstitutionService;
 import by.vstu.old.dean.models.DInstitutionModel;
 import by.vstu.old.dean.repo.DInstitutionModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import java.util.List;
 public class InstitutionMigrateService extends BaseMigrateService<InstitutionModel, DInstitutionModel> {
 
     private final DInstitutionModelRepository dInstitutionRepository;
-    private final InstitutionModelRepository institutionRepository;
+    private final InstitutionService institutionService;
 
     @Override
     public Long getLastDBId() {
-        return this.institutionRepository.findTopByOrderByIdDesc() == null ? 0 : this.institutionRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.institutionService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.institutionService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -49,12 +49,12 @@ public class InstitutionMigrateService extends BaseMigrateService<InstitutionMod
 
     @Override
     public InstitutionModel insertSingle(InstitutionModel t) {
-        return this.institutionRepository.saveAndFlush(t);
+        return this.institutionService.save(t);
     }
 
     @Override
     public List<InstitutionModel> insertAll(List<InstitutionModel> t) {
-        return this.institutionRepository.saveAllAndFlush(t);
+        return this.institutionService.saveAll(t);
     }
 
     @Override

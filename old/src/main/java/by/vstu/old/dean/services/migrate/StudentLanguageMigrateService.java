@@ -3,7 +3,7 @@ package by.vstu.old.dean.services.migrate;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.students.internal.StudentLanguageModel;
-import by.vstu.dean.repo.StudentLanguageModelRepository;
+import by.vstu.dean.services.students.StudentLanguageService;
 import by.vstu.old.dean.models.DStudentLanguageModel;
 import by.vstu.old.dean.repo.DStudentLanguageModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ import java.util.List;
 public class StudentLanguageMigrateService extends BaseMigrateService<StudentLanguageModel, DStudentLanguageModel> {
 
     private final DStudentLanguageModelRepository dStudentLanguageRepository;
-    private final StudentLanguageModelRepository studentLanguageRepository;
+    private final StudentLanguageService studentLanguageService;
 
     @Override
     public Long getLastDBId() {
-        return this.studentLanguageRepository.findTopByOrderByIdDesc() == null ? 0 : this.studentLanguageRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.studentLanguageService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.studentLanguageService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -50,12 +50,12 @@ public class StudentLanguageMigrateService extends BaseMigrateService<StudentLan
 
     @Override
     public StudentLanguageModel insertSingle(StudentLanguageModel t) {
-        return this.studentLanguageRepository.saveAndFlush(t);
+        return this.studentLanguageService.save(t);
     }
 
     @Override
     public List<StudentLanguageModel> insertAll(List<StudentLanguageModel> t) {
-        return this.studentLanguageRepository.saveAllAndFlush(t);
+        return this.studentLanguageService.saveAll(t);
     }
 
     @Override

@@ -5,7 +5,7 @@ import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.repo.DepartmentModelRepository;
-import by.vstu.dean.repo.DisciplineModelRepository;
+import by.vstu.dean.services.DisciplineService;
 import by.vstu.old.dean.models.DDisciplineModel;
 import by.vstu.old.dean.repo.DDisciplineModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ import java.util.List;
 public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel, DDisciplineModel> {
 
     private final DDisciplineModelRepository dDisciplineModelRepository;
-    private final DisciplineModelRepository disciplineModelRepository;
+    private final DisciplineService disciplineService;
     private final DepartmentModelRepository departmentModelRepository;
 
     private List<DepartmentModel> departments;
@@ -37,7 +37,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
      */
     @Override
     public Long getLastDBId() {
-        return this.disciplineModelRepository.findTopByOrderByIdDesc() == null ? 0 : this.disciplineModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.disciplineService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.disciplineService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     /**
@@ -126,7 +126,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
      */
     @Override
     public DisciplineModel insertSingle(DisciplineModel t) {
-        return this.disciplineModelRepository.saveAndFlush(t);
+        return this.disciplineService.save(t);
     }
 
     /**
@@ -137,7 +137,7 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
      */
     @Override
     public List<DisciplineModel> insertAll(List<DisciplineModel> t) {
-        return this.disciplineModelRepository.saveAllAndFlush(t);
+        return this.disciplineService.saveAll(t);
     }
 
     /**

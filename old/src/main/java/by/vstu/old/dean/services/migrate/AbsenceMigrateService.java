@@ -7,7 +7,7 @@ import by.vstu.dean.models.lessons.DepartmentModel;
 import by.vstu.dean.models.lessons.DisciplineModel;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.repo.AbsenceModelRepository;
+import by.vstu.dean.services.AbsenceService;
 import by.vstu.dean.services.DepartmentService;
 import by.vstu.dean.services.DisciplineService;
 import by.vstu.dean.services.TeacherService;
@@ -30,9 +30,9 @@ import java.util.Optional;
 public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbsenceModel> {
 
     private final DAbsenceModelRepository dAbsenceModelRepository;
-    private final AbsenceModelRepository absenceModelRepository;
     private final DStudentModelRepository dStudentModelRepository;
 
+    private final AbsenceService absenceService;
     private final DisciplineMigrateService disciplineMigrateService;
     private final TeacherService teacherService;
     private final DisciplineService disciplineService;
@@ -46,7 +46,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
     @Override
     public Long getLastDBId() {
-        return this.absenceModelRepository.findTopByOrderByIdDesc() == null ? 70000 : this.absenceModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.absenceService.getRepo().findTopByOrderByIdDesc() == null ? 70000 : this.absenceService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -150,12 +150,12 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
 
     @Override
     public AbsenceModel insertSingle(AbsenceModel t) {
-        return this.absenceModelRepository.saveAndFlush(t);
+        return this.absenceService.save(t);
     }
 
     @Override
     public List<AbsenceModel> insertAll(List<AbsenceModel> t) {
-        return this.absenceModelRepository.saveAllAndFlush(t);
+        return this.absenceService.saveAll(t);
     }
 
     @Override
@@ -163,7 +163,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         System.err.println(this.getClass().getName());
         this.insertAll(this.convertNotExistsFromDB());
 
-        this.absenceModelRepository.findAll().forEach((absenceModel) -> this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment()));
+        this.absenceService.getAll().forEach((absenceModel) -> this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment()));
 
     }
 }

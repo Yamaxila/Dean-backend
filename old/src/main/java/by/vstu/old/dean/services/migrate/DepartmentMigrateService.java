@@ -3,8 +3,8 @@ package by.vstu.old.dean.services.migrate;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.models.lessons.DepartmentModel;
-import by.vstu.dean.repo.DepartmentModelRepository;
 import by.vstu.dean.repo.FacultyModelRepository;
+import by.vstu.dean.services.DepartmentService;
 import by.vstu.old.dean.models.DDepartmentModel;
 import by.vstu.old.dean.repo.DDepartmentModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,7 @@ import java.util.List;
 public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel, DDepartmentModel> {
 
     private final DDepartmentModelRepository dDepartmentModelRepository;
-    private final DepartmentModelRepository departmentModelRepository;
+    private final DepartmentService departmentService;
     private final FacultyModelRepository facultyModelRepository;
 
     private List<FacultyModel> facultyModels;
@@ -36,7 +36,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
      */
     @Override
     public Long getLastDBId() {
-        return this.departmentModelRepository.findTopByOrderByIdDesc() == null ? 0 : this.departmentModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.departmentService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.departmentService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     /**
@@ -97,7 +97,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
      */
     @Override
     public DepartmentModel insertSingle(DepartmentModel t) {
-        return this.departmentModelRepository.saveAndFlush(t);
+        return this.departmentService.save(t);
     }
 
     /**
@@ -108,7 +108,7 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
      */
     @Override
     public List<DepartmentModel> insertAll(List<DepartmentModel> t) {
-        return this.departmentModelRepository.saveAllAndFlush(t);
+        return this.departmentService.saveAll(t);
     }
 
     /**

@@ -6,7 +6,7 @@ import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.repo.QualificationModelRepository;
 import by.vstu.dean.repo.SpecialityModelRepository;
-import by.vstu.dean.repo.SpecializationModelRepository;
+import by.vstu.dean.services.SpecializationService;
 import by.vstu.old.dean.models.DSpecializationModel;
 import by.vstu.old.dean.repo.DSpecializationModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +21,14 @@ import java.util.List;
 public class SpecializationMigrateService extends BaseMigrateService<SpecializationModel, DSpecializationModel> {
 
     private final SpecialityModelRepository specialityRepository;
-    private final SpecializationModelRepository specializationRepository;
+    private final SpecializationService specializationService;
     private final QualificationModelRepository qualificationModelRepository;
 
     private final DSpecializationModelRepository dSpecializationRepository;
 
     @Override
     public Long getLastDBId() {
-        return specializationRepository.findTopByOrderByIdDesc() == null ? 0 : this.specializationRepository.findTopByOrderByIdDesc().getSourceId();
+        return specializationService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.specializationService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
 
         List<DSpecializationModel> temp = new ArrayList<>();
         List<Long> ids = this.specialityRepository.findAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
-        List<Long> spezIds = this.specializationRepository.findAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
+        List<Long> spezIds = this.specializationService.getAll().stream().map(DBBaseModel::getSourceId).distinct().toList();
 
         this.dSpecializationRepository.findAll()
                 .stream()
@@ -78,12 +78,12 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
 
     @Override
     public SpecializationModel insertSingle(SpecializationModel t) {
-        return this.specializationRepository.saveAndFlush(t);
+        return this.specializationService.save(t);
     }
 
     @Override
     public List<SpecializationModel> insertAll(List<SpecializationModel> t) {
-        return this.specializationRepository.saveAllAndFlush(t);
+        return this.specializationService.saveAll(t);
     }
 
     @Override

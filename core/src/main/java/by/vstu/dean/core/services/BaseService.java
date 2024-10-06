@@ -100,7 +100,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
             return null;
 
         o = this.repo.saveAndFlush(o);
-        this.javers.commit("dean", o);
+        this.javers.commit("dean-" + this.getClass().getSimpleName(), o);
         return o;
     }
 
@@ -119,7 +119,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
             return o;
 
         o = this.repo.saveAllAndFlush(o);
-        this.javers.commit("dean", o);
+        this.javers.commit("dean-" + this.getClass().getSimpleName(), o);
         return o;
     }
 

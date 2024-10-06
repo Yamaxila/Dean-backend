@@ -1,8 +1,8 @@
 package by.vstu.old.dean.services.migrate;
 
 import by.vstu.dean.models.students.internal.EducationModel;
-import by.vstu.dean.repo.EducationModelRepository;
 import by.vstu.dean.repo.StudentModelRepository;
+import by.vstu.dean.services.students.EducationService;
 import by.vstu.old.dean.models.DStudentModel;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,7 +15,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class EducationMigrateService extends BaseMigrateService<EducationModel, DStudentModel> {
 
-    private final EducationModelRepository educationModelRepository;
+    private final EducationService educationService;
     private final StudentModelRepository studentModelRepository;
 
     @Override
@@ -39,7 +39,7 @@ public class EducationMigrateService extends BaseMigrateService<EducationModel, 
     }
 
     public List<EducationModel> applyStudentIds() {
-        List<EducationModel> temp = this.educationModelRepository.findAllByStudentIdIsNull();
+        List<EducationModel> temp = this.educationService.getRepo().findAllByStudentIdIsNull();
         List<EducationModel> out = new ArrayList<>();
         temp.forEach((educationModel) -> {
             educationModel.setStudent(this.studentModelRepository.findBySourceId(educationModel.getSourceId()));
@@ -52,12 +52,12 @@ public class EducationMigrateService extends BaseMigrateService<EducationModel, 
 
     @Override
     public EducationModel insertSingle(EducationModel t) {
-        return this.educationModelRepository.saveAndFlush(t);
+        return this.educationService.save(t);
     }
 
     @Override
     public List<EducationModel> insertAll(List<EducationModel> t) {
-        return this.educationModelRepository.saveAllAndFlush(t);
+        return this.educationService.saveAll(t);
     }
 
     @Override

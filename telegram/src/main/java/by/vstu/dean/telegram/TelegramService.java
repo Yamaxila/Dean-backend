@@ -1,9 +1,6 @@
 package by.vstu.dean.telegram;
 
-import by.vstu.dean.telegram.commands.BaseCommand;
-import by.vstu.dean.telegram.commands.LogCommand;
-import by.vstu.dean.telegram.commands.RestartCommand;
-import by.vstu.dean.telegram.commands.StatusCommand;
+import by.vstu.dean.telegram.commands.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.Getter;
@@ -72,6 +69,7 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         TelegramService.commands.add(new StatusCommand(this.context));
         TelegramService.commands.add(new LogCommand());
         TelegramService.commands.add(new RestartCommand(this.context));
+        TelegramService.commands.add(new StopCommand(this.context));
 
         Thread.setDefaultUncaughtExceptionHandler((t, ex) -> this.sendException(t, ex, null));
     }

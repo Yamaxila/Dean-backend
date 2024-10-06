@@ -3,7 +3,7 @@ package by.vstu.old.dean.services.migrate;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.TeacherDegreeModel;
-import by.vstu.dean.repo.TeacherDegreeModelRepository;
+import by.vstu.dean.services.TeacherDegreeService;
 import by.vstu.old.dean.models.DTeacherModel;
 import by.vstu.old.dean.repo.DTeacherModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +17,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegreeModel, DTeacherModel> {
 
-    private final TeacherDegreeModelRepository teacherDegreeModelRepository;
+    private final TeacherDegreeService teacherDegreeService;
     private final DTeacherModelRepository teacherModelRepository;
 
     private final List<TeacherDegreeModel> teacherDegreeModels = new ArrayList<>();
@@ -29,7 +29,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
 
     @Override
     public List<TeacherDegreeModel> convertNotExistsFromDB() {
-        this.teacherDegreeModels.addAll(this.teacherDegreeModelRepository.findAll());
+        this.teacherDegreeModels.addAll(this.teacherDegreeService.getAll());
 
         return this.convertList(this.teacherModelRepository.findAll());
     }
@@ -41,7 +41,7 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
         if (!this.teacherDegreeModels.isEmpty()) {
             teacherDegreeModel = this.teacherDegreeModels.stream().filter(p -> p.getName().equalsIgnoreCase(StringUtils.safeTrim(dTeacherModel.getDegree()))).findFirst().orElse(null);
         } else {
-            teacherDegreeModel = this.teacherDegreeModelRepository.findByNameLike(StringUtils.safeTrim(dTeacherModel.getDegree().toLowerCase()));
+            teacherDegreeModel = this.teacherDegreeService.getRepo().findByNameLike(StringUtils.safeTrim(dTeacherModel.getDegree().toLowerCase()));
             notInList = true;
         }
         if (teacherDegreeModel == null) {
@@ -76,12 +76,12 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
 
     @Override
     public TeacherDegreeModel insertSingle(TeacherDegreeModel t) {
-        return this.teacherDegreeModelRepository.saveAndFlush(t);
+        return this.teacherDegreeService.save(t);
     }
 
     @Override
     public List<TeacherDegreeModel> insertAll(List<TeacherDegreeModel> t) {
-        return this.teacherDegreeModelRepository.saveAllAndFlush(t.stream().filter(p -> p.getId() == null).toList());
+        return this.teacherDegreeService.saveAll(t.stream().filter(p -> p.getId() == null).toList());
 
     }
 

@@ -8,6 +8,7 @@ import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.merge.TeacherDepartmentMerge;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.*;
+import by.vstu.dean.services.StudyPlanService;
 import by.vstu.old.dean.models.DStudyPlan;
 import by.vstu.old.dean.repo.DStudyPlanModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ import java.util.List;
 public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, DStudyPlan> {
 
     private final DStudyPlanModelRepository dStudyPlanModelRepository;
-    private final StudyPlanModelRepository studyPlanRepository;
+    private final StudyPlanService studyPlanService;
 
     private final GroupModelRepository groupModelRepository;
     private final ExamModelRepository examModelRepository;
@@ -38,7 +39,7 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
     @Override
     public Long getLastDBId() {
-        return this.studyPlanRepository.findTopByOrderByIdDesc() == null ? 0 : this.studyPlanRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.studyPlanService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.studyPlanService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -122,12 +123,12 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
 
     @Override
     public StudyPlanModel insertSingle(StudyPlanModel t) {
-        return this.studyPlanRepository.saveAndFlush(t);
+        return this.studyPlanService.save(t);
     }
 
     @Override
     public List<StudyPlanModel> insertAll(List<StudyPlanModel> t) {
-        return this.studyPlanRepository.saveAllAndFlush(t);
+        return this.studyPlanService.saveAll(t);
     }
 
     @Override

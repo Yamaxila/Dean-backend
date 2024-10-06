@@ -2,7 +2,7 @@ package by.vstu.old.dean.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.students.internal.CitizenshipModel;
-import by.vstu.dean.repo.CitizenshipModelRepository;
+import by.vstu.dean.services.students.CitizenshipService;
 import by.vstu.old.dean.models.DCitizenshipModel;
 import by.vstu.old.dean.repo.DCitizenshipModelRepository;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -22,7 +22,7 @@ import java.util.List;
 public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipModel, DCitizenshipModel> {
 
     private final DCitizenshipModelRepository dCitizenshipRepository;
-    private final CitizenshipModelRepository citizenshipRepository;
+    private final CitizenshipService citizenshipService;
 
     /**
      * Получить ID последней записи в базе данных.
@@ -32,7 +32,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
     @Schema(title = "Метод для получения ID последней записи в базе данных.")
     @Override
     public Long getLastDBId() {
-        return this.citizenshipRepository.findTopByOrderByIdDesc() == null ? 0 : this.citizenshipRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.citizenshipService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.citizenshipService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     /**
@@ -88,7 +88,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
     @Schema(title = "Метод для вставки одной записи CitizenshipModel в базу данных.")
     @Override
     public CitizenshipModel insertSingle(CitizenshipModel t) {
-        return this.citizenshipRepository.saveAndFlush(t);
+        return this.citizenshipService.save(t);
     }
 
     /**
@@ -100,7 +100,7 @@ public class CitizenshipMigrateService extends BaseMigrateService<CitizenshipMod
     @Schema(title = "Метод для вставки всех записей CitizenshipModel в базу данных.")
     @Override
     public List<CitizenshipModel> insertAll(List<CitizenshipModel> t) {
-        return this.citizenshipRepository.saveAllAndFlush(t);
+        return this.citizenshipService.saveAll(t);
     }
 
     /**

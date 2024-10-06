@@ -5,7 +5,7 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.repo.TeacherDegreeModelRepository;
-import by.vstu.dean.repo.TeacherModelRepository;
+import by.vstu.dean.services.TeacherService;
 import by.vstu.old.dean.models.DTeacherModel;
 import by.vstu.old.dean.repo.DTeacherModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,12 +20,12 @@ import java.util.List;
 public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTeacherModel> {
 
     private final DTeacherModelRepository dTeacherModelRepository;
-    private final TeacherModelRepository teacherModelRepository;
+    private final TeacherService teacherService;
     private final TeacherDegreeModelRepository teacherDegreeModelRepository;
 
     @Override
     public Long getLastDBId() {
-        return this.teacherModelRepository.findTopByOrderByIdDesc() != null ? this.teacherModelRepository.findTopByOrderByIdDesc().getSourceId() : 0;
+        return this.teacherService.getRepo().findTopByOrderByIdDesc() != null ? this.teacherService.getRepo().findTopByOrderByIdDesc().getSourceId() : 0;
     }
 
     @Override
@@ -35,7 +35,7 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
     @Deprecated
     public List<TeacherModel> convertNotExistsFromDB(List<DTeacherModel> dTeacherModels) {
-        List<Long> ids = this.teacherModelRepository.findAll().stream().map(DBBaseModel::getSourceId).toList();
+        List<Long> ids = this.teacherService.getAll().stream().map(DBBaseModel::getSourceId).toList();
         List<DTeacherModel> temp = dTeacherModels.stream().filter(p -> !ids.contains(p.getId())).toList();
         return this.convertList(temp);
     }
@@ -67,12 +67,12 @@ public class TeacherMigrateService extends BaseMigrateService<TeacherModel, DTea
 
     @Override
     public TeacherModel insertSingle(TeacherModel t) {
-        return this.teacherModelRepository.saveAndFlush(t);
+        return this.teacherService.save(t);
     }
 
     @Override
     public List<TeacherModel> insertAll(List<TeacherModel> t) {
-        return this.teacherModelRepository.saveAllAndFlush(t);
+        return this.teacherService.saveAll(t);
     }
 
     @Override

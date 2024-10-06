@@ -2,7 +2,7 @@ package by.vstu.old.dean.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.FacultyModel;
-import by.vstu.dean.repo.FacultyModelRepository;
+import by.vstu.dean.services.FacultyService;
 import by.vstu.old.dean.models.DFacultyModel;
 import by.vstu.old.dean.repo.DFacultyModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,11 +18,11 @@ import java.util.List;
 public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFacultyModel> {
 
     private final DFacultyModelRepository dFacultyRepo;
-    private final FacultyModelRepository facultyRepo;
+    private final FacultyService facultyService;
 
     @Override
     public Long getLastDBId() {
-        FacultyModel facultyModel = facultyRepo.findTopByOrderByIdDesc();
+        FacultyModel facultyModel = this.facultyService.getRepo().findTopByOrderByIdDesc();
         return facultyModel == null ? 0 : facultyModel.getSourceId();
     }
 
@@ -82,12 +82,12 @@ public class FacultyMigrateService extends BaseMigrateService<FacultyModel, DFac
 
     @Override
     public FacultyModel insertSingle(FacultyModel facultyModel) {
-        return this.facultyRepo.saveAndFlush(facultyModel);
+        return this.facultyService.save(facultyModel);
     }
 
     @Override
     public List<FacultyModel> insertAll(List<FacultyModel> t) {
-        return this.facultyRepo.saveAllAndFlush(t);
+        return this.facultyService.saveAll(t);
     }
 
     @Override

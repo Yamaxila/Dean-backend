@@ -8,8 +8,8 @@ import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.FacultyModelRepository;
-import by.vstu.dean.repo.GroupModelRepository;
 import by.vstu.dean.repo.StudentModelRepository;
+import by.vstu.dean.services.GroupService;
 import by.vstu.old.dean.OldDBBaseModel;
 import by.vstu.old.dean.models.DGroupModel;
 import by.vstu.old.dean.repo.DGroupModelRepository;
@@ -25,7 +25,7 @@ import java.util.List;
 @Service
 public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupModel> {
 
-    private final GroupModelRepository groupRepo;
+    private final GroupService groupService;
     private final StudentModelRepository studentModelRepository;
     private final FacultyModelRepository facultyModelRepository;
 
@@ -34,7 +34,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
     @Override
     public Long getLastDBId() {
-        return groupRepo.findTopByOrderByIdDesc() == null ? 0 : groupRepo.findTopByOrderByIdDesc().getId();
+        return this.groupService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.groupService.getRepo().findTopByOrderByIdDesc().getId();
     }
 
     @Override
@@ -46,7 +46,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         List<Long> temp = dGroupModels.stream().map(OldDBBaseModel::getId).distinct().toList();
         dGroupModels.addAll(this.dGroupModelRepository.findAllByIdAfter(14000L).stream().filter(p -> !temp.contains(p.getId())).toList());
         dGroupModels = dGroupModels.stream().distinct().toList();
-        List<Long> ids = this.groupRepo.findAll().stream().map(DBBaseModel::getSourceId).toList();
+        List<Long> ids = this.groupService.getAll().stream().map(DBBaseModel::getSourceId).toList();
 
         return this.convertList(dGroupModels.stream().filter(p -> !ids.contains(p.getId())).toList());
     }
@@ -88,7 +88,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     }
 
     public List<GroupModel> applySpecIdByStudents() {
-        List<GroupModel> temp = this.groupRepo.findAllBySpecIsNull();
+        List<GroupModel> temp = this.groupService.getRepo().findAllBySpecIsNull();
         temp.forEach((group) -> {
             StudentModel studentModel = this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId());
             if (studentModel != null) {
@@ -103,12 +103,12 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
     @Override
     public GroupModel insertSingle(GroupModel t) {
-        return this.groupRepo.saveAndFlush(t);
+        return this.groupService.save(t);
     }
 
     @Override
     public List<GroupModel> insertAll(List<GroupModel> t) {
-        return this.groupRepo.saveAllAndFlush(t);
+        return this.groupService.saveAll(t);
     }
 
     @Override

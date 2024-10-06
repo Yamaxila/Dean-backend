@@ -2,7 +2,7 @@ package by.vstu.old.dean.services.migrate;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.models.lessons.ExamModel;
-import by.vstu.dean.repo.ExamModelRepository;
+import by.vstu.dean.services.ExamTypeService;
 import by.vstu.old.dean.models.DExamModel;
 import by.vstu.old.dean.repo.DExamModelModelRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,11 +17,11 @@ import java.util.List;
 public class ExamTypeMigrateService extends BaseMigrateService<ExamModel, DExamModel> {
 
     private final DExamModelModelRepository dExamModelModelRepository;
-    private final ExamModelRepository examModelRepository;
+    private final ExamTypeService examTypeService;
 
     @Override
     public Long getLastDBId() {
-        return this.examModelRepository.findTopByOrderByIdDesc() == null ? 0 : this.examModelRepository.findTopByOrderByIdDesc().getSourceId();
+        return this.examTypeService.getRepo().findTopByOrderByIdDesc() == null ? 0 : this.examTypeService.getRepo().findTopByOrderByIdDesc().getSourceId();
     }
 
     @Override
@@ -52,12 +52,12 @@ public class ExamTypeMigrateService extends BaseMigrateService<ExamModel, DExamM
 
     @Override
     public ExamModel insertSingle(ExamModel t) {
-        return this.examModelRepository.saveAndFlush(t);
+        return this.examTypeService.save(t);
     }
 
     @Override
     public List<ExamModel> insertAll(List<ExamModel> t) {
-        return this.examModelRepository.saveAllAndFlush(t);
+        return this.examTypeService.saveAll(t);
     }
 
     @Override
