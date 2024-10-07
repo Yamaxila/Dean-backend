@@ -146,9 +146,12 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
         args.put("ErrorCode", errorCode);
         args.put("Parameters", this.buildParameters(req.getParameterMap()));
 
-        this.sendException(Thread.currentThread(), ex, args);
+
 
         ResponseStatus responseStatus = AnnotationUtils.findAnnotation(ex.getClass(), ResponseStatus.class);
+
+        if (responseStatus == null) // Нам нужно видеть только те исключения, которые мы не отловили
+            this.sendException(Thread.currentThread(), ex, args);
 
         return ResponseEntity
                 .status(responseStatus == null ? HttpStatus.INTERNAL_SERVER_ERROR : responseStatus.value())
