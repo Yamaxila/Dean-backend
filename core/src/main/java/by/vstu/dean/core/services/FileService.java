@@ -3,7 +3,6 @@ package by.vstu.dean.core.services;
 import by.vstu.dean.core.utils.StringUtils;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpHeaders;
@@ -18,34 +17,28 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
-@Component
 @Slf4j
+@Component
 public class FileService {
 
-    @Value("${app.upload.dir}")
-    private String uploadDir;
 
-    public ResponseEntity<?> uploadFile(@NotNull MultipartFile file) {
+    public ResponseEntity<?> uploadFile(@NotNull MultipartFile file, String uploadDir, String[] allowedContent, String[] allowedExtensions) {
 
         if (file.getContentType() == null)
             return new ResponseEntity<>("content-type is required!", HttpStatus.BAD_REQUEST);
 
-        if(!file.getContentType().contains("image/")
-                && !file.getName().endsWith(".png")
-                && !file.getName().endsWith(".jpg")
-                && !file.getName().endsWith(".jpeg")
-                &&       !file.getName().endsWith(".gif")
-        ) return new ResponseEntity<>("only images can be uploaded!", HttpStatus.BAD_REQUEST);
+        if (Arrays.stream(allowedContent).noneMatch(p -> file.getContentType().contains(p)))
+            return new ResponseEntity<>("content-type not allowed!", HttpStatus.BAD_REQUEST);
 
-
-        if(!new File(this.uploadDir).exists())
+        if (!new File(uploadDir).exists())
             try {
-                Files.createDirectories(Paths.get(this.uploadDir));
+                Files.createDirectories(Paths.get(uploadDir));
             } catch (IOException e) {
-                log.error("cannot create directory", e);
+                log.error("cannot create directory {}", uploadDir, e);
                 return new ResponseEntity<>("cannot create directory", HttpStatus.INTERNAL_SERVER_ERROR);
             }
 
@@ -54,10 +47,12 @@ public class FileService {
             return new ResponseEntity<>("file name too long", HttpStatus.BAD_REQUEST);
         }
 
-
         String filename = file.getOriginalFilename() == null ? file.getName() : file.getOriginalFilename();
         filename = UUID.randomUUID()  + "_" + filename;
-        Path path = Paths.get(this.uploadDir + "/" + filename);
+        Path path = Paths.get(uploadDir + "/" + filename);
+
+        if (Arrays.stream(allowedExtensions).noneMatch(filename::endsWith))
+            return new ResponseEntity<>("content-type not allowed!", HttpStatus.BAD_REQUEST);
 
         try {
             Files.write(path, file.getBytes());
@@ -69,15 +64,15 @@ public class FileService {
         }
     }
 
-    public ResponseEntity<?> downloadFile(@NotNull String filename) {
+    public ResponseEntity<?> downloadFile(@NotNull String filename, String uploadDir) {
         filename = StringUtils.safeTrim(filename); // нам может прийти всё, что угодно
         // Определяем путь к файлу
-        Path filePath = Paths.get(this.uploadDir).resolve(filename).normalize();
+        Path filePath = Paths.get(uploadDir).resolve(filename).normalize();
         Resource file;
         try {
             file = new UrlResource(filePath.toUri());
         } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
+            return new ResponseEntity<>("Cannot to create resource!", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
         if (!file.exists()) {

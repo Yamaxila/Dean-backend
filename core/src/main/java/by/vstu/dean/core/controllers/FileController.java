@@ -4,23 +4,22 @@ import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.services.FileService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController
-@RequestMapping("/api/v1/files")
-@Tag(name = "Files", description = "Файлы")
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class FileController {
 
+    protected String uploadDir;
     private final FileService fileService;
+
+    private final String[] allowedContent = new String[]{"image/png", "image/jpeg"};
+    private final String[] allowedExtensions = new String[]{"png", "jpg", "jpeg"};
 
     /**
      * Загружает файл на сервер
@@ -36,9 +35,7 @@ public class FileController {
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         if(file == null)
             return new ResponseEntity<>("file cannot be null!", HttpStatus.BAD_REQUEST);
-
-
-        return this.fileService.uploadFile(file);
+        return this.fileService.uploadFile(file, uploadDir, allowedContent, allowedExtensions);
     }
 
     /**
@@ -55,7 +52,7 @@ public class FileController {
     public ResponseEntity<?> download(@RequestBody String filename) {
         if(filename == null)
             return new ResponseEntity<>("filename cannot be null!", HttpStatus.BAD_REQUEST);
-        return this.fileService.downloadFile(filename);
+        return this.fileService.downloadFile(filename, uploadDir);
     }
 
 }

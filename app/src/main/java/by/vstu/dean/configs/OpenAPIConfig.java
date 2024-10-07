@@ -25,7 +25,7 @@ public class OpenAPIConfig {
     public GroupedOpenApi v1PrivateApi() {
         return GroupedOpenApi.builder()
                 .group("v1-private")
-                .packagesToScan("by.vstu.dean.controllers.authorized.v1", "by.vstu.dean.core.controllers")
+                .packagesToScan("by.vstu.dean.controllers.authorized.v1")
                 .build();
     }
 
@@ -42,6 +42,14 @@ public class OpenAPIConfig {
         return GroupedOpenApi.builder()
                 .group("v1-repo")
                 .packagesToScan("by.vstu.dean.controllers.repo.v1")
+                .build();
+    }
+
+    @Bean
+    public GroupedOpenApi v1FilesApi() {
+        return GroupedOpenApi.builder()
+                .group("v1-files")
+                .packagesToScan("by.vstu.dean.controllers.files")
                 .build();
     }
 
