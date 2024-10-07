@@ -152,4 +152,8 @@ public final class V1StudentDTO extends BaseDTO {
     @ReflectionField(clazz = StudentModel.class)
     private boolean approved;
 
+    @ReflectionField(clazz = StudentModel.class)
+    private String photoUrl;
+
+
 }

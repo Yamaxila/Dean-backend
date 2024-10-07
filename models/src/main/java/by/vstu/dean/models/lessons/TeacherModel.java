@@ -56,6 +56,9 @@ public class TeacherModel extends DBBaseModel {
     @Schema(title = "Звание преподавателя")
     private TeacherDegreeModel degree;
 
+    @Schema(title = "Фото преподавателя")
+    private String photoUrl;
+
     public String toString() {
         return "TeacherModel(surname=" + this.getSurname() + ", name=" + this.getName() + ", patronymic=" + this.getPatronymic() + ", degree=" + this.getDegree() + ")";
     }

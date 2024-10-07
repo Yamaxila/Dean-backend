@@ -45,6 +45,13 @@ public final class V1TeacherDTO extends BaseDTO {
     @Schema(title = "Должность преподавателя")
     private V1TeacherDegreeDTO degree;
 
+    /**
+     * Фото преподавателя
+     */
+    @Schema(title = "Фото преподавателя")
+    @ReflectionField(clazz = TeacherModel.class)
+    private String photoUrl;
+
     @SuppressWarnings("unused")
     public String getFullName() {
         return String.format("%s %s %s", this.surname, this.name, this.patronymic);
