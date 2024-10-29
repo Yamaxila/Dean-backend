@@ -15,7 +15,7 @@ import uk.org.lidalia.sysoutslf4j.context.SysOutOverSLF4J;
 @EnableAspectJAutoProxy
 @EnableCaching
 @EnableScheduling
-@Import({DeanFutureDBConfig.class, DeanOldDBConfig.class})
+@Import({DeanFutureDBConfig.class})
 public class DeanBackendApplication {
 
     /**

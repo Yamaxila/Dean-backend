@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class PenaltyService extends BaseService<PenaltyModel, PenaltyModelRepository> {
+
     public PenaltyService(PenaltyModelRepository repo, Javers javers) {
         super(repo, javers);
     }
+
 }

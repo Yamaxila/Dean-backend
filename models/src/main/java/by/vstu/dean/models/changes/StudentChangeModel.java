@@ -42,7 +42,7 @@ public class StudentChangeModel extends DBBaseModel {
     @Schema(title = "Дата сообщения")
     @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime msgDate;
-    @JoinColumn(referencedColumnName = "id", name = "change_id")
+    @JoinColumn(referencedColumnName = "id", name = "id")
     @OneToMany(cascade = CascadeType.MERGE)
     private List<ChangeModel> changes;
 

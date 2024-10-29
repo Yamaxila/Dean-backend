@@ -12,4 +12,5 @@ public class StudentChangeService extends BaseService<StudentChangeModel, Studen
     public StudentChangeService(StudentChangeModelRepository repo, Javers javers) {
         super(repo, javers);
     }
+
 }

@@ -43,7 +43,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("(#oauth2.hasScope('dean_read') AND (hasAnyRole('ROLE_ADMIN') OR hasAnyRole('ROLE_SERVICE')))")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<V1StudentDTO>> getAll() {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()), HttpStatus.OK);
@@ -58,7 +58,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/byGroup/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("(#oauth2.hasScope('dean_read') AND (hasAnyRole('ROLE_ADMIN') OR hasAnyRole('ROLE_SERVICE')))")
     @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllByGroup(@PathVariable Long id) {
@@ -74,7 +74,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/byGroup/{id}/active",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("(#oauth2.hasScope('dean_read') AND (hasAnyRole('ROLE_ADMIN') OR hasAnyRole('ROLE_SERVICE')))")
     @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<StudentModel>> getAllActiveByGroup(@PathVariable Long id) {
@@ -90,7 +90,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/{id}/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("(#oauth2.hasScope('dean_read') AND (hasAnyRole('ROLE_ADMIN') OR hasAnyRole('ROLE_SERVICE')))")
     @Operation(method = "getById", description = "Отправляет объект из базы по id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<V1StudentDTO> getById(@PathVariable Long id) {

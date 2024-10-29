@@ -8,10 +8,18 @@
     базовый репозиторий с необходимыми методами
 - [BaseService](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/services/BaseService.java) -
   базовый сервис с готовой реализацией
+- [PublicController](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/controllers/PublicController.java) -
+  базовый контроллер для публичных ссылок с готовой реализацией
+- [RepoController](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/controllers/RepoController.java) -
+  базовый контроллер для ссылок доступа к данным через RSQL с готовой реализацией
 - [BaseController](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/controllers/BaseController.java) -
   базовый контроллер с готовой реализацией
+- [FileController](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/controllers/FileController.java) -
+  контроллер для загрузки/получения файлов
 - [EnumController](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/controllers/EnumController.java) -
   базовый контроллер для перечислений с готовой реализацией
+- [PublicDTO](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/dto/PublicDTO.java) -
+  содержит базовый набор полей для любого DTO
 - [BaseDTO](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/dto/BaseDTO.java) - 
   содержит базовый набор полей для любого DTO
 - [BaseEnum](https://github.com/yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/enums/BaseEnum.java) -

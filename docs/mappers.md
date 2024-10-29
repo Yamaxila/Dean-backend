@@ -5,7 +5,8 @@
 Интерфейс уже имеет набор готовых решений для корректного маппинга простых объектов. Необходимо только объяснить маппинг в Entity.
 
 Каждый интерфейс должен иметь класс, имплементирующий его.
-Например [FacultyMapper](https://github.com/Yamaxila/Dean-backend/tree/dev/app/src/main/java/by/vstu/dean/mapper/v1/FacultyMapper.java) и [FacultyMapperImpl](https://github.com/Yamaxila/Dean-backend/tree/dev/app/src/main/java/by/vstu/dean/mapper/v1/impl/FacultyMapperImpl.java).
+Например [V1FacultyMapper](https://github.com/Yamaxila/Dean-backend/tree/dev/app/src/main/java/by/vstu/dean/mapper/v1/v1FacultyMapper.java)
+и [V1FacultyMapperImpl](https://github.com/Yamaxila/Dean-backend/tree/dev/app/src/main/java/by/vstu/dean/mapper/v1/impl/V1FacultyMapperImpl.java).
 
 Большинство полей можно автоматически мапить прямо через DTO и аннотацию [@ReflectionField](https://github.com/Yamaxila/Dean-backend/tree/dev/core/src/main/java/by/vstu/dean/core/anotations/ReflectionField.java).
 

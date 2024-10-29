@@ -651,25 +651,25 @@ public class ServicesTest {
     @Test
     @Order(50)
     public void deleteAll() {
-        this.absenceService.getRepo().deleteAllInBatch();
-        this.studyPlanService.getRepo().deleteAllInBatch();
-        this.educationService.getRepo().deleteAllInBatch();
-        this.studentService.getRepo().deleteAllInBatch();
-        this.studentLanguageService.getRepo().deleteAllInBatch();
-        this.groupService.getRepo().deleteAllInBatch();
-        this.specializationService.getRepo().deleteAllInBatch();
-        this.specialityService.getRepo().deleteAllInBatch();
-        this.departmentService.getRepo().deleteAllInBatch();
-        this.facultyService.getRepo().deleteAllInBatch();
-        this.classroomService.getRepo().deleteAllInBatch();
-        this.qualificationService.getRepo().deleteAllInBatch();
-        this.teacherService.getRepo().deleteAllInBatch();
-        this.teacherDegreeService.getRepo().deleteAllInBatch();
-        this.citizenshipService.getRepo().deleteAllInBatch();
-        this.disciplineService.getRepo().deleteAllInBatch();
-        this.examTypeService.getRepo().deleteAllInBatch();
-        this.institutionService.getRepo().deleteAllInBatch();
-        this.hostelRoomService.getRepo().deleteAllInBatch();
+//        this.absenceService.getRepo().deleteAllInBatch();
+//        this.studyPlanService.getRepo().deleteAllInBatch();
+//        this.educationService.getRepo().deleteAllInBatch();
+//        this.studentService.getRepo().deleteAllInBatch();
+//        this.studentLanguageService.getRepo().deleteAllInBatch();
+//        this.groupService.getRepo().deleteAllInBatch();
+//        this.specializationService.getRepo().deleteAllInBatch();
+//        this.specialityService.getRepo().deleteAllInBatch();
+//        this.departmentService.getRepo().deleteAllInBatch();
+//        this.facultyService.getRepo().deleteAllInBatch();
+//        this.classroomService.getRepo().deleteAllInBatch();
+//        this.qualificationService.getRepo().deleteAllInBatch();
+//        this.teacherService.getRepo().deleteAllInBatch();
+//        this.teacherDegreeService.getRepo().deleteAllInBatch();
+//        this.citizenshipService.getRepo().deleteAllInBatch();
+//        this.disciplineService.getRepo().deleteAllInBatch();
+//        this.examTypeService.getRepo().deleteAllInBatch();
+//        this.institutionService.getRepo().deleteAllInBatch();
+//        this.hostelRoomService.getRepo().deleteAllInBatch();
     }
 
 }

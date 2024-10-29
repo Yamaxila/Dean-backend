@@ -40,7 +40,7 @@ public class DeanApiRepositoryBase<O extends DBBaseModel> extends ApiRepositoryB
     private TokenRequest tokenRequest;
 
     public DeanApiRepositoryBase(String endpoint, Class<O> target) {
-        super("http://localhost:18076/api/v1/", endpoint, "", target);
+        super("http://localhost:18076/api/v1/repo/", endpoint, "", target);
         this.setTokenRequest(this.tokenRequest);
     }
 }

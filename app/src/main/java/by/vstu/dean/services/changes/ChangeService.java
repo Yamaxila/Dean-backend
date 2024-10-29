@@ -12,4 +12,5 @@ public class ChangeService extends BaseService<ChangeModel, ChangeModelRepositor
     public ChangeService(ChangeModelRepository repo, Javers javers) {
         super(repo, javers);
     }
+
 }
