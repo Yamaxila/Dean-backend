@@ -8,6 +8,7 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Сервис для работы с объектами модели студента.
@@ -25,10 +26,20 @@ public class StudentService extends BaseService<StudentModel, StudentModelReposi
      * @param groupId Идентификатор группы.
      * @return Список студентов, принадлежащих указанной группе.
      */
-
     @Cacheable(value = "students", key = "#groupId")
     public List<StudentModel> findAllByGroupId(long groupId) {
         return this.repo.findAllByGroupId(groupId);
+    }
+
+    /**
+     * Получает студента по номеру зачетки.
+     *
+     * @param caseNo Номер зачетки.
+     * @return Опциональную модель студента, если он найден.
+     */
+    @Cacheable(value = "students", key = "#caseNo")
+    public Optional<StudentModel> findByCaseNo(long caseNo) {
+        return this.repo.findByCaseNo(caseNo);
     }
 
 }

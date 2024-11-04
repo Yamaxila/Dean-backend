@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Интерфейс репозитория сущности студента.
@@ -36,5 +37,13 @@ public interface StudentModelRepository extends DBBaseModelRepository<StudentMod
      * @return Список базовых моделей студентов.
      */
     List<StudentModel> findAllByGroupId(Long id);
+
+    /**
+     * Найти студента по номеру зачетки.
+     *
+     * @param caseNo Номер зачетки.
+     * @return Опциональную модель студента, если он существует.
+     */
+    Optional<StudentModel> findByCaseNo(Long caseNo);
 
 }

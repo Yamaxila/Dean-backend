@@ -33,6 +33,7 @@
         <module>app</module>
         <module>runner</module>
         <module>telegram</module>
+        <module>photo</module>
     </modules>
     <pluginRepositories>
         <pluginRepository>
