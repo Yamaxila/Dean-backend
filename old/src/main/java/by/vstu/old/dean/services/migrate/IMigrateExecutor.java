@@ -10,4 +10,14 @@ public interface IMigrateExecutor {
      */
     void migrate();
 
+    /**
+     * Метод для инициализации миграции данных.
+     */
+    void init();
+
+    /**
+     * Метод для очистки временных данных.
+     */
+    void cleanup();
+
 }

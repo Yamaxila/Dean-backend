@@ -83,9 +83,6 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
     public List<DepartmentModel> convertList(List<DDepartmentModel> t) {
         List<DepartmentModel> out = new ArrayList<>();
         t.forEach(citizenship -> out.add(this.convertSingle(citizenship)));
-
-        this.facultyModels.clear();
-
         return out;
     }
 
@@ -120,5 +117,10 @@ public class DepartmentMigrateService extends BaseMigrateService<DepartmentModel
         System.err.println(this.getClass().getName());
         this.facultyModels = this.facultyModelRepository.findAll();
         this.insertAll(this.convertNotExistsFromDB());
+    }
+
+    @Override
+    public void cleanup() {
+        this.facultyModels.clear();
     }
 }

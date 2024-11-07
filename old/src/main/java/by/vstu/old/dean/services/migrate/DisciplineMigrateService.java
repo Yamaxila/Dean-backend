@@ -112,9 +112,6 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
     public List<DisciplineModel> convertList(List<DDisciplineModel> t) {
         List<DisciplineModel> out = new ArrayList<>();
         t.forEach(discipline -> out.add(this.convertSingle(discipline)));
-
-        this.departments.clear();
-
         return out;
     }
 
@@ -149,5 +146,10 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
         System.err.println(this.getClass().getName());
         this.departments = this.departmentModelRepository.findAll();
         this.insertAll(this.convertNotExistsFromDB());
+    }
+
+    @Override
+    public void cleanup() {
+        this.departments.clear();
     }
 }

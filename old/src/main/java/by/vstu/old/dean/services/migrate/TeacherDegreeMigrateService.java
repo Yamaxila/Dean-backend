@@ -69,8 +69,6 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
         List<TeacherDegreeModel> out = new ArrayList<>();
         t.stream().filter(p -> p.getDegree() != null).forEach(teacherModel -> out.add(this.convertSingle(teacherModel)));
 
-        this.teacherDegreeModels.clear();
-
         return out;
     }
 
@@ -89,5 +87,10 @@ public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegre
     public void migrate() {
         System.err.println(this.getClass().getName());
         this.insertAll(this.convertNotExistsFromDB());
+    }
+
+    @Override
+    public void cleanup() {
+        this.teacherDegreeModels.clear();
     }
 }

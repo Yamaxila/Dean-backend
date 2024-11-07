@@ -70,4 +70,14 @@ public class DepartmentSpecialityMergeService implements IMigrateExecutor {
 
         System.out.println(this.specialityService.saveAll(list));
     }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void cleanup() {
+
+    }
 }

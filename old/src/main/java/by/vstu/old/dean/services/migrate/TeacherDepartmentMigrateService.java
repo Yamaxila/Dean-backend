@@ -39,4 +39,14 @@ public class TeacherDepartmentMigrateService implements IMigrateExecutor {
 
 
     }
+
+    @Override
+    public void init() {
+
+    }
+
+    @Override
+    public void cleanup() {
+
+    }
 }

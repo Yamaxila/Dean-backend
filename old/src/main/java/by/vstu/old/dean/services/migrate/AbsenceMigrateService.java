@@ -58,12 +58,6 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     public List<AbsenceModel> convertList(List<DAbsenceModel> dAbsenceModels) {
         List<AbsenceModel> out = new ArrayList<>();
         dAbsenceModels.forEach(a -> out.add(this.convertSingle(a)));
-
-        this.students.clear();
-        this.teachers.clear();
-        this.disciplines.clear();
-        this.departments.clear();
-
         return out;
     }
 
@@ -164,6 +158,13 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
         this.insertAll(this.convertNotExistsFromDB());
 
         this.absenceService.getAll().forEach((absenceModel) -> this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment()));
+    }
 
+    @Override
+    public void cleanup() {
+        this.students.clear();
+        this.teachers.clear();
+        this.disciplines.clear();
+        this.departments.clear();
     }
 }

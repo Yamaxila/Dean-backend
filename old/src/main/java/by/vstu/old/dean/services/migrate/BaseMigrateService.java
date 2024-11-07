@@ -15,6 +15,12 @@ import java.util.List;
 public abstract class BaseMigrateService<S extends DBBaseModel, T extends OldDBBaseModel> implements IMigrateExecutor {
 
     /**
+     * Помогает инициализировать данные.
+     */
+    public void init() {
+    }
+
+    /**
      * Возвращает последний идентификатор в старой базе данных.
      *
      * @return Последний идентификатор в старой базе данных.
@@ -67,4 +73,11 @@ public abstract class BaseMigrateService<S extends DBBaseModel, T extends OldDBB
      * @return Список вставленных моделей новой базы данных.
      */
     public abstract List<S> insertAll(List<S> t);
+
+    /**
+     * Помогает очищать данные.
+     */
+    public void cleanup() {
+    }
+
 }

@@ -40,8 +40,6 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     private final StudentLanguageService studentLanguageService;
     private final SpecializationService specializationService;
 
-
-
     private final DStudentModelRepository dStudentModelRepository;
 
 

@@ -39,9 +39,6 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
     @Override
     public List<GroupModel> convertNotExistsFromDB() {
-
-//        List<DGroupModel> dGroupModels = this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList();
-
         List<DGroupModel> dGroupModels = new ArrayList<>(this.dStudentModelRepository.findAllGroups(14000L).stream().distinct().toList());
         List<Long> temp = dGroupModels.stream().map(OldDBBaseModel::getId).distinct().toList();
         dGroupModels.addAll(this.dGroupModelRepository.findAllByIdAfter(14000L).stream().filter(p -> !temp.contains(p.getId())).toList());

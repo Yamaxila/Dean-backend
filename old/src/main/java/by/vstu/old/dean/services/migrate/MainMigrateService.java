@@ -39,8 +39,8 @@ public class MainMigrateService {
 
     @PostConstruct
     public void migrate() {
-        log.info("Migrating...");
         long startTime = System.currentTimeMillis();
+        log.info("Migrate started at {}", startTime);
 
         Thread migrateThread = new Thread(() -> {
             services.add(this.teacherDegreeMigrateService);
@@ -61,21 +61,28 @@ public class MainMigrateService {
             services.add(this.absenceMigrateService);
 //            services.add(this.departmentSpecialityMergeService);
 //            services.add(this.teacherDepartmentMigrateService);
-
-
+            log.info("Initializing services...");
+            services.forEach(IMigrateExecutor::init);
+            log.info("Migrating...");
             services.forEach(IMigrateExecutor::migrate);
 
-            System.err.println("Migration time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
+            log.info("Migrate end at {} with time {}s.", System.currentTimeMillis(), Math.floor(((double) System.currentTimeMillis() - (double) startTime) / 1000D));
             long updateStartTime = System.currentTimeMillis();
 
-//            this.mainUpdateService.update();
-            System.err.println("Update time(s): " + Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
+            log.info("Update started at {}", updateStartTime);
 
-            System.out.println("Applying spec for groups");
+            this.mainUpdateService.update();
+
+            log.info("Update end at {} with time {}s", System.currentTimeMillis(), Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
+
+            log.info("Applying spec for groups");
             this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
-            System.out.println("Applying student for educationModels");
+            log.info("Applying student for educationModels");
             this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
 
+            log.info("Cleanup...");
+            services.forEach(IMigrateExecutor::cleanup);
+            log.info("Migrate/Update done!");
         });
 
         migrateThread.setName("Migration");
