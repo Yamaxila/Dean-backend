@@ -46,9 +46,9 @@ public class FileController {
     @RequestMapping(value = "/download",
             produces = {"image/jpeg", "image/png"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @PreAuthorize("isAnonymous() || isAuthenticated() || isFullyAuthenticated()")
     @Operation(method = "download", description = "Отдает файл с сервера")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    @ApiSecurity(scopes = {"any"}, roles = {"any"})
     public ResponseEntity<?> download(@RequestBody String filename) {
         if(filename == null)
             return new ResponseEntity<>("filename cannot be null!", HttpStatus.BAD_REQUEST);
