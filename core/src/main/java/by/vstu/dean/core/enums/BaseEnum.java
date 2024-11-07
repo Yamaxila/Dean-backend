@@ -6,6 +6,4 @@ public interface BaseEnum<E> {
 
     List<E> getValues();
 
-
-
 }
