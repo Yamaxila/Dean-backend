@@ -15,7 +15,7 @@ import lombok.EqualsAndHashCode;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Schema(title = "DTO Студента")
+@Schema(title = "Публичное DTO Студента")
 public class V1PublicStudentDTO extends PublicDTO {
 
     /**
