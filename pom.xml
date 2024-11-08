@@ -34,6 +34,7 @@
         <module>runner</module>
         <module>telegram</module>
         <module>photo</module>
+        <module>timetable-module</module>
     </modules>
     <pluginRepositories>
         <pluginRepository>
@@ -92,6 +93,10 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-jwt</artifactId>
             <version>1.1.1.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
         </dependency>
         <dependency>
             <groupId>org.modelmapper</groupId>
