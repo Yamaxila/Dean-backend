@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.lessons.ExamModel;
 import by.vstu.dean.repo.ExamModelRepository;
 import org.javers.core.Javers;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class ExamTypeService extends BaseService<ExamModel, ExamModelRepository> {
 
 
-    public ExamTypeService(ExamModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public ExamTypeService(ExamModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 }

@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.repo.GroupModelRepository;
 import org.javers.core.Javers;
@@ -14,8 +15,8 @@ import org.springframework.stereotype.Service;
 @Cacheable("groups")
 public class GroupService extends BaseService<GroupModel, GroupModelRepository> {
 
-    public GroupService(GroupModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public GroupService(GroupModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
     /**

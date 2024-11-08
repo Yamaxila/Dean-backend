@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.specs.QualificationModel;
 import by.vstu.dean.repo.QualificationModelRepository;
 import org.javers.core.Javers;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class QualificationService extends BaseService<QualificationModel, QualificationModelRepository> {
 
 
-    public QualificationService(QualificationModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public QualificationService(QualificationModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 }

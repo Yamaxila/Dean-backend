@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.specs.SpecialityModel;
 import by.vstu.dean.repo.SpecialityModelRepository;
 import org.javers.core.Javers;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
 public class SpecialityService extends BaseService<SpecialityModel, SpecialityModelRepository> {
 
 
-    public SpecialityService(SpecialityModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public SpecialityService(SpecialityModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 }

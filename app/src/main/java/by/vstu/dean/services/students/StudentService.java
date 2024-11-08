@@ -1,6 +1,7 @@
 package by.vstu.dean.services.students;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StudentModelRepository;
 import org.javers.core.Javers;
@@ -16,8 +17,8 @@ import java.util.Optional;
 @Service
 public class StudentService extends BaseService<StudentModel, StudentModelRepository> {
 
-    public StudentService(StudentModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public StudentService(StudentModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
     /**

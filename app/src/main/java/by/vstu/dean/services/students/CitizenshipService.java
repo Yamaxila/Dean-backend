@@ -1,6 +1,7 @@
 package by.vstu.dean.services.students;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.internal.CitizenshipModel;
 import by.vstu.dean.repo.CitizenshipModelRepository;
 import org.javers.core.Javers;
@@ -18,8 +19,8 @@ public class CitizenshipService extends BaseService<CitizenshipModel, Citizenshi
      *
      * @param repo   Репозиторий для работы с моделью гражданства.
      */
-    public CitizenshipService(CitizenshipModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public CitizenshipService(CitizenshipModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
 

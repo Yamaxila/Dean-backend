@@ -2,6 +2,7 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.enums.EHostel;
 import by.vstu.dean.enums.EHostelRoomType;
 import by.vstu.dean.models.hostels.HostelRoomModel;
@@ -28,8 +29,8 @@ public class HostelRoomService extends BaseService<HostelRoomModel, HostelRoomMo
 
     private final EntityManager manager;
 
-    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService, EntityManager manager, Javers javers) {
-        super(repo, javers);
+    public HostelRoomService(HostelRoomModelRepository repo, StudentService studentService, EntityManager manager, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
         this.studentService = studentService;
         this.manager = manager;
     }

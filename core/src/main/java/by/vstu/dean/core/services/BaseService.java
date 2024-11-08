@@ -4,6 +4,8 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.rsql.CustomRsqlVisitor;
+import by.vstu.dean.core.websocket.WSControllerManager;
+import by.vstu.dean.core.websocket.WSListener;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
 import lombok.Getter;
@@ -31,6 +33,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     protected final R repo;
 
     protected final Javers javers;
+
+    protected final WSControllerManager wsControllerManager;
 
     /**
      * Получает все объекты модели из базы данных.
@@ -94,14 +98,28 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param o сущность.
      * @return Сохраненный объект модели.
      */
-    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
     public O save(O o) {
         if (o == null)
             return null;
 
-        o = this.repo.saveAndFlush(o);
-        this.javers.commit("dean-" + this.getClass().getSimpleName(), o);
-        return o;
+        O o2 = this.repo.saveAndFlush(o);
+        this.javers.commit("dean-" + this.getClass().getSimpleName(), o2);
+
+        /** Поддержка WebSocket
+         *  Сохранённые данные уходят сразу всем слушателям.
+         *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
+         */
+        WSListener listener = wsControllerManager.findByClass(o.getClass());
+
+        if (listener != null) { // Возможно, нет контроллера
+            if (o.getId() != null) // Возможно, у нас будут разные случаи
+                listener.onUpdate(o2);
+            else
+                listener.onCreate(o2);
+        }
+
+
+        return o2;
     }
 
     /**
@@ -110,7 +128,6 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param o Список объектов модели для сохранения.
      * @return Список сохраненных объектов модели.
      */
-    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<O> saveAll(List<O> o) {
         if (o == null)
             return null;
@@ -118,9 +135,23 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
         if (o.isEmpty())
             return o;
 
-        o = this.repo.saveAllAndFlush(o);
-        this.javers.commit("dean-" + this.getClass().getSimpleName(), o);
-        return o;
+        List<O> o2 = this.repo.saveAllAndFlush(o);
+        this.javers.commit("dean-" + this.getClass().getSimpleName(), o2);
+
+        /** Поддержка WebSocket
+         *  Сохранённые данные уходят сразу всем слушателям.
+         *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
+         */
+        WSListener listener = wsControllerManager.findByClass(o.getClass());
+
+        if (listener != null) {
+            if (o.stream().findFirst().get().getId() != null)
+                listener.onUpdate(o2);
+            else
+                listener.onCreate(o2);
+        }
+
+        return o2;
     }
 
     /**
@@ -135,6 +166,15 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
             return null;
 
         o.setStatus(EStatus.DELETED);
+        /** Поддержка WebSocket
+         *  Сохранённые данные уходят сразу всем слушателям.
+         *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
+         */
+        WSListener listener = wsControllerManager.findByClass(o.getClass());
+
+        if (listener != null) {
+            listener.onDelete(o);
+        }
 
         return this.save(o);
     }
@@ -153,6 +193,12 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
 
         O o1 = o.get();
         o1.setStatus(EStatus.DELETED);
+
+        WSListener listener = wsControllerManager.findByClass(o1.getClass());
+
+        if (listener != null) {
+            listener.onDelete(o1);
+        }
 
         return this.save(o1);
     }

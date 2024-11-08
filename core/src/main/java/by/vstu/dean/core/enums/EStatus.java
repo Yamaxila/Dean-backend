@@ -12,13 +12,13 @@ import java.util.List;
 public enum EStatus implements BaseEnum<EStatus> {
 
     @Schema(title = "Неизвестный статус")
-    UNKNOWN(1),
+    UNKNOWN(0),
 
     @Schema(title = "Активный статус")
-    ACTIVE(2),
+    ACTIVE(1),
 
     @Schema(title = "Удаленный статус")
-    DELETED(3);
+    DELETED(2);
 
     /**
      * Конструктор с параметром.

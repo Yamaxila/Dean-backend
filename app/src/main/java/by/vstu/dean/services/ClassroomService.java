@@ -2,6 +2,7 @@ package by.vstu.dean.services;
 
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.enums.EClassroomType;
 import by.vstu.dean.enums.EFrame;
 import by.vstu.dean.models.rooms.ClassroomModel;
@@ -21,8 +22,8 @@ import java.util.List;
 @Cacheable("classroom")
 public class ClassroomService extends BaseService<ClassroomModel, ClassroomModelRepository> {
 
-    public ClassroomService(ClassroomModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public ClassroomService(ClassroomModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
     public List<ClassroomModel> updateFromExcel(String filePath) {

@@ -41,8 +41,11 @@ public class PhotoMigrateService {
             StudentModel studentModel = oStudent.get();
 
             try {
-                Path wPath = Files.write(Paths.get(this.studentPhotoUploadDir + "/" + this.generateFilename(studentModel)), photoDataModel.getPhotoBytes());
+                String filename = this.generateFilename(studentModel);
+                Path wPath = Files.write(Paths.get(this.studentPhotoUploadDir + "/" + filename), photoDataModel.getPhotoBytes());
                 log.debug("Wrote image for {} on {}", studentModel.getId(), wPath);
+                studentModel.setPhotoUrl("/api/v1/files/students/download?filename=" + filename);
+                this.studentService.save(studentModel);
             } catch (IOException e) {
                 throw new RuntimeException("Cannot write photo to file for id = " + photoDataModel.getId(), e);
             }

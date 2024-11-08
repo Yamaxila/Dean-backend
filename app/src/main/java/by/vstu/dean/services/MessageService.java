@@ -4,6 +4,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.trowable.CronExpressionParseException;
 import by.vstu.dean.core.trowable.DatabaseFetchException;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.internal.MessageModel;
 import by.vstu.dean.repo.MessageModelRepository;
 import jakarta.annotation.PostConstruct;
@@ -22,8 +23,8 @@ import java.util.Optional;
 @Slf4j
 public class MessageService extends BaseService<MessageModel, MessageModelRepository> {
 
-    public MessageService(MessageModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public MessageService(MessageModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
     //Каждый день в 07:00 нужно проверить сообщения и установить флаг inactive тем,

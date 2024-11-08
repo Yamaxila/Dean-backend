@@ -112,6 +112,11 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
         if (bearerToken != null && bearerToken.startsWith("Bearer " )) {
             return bearerToken.substring(7);
         }
+        //поддержка авторизации WebSocket
+        if (req.getParameter("token") != null) {
+            return req.getParameter("token");
+        }
+
         return null;
     }
 

@@ -5,8 +5,6 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.core.trowable.BadRequestException;
-import by.vstu.dean.core.trowable.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -23,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Базовый контроллер для работы с объектами базы данных.
@@ -38,11 +35,9 @@ import java.util.Optional;
 public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>>
         extends PublicController<D, O, M, R, S> {
 
-
     public BaseController(S service, M mapper) {
         super(service, mapper);
     }
-
 
     /**
      * Сохраняет объект в базу данных и возвращает его с установленным id.
@@ -66,11 +61,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
     )
     public ResponseEntity<D> put(@RequestBody D dto) {
-        if(dto == null) {
-            log.warn("DTO is empty!");
-            throw new BadRequestException();
-        }
-        return new ResponseEntity<>(this.mapper.toDto(this.service.save(this.mapper.toEntity(dto))), HttpStatus.OK);
+        return new ResponseEntity<>(this.rawPut(dto), HttpStatus.OK);
     }
 
     /**
@@ -95,11 +86,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
     )
     public ResponseEntity<O> putModel(@RequestBody O model) {
-        if(model == null) {
-            log.warn("entity is empty!");
-            throw new BadRequestException();
-        }
-        return new ResponseEntity<>(this.service.save(model), HttpStatus.OK);
+        return ResponseEntity.ok(this.rawPutModel(model));
     }
 
     /**
@@ -125,16 +112,7 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
             security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_ADMIN"})
     )
     public ResponseEntity<D> deleteById(@PathVariable Long id) {
-        if (id == null) {
-            log.warn("id is null!");
-            throw new BadRequestException();
-        }
-        Optional<O> byId = this.service.getById(id);
-
-        if (byId.isEmpty())
-            log.warn("Cannot to find entity with id {}", id);
-
-        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseThrow(EntityNotFoundException::new);
+        return ResponseEntity.ok(this.rawDeleteById(id));
     }
 
     /**
@@ -163,7 +141,12 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
         return super.getById(id);
     }
 
-
+    /**
+     * Получает все объекты из базы данных.
+     * P.S. Тут только меняются права доступа
+     *
+     * @return Список активных объектов
+     */
     @RequestMapping(value = "",
             produces = {"application/json"},
             method = RequestMethod.GET)

@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.repo.FacultyModelRepository;
 import org.javers.core.Javers;
@@ -14,8 +15,7 @@ import org.springframework.stereotype.Service;
 @Cacheable("faculty")
 public class FacultyService extends BaseService<FacultyModel, FacultyModelRepository> {
 
-
-    public FacultyService(FacultyModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public FacultyService(FacultyModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 }

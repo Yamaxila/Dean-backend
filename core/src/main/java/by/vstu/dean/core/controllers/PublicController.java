@@ -5,18 +5,12 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
-import by.vstu.dean.core.trowable.DatabaseFetchException;
-import by.vstu.dean.core.trowable.EntityNotFoundException;
-import by.vstu.dean.core.trowable.MappingException;
-import by.vstu.dean.core.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -26,22 +20,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
-import java.util.Optional;
 
-@RequiredArgsConstructor
 @Slf4j
-public class PublicController<D extends PublicDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>> {
+public class PublicController<D extends PublicDTO, O extends DBBaseModel, M extends BaseMapperInterface<D, O>, R extends DBBaseModelRepository<O>, S extends BaseService<O, R>>
+        extends ControllerBaseLogic<D, O, M, R, S> {
 
-    /**
-     * Сервис для работы с объектами.
-     */
-    protected final S service;
-
-    /**
-     * Маппер.
-     */
-    protected final M mapper;
-
+    public PublicController(S service, M mapper) {
+        super(service, mapper);
+    }
 
     /**
      * Получает все объекты из базы данных.
@@ -60,21 +46,7 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
             }
     )
     public ResponseEntity<List<D>> getAll() {
-        List<O> tempO = this.service.getAll();
-
-        if (tempO == null) {
-            log.error("Can't get data from database!");
-            throw new DatabaseFetchException();
-        }
-
-        List<D> tempD = this.mapper.toDto(tempO);
-
-        if (tempD == null) {
-            log.error("List mapping error!");
-            throw new MappingException();
-        }
-
-        return new ResponseEntity<>(tempD, HttpStatus.OK);
+        return ResponseEntity.ok(this.rawGetAll());
     }
 
 
@@ -98,22 +70,7 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
             security = @SecurityRequirement(name = "controllers", scopes = {"read", "ROLE_USER", "ROLE_ADMIN"})
     )
     public ResponseEntity<List<D>> getAllActive(@RequestParam(required = false, defaultValue = "true") Boolean is) {
-
-        List<O> tempO = this.service.getAllActive(is);
-
-        if (!ValidationUtils.isObjectValid(tempO)) {
-            log.error("Can't get active={} data from database!", is);
-            throw new DatabaseFetchException();
-        }
-
-        List<D> tempD = this.mapper.toDto(tempO);
-
-        if (!ValidationUtils.isObjectValid(tempO)) {
-            log.error("List mapping error! active={}", is);
-            throw new MappingException();
-        }
-
-        return new ResponseEntity<>(tempD, HttpStatus.OK);
+        return ResponseEntity.ok(this.rawGetAllActive(is));
     }
 
     /**
@@ -136,8 +93,7 @@ public class PublicController<D extends PublicDTO, O extends DBBaseModel, M exte
             }
     )
     public ResponseEntity<D> getById(@PathVariable Long id) {
-        Optional<O> byId = this.service.getById(id);
-        return byId.map(model -> new ResponseEntity<>(this.mapper.toDto(model), HttpStatus.OK)).orElseThrow(EntityNotFoundException::new);
+        return ResponseEntity.ok(this.rawGetById(id));
     }
 
 }

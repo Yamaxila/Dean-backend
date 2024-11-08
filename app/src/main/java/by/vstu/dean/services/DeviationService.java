@@ -1,6 +1,7 @@
 package by.vstu.dean.services;
 
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.DeviationModel;
 import by.vstu.dean.repo.DeviationModelRepository;
 import org.javers.core.Javers;
@@ -13,8 +14,8 @@ import org.springframework.stereotype.Service;
 @Service
 @Cacheable("deviation")
 public class DeviationService extends BaseService<DeviationModel, DeviationModelRepository> {
-    public DeviationService(DeviationModelRepository repo, Javers javers) {
-        super(repo, javers);
+    public DeviationService(DeviationModelRepository repo, Javers javers, WSControllerManager tm) {
+        super(repo, javers, tm);
     }
 
 }
