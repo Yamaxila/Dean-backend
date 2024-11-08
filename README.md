@@ -8,7 +8,7 @@ Copyright VSTU 2024 by Yamaxila
 
 ## Структура
 
-Проект разделен на 5 модулей:
+Проект разделен на 7 модулей:
 
 - [core](https://github.com/yamaxila/Dean-backend/tree/dev/core/) -
   ядро деканата  
@@ -20,6 +20,10 @@ Copyright VSTU 2024 by Yamaxila
   модуль работы со старым деканатом    
 - [runner](https://github.com/yamaxila/Dean-backend/tree/dev/runner/) -
   модуль запуска деканата
+- [telegram](https://github.com/yamaxila/Dean-backend/tree/dev/telegram/) -
+  модуль для взаимодействия с деканатом через Telegram-бота
+- [timetable-module](https://github.com/yamaxila/Dean-backend/tree/dev/timetable-module/) -
+  тестовый модуль для проверки возможности создания и интеграции модулей
 
 ## Документация
 
