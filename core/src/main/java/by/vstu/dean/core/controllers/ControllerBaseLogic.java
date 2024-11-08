@@ -9,7 +9,6 @@ import by.vstu.dean.core.trowable.BadRequestException;
 import by.vstu.dean.core.trowable.DatabaseFetchException;
 import by.vstu.dean.core.trowable.EntityNotFoundException;
 import by.vstu.dean.core.trowable.MappingException;
-import by.vstu.dean.core.utils.ValidationUtils;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,14 +87,14 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
     protected List<D> rawGetAllActive(Boolean is) {
         List<O> tempO = this.service.getAllActive(is);
 
-        if (!ValidationUtils.isObjectValid(tempO)) {
+        if (tempO == null) {
             log.error("Can't get active={} data from database!", is);
             throw new DatabaseFetchException();
         }
 
         List<D> tempD = this.mapper.toDto(tempO);
 
-        if (!ValidationUtils.isObjectValid(tempO)) {
+        if (tempD == null) {
             log.error("List mapping error! active={}", is);
             throw new MappingException();
         }

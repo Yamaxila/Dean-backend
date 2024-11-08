@@ -10,6 +10,8 @@ public class NumberUtils {
      */
     public static Long parseLong(Object obj) {
         try {
+            if (obj instanceof Number n)
+                return n.longValue();
             return Long.parseLong((String) obj);
         } catch (Exception ignored) {
             return Long.MIN_VALUE;
