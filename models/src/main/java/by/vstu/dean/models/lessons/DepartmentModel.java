@@ -25,7 +25,7 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "departments")
+@Table(name = "dean_departments")
 @Schema(title = "Модель кафедры")
 public class DepartmentModel extends DBBaseModel {
 
@@ -54,7 +54,7 @@ public class DepartmentModel extends DBBaseModel {
      * Факультет кафедры.
      */
     @JoinColumn(name = "faculty_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE) //FIXME: почему?
     @Schema(title = "Факультет кафедры")
     private FacultyModel faculty;
@@ -63,7 +63,7 @@ public class DepartmentModel extends DBBaseModel {
      * Все преподаватели, работающие на данной кафедре.
      */
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
-    @JoinTable(name = "teacher_department_merge", joinColumns = {@JoinColumn(name = "department_id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
+    @JoinTable(name = "dean_teacher_department_merge", joinColumns = {@JoinColumn(name = "department_id")}, inverseJoinColumns = {@JoinColumn(name = "teacher_id")})
     @Schema(title = "Все преподаватели, работающие на данной кафедре")
     @JsonManagedReference
     private Set<TeacherModel> teachers;

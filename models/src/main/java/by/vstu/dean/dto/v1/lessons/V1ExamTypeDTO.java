@@ -8,11 +8,15 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * DTO for {@link ExamModel}
  */
 @Schema(title = "DTO Типа зачетной единицы")
+@EqualsAndHashCode(callSuper = true)
+@Data
 public final class V1ExamTypeDTO extends BaseDTO {
 
     /**

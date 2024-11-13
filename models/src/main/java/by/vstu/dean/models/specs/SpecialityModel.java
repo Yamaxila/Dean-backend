@@ -23,7 +23,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "specialities")
+@Table(name = "dean_specialities")
 @Schema(title = "Модель специальности")
 public class SpecialityModel extends DBBaseModel {
 
@@ -52,7 +52,7 @@ public class SpecialityModel extends DBBaseModel {
      * Кафедра, привязанная к специальности.
      */
     @NotFound(action = NotFoundAction.IGNORE)
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "department_id")
     @Schema(title = "Кафедра, привязанная к специальности")
     private DepartmentModel department;

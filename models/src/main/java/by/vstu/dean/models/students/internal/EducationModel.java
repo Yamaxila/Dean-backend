@@ -21,7 +21,7 @@ import java.util.Objects;
  * Класс, представляющий объект предыдущего места учебы.
  */
 @Entity
-@Table(name = "educations")
+@Table(name = "dean_educations")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

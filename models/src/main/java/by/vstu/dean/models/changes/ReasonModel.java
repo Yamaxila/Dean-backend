@@ -14,7 +14,7 @@ import lombok.Setter;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reasons")
+@Table(name = "dean_reasons")
 @Schema(title = "Модель причины изменения студента")
 public class ReasonModel extends DBBaseModel {
 

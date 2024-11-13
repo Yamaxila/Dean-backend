@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
+import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -33,8 +34,9 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "students")
+@Table(name = "dean_students")
 @Schema(title = "Модель студента")
+@Transactional
 public class StudentModel extends DBBaseModel {
 
     /**
@@ -73,7 +75,7 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Телефон")
     @JoinColumn(name = "phone_id")
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PhoneModel phone;
 
     @Schema(title = "E-mail")
@@ -86,10 +88,11 @@ public class StudentModel extends DBBaseModel {
 
     @Schema(title = "Образование")
     @NotNull
+    @Deprecated
     private String educationString; //TODO: По факту, это тоже бред. Наверное, нужно заменить на enum
 
     @JoinColumn(name = "institution")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Последнее место учебы")
     private InstitutionModel institution;
     @Schema(title = "Год окончания")
@@ -139,7 +142,7 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Адрес")
     @JoinColumn(name = "address_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AddressModel address;
 
     /**
@@ -147,42 +150,42 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Прописка")
     @JoinColumn(name = "reg_address_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private AddressModel regAddress;
 
     @JoinColumn(name = "citizenship_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Гражданство")
     @NotNull
     private CitizenshipModel citizenship;
 
     @JoinColumn(name = "student_language_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Иностранный язык")
     @NotNull
     private StudentLanguageModel studentLanguage;
 
     @JoinColumn(name = "passport_id")
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private PassportModel passport;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "parents", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @JoinTable(name = "dean_parents", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Родители/опекуны")
     private List<ParentModel> parents;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "educations", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @JoinTable(name = "dean_educations", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Образования")
     private List<EducationModel> educations;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "student_changes", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @JoinTable(name = "dean_student_changes", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Образования")
     private List<StudentChangeModel> changes;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "penalties", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @JoinTable(name = "dean_penalties", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Образования")
     private List<PenaltyModel> penalties;
 
@@ -200,7 +203,7 @@ public class StudentModel extends DBBaseModel {
      * Специализация студента.
      */
     @JoinColumn(name = "spez_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Специализация")
     private SpecializationModel specialization;
 
@@ -208,7 +211,7 @@ public class StudentModel extends DBBaseModel {
      * Группа, к которой принадлежит студент.
      */
     @JoinColumn(name = "group_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     @Schema(title = "Группа")
     private GroupModel group;
@@ -220,7 +223,7 @@ public class StudentModel extends DBBaseModel {
      * Комната, в которой проживает студент.
      */
     @JoinColumn(name = "hostel_room_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Комната")
     @JsonBackReference

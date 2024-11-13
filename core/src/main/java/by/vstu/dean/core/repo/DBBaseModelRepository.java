@@ -4,6 +4,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.NoRepositoryBean;
 
 import java.util.List;
@@ -38,4 +39,8 @@ public interface DBBaseModelRepository<T extends DBBaseModel> extends JpaReposit
      * @return Список сущностей.
      */
     List<T> findAllByStatus(EStatus status);
+
+    @Query("select m.sourceId from #{#entityName} m where m.id = :id")
+    Long findSourceId(Long id);
+
 }

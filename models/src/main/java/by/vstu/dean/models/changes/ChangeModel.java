@@ -14,7 +14,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-@Table(name = "student_field_changes")
+@Table(name = "dean_student_field_changes")
 @Schema(title = "Модель изменений студента")
 public class ChangeModel extends DBBaseModel {
 

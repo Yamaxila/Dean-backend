@@ -29,5 +29,4 @@ public class GroupService extends BaseService<GroupModel, GroupModelRepository> 
     public GroupModel findByName(String name) {
         return this.repo.findByName(name);
     }
-
 }

@@ -3,10 +3,7 @@ package by.vstu.dean.models.specs;
 import by.vstu.dean.core.models.DBBaseModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,7 +21,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "specializations")
+@Table(name = "dean_specializations")
 @Schema(title = "Модель специализации")
 public class SpecializationModel extends DBBaseModel {
 
@@ -53,7 +50,7 @@ public class SpecializationModel extends DBBaseModel {
      * Специальность.
      */
     @JoinColumn(name = "spec_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     @Schema(title = "Специальность")
     private SpecialityModel spec;
@@ -62,7 +59,7 @@ public class SpecializationModel extends DBBaseModel {
      * Квалификация.
      */
     @JoinColumn(name = "qualification_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Квалификация")
     @NotNull
     private QualificationModel qualification;

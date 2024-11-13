@@ -17,7 +17,7 @@ import java.util.Objects;
  * Класс, представляющий объект учреждения образования.
  */
 @Entity
-@Table(name = "institutions")
+@Table(name = "dean_institutions")
 @Setter
 @Getter
 @AllArgsConstructor

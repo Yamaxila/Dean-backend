@@ -18,7 +18,7 @@ import java.util.Objects;
  */
 @Getter
 @Entity
-@Table(name = "teacher_degrees")
+@Table(name = "dean_teacher_degrees")
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor

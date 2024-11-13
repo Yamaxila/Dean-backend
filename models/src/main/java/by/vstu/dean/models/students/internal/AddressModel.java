@@ -11,7 +11,7 @@ import lombok.*;
 @Getter
 @Builder
 @NoArgsConstructor
-@Table(name = "addresses")
+@Table(name = "dean_addresses")
 @Schema(title = "Модель адреса")
 @AllArgsConstructor
 public class AddressModel extends DBBaseModel {

@@ -6,6 +6,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
@@ -21,21 +22,17 @@ import java.time.Instant;
 })
 public class DStudyPlan extends OldDBBaseModel {
 
-    @Size(max = 8)
-    @NotNull
-    @JoinColumn(name = "gr", referencedColumnName = "gr")
-    @ManyToOne
-    @NotFound(action = NotFoundAction.IGNORE)
-    private DGroupModel group;
+    @Formula("(select Dgrup.dgrup_id from Dgrup where Dgrup.gr = gr)")
+    private Long groupId;
 
-    @Column(name = "Npotoka")
-    private Integer streamNumber;
+//    @Column(name = "Npotoka")
+//    private Integer streamNumber;
 
     @Column(name = "god_obraz")
     private Integer year;
 
-    @Column(name = "Npp")
-    private Integer listNumber;
+//    @Column(name = "Npp")
+//    private Integer listNumber;
 
     @Column(name = "god_uch1")
     private Integer yearStart;
@@ -86,10 +83,9 @@ public class DStudyPlan extends OldDBBaseModel {
     @Column(name = "nved2")
     private Integer planNumber2;
 
-    @JoinColumn(name = "nprep")
-    @ManyToOne
+    @Column(name = "nprep")
     @NotFound(action = NotFoundAction.IGNORE)
-    private DTeacherModel teacher;
+    private Long teacherId;
 
     @Column(name = "sort")
     private Integer sort;

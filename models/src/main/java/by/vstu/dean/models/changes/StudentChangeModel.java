@@ -22,12 +22,12 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "student_changes")
+@Table(name = "dean_student_changes")
 @Schema(title = "Модель изменений студента")
 public class StudentChangeModel extends DBBaseModel {
 
     @JoinColumn(name = "student_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Студент")
     private StudentModel student;
     private ESCMessageType studentChangeType;

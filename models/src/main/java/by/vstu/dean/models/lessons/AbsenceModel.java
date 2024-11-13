@@ -14,7 +14,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Table(name = "absences")
+@Table(name = "dean_absences")
 @Setter
 @Getter
 @Schema(title = "Модель отработки")

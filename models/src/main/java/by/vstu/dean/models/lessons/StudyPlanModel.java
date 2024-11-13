@@ -3,15 +3,14 @@ package by.vstu.dean.models.lessons;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.students.GroupModel;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -20,7 +19,7 @@ import java.util.Objects;
  * Модель объекта учебного плана.
  */
 @Entity
-@Table(name = "study_plan")
+@Table(name = "dean_study_plan")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -33,7 +32,7 @@ public class StudyPlanModel extends DBBaseModel {
      */
     @NotNull
     @JoinColumn(name = "group_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Группа")
     private GroupModel group;
 
@@ -70,27 +69,27 @@ public class StudyPlanModel extends DBBaseModel {
     /**
      * Тип зачетной единицы.
      */
-    @NotNull
-    @JoinColumn(name = "exam_type_id", nullable = false)
-    @ManyToOne
+    @JoinColumn(name = "exam_type_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Тип зачетной единицы")
     private ExamModel exam;
 
     /**
      * Дисциплина.
      */
-    @NotNull
-    @JoinColumn(name = "discipline_id", nullable = false)
-    @ManyToOne
+    @JoinColumn(name = "discipline_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Дисциплина")
     private DisciplineModel discipline;
 
     /**
      * Преподаватель.
      */
-    @NotNull
-    @JoinColumn(name = "teacher_id", nullable = false)
-    @ManyToOne
+    @JoinColumn(name = "teacher_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Преподаватель")
     private TeacherModel teacher;
 

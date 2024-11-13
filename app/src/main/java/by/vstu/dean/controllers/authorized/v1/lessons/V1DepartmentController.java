@@ -71,7 +71,7 @@ public class V1DepartmentController extends BaseController<V1DepartmentDTO, Depa
             produces = {"application/json"},
             method = RequestMethod.GET)
     @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
-    @Operation(method = "getDepartmen tByTeacher", description = "Получает кафедру по id преподавателя")
+    @Operation(method = "getDepartmentByTeacher", description = "Получает кафедру по id преподавателя")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<V1DepartmentDTO> getDepartmentByTeacher(@RequestParam Long teacherId) {
         Optional<TeacherDepartmentMerge> o = this.mergeRepo.findByTeacherId(teacherId);

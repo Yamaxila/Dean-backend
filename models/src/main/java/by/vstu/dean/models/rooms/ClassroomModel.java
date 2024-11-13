@@ -14,7 +14,7 @@ import org.hibernate.proxy.HibernateProxy;
 import java.util.Objects;
 
 @Entity
-@Table(name = "rooms")
+@Table(name = "dean_rooms")
 @Setter
 @Getter
 @Schema(title = "Модель аудитории")

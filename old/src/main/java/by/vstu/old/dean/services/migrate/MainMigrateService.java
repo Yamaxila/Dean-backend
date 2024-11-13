@@ -35,6 +35,7 @@ public class MainMigrateService {
     private final DepartmentSpecialityMergeService departmentSpecialityMergeService;
     private final AbsenceMigrateService absenceMigrateService;
     private final TeacherDepartmentMigrateService teacherDepartmentMigrateService;
+    private final StatementMigrateService statementMigrateService;
     private final MainUpdateService mainUpdateService;
 
     @PostConstruct
@@ -43,24 +44,25 @@ public class MainMigrateService {
         log.info("Migrate started at {}", startTime);
 
         Thread migrateThread = new Thread(() -> {
-            services.add(this.teacherDegreeMigrateService);
-            services.add(this.teacherMigrateService);
-            services.add(this.examTypeMigrateService);
-            services.add(this.citizenshipMigrateService);
-            services.add(this.studentLanguageMigrateService);
-            services.add(this.institutionMigrateService);
-            services.add(this.qualificationMigrateService);
-            services.add(this.facultyMigrateService);
-            services.add(this.departmentMigrateService);
-            services.add(this.disciplineMigrateService);
-            services.add(this.specialityMigrateService);
-            services.add(this.specializationMigrateService);
-            services.add(this.groupMigrateService);
-            services.add(this.studentMigrateService);
-            services.add(this.studyPlanMigrateService);
-            services.add(this.absenceMigrateService);
+//            services.add(this.teacherDegreeMigrateService);
+//            services.add(this.teacherMigrateService);
+//            services.add(this.examTypeMigrateService);
+//            services.add(this.citizenshipMigrateService);
+//            services.add(this.studentLanguageMigrateService);
+//            services.add(this.institutionMigrateService);
+//            services.add(this.qualificationMigrateService);
+//            services.add(this.facultyMigrateService);
+//            services.add(this.departmentMigrateService);
+//            services.add(this.disciplineMigrateService);
+//            services.add(this.specialityMigrateService);
+//            services.add(this.specializationMigrateService);
+//            services.add(this.groupMigrateService);
+//            services.add(this.studentMigrateService);
+//            services.add(this.studyPlanMigrateService);
+//            services.add(this.absenceMigrateService);
 //            services.add(this.departmentSpecialityMergeService);
 //            services.add(this.teacherDepartmentMigrateService);
+            services.add(this.statementMigrateService);
             log.info("Initializing services...");
             services.forEach(IMigrateExecutor::init);
             log.info("Migrating...");
@@ -71,7 +73,7 @@ public class MainMigrateService {
 
             log.info("Update started at {}", updateStartTime);
 
-            this.mainUpdateService.update();
+//            this.mainUpdateService.update();
 
             log.info("Update end at {} with time {}s", System.currentTimeMillis(), Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
 
@@ -86,7 +88,7 @@ public class MainMigrateService {
         });
 
         migrateThread.setName("Migration");
-//        migrateThread.start();
+        migrateThread.start();
 
     }
 

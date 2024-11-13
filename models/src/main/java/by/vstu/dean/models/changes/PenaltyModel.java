@@ -5,10 +5,7 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.models.students.StudentModel;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,12 +18,12 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "penalties")
+@Table(name = "dean_penalties")
 @Schema(title = "Модель взыскания")
 public class PenaltyModel extends DBBaseModel {
 
     @JoinColumn(name = "student_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Студент")
     private StudentModel student;
     @Schema(title = "Дата ликвидации")

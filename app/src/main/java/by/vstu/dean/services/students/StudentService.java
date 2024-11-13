@@ -43,4 +43,8 @@ public class StudentService extends BaseService<StudentModel, StudentModelReposi
         return this.repo.findByCaseNo(caseNo);
     }
 
+    public List<Long> getAllSourceIds() {
+        return this.repo.findAllSourceIds();
+    }
+
 }

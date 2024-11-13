@@ -12,7 +12,7 @@ import lombok.Setter;
 @Setter
 @Getter
 @NoArgsConstructor
-@Table(name = "parents")
+@Table(name = "dean_parents")
 @Schema(title = "Модель родителя/опекуна студента")
 public class ParentModel extends DBBaseModel {
 

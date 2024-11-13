@@ -2,10 +2,7 @@ package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
@@ -21,7 +18,7 @@ import java.util.Objects;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "disciplines")
+@Table(name = "dean_disciplines")
 @Schema(title = "Модель дисциплины")
 public class DisciplineModel extends DBBaseModel {
 
@@ -43,7 +40,7 @@ public class DisciplineModel extends DBBaseModel {
      * Кафедра, к которой относится дисциплина.
      */
     @JoinColumn(name = "department_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Кафедра")
     private DepartmentModel department;
 

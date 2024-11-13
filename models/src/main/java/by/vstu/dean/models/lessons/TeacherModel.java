@@ -2,10 +2,7 @@ package by.vstu.dean.models.lessons;
 
 import by.vstu.dean.core.models.DBBaseModel;
 import io.swagger.v3.oas.annotations.media.Schema;
-import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,7 +18,7 @@ import java.util.Objects;
 @Entity
 @Setter
 @Getter
-@Table(name = "teachers")
+@Table(name = "dean_teachers")
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(title = "Модель преподавателя")
@@ -52,7 +49,7 @@ public class TeacherModel extends DBBaseModel {
      * Звание преподавателя.
      */
     @JoinColumn(name = "degree_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @Schema(title = "Звание преподавателя")
     private TeacherDegreeModel degree;
 

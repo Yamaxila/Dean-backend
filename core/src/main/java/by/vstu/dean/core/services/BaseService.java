@@ -8,9 +8,11 @@ import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.core.websocket.WSListener;
 import cz.jirutka.rsql.parser.RSQLParser;
 import cz.jirutka.rsql.parser.ast.Node;
+import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.javers.core.Javers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -36,14 +38,18 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
 
     protected final WSControllerManager wsControllerManager;
 
+    @Autowired
+    protected LazyService<O> lazyService;
+
     /**
      * Получает все объекты модели из базы данных.
      *
      * @return Список объектов модели.
      */
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
+    @Transactional
     public List<O> getAll() {
-        return this.repo.findAll();
+        return this.lazyService.initializeLazyList(this.repo.findAll());
     }
 
     /**
@@ -52,10 +58,11 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Список объектов модели.
      */
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
+    @Transactional
     public List<O> rsql(String rsql) {
         Node rootNode = new RSQLParser().parse(rsql);
         Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<>());
-        return this.repo.findAll(spec);
+        return this.lazyService.initializeLazyList(this.repo.findAll(spec));
     }
 
     /**
@@ -64,8 +71,9 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Список активных объектов модели.
      */
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
+    @Transactional
     public List<O> getAllActive(Boolean is) {
-        return this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED));
+        return this.lazyService.initializeLazyList(this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED)));
     }
 
     /**
@@ -74,11 +82,12 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param id Идентификатор объекта модели.
      * @return Optional, содержащий объект модели, если найден, иначе пустой Optional.
      */
-    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null", key = "#id")
+    @Transactional
     public Optional<O> getById(Long id) {
         if(id == null)
             return Optional.empty();
-        return this.repo.findById(id);
+        return this.repo.findById(id).map(this.lazyService::initializeLazy);
     }
 
     /**
@@ -87,8 +96,10 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @param sourceId Идентификатор объекта модели.
      * @return Объект модели, соответствующий идентификатору.
      */
-    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null")
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result == null || #sourceId == null", key = "#sourceId")
     public O getBySourceId(Long sourceId) {
+        if (sourceId == null || sourceId == 0)
+            return null;
         return this.repo.findBySourceId(sourceId);
     }
 
@@ -105,7 +116,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
         O o2 = this.repo.saveAndFlush(o);
         this.javers.commit("dean-" + this.getClass().getSimpleName(), o2);
 
-        /** Поддержка WebSocket
+        /*
+         *  Поддержка WebSocket
          *  Сохранённые данные уходят сразу всем слушателям.
          *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
          */
@@ -138,7 +150,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
         List<O> o2 = this.repo.saveAllAndFlush(o);
         this.javers.commit("dean-" + this.getClass().getSimpleName(), o2);
 
-        /** Поддержка WebSocket
+        /*
+         *  Поддержка WebSocket
          *  Сохранённые данные уходят сразу всем слушателям.
          *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
          */
@@ -166,7 +179,8 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
             return null;
 
         o.setStatus(EStatus.DELETED);
-        /** Поддержка WebSocket
+        /*
+         *  Поддержка WebSocket
          *  Сохранённые данные уходят сразу всем слушателям.
          *  Поиск нужного контроллера в менеджере {@link WSControllerManager}
          */

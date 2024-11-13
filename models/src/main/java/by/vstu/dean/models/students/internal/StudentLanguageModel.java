@@ -21,7 +21,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "student_language")
+@Table(name = "dean_student_language")
 @Schema(title = "Модель иностранного языка студента")
 public class StudentLanguageModel extends DBBaseModel {
 

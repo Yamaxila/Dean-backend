@@ -24,7 +24,7 @@ import java.util.Objects;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "exams")
+@Table(name = "dean_exams")
 @Schema(title = "Модель зачетной единицы")
 public class ExamModel extends DBBaseModel {
 

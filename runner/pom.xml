@@ -29,11 +29,11 @@
             <artifactId>models</artifactId>
             <version>1.0.1</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>by.vstu.dean</groupId>-->
-        <!--            <artifactId>old</artifactId>-->
-        <!--            <version>1.0.1</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>by.vstu.dean</groupId>
+            <artifactId>old</artifactId>
+            <version>1.0.1</version>
+        </dependency>
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>app</artifactId>

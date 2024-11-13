@@ -28,7 +28,7 @@ import java.util.Objects;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "internal_messages")
+@Table(name = "dean_internal_messages")
 @Schema(title = "Модель внутреннего сообщения")
 public class MessageModel extends DBBaseModel {
 

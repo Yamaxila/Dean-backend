@@ -8,6 +8,8 @@ import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Сервис для работы с объектами модели учебного плана.
  */
@@ -15,8 +17,13 @@ import org.springframework.stereotype.Service;
 @Cacheable("studyplan")
 public class StudyPlanService extends BaseService<StudyPlanModel, StudyPlanModelRepository> {
 
-
     public StudyPlanService(StudyPlanModelRepository repo, Javers javers, WSControllerManager tm) {
         super(repo, javers, tm);
     }
+
+    public List<Long> getAllDistinctSourceIdsForGroup(Long groupId) {
+        return this.repo.findAllDistinctByGroupId(groupId).stream().map(StudyPlanModel::getSourceId).toList();
+    }
+
+
 }

@@ -17,7 +17,7 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "hostel_rooms")
+@Table(name = "dean_hostel_rooms")
 @Setter
 @Getter
 @AllArgsConstructor

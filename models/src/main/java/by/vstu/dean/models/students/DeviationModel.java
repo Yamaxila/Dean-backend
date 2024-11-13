@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deviations")
+@Table(name = "dean_deviations")
 @Schema(title = "Модель отклонения")
 @Deprecated
 public class DeviationModel extends DBBaseModel {

@@ -7,6 +7,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Table;
+import jakarta.transaction.Transactional;
 import lombok.*;
 
 @Entity
@@ -15,8 +16,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "phones")
+@Table(name = "dean_phones")
 @Schema(title = "Модель номера телефона")
+@Transactional
 public class PhoneModel extends DBBaseModel {
 
     @Enumerated(EnumType.ORDINAL)

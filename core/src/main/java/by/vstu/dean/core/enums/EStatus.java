@@ -18,7 +18,13 @@ public enum EStatus implements BaseEnum<EStatus> {
     ACTIVE(1),
 
     @Schema(title = "Удаленный статус")
-    DELETED(2);
+    DELETED(2),
+
+    /**
+     * Устанавливается записям, на которые могут ссылаться, но они не нормализованны
+     */
+    @Schema(title = "Сломанный статус")
+    BROKEN(3);
 
     /**
      * Конструктор с параметром.

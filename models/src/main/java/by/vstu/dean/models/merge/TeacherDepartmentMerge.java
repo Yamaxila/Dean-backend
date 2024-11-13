@@ -21,7 +21,7 @@ import java.util.Objects;
  * Модель объекта связи преподавателя и кафедры.
  */
 @Entity
-@Table(name = "teacher_department_merge")
+@Table(name = "dean_teacher_department_merge")
 @AllArgsConstructor
 @NoArgsConstructor
 @Setter

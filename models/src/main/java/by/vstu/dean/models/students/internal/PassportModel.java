@@ -21,7 +21,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "passports")
+@Table(name = "dean_passports")
 @Schema(title = "Модель паспорта/документа студента")
 public class PassportModel extends DBBaseModel {
 
