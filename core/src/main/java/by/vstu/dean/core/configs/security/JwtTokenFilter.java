@@ -42,6 +42,9 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
     @Value("${auth.validateUrl}")
     private String validateUrl;
 
+    @Value("${auth.needValidation}")
+    private Boolean needValidation;
+
     @Override
     protected void doFilterInternal(@NotNull HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
             throws ServletException, IOException {
@@ -59,11 +62,11 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
             response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token parse failed!");
             return;
         }
-
-        if (!this.validateToken(jwt.getTokenValue(), jwt.getId())) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token validation failed!");
-            return;
-        }
+        if (this.needValidation)
+            if (!this.validateToken(jwt.getTokenValue(), jwt.getId())) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token validation failed!");
+                return;
+            }
 
         if (Arrays.stream(this.allowedResourceIds.split(",")).anyMatch(p -> jwt.getAudience().contains(p)) || jwt.getAudience().contains("*")) {
             filterChain.doFilter(request, response);

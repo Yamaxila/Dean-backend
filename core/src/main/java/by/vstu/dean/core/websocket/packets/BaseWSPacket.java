@@ -1,5 +1,6 @@
 package by.vstu.dean.core.websocket.packets;
 
+import by.vstu.dean.core.websocket.enums.EPacketType;
 import by.vstu.dean.core.websocket.enums.EPayloadType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -13,6 +14,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class BaseWSPacket {
 
+    //Тип пакета
+    private EPacketType packetType;
     //Тип данных
     private EPayloadType payloadType;
     //Данные
