@@ -12,6 +12,7 @@ import by.vstu.dean.core.trowable.BadRequestException;
 import by.vstu.dean.core.utils.NumberUtils;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.core.websocket.WSListener;
+import by.vstu.dean.core.websocket.enums.EPacketType;
 import by.vstu.dean.core.websocket.enums.EPayloadType;
 import by.vstu.dean.core.websocket.packets.BaseWSPacket;
 import lombok.extern.slf4j.Slf4j;
@@ -100,7 +101,7 @@ public abstract class BaseWSController<D extends BaseDTO, O extends DBBaseModel,
         }
         //Отправляем данные
         //Здесь EPayloadType - OBJECT, т.к. объект один
-        this.sendUpdate(accessor, new BaseWSPacket(EPayloadType.OBJECT, this.rawGetById(id), accessor != null ? accessor.getSessionId() : null));
+        this.sendUpdate(accessor, new BaseWSPacket(EPacketType.GET, EPayloadType.OBJECT, this.rawGetById(id), accessor != null ? accessor.getSessionId() : null));
     }
 
     /**
@@ -110,7 +111,7 @@ public abstract class BaseWSController<D extends BaseDTO, O extends DBBaseModel,
      */
     @MessageMapping("/getAll")
     public void getAll(StompHeaderAccessor accessor) {
-        this.sendUpdate(accessor, new BaseWSPacket(EPayloadType.OBJECT_ARRAY, this.rawGetAll(), accessor != null ? accessor.getSessionId() : null));
+        this.sendUpdate(accessor, new BaseWSPacket(EPacketType.GET, EPayloadType.OBJECT_ARRAY, this.rawGetAll(), accessor != null ? accessor.getSessionId() : null));
     }
 
     /**
@@ -129,16 +130,19 @@ public abstract class BaseWSController<D extends BaseDTO, O extends DBBaseModel,
 
         boolean is = packet == null || Boolean.parseBoolean((String) packet.getPayload());
 
-        this.sendUpdate(accessor, new BaseWSPacket(EPayloadType.OBJECT_ARRAY, this.rawGetAllActive(is), accessor != null ? accessor.getSessionId() : null));
+        this.sendUpdate(accessor, new BaseWSPacket(EPacketType.GET, EPayloadType.OBJECT_ARRAY, this.rawGetAllActive(is), accessor != null ? accessor.getSessionId() : null));
     }
 
+    protected void sendUpdate(StompHeaderAccessor accessor, Object data) {
+        this.sendUpdate(accessor, data, EPacketType.UNKNOWN);
+    }
     /**
      * Метод для отправки данных клиенту/клиентам.
      *
      * @param accessor - Header пакета. Может быть null.
      * @param data     - Данные, которые нужно отправить.
      */
-    protected void sendUpdate(StompHeaderAccessor accessor, Object data) {
+    protected void sendUpdate(StompHeaderAccessor accessor, Object data, EPacketType packetType) {
         //Получаем аннотацию текущего класс
         WebSocketTopic topic = AnnotationUtils.findAnnotation(this.getClass(), WebSocketTopic.class);
 
@@ -165,8 +169,10 @@ public abstract class BaseWSController<D extends BaseDTO, O extends DBBaseModel,
         if (data instanceof List<?>) {
             type = EPayloadType.OBJECT_ARRAY;
             out = this.mapper.toDto((List<O>) data);
-        } else if (data instanceof PublicDTO
-                || data instanceof DBBaseModel
+        } else if (data instanceof PublicDTO) {
+            type = EPayloadType.OBJECT;
+            out = (D) data;
+        } else if (data instanceof DBBaseModel
         ) {
             type = EPayloadType.OBJECT;
             out = this.mapper.toDto((O) data);
@@ -186,22 +192,22 @@ public abstract class BaseWSController<D extends BaseDTO, O extends DBBaseModel,
 
         log.info("Sending payload {} to {}", out, destination);
         //Отправляем данные
-        this.messagingTemplate.convertAndSend(destination, new BaseWSPacket(type, out, accessor != null ? accessor.getSessionId() : "*"));
+        this.messagingTemplate.convertAndSend(destination, new BaseWSPacket(packetType, type, out, accessor != null ? accessor.getSessionId() : "*"));
     }
 
     @Override
     public void onCreate(Object data) {
-        this.sendUpdate(null, data);
+        this.sendUpdate(null, data, EPacketType.CREATE);
     }
 
     @Override
     public void onUpdate(Object data) {
-        this.sendUpdate(null, data);
+        this.sendUpdate(null, data, EPacketType.UPDATE);
     }
 
     @Override
     public void onDelete(Object data) {
-        this.sendUpdate(null, data);
+        this.sendUpdate(null, data, EPacketType.DELETE);
     }
 
 }

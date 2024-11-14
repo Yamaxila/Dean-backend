@@ -1,6 +1,7 @@
 package by.vstu.dean.core.websocket.controllers;
 
 import by.vstu.dean.core.trowable.BadRequestException;
+import by.vstu.dean.core.websocket.enums.EPacketType;
 import by.vstu.dean.core.websocket.enums.EPayloadType;
 import by.vstu.dean.core.websocket.packets.BaseWSPacket;
 import lombok.extern.slf4j.Slf4j;
@@ -38,7 +39,7 @@ public class WSSessionController {
             throw new BadRequestException("Invalid accessor");
         }
 
-        return new BaseWSPacket(EPayloadType.SESSION, null, accessor.getSessionId());
+        return new BaseWSPacket(EPacketType.GET, EPayloadType.SESSION, null, accessor.getSessionId());
 
     }
 
