@@ -64,3 +64,4 @@ caching.spring.ttl=60000
 #Token validation
 auth.resourceIds=dean
 auth.validateUrl=http://127.0.0.1:1433/validate
+auth.needValidation=true
