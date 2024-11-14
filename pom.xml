@@ -285,9 +285,14 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <outputDir>${project.basedir}/docs</outputDir>
+                    <outputDir>../dokka-docs</outputDir>
                     <sourceDirectories>
-                        <dir>src/main/java</dir>
+                        <dir>app/src/main/java</dir>
+                        <dir>core/src/main/java</dir>
+                        <dir>models/src/main/java</dir>
+                        <dir>old/src/main/java</dir>
+                        <dir>runner/src/main/java</dir>
+                        <dir>telegram/src/main/java</dir>
                     </sourceDirectories>
                     <sourceLinks>
                         <link>
@@ -315,6 +320,11 @@
                         <plugin>
                             <groupId>org.jetbrains.dokka</groupId>
                             <artifactId>dokka-base</artifactId>
+                            <version>${dokka.version}</version>
+                        </plugin>
+                        <plugin>
+                            <groupId>org.jetbrains.dokka</groupId>
+                            <artifactId>all-modules-page-plugin</artifactId>
                             <version>${dokka.version}</version>
                         </plugin>
                     </dokkaPlugins>
