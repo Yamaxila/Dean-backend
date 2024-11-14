@@ -85,6 +85,12 @@ public class GroupModel extends DBBaseModel {
     private LocalDate dateEnd;
 
     /**
+     * Текущий курс группы.
+     */
+    @Schema(title = "Текущий курс группы")
+    private Integer currentCourse;
+
+    /**
      * Средний балл студентов в группе.
      */
     @Schema(title = "Средний балл")

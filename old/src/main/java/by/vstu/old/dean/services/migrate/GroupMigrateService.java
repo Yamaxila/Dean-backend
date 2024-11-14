@@ -58,6 +58,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
         groupModel.setFaculty(facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
         groupModel.setYearStart(dGroupModel.getYearStart());
         groupModel.setYearEnd(dGroupModel.getYearEnd());
+        groupModel.setCurrentCourse(dGroupModel.getCurrentCourse());
         try {
             groupModel.setEndSemester(dGroupModel.getSemestrEnd().equalsIgnoreCase("осенний") ? ESemester.AUTUMN : ESemester.SPRING);
         } catch (Exception ignored) {

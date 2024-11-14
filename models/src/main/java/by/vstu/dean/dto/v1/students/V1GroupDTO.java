@@ -60,6 +60,7 @@ public final class V1GroupDTO extends BaseDTO {
      * Текущий курс группы.
      */
     @Schema(title = "Текущий курс группы")
+    @ReflectionField(clazz = GroupModel.class)
     private Integer currentCourse;
 
 }
