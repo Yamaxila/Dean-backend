@@ -75,7 +75,7 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Телефон")
     @JoinColumn(name = "phone_id")
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PhoneModel phone;
 
     @Schema(title = "E-mail")
@@ -92,7 +92,7 @@ public class StudentModel extends DBBaseModel {
     private String educationString; //TODO: По факту, это тоже бред. Наверное, нужно заменить на enum
 
     @JoinColumn(name = "institution")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Последнее место учебы")
     private InstitutionModel institution;
     @Schema(title = "Год окончания")
@@ -142,7 +142,7 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Адрес")
     @JoinColumn(name = "address_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private AddressModel address;
 
     /**
@@ -150,23 +150,23 @@ public class StudentModel extends DBBaseModel {
      */
     @Schema(title = "Прописка")
     @JoinColumn(name = "reg_address_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private AddressModel regAddress;
 
     @JoinColumn(name = "citizenship_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Гражданство")
     @NotNull
     private CitizenshipModel citizenship;
 
     @JoinColumn(name = "student_language_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Иностранный язык")
     @NotNull
     private StudentLanguageModel studentLanguage;
 
     @JoinColumn(name = "passport_id")
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private PassportModel passport;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -203,7 +203,7 @@ public class StudentModel extends DBBaseModel {
      * Специализация студента.
      */
     @JoinColumn(name = "spez_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Специализация")
     private SpecializationModel specialization;
 
@@ -211,7 +211,7 @@ public class StudentModel extends DBBaseModel {
      * Группа, к которой принадлежит студент.
      */
     @JoinColumn(name = "group_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     @Schema(title = "Группа")
     private GroupModel group;
@@ -223,7 +223,7 @@ public class StudentModel extends DBBaseModel {
      * Комната, в которой проживает студент.
      */
     @JoinColumn(name = "hostel_room_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Комната")
     @JsonBackReference

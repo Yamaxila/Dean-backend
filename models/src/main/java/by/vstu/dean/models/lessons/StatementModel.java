@@ -27,7 +27,7 @@ public class StatementModel extends DBBaseModel {
      * План, к которому относится ведомость
      */
     @Schema(title = "План, к которому относится ведомость")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "study_plan_id", nullable = false)
     private StudyPlanModel studyPlan;
 

@@ -49,7 +49,7 @@ public class TeacherModel extends DBBaseModel {
      * Звание преподавателя.
      */
     @JoinColumn(name = "degree_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Звание преподавателя")
     private TeacherDegreeModel degree;
 

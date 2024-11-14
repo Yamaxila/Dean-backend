@@ -54,7 +54,7 @@ public class DepartmentModel extends DBBaseModel {
      * Факультет кафедры.
      */
     @JoinColumn(name = "faculty_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE) //FIXME: почему?
     @Schema(title = "Факультет кафедры")
     private FacultyModel faculty;

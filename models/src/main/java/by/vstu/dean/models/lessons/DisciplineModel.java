@@ -40,7 +40,7 @@ public class DisciplineModel extends DBBaseModel {
      * Кафедра, к которой относится дисциплина.
      */
     @JoinColumn(name = "department_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Кафедра")
     private DepartmentModel department;
 

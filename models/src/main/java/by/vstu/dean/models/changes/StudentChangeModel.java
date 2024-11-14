@@ -27,7 +27,7 @@ import java.util.List;
 public class StudentChangeModel extends DBBaseModel {
 
     @JoinColumn(name = "student_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Студент")
     private StudentModel student;
     private ESCMessageType studentChangeType;

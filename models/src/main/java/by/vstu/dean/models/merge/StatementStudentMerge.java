@@ -32,7 +32,7 @@ public class StatementStudentMerge extends DBBaseModel {
      * К какой ведомости относится запись
      */
     @JoinColumn(name = "statement_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     private StatementModel statement;
 
     /**

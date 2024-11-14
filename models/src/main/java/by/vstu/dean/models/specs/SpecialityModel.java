@@ -52,7 +52,7 @@ public class SpecialityModel extends DBBaseModel {
      * Кафедра, привязанная к специальности.
      */
     @NotFound(action = NotFoundAction.IGNORE)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "department_id")
     @Schema(title = "Кафедра, привязанная к специальности")
     private DepartmentModel department;

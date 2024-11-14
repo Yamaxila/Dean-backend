@@ -50,7 +50,7 @@ public class SpecializationModel extends DBBaseModel {
      * Специальность.
      */
     @JoinColumn(name = "spec_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JsonIgnore
     @Schema(title = "Специальность")
     private SpecialityModel spec;
@@ -59,7 +59,7 @@ public class SpecializationModel extends DBBaseModel {
      * Квалификация.
      */
     @JoinColumn(name = "qualification_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Квалификация")
     @NotNull
     private QualificationModel qualification;

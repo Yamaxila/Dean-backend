@@ -12,7 +12,6 @@ import jakarta.transaction.Transactional;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.javers.core.Javers;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -38,9 +37,6 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
 
     protected final WSControllerManager wsControllerManager;
 
-    @Autowired
-    protected LazyService<O> lazyService;
-
     /**
      * Получает все объекты модели из базы данных.
      *
@@ -49,7 +45,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     @Transactional
     public List<O> getAll() {
-        return this.lazyService.initializeLazyList(this.repo.findAll());
+        return this.repo.findAll();
     }
 
     /**
@@ -62,7 +58,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     public List<O> rsql(String rsql) {
         Node rootNode = new RSQLParser().parse(rsql);
         Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<>());
-        return this.lazyService.initializeLazyList(this.repo.findAll(spec));
+        return this.repo.findAll(spec);
     }
 
     /**
@@ -73,7 +69,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     @Transactional
     public List<O> getAllActive(Boolean is) {
-        return this.lazyService.initializeLazyList(this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED)));
+        return this.repo.findAllByStatus(is == null ? EStatus.ACTIVE : (is ? EStatus.ACTIVE : EStatus.DELETED));
     }
 
     /**
@@ -87,7 +83,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
     public Optional<O> getById(Long id) {
         if(id == null)
             return Optional.empty();
-        return this.repo.findById(id).map(this.lazyService::initializeLazy);
+        return this.repo.findById(id);
     }
 
     /**

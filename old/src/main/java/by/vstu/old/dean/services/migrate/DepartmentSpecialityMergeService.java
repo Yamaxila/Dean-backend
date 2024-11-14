@@ -52,23 +52,23 @@ public class DepartmentSpecialityMergeService implements IMigrateExecutor {
         List<SpecialityModel> list = new ArrayList<>();
 
         // Примеры объединения специальностей с соответствующими кафедрами
-        list.add(this.get(1L, 418L));
-        list.add(this.get(35L, 496L)); // Автоматизация
-        list.add(this.get(35L, 419L)); // Автоматизация
-        list.add(this.get(33L, 492L)); // ТТ - НОВОЙ СПЕЦИАЛЬНОСТИ НЕТ
-        list.add(this.get(33L, 20L));
-        list.add(this.get(32L, 23L)); // ТЭ
-        list.add(this.get(2L, 682L)); // ДМ
-        list.add(this.get(2L, 684L));
-        list.add(this.get(2L, 683L));
-        list.add(this.get(8L, 22L)); // КиТОиО
-        list.add(this.get(15L, 320L));
-        list.add(this.get(15L, 322L));
-        list.add(this.get(26L, 221L));// ЭиЭБ
-        list.add(this.get(26L, 513L));
-        list.add(this.get(26L, 511L));
+//        list.add(this.get(1L, 418L));
+//        list.add(this.get(35L, 496L)); // Автоматизация
+//        list.add(this.get(35L, 419L)); // Автоматизация
+//        list.add(this.get(33L, 492L)); // ТТ - НОВОЙ СПЕЦИАЛЬНОСТИ НЕТ
+//        list.add(this.get(33L, 20L));
+//        list.add(this.get(32L, 23L)); // ТЭ
+//        list.add(this.get(2L, 682L)); // ДМ
+//        list.add(this.get(2L, 684L));
+//        list.add(this.get(2L, 683L));
+//        list.add(this.get(8L, 22L)); // КиТОиО
+//        list.add(this.get(15L, 320L));
+//        list.add(this.get(15L, 322L));
+//        list.add(this.get(26L, 221L));// ЭиЭБ
+//        list.add(this.get(26L, 513L));
+//        list.add(this.get(26L, 511L));
 
-        System.out.println(this.specialityService.saveAll(list));
+//        System.out.println(this.specialityService.saveAll(list));
     }
 
     @Override

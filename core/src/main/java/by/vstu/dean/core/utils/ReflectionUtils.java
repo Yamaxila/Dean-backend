@@ -1,6 +1,7 @@
 package by.vstu.dean.core.utils;
 
 import by.vstu.dean.core.anotations.ReflectionField;
+import by.vstu.dean.core.models.DBBaseModel;
 import jakarta.validation.constraints.NotNull;
 import lombok.extern.slf4j.Slf4j;
 
@@ -247,5 +248,9 @@ public class ReflectionUtils {
         }).noneMatch(Objects::isNull);
     }
 
+    public static List<Field> getAllInitializableFields(Class<?> clazz) {
+        //Получаем только наследников DBBaseModel
+        return getAllFields(clazz).stream().filter(p -> p.getType().equals(DBBaseModel.class)).toList();
+    }
 
 }

@@ -32,7 +32,7 @@ public class StudyPlanModel extends DBBaseModel {
      */
     @NotNull
     @JoinColumn(name = "group_id", nullable = false)
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Группа")
     private GroupModel group;
 
@@ -70,7 +70,7 @@ public class StudyPlanModel extends DBBaseModel {
      * Тип зачетной единицы.
      */
     @JoinColumn(name = "exam_type_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Тип зачетной единицы")
     private ExamModel exam;
@@ -79,7 +79,7 @@ public class StudyPlanModel extends DBBaseModel {
      * Дисциплина.
      */
     @JoinColumn(name = "discipline_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Дисциплина")
     private DisciplineModel discipline;
@@ -88,7 +88,7 @@ public class StudyPlanModel extends DBBaseModel {
      * Преподаватель.
      */
     @JoinColumn(name = "teacher_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Преподаватель")
     private TeacherModel teacher;

@@ -20,7 +20,7 @@ public class GratitudeModel extends DBBaseModel {
 
 
     @JoinColumn(name = "student_id")
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Студент")
     private StudentModel student;
 
