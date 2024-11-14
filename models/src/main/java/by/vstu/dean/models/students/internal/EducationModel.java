@@ -9,10 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.proxy.HibernateProxy;
 
 import java.util.Objects;
@@ -26,6 +23,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @Setter
 @Getter
+@Builder
 @Schema(title = "Модель образования студента")
 public class EducationModel extends DBBaseModel {
 
