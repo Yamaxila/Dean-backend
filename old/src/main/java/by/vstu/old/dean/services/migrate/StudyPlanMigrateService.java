@@ -10,6 +10,7 @@ import by.vstu.old.dean.repo.DStudyPlanModelRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.math.RoundingMode;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +73,9 @@ public class StudyPlanMigrateService extends BaseMigrateService<StudyPlanModel, 
         studyPlan.setYearEnd(dStudyPlan.getYearEnd());
         studyPlan.setYearStart(dStudyPlan.getYearStart());
         studyPlan.setCourse(dStudyPlan.getCourse());
+
+        studyPlan.setHours(dStudyPlan.getTime().toBigInteger().intValueExact());
+        studyPlan.setTestPoints(dStudyPlan.getTestType().setScale(1, RoundingMode.HALF_UP));
 
         studyPlan.setSourceId(dStudyPlan.getId());
 
