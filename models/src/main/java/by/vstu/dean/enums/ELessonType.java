@@ -16,9 +16,13 @@ public enum ELessonType implements BaseEnum<ELessonType> {
     EXAM(4),
     CONSULTATION(5),
     SCORE(6),
-    DEFENSE(7),
-    EXAM_REVIEW(8),
-    CONSULT_EXAM(9);
+    COURSE_WORK_DEFENSE(7),
+    COURSE_PROJECT_DEFENSE(8),
+    EXAM_REVIEW(9),
+    CONSULT_EXAM(10),
+    DIFF_SCORE(11),
+    PRACTICE_DEFENSE(12),
+    SEMINAR(13);
 
 
     final int id;

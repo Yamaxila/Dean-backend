@@ -13,6 +13,7 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.math.BigDecimal;
 import java.util.Objects;
 
 /**
@@ -92,6 +93,16 @@ public class StudyPlanModel extends DBBaseModel {
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Преподаватель")
     private TeacherModel teacher;
+
+    /**
+     * Количество часов
+     */
+    private Integer hours;
+
+    /**
+     * Количество зачётных единиц
+     */
+    private BigDecimal testPoints;
 
     public String toString() {
         return "StudyPlanModel(group=" + this.getGroup() + ", yearStart=" + this.getYearStart() + ", yearEnd=" + this.getYearEnd() + ", semesterNumber=" + this.getSemesterNumber() + ", semester=" + this.getSemester() + ", course=" + this.getCourse() + ", exam=" + this.getExam() + ", discipline=" + this.getDiscipline() + ", teacher=" + this.getTeacher() + ")";
