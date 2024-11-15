@@ -12,7 +12,6 @@ import by.vstu.dean.core.trowable.MappingException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +41,6 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Сохраненный объект с установленным id
      */
     @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
     protected D rawPut(D dto) {
         if (dto == null) {
             log.warn("DTO is empty!");
@@ -57,7 +55,6 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Список активных объектов
      */
     @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
     protected List<D> rawGetAll() {
 
         List<O> tempO = this.service.getAll();
@@ -83,7 +80,6 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Список активных объектов
      */
     @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
     protected List<D> rawGetAllActive(Boolean is) {
         List<O> tempO = this.service.getAllActive(is);
 
@@ -109,46 +105,8 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Объект с заданным id
      */
     @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
     protected D rawGetById(Long id) {
         Optional<O> byId = this.service.getById(id);
-        return byId.map(this.mapper::toDto).orElseThrow(EntityNotFoundException::new);
-    }
-
-    /**
-     * Сохраняет объект в базу данных и возвращает его с установленным id.
-     *
-     * @param model Объект для сохранения
-     * @return Сохраненный объект с установленным id
-     */
-    @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
-    protected O rawPutModel(O model) {
-        if (model == null) {
-            log.warn("entity is empty!");
-            throw new BadRequestException();
-        }
-        return this.service.save(model);
-    }
-
-    /**
-     * Помечает объект в базе данных по его id как удаленный и возвращает его с установленным статусом DELETED.
-     *
-     * @param id Идентификатор объекта для удаления
-     * @return Объект с установленным статусом DELETED
-     */
-    @Operation(hidden = true)
-    @PreAuthorize("hasAnyRole('HIDDEN_API') && isAnonymous()")
-    protected D rawDeleteById(Long id) {
-        if (id == null) {
-            log.warn("id is null!");
-            throw new BadRequestException();
-        }
-        Optional<O> byId = this.service.getById(id);
-
-        if (byId.isEmpty())
-            log.warn("Cannot to find entity with id {}", id);
-
         return byId.map(this.mapper::toDto).orElseThrow(EntityNotFoundException::new);
     }
 

@@ -5,6 +5,8 @@ import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.models.mapper.BaseMapperInterface;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.services.BaseService;
+import by.vstu.dean.core.trowable.BadRequestException;
+import by.vstu.dean.core.trowable.EntityNotFoundException;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -13,14 +15,13 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Базовый контроллер для работы с объектами базы данных.
@@ -48,7 +49,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "/dto",
             produces = {"application/json"},
             method = RequestMethod.PUT)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "put",
             description = "Сохраняет объект в базу данных и возвращает его же с установленным id",
             responses = {
@@ -73,7 +73,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "/model",
             produces = {"application/json"},
             method = RequestMethod.PUT)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "putModel",
             description = "Сохраняет объект в базу данных и возвращает его же с установленным id",
             responses = {
@@ -98,7 +97,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.DELETE)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "deleteById",
             description = "Помечает объект по id в базе данных, как удаленный и возвращает его же с установленным статусом DELETED",
             responses = {
@@ -124,8 +122,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getById", description = "Отправляет объект по его id из базы",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объект найден."),
@@ -150,8 +146,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAll", description = "Отправляет все объекты из базы",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объекты найдены."),
@@ -175,8 +169,6 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     @RequestMapping(value = "/active",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAllActive", description = "Отправляет все объекты из базы со статусом \"ACTIVE\"",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объекты найдены."),
@@ -190,4 +182,40 @@ public abstract class BaseController<D extends BaseDTO, O extends DBBaseModel, M
     public ResponseEntity<List<D>> getAllActive(Boolean is) {
         return super.getAllActive(is);
     }
+
+    /**
+     * Сохраняет объект в базу данных и возвращает его с установленным id.
+     *
+     * @param model Объект для сохранения
+     * @return Сохраненный объект с установленным id
+     */
+    @Operation(hidden = true)
+    protected O rawPutModel(O model) {
+        if (model == null) {
+            log.warn("entity is empty!");
+            throw new BadRequestException();
+        }
+        return this.service.save(model);
+    }
+
+    /**
+     * Помечает объект в базе данных по его id как удаленный и возвращает его с установленным статусом DELETED.
+     *
+     * @param id Идентификатор объекта для удаления
+     * @return Объект с установленным статусом DELETED
+     */
+    @Operation(hidden = true)
+    protected D rawDeleteById(Long id) {
+        if (id == null) {
+            log.warn("id is null!");
+            throw new BadRequestException();
+        }
+        Optional<O> byId = this.service.getById(id);
+
+        if (byId.isEmpty())
+            log.warn("Cannot to find entity with id {}", id);
+
+        return byId.map(this.mapper::toDto).orElseThrow(EntityNotFoundException::new);
+    }
+
 }
