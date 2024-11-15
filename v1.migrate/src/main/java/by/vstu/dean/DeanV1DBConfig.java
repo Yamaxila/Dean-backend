@@ -29,20 +29,20 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "futureEntityManagerFactory",
-        transactionManagerRef = "futureTransactionManager",
+        entityManagerFactoryRef = "deanV1EntityManagerFactory",
+        transactionManagerRef = "deanV1TransactionManager",
         basePackages = {
-                "by.vstu.dean"
+                "by.vstu.migrate.v1"
         }
 )
 @ComponentScan(basePackages = {
-        "by.vstu.dean"
+        "by.vstu.migrate.v1"
 })
 @EntityScan(basePackages = {
-        "by.vstu.dean"
+        "by.vstu.migrate.v1"
 })
 @AutoConfigurationPackage(basePackages = {
-        "by.vstu.dean"
+        "by.vstu.migrate.v1"
 })
 public class DeanV1DBConfig {
 
@@ -52,8 +52,8 @@ public class DeanV1DBConfig {
      * @return Источник данных для новой БД.
      */
     @Primary
-    @Bean(name = "futureDataSource")
-    @ConfigurationProperties(prefix = "spring.datasource.future")
+    @Bean(name = "deanV1DataSource")
+    @ConfigurationProperties(prefix = "spring.datasource.dean.v1")
     public DataSource futureDataSource() {
         return DataSourceBuilder.create().build();
     }
@@ -66,14 +66,13 @@ public class DeanV1DBConfig {
      * @return Фабрика менеджера сущностей для новой БД.
      */
     @Primary
-    @Bean(name = "futureEntityManagerFactory")
+    @Bean(name = "deanV1EntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean futureEntityManagerFactory(EntityManagerFactoryBuilder builder,
-                                                                             @Qualifier("futureDataSource") DataSource primaryDataSource) {
+                                                                             @Qualifier("deanV1DataSource") DataSource primaryDataSource) {
         return builder
                 .dataSource(primaryDataSource)
                 .packages(
-                        "by.vstu.dean"
-
+                        "by.vstu.migrate.v1"
                 )
                 .properties(jpaProperties())
                 .build();
@@ -85,10 +84,10 @@ public class DeanV1DBConfig {
      * @param primaryEntityManagerFactory Фабрика менеджера сущностей для новой БД.
      * @return Менеджер транзакций для новой БД.
      */
-    @Bean(name = "futureTransactionManager")
+    @Bean(name = "deanV1TransactionManager")
     @Primary
     public PlatformTransactionManager futureTransactionManager(
-            @Qualifier("futureEntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
+            @Qualifier("deanV1EntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
         return new JpaTransactionManager(primaryEntityManagerFactory);
     }
 

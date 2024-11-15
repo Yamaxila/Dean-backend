@@ -1,7 +1,7 @@
 package by.vstu.migrate.v1.models;
 
+import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
 import by.vstu.migrate.v1.V1DBBaseModel;
-import by.vstu.migrate.v1.adapters.V1LocalDateTypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
@@ -63,7 +63,7 @@ public class V1FacultyModel extends V1DBBaseModel {
      */
     private String enrollMsgPaid;
 
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDatePaid;
 
     /**
@@ -74,7 +74,7 @@ public class V1FacultyModel extends V1DBBaseModel {
     /**
      * Дата зачисления бесплатников.
      */
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDateNotPaid;
 
     /**
@@ -110,7 +110,7 @@ public class V1FacultyModel extends V1DBBaseModel {
     /**
      * Дата приказа о переводе.
      */
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate moveMsgDate;
 
     /**

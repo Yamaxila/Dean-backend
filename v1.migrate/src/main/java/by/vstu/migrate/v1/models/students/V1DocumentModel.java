@@ -1,8 +1,8 @@
 package by.vstu.migrate.v1.models.students;
 
 
+import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
 import by.vstu.migrate.v1.V1DBBaseModel;
-import by.vstu.migrate.v1.adapters.V1LocalDateTypeAdapter;
 import com.google.gson.annotations.JsonAdapter;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -33,7 +33,7 @@ public class V1DocumentModel extends V1DBBaseModel {
     @JoinColumn(name = "student_language")
     @ManyToOne
     private V1StudentLanguageModel studentLanguage;
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate birthDate;
     private String birthPlace;
     private String educationString;
@@ -57,13 +57,13 @@ public class V1DocumentModel extends V1DBBaseModel {
     private Double jobExperience;
     private String enrollmentOrder;
 
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollmentDate;
     private Integer deviationType;
     private String passportSerial;
     private String passportNumber;
 
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate passportIssueDate;
     private String passportIssueString;
     private String passportId;
@@ -90,9 +90,9 @@ public class V1DocumentModel extends V1DBBaseModel {
     private boolean move;
     private Long documentNumber;
     private String email;
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate enrollDate;
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate migrateDate;
 
 }

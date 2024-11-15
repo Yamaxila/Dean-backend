@@ -1,7 +1,7 @@
 package by.vstu.migrate.v1.models.students;
 
+import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
 import by.vstu.migrate.v1.V1DBBaseModel;
-import by.vstu.migrate.v1.adapters.V1LocalDateTypeAdapter;
 import by.vstu.migrate.v1.enums.V1ESemester;
 import by.vstu.migrate.v1.models.V1FacultyModel;
 import by.vstu.migrate.v1.models.specs.V1SpecialityModel;
@@ -61,13 +61,13 @@ public class V1GroupModel extends V1DBBaseModel {
     /**
      * Дата начала обучения группы.
      */
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate dateStart;
 
     /**
      * Дата окончания обучения группы.
      */
-    @JsonAdapter(V1LocalDateTypeAdapter.class)
+    @JsonAdapter(LocalDateTypeAdapter.class)
     private LocalDate dateEnd;
 
     /**

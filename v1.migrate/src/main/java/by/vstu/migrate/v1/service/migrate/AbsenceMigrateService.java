@@ -32,7 +32,12 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, V1Ab
 
     @Override
     public AbsenceModel convertSingle(V1AbsenceModel v1AbsenceModel, boolean update) {
-        AbsenceModel a = this.convertSingle(v1AbsenceModel);
+        AbsenceModel a = new AbsenceModel();
+        a.setId(v1AbsenceModel.getId());
+        a.setSourceId(v1AbsenceModel.getSourceId());
+        a.setStatus(v1AbsenceModel.getStatus().map());
+        a.setCreated(v1AbsenceModel.getCreated());
+        a.setUpdated(v1AbsenceModel.getUpdated());
 
         this.disciplineService.getById(v1AbsenceModel.getDiscipline().getId()).ifPresent(a::setDiscipline);
 

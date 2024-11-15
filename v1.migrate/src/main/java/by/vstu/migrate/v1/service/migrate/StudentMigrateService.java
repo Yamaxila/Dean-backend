@@ -255,7 +255,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, V1St
         s.setApproved(v1StudentModel.isApproved());
         s.setPhotoUrl(v1StudentModel.getPhotoUrl());
 
-        return null;
+        return s;
     }
 
     @Override

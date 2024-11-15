@@ -1,7 +1,7 @@
 package by.vstu.migrate.v1.models.students;
 
+import by.vstu.dean.core.adapters.LocalDateTimeTypeAdapter;
 import by.vstu.migrate.v1.V1DBBaseModel;
-import by.vstu.migrate.v1.adapters.V1LocalDateTimeTypeAdapter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.JsonAdapter;
 import jakarta.persistence.Entity;
@@ -32,11 +32,11 @@ public class V1DeviationModel extends V1DBBaseModel {
     private String expelled;
     private Integer reasonNumber;
     private String deviationMsg;
-    @JsonAdapter(V1LocalDateTimeTypeAdapter.class)
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime msgDate;
-    @JsonAdapter(V1LocalDateTimeTypeAdapter.class)
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateStart;
-    @JsonAdapter(V1LocalDateTimeTypeAdapter.class)
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateEnd;
     private String lastNameNew;
     private String groupNameNew;
@@ -44,7 +44,7 @@ public class V1DeviationModel extends V1DBBaseModel {
     private String msg2;
     private String commandMsg1;
     private String commandMsg;
-    @JsonAdapter(V1LocalDateTimeTypeAdapter.class)
+    @JsonAdapter(LocalDateTimeTypeAdapter.class)
     private LocalDateTime dateLiquidation;
     private Integer penalty;
 
