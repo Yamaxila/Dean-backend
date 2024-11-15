@@ -35,6 +35,7 @@
         <module>telegram</module>
         <module>photo</module>
         <module>timetable-module</module>
+        <module>v1.migrate</module>
     </modules>
     <pluginRepositories>
         <pluginRepository>
