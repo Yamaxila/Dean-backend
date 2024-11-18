@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.authorized.v1.lessons;
+package by.vstu.dean.controllers.authorized.v1.read.lessons;
 
 import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.dto.v1.lessons.V1ExamTypeDTO;
@@ -33,7 +33,7 @@ public class V1ExamTypeController extends BaseController<V1ExamTypeDTO, ExamMode
     /**
      * @param facultyModel Модель типа экзамена
      */
-    @Override
+
     @Operation(method = "", hidden = true)
     public ResponseEntity<V1ExamTypeDTO> put(V1ExamTypeDTO facultyModel) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);
@@ -42,7 +42,7 @@ public class V1ExamTypeController extends BaseController<V1ExamTypeDTO, ExamMode
     /**
      * @param id Идентификатор типа экзамена
      */
-    @Override
+
     @Operation(method = "", hidden = true)
     public ResponseEntity<V1ExamTypeDTO> deleteById(Long id) {
         return new ResponseEntity<>(HttpStatus.NOT_IMPLEMENTED);

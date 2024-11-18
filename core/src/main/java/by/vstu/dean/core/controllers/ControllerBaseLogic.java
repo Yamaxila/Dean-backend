@@ -41,7 +41,7 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Сохраненный объект с установленным id
      */
     @Operation(hidden = true)
-    protected D rawPut(D dto) {
+    protected final D rawPut(D dto) {
         if (dto == null) {
             log.warn("DTO is empty!");
             throw new BadRequestException();
@@ -55,7 +55,7 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Список активных объектов
      */
     @Operation(hidden = true)
-    protected List<D> rawGetAll() {
+    protected final List<D> rawGetAll() {
 
         List<O> tempO = this.service.getAll();
 
@@ -80,7 +80,7 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Список активных объектов
      */
     @Operation(hidden = true)
-    protected List<D> rawGetAllActive(Boolean is) {
+    protected final List<D> rawGetAllActive(Boolean is) {
         List<O> tempO = this.service.getAllActive(is);
 
         if (tempO == null) {
@@ -105,7 +105,7 @@ public class ControllerBaseLogic<D extends PublicDTO, O extends DBBaseModel, M e
      * @return Объект с заданным id
      */
     @Operation(hidden = true)
-    protected D rawGetById(Long id) {
+    protected final D rawGetById(Long id) {
         Optional<O> byId = this.service.getById(id);
         return byId.map(this.mapper::toDto).orElseThrow(EntityNotFoundException::new);
     }

@@ -1,6 +1,6 @@
-package by.vstu.dean.controllers.authorized.v1.hostels;
+package by.vstu.dean.controllers.authorized.v1.read.hostels;
 
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.trowable.BadRequestException;
 import by.vstu.dean.core.trowable.DatabaseFetchException;
@@ -27,11 +27,13 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/hostels/")
 @Tag(name = "HostelController", description = "Общежития и комнаты")
-public class V1HostelController extends BaseController<V1HostelRoomDTO, HostelRoomModel, V1HostelRoomMapper, HostelRoomModelRepository, HostelRoomService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1ReadHostelController extends BaseReadController<V1HostelRoomDTO, HostelRoomModel, V1HostelRoomMapper, HostelRoomModelRepository, HostelRoomService> {
+
     @Autowired
     private V1StudentMapper studentMapper;
 
-    public V1HostelController(HostelRoomService service, V1HostelRoomMapper mapper) {
+    public V1ReadHostelController(HostelRoomService service, V1HostelRoomMapper mapper) {
         super(service, mapper);
     }
 

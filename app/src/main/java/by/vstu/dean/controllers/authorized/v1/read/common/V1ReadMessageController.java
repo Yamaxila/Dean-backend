@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.authorized.v1.common;
+package by.vstu.dean.controllers.authorized.v1.read.common;
 
 import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.enums.EStatus;
@@ -32,12 +32,13 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/messages/")
 @Tag(name = "Messages", description = "Сообщения")
-public class V1MessageController extends BaseController<V1MessageDTO, MessageModel, V1MessageMapper, MessageModelRepository, MessageService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1ReadMessageController extends BaseController<V1MessageDTO, MessageModel, V1MessageMapper, MessageModelRepository, MessageService> {
 
     /**
      * Контроллер для работы с объектами {@link MessageModel}
      */
-    public V1MessageController(MessageService service, V1MessageMapper mapper) {
+    public V1ReadMessageController(MessageService service, V1MessageMapper mapper) {
         super(service, mapper);
     }
 

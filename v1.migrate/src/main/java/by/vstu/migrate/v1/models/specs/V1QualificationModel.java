@@ -1,14 +1,13 @@
 package by.vstu.migrate.v1.models.specs;
 
 import by.vstu.migrate.v1.V1DBBaseModel;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * Модель объекта квалификации.

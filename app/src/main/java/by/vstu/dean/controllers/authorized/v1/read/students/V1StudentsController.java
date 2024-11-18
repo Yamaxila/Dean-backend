@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.authorized.v1.students;
+package by.vstu.dean.controllers.authorized.v1.read.students;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.controllers.BaseController;
@@ -87,10 +87,10 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
      * @param id Идентификатор студента
      * @return Объект студента
      */
-    @RequestMapping(value = "/{id}/",
+    @RequestMapping(value = "/{id}",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("(#oauth2.hasScope('dean_read') AND (hasAnyRole('ROLE_ADMIN') OR hasAnyRole('ROLE_SERVICE')))")
+    @PreAuthorize("hasAnyAuthority('dean_read') AND hasAnyRole('ROLE_ADMIN', 'ROLE_SERVICE')")
     @Operation(method = "getById", description = "Отправляет объект из базы по id")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<V1StudentDTO> getById(@PathVariable Long id) {
@@ -105,7 +105,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/homeless",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("hasAnyAuthority('read') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "getAllHomeless", description = "Отправляет все объекты из базы, которые нуждаются в общежитии")
     @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<V1StudentDTO>> getAllHomeless() {
@@ -122,7 +122,7 @@ public class V1StudentsController extends BaseController<V1StudentDTO, StudentMo
     @RequestMapping(value = "/{id}/approve",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("hasAnyAuthority('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "setApproved", description = "Устанавливает поле approved для объекта по id")
     @ApiSecurity(scopes = {"write"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<V1StudentDTO> setApproved(@PathVariable Long id, @RequestParam boolean approved) {

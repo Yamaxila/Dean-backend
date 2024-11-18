@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.authorized.v1.rooms;
+package by.vstu.dean.controllers.authorized.v1.read.rooms;
 
 import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.controllers.BaseController;

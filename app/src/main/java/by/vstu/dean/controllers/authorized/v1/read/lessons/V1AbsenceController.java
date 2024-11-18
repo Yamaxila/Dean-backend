@@ -1,6 +1,6 @@
-package by.vstu.dean.controllers.authorized.v1.lessons;
+package by.vstu.dean.controllers.authorized.v1.read.lessons;
 
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.dto.v1.lessons.V1AbsenceDTO;
 import by.vstu.dean.mapper.v1.V1AbsenceMapper;
 import by.vstu.dean.models.lessons.AbsenceModel;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/absences/")
 @Tag(name = "Absences", description = "Отработки")
-public class V1AbsenceController extends BaseController<V1AbsenceDTO, AbsenceModel, V1AbsenceMapper, AbsenceModelRepository, AbsenceService> {
+public class V1AbsenceController extends BaseReadController<V1AbsenceDTO, AbsenceModel, V1AbsenceMapper, AbsenceModelRepository, AbsenceService> {
     /**
      * Конструктор контроллера отработок.
      *

@@ -1,4 +1,4 @@
-package by.vstu.dean.controllers.authorized.v1.specs;
+package by.vstu.dean.controllers.authorized.v1.read.specs;
 
 import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.dto.v1.specs.V1SpecializationDTO;
