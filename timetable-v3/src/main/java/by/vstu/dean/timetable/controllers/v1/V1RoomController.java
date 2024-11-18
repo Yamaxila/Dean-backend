@@ -28,9 +28,9 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/rooms")
+@RequestMapping("/api/v1/rooms/")
 @RequiredArgsConstructor
-public class RoomController {
+public class V1RoomController {
 
     private final LessonModelRepository lessonRepo;
     private final LessonMapper mapper;
@@ -38,15 +38,20 @@ public class RoomController {
     private final RoomService service;
     private final ExcelService excelService;
 
-
-    @RequestMapping(value = {""}, produces = {"application/json"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/"},
+            produces = {"application/json"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public ResponseEntity<List<RoomDTO>> getAll() {
         return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"visibility"}, produces = {"application/json"}, method = {RequestMethod.POST})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/visibility"},
+            produces = {"application/json"},
+            method = {RequestMethod.POST})
+    @PreAuthorize("hasRole('ROLE_SCHEDULE')")
     @Transactional
     public ResponseEntity<?> changeVisibility(@RequestParam long groupId, @RequestParam boolean visible, @RequestParam String date1, @RequestParam String date2) {
         List<LessonModel> lessons = this.lessonService.setVisibility(groupId, visible, date1, date2);
@@ -57,23 +62,32 @@ public class RoomController {
         return new ResponseEntity<>(this.mapper.toDto(lessons).stream().map(this.service::convertToDto).toList(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"hiddenGroups"}, produces = {"application/json"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/hiddenGroups"},
+            produces = {"application/json"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public ResponseEntity<?> getHiddenGroups() {
         List<LessonModel> lessons = this.lessonService.getHiddenGroups();
 
         return new ResponseEntity<>(lessons.stream().map(l -> l.getGroup().getName()).distinct().toList(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"currentDate"}, produces = {"application/json"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/currentDate"},
+            produces = {"application/json"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     @Transactional
     public ResponseEntity<List<RoomDTO>> getAllOnCurrentDate() {
         return new ResponseEntity<>(this.mapper.toDto(this.lessonRepo.findByStatusAndDate(EStatus.ACTIVE, LocalDate.now(), LocalDate.now())).stream().map(this.service::convertToDto).toList(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"byRoomAndDate"}, produces = {"application/json"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/byRoomAndDate"},
+            produces = {"application/json"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     @Transactional
     public ResponseEntity<List<RoomDTO>> getAllOnCurrentDateAndClassroom(@RequestParam EFrame frame, @RequestParam String[] roomNumbers, @RequestParam EWeekType[] weekType, @RequestParam String startDate, @RequestParam String endDate) {
         List<LessonModel> lessons = this.lessonRepo.findByRoom_FrameAndRoom_RoomNumberInAndWeekTypeInAndStatus(frame, List.of(roomNumbers), List.of(weekType), EStatus.ACTIVE)
@@ -84,8 +98,11 @@ public class RoomController {
         return new ResponseEntity<>(this.mapper.toDto(lessons).stream().map(this.service::convertToDto).toList(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"getExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/getExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void getExcel(HttpServletResponse response, @RequestParam long facultyId, @RequestParam int course, @RequestParam String date1, @RequestParam String date2) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Ras.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -101,8 +118,11 @@ public class RoomController {
         outputStream.close();
     }
 
-    @RequestMapping(value = {"daytimeSessionExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/daytimeSessionExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void daytimeSessionExcel(HttpServletResponse response, @RequestParam long[] groupIds, @RequestParam String date1, @RequestParam String date2) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("session.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -119,8 +139,11 @@ public class RoomController {
     }
 
     @Deprecated
-    @RequestMapping(value = {"citExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/citExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void citExcel(HttpServletResponse response, @RequestParam String date1, @RequestParam String date2) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Cit.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -136,8 +159,11 @@ public class RoomController {
         outputStream.close();
     }
 
-    @RequestMapping(value = {"teacherExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/teacherExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void teacherExcel(HttpServletResponse response, @RequestParam long[] teacherIds, @RequestParam String date1, @RequestParam String date2) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Teacher.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -153,8 +179,11 @@ public class RoomController {
         outputStream.close();
     }
 
-    @RequestMapping(value = {"classroomExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/classroomExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void classroomExcel(HttpServletResponse response, @RequestParam long[] classroomIds, @RequestParam String date1, @RequestParam String date2) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("classroom.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -170,8 +199,11 @@ public class RoomController {
         outputStream.close();
     }
 
-    @RequestMapping(value = {"zaochnoeExcel"}, produces = {"application/xlsx"}, method = {RequestMethod.GET})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/zaochnoeExcel"},
+            produces = {"application/xlsx"},
+            method = {RequestMethod.GET})
+    @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     public void zaochnoeExcel(HttpServletResponse response, @RequestParam long[] groupsIds, @RequestParam String from, @RequestParam String to, @RequestParam(required = false, defaultValue = "") String sessionType) throws IOException {
         response.setHeader("Content-Disposition", "inline;filename=\"" + URLEncoder.encode("Zaochnoe.xlsx", StandardCharsets.UTF_8) + "\"");
 
@@ -191,8 +223,11 @@ public class RoomController {
         outputStream.close();
     }
 
-    @RequestMapping(value = {"/delete"}, produces = {"application/json"}, method = {RequestMethod.DELETE})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/delete"},
+            produces = {"application/json"},
+            method = {RequestMethod.DELETE})
+    @PreAuthorize("hasRole('ROLE_SCHEDULE')")
     @Transactional
     public ResponseEntity<LessonModel> delete(@RequestParam Long id) {
         LessonModel l = this.lessonService.delete(id);
@@ -202,8 +237,11 @@ public class RoomController {
         return new ResponseEntity<>(l, HttpStatus.OK);
     }
 
-    @RequestMapping(value = {"/put"}, produces = {"application/json"}, method = {RequestMethod.PUT})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_ADMIN'))")
+    @RequestMapping(
+            value = {"/put"},
+            produces = {"application/json"},
+            method = {RequestMethod.PUT})
+    @PreAuthorize("hasRole('ROLE_SCHEDULE')")
     public ResponseEntity<?> put(@RequestBody RoomDTO room, @RequestParam(required = false, defaultValue = "false") boolean check) {
         if (room.getStartDate() == null && room.getEndDate() != null) room.setStartDate(room.getEndDate());
         if (room.getEndDate() == null && room.getStartDate() != null) room.setEndDate(room.getStartDate());
