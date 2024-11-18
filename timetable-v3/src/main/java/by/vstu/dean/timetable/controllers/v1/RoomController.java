@@ -1,4 +1,4 @@
-package by.vstu.dean.timetable.controllers;
+package by.vstu.dean.timetable.controllers.v1;
 
 
 import by.vstu.dean.core.enums.EStatus;
@@ -28,7 +28,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/rooms")
+@RequestMapping("/api/v1/rooms")
 @RequiredArgsConstructor
 public class RoomController {
 

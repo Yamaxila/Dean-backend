@@ -1,4 +1,4 @@
-package by.vstu.dean.timetable.controllers.read;
+package by.vstu.dean.timetable.controllers.v1.read;
 
 import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.controllers.BaseReadController;
@@ -18,11 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/lessons/")
+@RequestMapping("/api/v1/lessons/")
 @PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
-public class LessonController extends BaseReadController<LessonDTO, LessonModel, LessonMapper, LessonModelRepository, LessonService> {
+public class V1LessonController extends BaseReadController<LessonDTO, LessonModel, LessonMapper, LessonModelRepository, LessonService> {
 
-    public LessonController(LessonService service, LessonMapper mapper) {
+    public V1LessonController(LessonService service, LessonMapper mapper) {
         super(service, mapper);
     }
 
