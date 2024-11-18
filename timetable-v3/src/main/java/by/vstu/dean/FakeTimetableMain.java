@@ -1,4 +1,4 @@
-package by.vstu.dean.timetable;
+package by.vstu.dean;
 
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

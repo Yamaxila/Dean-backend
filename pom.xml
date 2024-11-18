@@ -34,8 +34,8 @@
         <module>runner</module>
         <module>telegram</module>
         <module>photo</module>
-        <module>timetable-module</module>
         <module>v1.migrate</module>
+        <module>timetable-v3</module>
     </modules>
     <pluginRepositories>
         <pluginRepository>
