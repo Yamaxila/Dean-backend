@@ -1,6 +1,5 @@
 package by.vstu.dean.timetable.controllers.v1.read;
 
-import by.vstu.dean.core.controllers.BaseController;
 import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.timetable.dto.LessonDTO;
 import by.vstu.dean.timetable.dto.mapper.LessonMapper;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/lessons/")
-@PreAuthorize("hasAnyRole('ROLE_USER', 'ROLE_ADMIN')")
+@PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
 public class V1LessonController extends BaseReadController<LessonDTO, LessonModel, LessonMapper, LessonModelRepository, LessonService> {
 
     public V1LessonController(LessonService service, LessonMapper mapper) {
@@ -34,20 +33,20 @@ public class V1LessonController extends BaseReadController<LessonDTO, LessonMode
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll()), HttpStatus.OK);
     }
 
-    @RequestMapping(
-            value = {"/entity"},
-            produces = {"application/json"},
-            method = {RequestMethod.GET})
-    public ResponseEntity<List<LessonModel>> getAllEntities() {
-        return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
-    }
+//    @RequestMapping(
+//            value = {"/entity"},
+//            produces = {"application/json"},
+//            method = {RequestMethod.GET})
+//    public ResponseEntity<List<LessonModel>> getAllEntities() {
+//        return new ResponseEntity<>(this.service.getAll(), HttpStatus.OK);
+//    }
 
     @RequestMapping(
             value = {"/search"},
             produces = {"application/json"},
             method = {RequestMethod.GET})
-    public ResponseEntity<List<LessonModel>> getByGroupAndDisciplineAndTeacher(@RequestParam(name = "gId") Long groupId, @RequestParam(name = "dId") Long disciplineId, @RequestParam(name = "tId") Long teacherId) {
-        return new ResponseEntity<>(this.service.getByGroupDisciplineTeacher(groupId, disciplineId, teacherId), HttpStatus.OK);
+    public ResponseEntity<List<LessonDTO>> getByGroupAndDisciplineAndTeacher(@RequestParam(name = "gId") Long groupId, @RequestParam(name = "dId") Long disciplineId, @RequestParam(name = "tId") Long teacherId) {
+        return new ResponseEntity<>(this.mapper.toDto(this.service.getByGroupDisciplineTeacher(groupId, disciplineId, teacherId)), HttpStatus.OK);
     }
 
 }
