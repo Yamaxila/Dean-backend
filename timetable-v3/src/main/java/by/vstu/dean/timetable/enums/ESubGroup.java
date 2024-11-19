@@ -1,11 +1,16 @@
 package by.vstu.dean.timetable.enums;
 
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 
 import java.util.Arrays;
 
+/**
+ * Перечисление подгрупп.
+ */
 @Getter
+@Schema(title = "Подгруппа")
 public enum ESubGroup {
 
     UNKNOWN(0),
