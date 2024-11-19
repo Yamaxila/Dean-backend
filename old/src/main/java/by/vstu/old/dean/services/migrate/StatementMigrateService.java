@@ -269,8 +269,8 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     @Override
     public void migrate() {
         //оно очееееень медленное, но работает
-//        this.insertAll(this.convertNotExistsFromDB());
+        this.insertAll(this.convertNotExistsFromDB());
         log.info("Saving students for statements");
-//        this.statementStudentMergeRepository.saveAllAndFlush(this.analyseAndCreateMerges());
+        this.statementStudentMergeRepository.saveAllAndFlush(this.analyseAndCreateMerges());
     }
 }

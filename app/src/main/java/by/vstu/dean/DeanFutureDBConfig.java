@@ -33,21 +33,17 @@ import java.util.Map;
         entityManagerFactoryRef = "futureEntityManagerFactory",
         transactionManagerRef = "futureTransactionManager",
         basePackages = {
-                "by.vstu.dean",
-                "by.vstu.dean.*"
+                "by.vstu.dean"
         }
 )
 @ComponentScan(basePackages = {
-        "by.vstu.dean",
-        "by.vstu.dean.*"
+        "by.vstu.dean"
 })
 @EntityScan(basePackages = {
-        "by.vstu.dean",
-        "by.vstu.dean.timetable"
+        "by.vstu.dean"
 })
 @AutoConfigurationPackage(basePackages = {
-        "by.vstu.dean",
-        "by.vstu.dean.timetable"
+        "by.vstu.dean"
 })
 public class DeanFutureDBConfig {
 
@@ -77,8 +73,7 @@ public class DeanFutureDBConfig {
         return builder
                 .dataSource(primaryDataSource)
                 .packages(
-                        "by.vstu.dean",
-                        "by.vstu.dean.*"
+                        "by.vstu.dean"
                 )
                 .properties(jpaProperties())
                 .build();

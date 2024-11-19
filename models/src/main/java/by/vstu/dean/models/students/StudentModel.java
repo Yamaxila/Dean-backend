@@ -44,21 +44,21 @@ public class StudentModel extends DBBaseModel {
      */
     @NotNull
     @Schema(title = "Фамилия")
-    private String lastName;
+    private String surname;
 
     /**
      * Имя студента.
      */
     @NotNull
     @Schema(title = "Имя")
-    private String firstName;
+    private String name;
 
     /**
      * Отчество студента.
      */
     @NotNull
     @Schema(title = "Отчество")
-    private String secondName;
+    private String patronymic;
 
     @Schema(title = "Тип оплаты")
     @Enumerated(EnumType.ORDINAL)

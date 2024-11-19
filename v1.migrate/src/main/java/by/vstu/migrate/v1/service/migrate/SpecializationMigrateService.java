@@ -39,11 +39,12 @@ public class SpecializationMigrateService extends BaseMigrateService<Specializat
         s.setShortName(v1SpecializationModel.getShortName());
         s.setSpezCode(v1SpecializationModel.getSpezCode());
 
-        this.specialityService.getById(v1SpecializationModel.getSpec().getId()).ifPresent(s::setSpec);
+        if (v1SpecializationModel.getSpec() != null)
+            this.specialityService.getById(v1SpecializationModel.getSpec().getId()).ifPresent(s::setSpec);
 
-        if (s.getSpec() == null) {
-            throw new RuntimeException("Spec for specialization with id = %d not found".formatted(v1SpecializationModel.getId()));
-        }
+//        if (s.getSpec() == null) {
+//            throw new RuntimeException("Spec for specialization with id = %d not found".formatted(v1SpecializationModel.getId()));
+//        }
 
         this.qualificationService.getById(v1SpecializationModel.getQualification().getId()).ifPresent(s::setQualification);
 

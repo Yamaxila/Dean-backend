@@ -19,7 +19,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.support.CronExpression;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -50,8 +49,6 @@ public class V1ReadMessageController extends BaseController<V1MessageDTO, Messag
     @RequestMapping(value = "/by_flag",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAllByInactiveFlag", description = "Отправляет все объекты из базы по флагу \"inactive\"",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объекты найдены."),
@@ -85,8 +82,6 @@ public class V1ReadMessageController extends BaseController<V1MessageDTO, Messag
     @RequestMapping(value = "/current",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getCurrentMessages", description = "Отправляет все объекты из базы, что должны быть отправлены сегодня",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объекты найдены."),
@@ -142,8 +137,6 @@ public class V1ReadMessageController extends BaseController<V1MessageDTO, Messag
     @RequestMapping(value = "/flag",
             produces = {"application/json"},
             method = RequestMethod.POST)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "setInactive", description = "Устанавливает флаг активности сообщения",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объект сохранен."),

@@ -1,12 +1,13 @@
-package by.vstu.dean.controllers.authorized.v1.read.students;
+package by.vstu.dean.controllers.authorized.v1.write.students;
 
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseWriteController;
 import by.vstu.dean.dto.v1.students.V1InstitutionDTO;
 import by.vstu.dean.mapper.v1.V1InstitutionMapper;
 import by.vstu.dean.models.students.internal.InstitutionModel;
 import by.vstu.dean.repo.InstitutionModelRepository;
 import by.vstu.dean.services.students.InstitutionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,15 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/institutions/")
 @Tag(name = "Institutions", description = "Учреждения образования")
-public class V1InstitutionController extends BaseController<V1InstitutionDTO, InstitutionModel, V1InstitutionMapper, InstitutionModelRepository, InstitutionService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1WriteInstitutionController extends BaseWriteController<V1InstitutionDTO, InstitutionModel, V1InstitutionMapper, InstitutionModelRepository, InstitutionService> {
 
     /**
      * Конструктор контроллера.
      *
      * @param service Сервис учреждений образования студентов
-     * @param mapper Маппер
+     * @param mapper  Маппер
      */
-    public V1InstitutionController(InstitutionService service, V1InstitutionMapper mapper) {
+    public V1WriteInstitutionController(InstitutionService service, V1InstitutionMapper mapper) {
         super(service, mapper);
     }
 }

@@ -6,12 +6,14 @@ import by.vstu.dean.services.DisciplineService;
 import by.vstu.migrate.v1.models.lessons.V1DisciplineModel;
 import by.vstu.migrate.v1.repo.V1DisciplineModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel, V1DisciplineModel> {
 
     private final DisciplineService disciplineService;
@@ -36,10 +38,11 @@ public class DisciplineMigrateService extends BaseMigrateService<DisciplineModel
         d.setName(v1DisciplineModel.getName());
         d.setShortName(v1DisciplineModel.getShortName());
 
-        this.departmentService.getById(v1DisciplineModel.getDepartment().getId()).ifPresent(d::setDepartment);
+        if (v1DisciplineModel.getDepartment() != null)
+            this.departmentService.getById(v1DisciplineModel.getDepartment().getId()).ifPresent(d::setDepartment);
 
         if (d.getDepartment() == null) {
-            throw new RuntimeException("Department for discipline with id = %d not found".formatted(v1DisciplineModel.getId()));
+            log.error("Department for discipline with id = {} not found", v1DisciplineModel.getId());
         }
 
         return d;

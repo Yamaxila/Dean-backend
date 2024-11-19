@@ -4,6 +4,7 @@ import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.enums.EMobileOperatorType;
 import by.vstu.dean.enums.EPassportType;
 import by.vstu.dean.enums.EPaymentType;
+import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.models.students.internal.*;
 import by.vstu.dean.services.GroupService;
@@ -51,9 +52,9 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, V1St
         s.setCreated(v1StudentModel.getCreated());
         s.setUpdated(v1StudentModel.getUpdated());
 
-        s.setLastName(v1StudentModel.getLastName());
-        s.setFirstName(v1StudentModel.getFirstName());
-        s.setSecondName(v1StudentModel.getSecondName());
+        s.setSurname(v1StudentModel.getLastName());
+        s.setName(v1StudentModel.getFirstName());
+        s.setPatronymic(v1StudentModel.getSecondName());
 
         if (StringUtils.safeTrim(v1StudentModel.getLastDocument().getPaymentType()).equalsIgnoreCase("бюджет"))
             s.setPaymentType(EPaymentType.NOT_PAID);
@@ -234,13 +235,17 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, V1St
         s.setBirthPlace(v1StudentModel.getLastDocument().getBirthPlace());
         s.setBenefits(v1StudentModel.getLastDocument().getBenefits());
 
-        this.specializationService.getById(v1StudentModel.getSpecialization().getId()).ifPresent(s::setSpecialization);
+        if (v1StudentModel.getSpecialization() != null)
+            this.specializationService.getById(v1StudentModel.getSpecialization().getId()).ifPresent(s::setSpecialization);
+//
+//        if (s.getSpecialization() == null) {
+//            throw new RuntimeException("Specialization for student with id = %d not found".formatted(v1StudentModel.getId()));
+//        }
 
-        if (s.getSpecialization() == null) {
-            throw new RuntimeException("Specialization for student with id = %d not found".formatted(v1StudentModel.getId()));
-        }
 
-        this.groupService.getById(v1StudentModel.getGroup().getId()).ifPresent(s::setGroup);
+        GroupModel g = this.groupService.getBySourceId(v1StudentModel.getGroup().getSourceId());
+
+        s.setGroup(g);
 
         if (s.getGroup() == null) {
             throw new RuntimeException("Group for student with id = %d not found".formatted(v1StudentModel.getId()));
@@ -248,7 +253,8 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, V1St
 
         s.setNeedHostel(v1StudentModel.getLastDocument().isNeedHostel());
 
-        this.hostelRoomService.getById(v1StudentModel.getHostelRoom().getId()).ifPresentOrElse(s::setHostelRoom, () -> s.setHostelRoom(null));
+        if (v1StudentModel.getHostelRoom() != null)
+            this.hostelRoomService.getById(v1StudentModel.getHostelRoom().getId()).ifPresentOrElse(s::setHostelRoom, () -> s.setHostelRoom(null));
 
         s.setCheckInDate(v1StudentModel.getCheckInDate());
         s.setEvictionDate(v1StudentModel.getEvictionDate());

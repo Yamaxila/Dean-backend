@@ -37,21 +37,21 @@ public class MainMigrateService {
         long startTime = System.currentTimeMillis();
 
         Thread migrateThread = new Thread(() -> {
-            services.add(teacherDegreeMigrateService);
-            services.add(teacherMigrateService);
-            services.add(examTypeMigrateService);
-            services.add(citizenshipMigrateService);
-            services.add(studentLanguageMigrateService);
-            services.add(institutionMigrateService);
-            services.add(qualificationMigrateService);
-            services.add(facultyMigrateService);
-            services.add(hostelRoomMigrateService);
-            services.add(departmentMigrateService);
-            services.add(classroomsMigrateService);
-            services.add(disciplineMigrateService);
-            services.add(specialityMigrateService);
-            services.add(specializationMigrateService);
-            services.add(groupMigrateService);
+//            services.add(facultyMigrateService);
+//            services.add(teacherDegreeMigrateService);
+//            services.add(teacherMigrateService);
+//            services.add(examTypeMigrateService);
+//            services.add(citizenshipMigrateService);
+//            services.add(studentLanguageMigrateService);
+//            services.add(institutionMigrateService);
+//            services.add(qualificationMigrateService);
+//            services.add(hostelRoomMigrateService);
+//            services.add(departmentMigrateService);
+//            services.add(classroomsMigrateService);
+//            services.add(disciplineMigrateService);
+//            services.add(specialityMigrateService);
+//            services.add(specializationMigrateService);
+//            services.add(groupMigrateService);
             services.add(studentMigrateService);
             services.add(studyPlanMigrateService);
             services.add(absenceMigrateService);

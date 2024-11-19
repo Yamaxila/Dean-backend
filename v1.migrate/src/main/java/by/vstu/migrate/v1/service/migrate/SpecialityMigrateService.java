@@ -6,10 +6,12 @@ import by.vstu.dean.services.SpecialityService;
 import by.vstu.migrate.v1.models.specs.V1SpecialityModel;
 import by.vstu.migrate.v1.repo.V1SpecialityModelRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel, V1SpecialityModel> {
@@ -37,10 +39,11 @@ public class SpecialityMigrateService extends BaseMigrateService<SpecialityModel
         s.setShortName(v1SpecialityModel.getShortName());
         s.setSpecCode(v1SpecialityModel.getSpecCode());
 
-        this.departmentService.getById(v1SpecialityModel.getDepartment().getId()).ifPresent(s::setDepartment);
+        if (v1SpecialityModel.getDepartment() != null)
+            this.departmentService.getById(v1SpecialityModel.getDepartment().getId()).ifPresent(s::setDepartment);
 
         if (s.getDepartment() == null) {
-            throw new RuntimeException("Department for speciality with id = %d not found".formatted(v1SpecialityModel.getId()));
+            log.error("Department for speciality with id = {} not found", v1SpecialityModel.getId());
         }
 
         return s;
