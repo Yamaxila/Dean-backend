@@ -29,19 +29,24 @@
             <artifactId>models</artifactId>
             <version>2.0.0</version>
         </dependency>
-        <!--        <dependency>-->
-        <!--            <groupId>by.vstu.dean</groupId>-->
-        <!--            <artifactId>old</artifactId>-->
-        <!--            <version>2.0.0</version>-->
-        <!--        </dependency>-->
+        <dependency>
+            <groupId>by.vstu.dean</groupId>
+            <artifactId>old</artifactId>
+            <version>2.0.0</version>
+        </dependency>
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>app</artifactId>
             <version>2.0.0</version>
         </dependency>
+        <dependency>
+            <groupId>by.vstu.dean</groupId>
+            <artifactId>timetable-v3</artifactId>
+            <version>2.0.0</version>
+        </dependency>
         <!--        <dependency>-->
-        <!--            <groupId>by.vstu</groupId>-->
-        <!--            <artifactId>timetable</artifactId>-->
+        <!--            <groupId>by.vstu.dean</groupId>-->
+        <!--            <artifactId>v1-migrate</artifactId>-->
         <!--            <version>2.0.0</version>-->
         <!--        </dependency>-->
         <!--        <dependency>-->

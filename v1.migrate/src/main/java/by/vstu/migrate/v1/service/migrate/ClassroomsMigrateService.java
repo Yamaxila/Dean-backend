@@ -36,7 +36,8 @@ public class ClassroomsMigrateService extends BaseMigrateService<ClassroomModel,
         c.setFrame(v1ClassroomModel.getFrame().map());
         c.setRoomType(v1ClassroomModel.getRoomType().map());
 
-        this.departmentService.getById(v1ClassroomModel.getDepartment().getId()).ifPresentOrElse(c::setDepartment, () -> c.setDepartment(null));
+        if (v1ClassroomModel.getDepartment() != null)
+            this.departmentService.getById(v1ClassroomModel.getDepartment().getId()).ifPresentOrElse(c::setDepartment, () -> c.setDepartment(null));
 
         c.setRoomNumber(v1ClassroomModel.getRoomNumber());
         c.setSeatsNumber(v1ClassroomModel.getSeatsNumber());

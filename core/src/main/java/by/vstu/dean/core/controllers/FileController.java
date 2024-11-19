@@ -29,9 +29,9 @@ public class FileController {
     @RequestMapping(value = "/upload",
             produces = {"text/plain"},
             method = RequestMethod.PUT)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
+    @PreAuthorize("(hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST'))")
     @Operation(method = "upload", description = "Загружает файл на сервер")
-    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
+    @ApiSecurity(roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<?> upload(@RequestBody MultipartFile file) {
         if(file == null)
             return new ResponseEntity<>("file cannot be null!", HttpStatus.BAD_REQUEST);
@@ -46,7 +46,7 @@ public class FileController {
     @RequestMapping(value = "/download",
             produces = {"image/jpeg", "image/png"},
             method = RequestMethod.GET)
-    @PreAuthorize("isAnonymous() || isAuthenticated() || isFullyAuthenticated()")
+    @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
     @Operation(method = "download", description = "Отдает файл с сервера")
     @ApiSecurity(scopes = {"any"}, roles = {"any"})
     public ResponseEntity<?> download(@RequestBody String filename) {

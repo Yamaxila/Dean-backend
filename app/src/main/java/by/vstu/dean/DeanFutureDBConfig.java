@@ -74,7 +74,6 @@ public class DeanFutureDBConfig {
                 .dataSource(primaryDataSource)
                 .packages(
                         "by.vstu.dean"
-
                 )
                 .properties(jpaProperties())
                 .build();

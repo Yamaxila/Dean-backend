@@ -37,11 +37,8 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, V1GroupM
 
         g.setName(v1GroupModel.getName());
 
-        this.specialityService.getById(v1GroupModel.getSpec().getId()).ifPresent(g::setSpec);
-
-        if (g.getSpec() == null) {
-            throw new RuntimeException("Spec for group with id = %d not found".formatted(v1GroupModel.getId()));
-        }
+        if (v1GroupModel.getSpec() != null)
+            this.specialityService.getById(v1GroupModel.getSpec().getId()).ifPresent(g::setSpec);
 
         this.facultyService.getById(v1GroupModel.getFaculty().getId()).ifPresent(g::setFaculty);
 

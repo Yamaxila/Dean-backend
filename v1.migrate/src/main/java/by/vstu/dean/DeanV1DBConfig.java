@@ -12,7 +12,6 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -51,7 +50,6 @@ public class DeanV1DBConfig {
      *
      * @return Источник данных для новой БД.
      */
-    @Primary
     @Bean(name = "deanV1DataSource")
     @ConfigurationProperties(prefix = "spring.datasource.dean.v1")
     public DataSource futureDataSource() {
@@ -65,7 +63,6 @@ public class DeanV1DBConfig {
      * @param primaryDataSource Источник данных для новой БД.
      * @return Фабрика менеджера сущностей для новой БД.
      */
-    @Primary
     @Bean(name = "deanV1EntityManagerFactory")
     public LocalContainerEntityManagerFactoryBean futureEntityManagerFactory(EntityManagerFactoryBuilder builder,
                                                                              @Qualifier("deanV1DataSource") DataSource primaryDataSource) {
@@ -85,7 +82,6 @@ public class DeanV1DBConfig {
      * @return Менеджер транзакций для новой БД.
      */
     @Bean(name = "deanV1TransactionManager")
-    @Primary
     public PlatformTransactionManager futureTransactionManager(
             @Qualifier("deanV1EntityManagerFactory") EntityManagerFactory primaryEntityManagerFactory) {
         return new JpaTransactionManager(primaryEntityManagerFactory);

@@ -7,12 +7,9 @@ import by.vstu.dean.models.FacultyModel;
 import by.vstu.dean.repo.FacultyModelRepository;
 import by.vstu.dean.services.FacultyService;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 /**
  * Контроллер для работы с факультетами.
@@ -30,23 +27,6 @@ public class V1ReadFacultyController extends BaseReadController<V1FacultyDTO, Fa
      */
     public V1ReadFacultyController(FacultyService service, V1FacultyMapper mapper) {
         super(service, mapper);
-    }
-
-    @Override
-    @PreAuthorize("#hasAnyAuthority('read') AND hasAnyRole('ROLE_')")
-    public ResponseEntity<List<V1FacultyDTO>> getAll() {
-        return super.getAll();
-    }
-
-    @Override
-    public ResponseEntity<List<V1FacultyDTO>> getAllActive(Boolean is) {
-        return super.getAllActive(is);
-    }
-
-    @Override
-    @PreAuthorize("#hasAnyAuthority('read') AND hasAnyRole('ROLE_')")
-    public ResponseEntity<V1FacultyDTO> getById(Long id) {
-        return super.getById(id);
     }
 
 }

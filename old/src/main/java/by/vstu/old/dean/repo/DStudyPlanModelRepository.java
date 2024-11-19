@@ -4,6 +4,7 @@ import by.vstu.old.dean.OldDBBaseModelRepository;
 import by.vstu.old.dean.models.DStudyPlan;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface DStudyPlanModelRepository extends OldDBBaseModelRepository<DStu
     List<DStudyPlan> findAllByGroupId(Long groupId);
 
     @NotNull
+    @Query("select distinct s from DStudyPlan s where s.groupId = :groupId and s.id not in :studyPlans")
     List<DStudyPlan> findAllByGroupIdAndIdNotIn(Long groupId, List<Long> studyPlans);
 
 }

@@ -193,9 +193,9 @@ public class ModelsGenUtils {
         StudentModel studentModel = (StudentModel) this.initModel(new StudentModel());
 
         // 
-        studentModel.setLastName(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setFirstName(RandomStringUtils.randomAlphanumeric(10, 20));
-        studentModel.setSecondName(RandomStringUtils.randomAlphanumeric(10, 20));
+        studentModel.setSurname(RandomStringUtils.randomAlphanumeric(10, 20));
+        studentModel.setName(RandomStringUtils.randomAlphanumeric(10, 20));
+        studentModel.setPatronymic(RandomStringUtils.randomAlphanumeric(10, 20));
         studentModel.setSex(1);
 //        studentModel.setCityType(1);
 //        studentModel.setAddress(RandomStringUtils.randomAlphanumeric(10, 20));
