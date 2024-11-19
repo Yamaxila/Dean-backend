@@ -36,6 +36,7 @@
         <module>photo</module>
         <module>timetable-module</module>
         <module>student-account</module>
+        <module>schedule</module>
     </modules>
     <pluginRepositories>
         <pluginRepository>

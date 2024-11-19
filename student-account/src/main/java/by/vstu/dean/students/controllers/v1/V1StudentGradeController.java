@@ -1,5 +1,6 @@
 package by.vstu.dean.students.controllers.v1;
 
+import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.students.dtos.StudentGradeAvgDTO;
 import by.vstu.dean.students.dtos.StudentGradeDTO;
 import by.vstu.dean.students.services.StudentGradeService;
