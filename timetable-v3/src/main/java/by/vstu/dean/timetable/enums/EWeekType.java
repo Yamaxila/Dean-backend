@@ -1,7 +1,13 @@
 package by.vstu.dean.timetable.enums;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 import java.util.Arrays;
 
+/**
+ * Перечисление типов недель.
+ */
+@Schema(title = "Тип недели")
 public enum EWeekType {
 
     ALWAYS(0),

@@ -97,11 +97,13 @@ public class StudyPlanModel extends DBBaseModel {
     /**
      * Количество часов
      */
+    @Schema(title = "Количество часов")
     private Integer hours;
 
     /**
      * Количество зачётных единиц
      */
+    @Schema(title = "Количество зачётных единиц")
     private BigDecimal testPoints;
 
     public String toString() {
