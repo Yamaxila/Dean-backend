@@ -54,6 +54,6 @@ public final class V1TeacherDTO extends BaseDTO {
 
     @SuppressWarnings("unused")
     public String getFullName() {
-        return String.format("%s %s %s", this.surname, this.name, this.patronymic);
+        return "%s %s. %s.".formatted(this.surname, this.name.charAt(0), this.patronymic.charAt(0));
     }
 }
