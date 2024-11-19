@@ -45,7 +45,7 @@ public class RepoController<D extends BaseDTO, O extends DBBaseModel, M extends 
     @RequestMapping(value = "/rsql",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("hasAnyAuthority('ROLE_SERVER')")
     @Operation(method = "rsql", description = "Получает объекты из базы данных через rsql-запрос",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Объекты найдены."),
@@ -72,7 +72,7 @@ public class RepoController<D extends BaseDTO, O extends DBBaseModel, M extends 
     @RequestMapping(value = "/dto_rsql",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_ADMIN'))")
+    @PreAuthorize("#(hasAnyAuthority('ROLE_SERVER'))")
     @Operation(method = "dto_rsql", description = "Получает DTO из базы данных через rsql-запрос",
             responses = {
                     @ApiResponse(responseCode = "200", description = "DTO найдены."),

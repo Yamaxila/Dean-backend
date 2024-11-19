@@ -156,7 +156,7 @@ public class AbsenceMigrateService extends BaseMigrateService<AbsenceModel, DAbs
     public void migrate() {
         System.err.println(this.getClass().getName());
         this.insertAll(this.convertNotExistsFromDB());
-
+//
         this.absenceService.getAll().forEach((absenceModel) -> this.disciplineMigrateService.fixIfNeeded(absenceModel.getDiscipline(), absenceModel.getDepartment()));
     }
 

@@ -13,8 +13,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class TeacherDegreeMigrateService extends BaseMigrateService<TeacherDegreeModel, V1TeacherDegreeModel> {
 
-    private TeacherDegreeService teacherDegreeService;
-    private V1TeacherDegreeModelRepository v1TeacherDegreeModelRepository;
+    private final TeacherDegreeService teacherDegreeService;
+    private final V1TeacherDegreeModelRepository v1TeacherDegreeModelRepository;
 
     @Override
     public List<TeacherDegreeModel> convertNotExistsFromDB() {

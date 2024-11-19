@@ -10,8 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 
 import java.util.List;
 
@@ -35,7 +33,6 @@ public class V1HostelRoomModel extends V1DBBaseModel {
 
     @JoinColumn(referencedColumnName = "id", name = "hostel_room_id")
     @OneToMany
-    @NotFound(action = NotFoundAction.IGNORE)
     @JsonManagedReference
     private List<V1StudentModel> students;
 

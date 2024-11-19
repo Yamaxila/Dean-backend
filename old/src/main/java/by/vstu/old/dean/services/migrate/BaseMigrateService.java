@@ -80,4 +80,7 @@ public abstract class BaseMigrateService<S extends DBBaseModel, T extends OldDBB
     public void cleanup() {
     }
 
+    public void migrate() {
+
+    }
 }
