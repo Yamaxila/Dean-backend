@@ -113,9 +113,9 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         studentModel.setCitizenship(citizenship);
         studentModel.setInstitution(institutionModel);
         studentModel.setGroup(group);
-        studentModel.setLastName(StringUtils.safeTrim(dStudentModel.getLastName()));
-        studentModel.setFirstName(StringUtils.safeTrim(dStudentModel.getFirstName()));
-        studentModel.setSecondName(StringUtils.safeTrim(dStudentModel.getSecondName()));
+        studentModel.setSurname(StringUtils.safeTrim(dStudentModel.getLastName()));
+        studentModel.setName(StringUtils.safeTrim(dStudentModel.getFirstName()));
+        studentModel.setPatronymic(StringUtils.safeTrim(dStudentModel.getSecondName()));
         studentModel.setBirthDate(dStudentModel.getBirthDate() != null ? dStudentModel.getBirthDate().toLocalDate() : LocalDate.now());
         studentModel.setBirthPlace(StringUtils.safeTrim(dStudentModel.getBirthPlace()));
         studentModel.setCaseNo(StringUtils.canBeInt(dStudentModel.getCaseNo()) ? Long.parseLong(StringUtils.safeTrim(dStudentModel.getCaseNo()).replaceAll("[^0-9]", "")) : -1L);

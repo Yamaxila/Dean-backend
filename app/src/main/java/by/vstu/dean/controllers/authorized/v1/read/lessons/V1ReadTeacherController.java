@@ -1,7 +1,6 @@
 package by.vstu.dean.controllers.authorized.v1.read.lessons;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.dto.v1.lessons.V1TeacherDTO;
 import by.vstu.dean.mapper.v1.V1TeacherMapper;
 import by.vstu.dean.models.lessons.TeacherModel;
@@ -28,7 +27,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/teachers/")
 @Tag(name = "Teachers", description = "Преподаватели")
-public class V1TeacherController extends BaseController<V1TeacherDTO, TeacherModel, V1TeacherMapper, TeacherModelRepository, TeacherService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1ReadTeacherController extends BaseReadController<V1TeacherDTO, TeacherModel, V1TeacherMapper, TeacherModelRepository, TeacherService> {
 
     @Autowired
     private TeacherDepartmentMergeRepository teacherDepartmentMergeRepository;
@@ -39,7 +39,7 @@ public class V1TeacherController extends BaseController<V1TeacherDTO, TeacherMod
      * @param service Сервис преподавателей
      * @param mapper Маппер
      */
-    public V1TeacherController(TeacherService service, V1TeacherMapper mapper) {
+    public V1ReadTeacherController(TeacherService service, V1TeacherMapper mapper) {
         super(service, mapper);
     }
 
@@ -47,9 +47,7 @@ public class V1TeacherController extends BaseController<V1TeacherDTO, TeacherMod
     @RequestMapping(value = "/merges/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getAllTeacherDepartmentMerge", description = "Отправляет все объекты из базы")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDepartmentMerge>> getAllTeacherDepartmentMerge() {
         return new ResponseEntity<>(this.teacherDepartmentMergeRepository.findAll(), HttpStatus.OK);
     }
@@ -57,9 +55,7 @@ public class V1TeacherController extends BaseController<V1TeacherDTO, TeacherMod
     @RequestMapping(value = "/merges/put",
             produces = {"application/json"},
             method = RequestMethod.PUT)
-    @PreAuthorize("#oauth2.hasScope('rsql') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "merges", description = "Отправляет все объекты из базы")
-    @ApiSecurity(scopes = {"rsql"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<TeacherDepartmentMerge>> putMerges(@RequestBody List<TeacherDepartmentMerge> teacherDepartmentMerges) {
         return new ResponseEntity<>(this.teacherDepartmentMergeRepository.saveAllAndFlush(teacherDepartmentMerges), HttpStatus.OK);
     }

@@ -165,6 +165,6 @@ public abstract class BaseUpdateService<
     @Order(6)
     public void onInit() {
         System.out.println("[UPDATE REGISTER]: " + this.getClass());
-        this.updateService.registerService(this);
+//        this.updateService.registerService(this);
     }
 }

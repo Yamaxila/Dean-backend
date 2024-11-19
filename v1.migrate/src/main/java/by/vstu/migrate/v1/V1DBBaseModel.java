@@ -29,7 +29,6 @@ public abstract class V1DBBaseModel {
      * Идентификатор из источника данных деканата.
      */
     @ReadOnlyProperty
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sourceId;
 
     /**

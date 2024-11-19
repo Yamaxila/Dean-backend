@@ -1,6 +1,5 @@
 package by.vstu.dean.controllers.files;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
 import by.vstu.dean.core.controllers.FileController;
 import by.vstu.dean.core.services.FileService;
 import by.vstu.dean.dto.v1.students.V1StudentDTO;
@@ -14,7 +13,6 @@ import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,9 +53,7 @@ public class V1StudentImageController extends FileController {
     @RequestMapping(value = "/apply",
             produces = {"application/json"},
             method = RequestMethod.PUT)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "uploadStudentPhoto", description = "Загружает файл на сервер и сохраняет у указанного студента")
-    @ApiSecurity(scopes = {"write"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<?> uploadStudentPhoto(@RequestParam Long studentId, @RequestBody MultipartFile file) {
         ResponseEntity<?> response = this.upload(file);
 

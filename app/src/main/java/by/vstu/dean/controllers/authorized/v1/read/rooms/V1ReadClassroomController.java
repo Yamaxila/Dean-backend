@@ -1,7 +1,6 @@
 package by.vstu.dean.controllers.authorized.v1.read.rooms;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.dto.v1.rooms.V1ClassroomDTO;
 import by.vstu.dean.mapper.v1.V1ClassroomMapper;
 import by.vstu.dean.models.rooms.ClassroomModel;
@@ -26,14 +25,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/classes/")
 @Tag(name = "Classrooms", description = "Аудитории")
-public class V1ClassroomController extends BaseController<V1ClassroomDTO, ClassroomModel, V1ClassroomMapper, ClassroomModelRepository, ClassroomService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1ReadClassroomController extends BaseReadController<V1ClassroomDTO, ClassroomModel, V1ClassroomMapper, ClassroomModelRepository, ClassroomService> {
     /**
      * Конструктор контроллера аудиторий.
      *
      * @param service Сервис для работы с аудиториями.
      * @param mapper Сервис для работы с аудиториями.
      */
-    public V1ClassroomController(ClassroomService service, V1ClassroomMapper mapper) {
+    public V1ReadClassroomController(ClassroomService service, V1ClassroomMapper mapper) {
         super(service, mapper);
     }
 
@@ -45,9 +45,7 @@ public class V1ClassroomController extends BaseController<V1ClassroomDTO, Classr
      * @return Список обновленных аудиторий.
      */
     @RequestMapping(value = "/update", produces = {"application/json"}, method = RequestMethod.POST)
-    @PreAuthorize("#oauth2.hasScope('write') AND (hasAnyRole('ROLE_ADMIN'))")
     @Operation(method = "update", description = "Обновляет данные из базы", hidden = true)
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_ADMIN"})
     public ResponseEntity<List<ClassroomModel>> updateRoomListFromFile() {
         return new ResponseEntity<>(this.service.updateFromExcel("./rooms.xlsx"), HttpStatus.OK);
     }

@@ -1,7 +1,6 @@
 package by.vstu.dean.controllers.authorized.v1.read.lessons;
 
-import by.vstu.dean.core.anotations.ApiSecurity;
-import by.vstu.dean.core.controllers.BaseController;
+import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.dto.v1.lessons.V1DepartmentDTO;
 import by.vstu.dean.dto.v1.lessons.V1TeacherDTO;
 import by.vstu.dean.mapper.v1.V1DepartmentMapper;
@@ -27,7 +26,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/v1/departments/")
 @Tag(name = "Departments", description = "Кафедры")
-public class V1DepartmentController extends BaseController<V1DepartmentDTO, DepartmentModel, V1DepartmentMapper, DepartmentModelRepository, DepartmentService> {
+@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
+public class V1ReadDepartmentController extends BaseReadController<V1DepartmentDTO, DepartmentModel, V1DepartmentMapper, DepartmentModelRepository, DepartmentService> {
 
     private final V1TeacherMapper teacherMapper;
     private final TeacherDepartmentMergeRepository mergeRepo;
@@ -37,7 +37,7 @@ public class V1DepartmentController extends BaseController<V1DepartmentDTO, Depa
      *
      * @param service Сервис кафедр
      */
-    public V1DepartmentController(DepartmentService service, V1DepartmentMapper mapper, V1TeacherMapper teacherMapper, TeacherDepartmentMergeRepository mergeRepo) {
+    public V1ReadDepartmentController(DepartmentService service, V1DepartmentMapper mapper, V1TeacherMapper teacherMapper, TeacherDepartmentMergeRepository mergeRepo) {
         super(service, mapper);
         this.teacherMapper = teacherMapper;
         this.mergeRepo = mergeRepo;
@@ -52,9 +52,7 @@ public class V1DepartmentController extends BaseController<V1DepartmentDTO, Depa
     @RequestMapping(value = "/{id}/teachers",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getTeachers", description = "Получает список преподавателей кафедры по её id")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<List<V1TeacherDTO>> getTeachers(@PathVariable Long id) {
         Optional<DepartmentModel> o = this.service.getById(id);
         return o.map(departmentModel -> new ResponseEntity<>(this.teacherMapper.toDto(departmentModel.getTeachers().stream().toList()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -70,9 +68,7 @@ public class V1DepartmentController extends BaseController<V1DepartmentDTO, Depa
             value = "/byTeacher",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    @PreAuthorize("#oauth2.hasScope('read') AND (hasAnyRole('ROLE_USER', 'ROLE_ADMIN'))")
     @Operation(method = "getDepartmentByTeacher", description = "Получает кафедру по id преподавателя")
-    @ApiSecurity(scopes = {"read"}, roles = {"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<V1DepartmentDTO> getDepartmentByTeacher(@RequestParam Long teacherId) {
         Optional<TeacherDepartmentMerge> o = this.mergeRepo.findByTeacherId(teacherId);
         return o.map(tdm -> new ResponseEntity<>(this.mapper.toDto(tdm.getDepartment()), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
