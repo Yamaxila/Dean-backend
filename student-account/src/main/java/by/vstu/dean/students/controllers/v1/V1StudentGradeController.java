@@ -1,5 +1,6 @@
 package by.vstu.dean.students.controllers.v1;
 
+import by.vstu.dean.students.dtos.StudentGradeAvgDTO;
 import by.vstu.dean.students.dtos.StudentGradeDTO;
 import by.vstu.dean.students.services.StudentGradeService;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class V1StudentGradeController {
         List<StudentGradeDTO> studentGradeDTOS = this.studentGradeService.getStudentGradesSession(semester);
         Double averageGrade = studentGradeDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
-        return new ResponseEntity<>(List.of(studentGradeDTOS, averageGrade), HttpStatus.OK);
+        return new ResponseEntity<>(new StudentGradeAvgDTO(averageGrade, studentGradeDTOS), HttpStatus.OK);
     }
 
 

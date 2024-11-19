@@ -19,17 +19,17 @@ public class V1StudentAbsenceMapperImpl implements V1StudentAbsenceMapper {
 
     @Override
     public AbsenceModel toEntity(StudentAbsenceDTO dto) {
-        return null;
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public AbsenceModel partialUpdate(StudentAbsenceDTO dto, AbsenceModel entity) {
-        return V1StudentAbsenceMapper.super.partialUpdate(dto, entity);
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public List<AbsenceModel> toEntity(List<StudentAbsenceDTO> all) {
-        return V1StudentAbsenceMapper.super.toEntity(all);
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override

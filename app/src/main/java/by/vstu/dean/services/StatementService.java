@@ -26,7 +26,7 @@ public class StatementService extends BaseService<StatementModel, StatementModel
         return this.repo.findDistinctByStatementStudents_Student_SourceId(studentSourceId).stream().map(DBBaseModel::getSourceId).toList();
     }
 
-    public List<StatementStudentMerge> getAllStudentMergeForStudent(Long studentId) {
-        return studentMergeRepository.findByStudent_Id(studentId);
+    public List<StatementStudentMerge> getAllStudentMergeForStudent(Long caseNo) {
+        return studentMergeRepository.findByStudent_CaseNo(caseNo);
     }
 }

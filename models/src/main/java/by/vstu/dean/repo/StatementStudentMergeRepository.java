@@ -9,6 +9,5 @@ import java.util.List;
 @Repository
 public interface StatementStudentMergeRepository extends DBBaseModelRepository<StatementStudentMerge> {
 
-
-    List<StatementStudentMerge> findByStudent_Id(Long id);
+    List<StatementStudentMerge> findByStudent_CaseNo(Long caseNo);
 }

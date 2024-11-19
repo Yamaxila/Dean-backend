@@ -12,7 +12,7 @@ import java.util.List;
 public class V1StudentGradeMapperImpl implements V1StudentGradeMapper {
     @Override
     public StatementStudentMerge toEntity(StudentGradeDTO dto) {
-        return null;
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
@@ -24,17 +24,17 @@ public class V1StudentGradeMapperImpl implements V1StudentGradeMapper {
                         && entity.getGrade().getSupportGradeTypes().contains(10)
                         ? String.valueOf(entity.getGrade().getId() - 10) : entity.getGrade().getTitle()
         );
-        return null;
+        return studentGradeDTO;
     }
 
     @Override
     public StatementStudentMerge partialUpdate(StudentGradeDTO dto, StatementStudentMerge entity) {
-        return V1StudentGradeMapper.super.partialUpdate(dto, entity);
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
     public List<StatementStudentMerge> toEntity(List<StudentGradeDTO> all) {
-        return V1StudentGradeMapper.super.toEntity(all);
+        throw new RuntimeException("Not implemented yet");
     }
 
     @Override
