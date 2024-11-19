@@ -75,4 +75,8 @@ public class TeacherModel extends DBBaseModel {
     public final int hashCode() {
         return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
     }
+
+    public String getFullName() {
+        return "%s %s. %s.".formatted(this.surname, this.name.charAt(0), this.patronymic.charAt(0));
+    }
 }

@@ -57,15 +57,6 @@ public class StatementModel extends DBBaseModel {
     private Integer course;
 
     /**
-     * Все оценки студентов, что сдавали по данной ведомости
-     */
-    //Возможно, будет очень страшно потом
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "dean_statement_student_merge", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "statement_id")})
-    @Schema(title = "Все оценки студентов, что сдавали по данной ведомости")
-    private List<StatementStudentMerge> statementStudents;
-
-    /**
      * Высчитывает номер семестра в зависимости от курса сдачи и семестра
      *
      * @return номер семестра
