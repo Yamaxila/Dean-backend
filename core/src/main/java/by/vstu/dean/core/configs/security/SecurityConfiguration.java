@@ -2,6 +2,7 @@ package by.vstu.dean.core.configs.security;
 
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.jwk.OctetSequenceKey;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -19,8 +20,10 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
+import java.util.Arrays;
 import java.util.List;
 
+@Slf4j
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
@@ -29,8 +32,15 @@ public class SecurityConfiguration {
     @Value("${token.signing.key}")
     private String signingKey;
 
+    @Value("${auth.public-urls}")
+    private String publicUrls;
+
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        Arrays.stream(publicUrls.split(",")).forEach(p -> {
+            log.info("Registered public url: {}", p);
+        });
+
         http
                 .cors(cors -> cors.configurationSource(request -> {
                     CorsConfiguration configuration = new CorsConfiguration();
@@ -43,7 +53,7 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
                                 .requestMatchers(HttpMethod.OPTIONS).permitAll()
-                                .requestMatchers("/ws/**", "/swagger-ui/**", "/swagger-resources/**", "/v3/api-docs/**", "/api/v1/public/**")
+                                .requestMatchers(this.publicUrls.split(","))
                                 .permitAll()
                                 .anyRequest().authenticated()
                 )

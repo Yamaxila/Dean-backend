@@ -65,3 +65,4 @@ caching.spring.ttl=60000
 auth.resourceIds=dean
 auth.validateUrl=http://127.0.0.1:1433/validate
 auth.needValidation=true
+auth.public-urls=/ws/**,/swagger-ui/**,/swagger-resources/**,/v3/api-docs/**,/api/v1/public/**,/api/v1/schedule/**
