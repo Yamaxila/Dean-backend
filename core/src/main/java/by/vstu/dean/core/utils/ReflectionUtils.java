@@ -45,7 +45,15 @@ public class ReflectionUtils {
             field.setAccessible(true);
 
             try {
-                Object value = reverseTarget ? ReflectionUtils.getValue(field, o2) : ReflectionUtils.getValue(tField, o1);
+
+                ReflectionField reflectionField = field.getAnnotation(ReflectionField.class);
+                if (reflectionField == null)
+                    reflectionField = tField.getAnnotation(ReflectionField.class);
+
+                if (reflectionField == null)
+                    continue;
+
+                Object value = reverseTarget ? ReflectionUtils.getValue(reflectionField.value(), field, o2) : ReflectionUtils.getValue(reflectionField.value(), tField, o1);
                 if(reverseTarget) {
                     if(value != null || !partialUpdate)
                         ReflectionUtils.setValue(tField, value, o1);
@@ -99,7 +107,7 @@ public class ReflectionUtils {
                                 //Записываем поле в Map
                                 map.put(field, oField.get());
                             } else
-                                log.warn("mapObject(): Cannot to find field {} in class {}", fName, aClazz.getSimpleName());
+                                log.warn("buildMap(): Cannot to find field {} in class {}", fName, aClazz.getSimpleName());
                         } else
                             log.warn("Annotation class is empty for field {}", field.getName());
 
@@ -156,11 +164,28 @@ public class ReflectionUtils {
         }
     }
 
-    public static Object getValue(Field field, Object o) {
+    public static Object getValue(String fieldPath, Field field, Object o) {
         try {
             field.setAccessible(true);
             if (isFieldAccessible(field, o.getClass()))
                 return field.get(o);
+
+            //иногда бывает очень большая вложенность
+            String tempName = fieldPath;
+
+            int dotPos = tempName.indexOf(".");
+            String currentField = tempName.split("\\.")[0]; // сразу сохраняем текущее поле
+            if (dotPos != -1) // смотрим, есть ли точка (вложенность)
+                tempName = tempName.substring(dotPos + 1);
+
+            //пробуем найти поле
+            Optional<Field> tempField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getName().equals(currentField)).findFirst();
+
+            if (tempField.isPresent()) {
+                Field tField = tempField.get();
+                tField.setAccessible(true);
+                return getValue(tempName, field, tField.get(o));
+            }
 
             Optional<Field> foundField = Arrays.stream(o.getClass().getDeclaredFields()).filter(p -> p.getType().equals(field.getDeclaringClass())).findFirst();
 
