@@ -37,6 +37,16 @@ public class BaseDocX {
     }
 
     public BaseDocX load(File input) {
+        if (!new File(this.tempPath).exists()) {
+            if (!new File(this.tempPath).mkdirs())
+                throw new RuntimeException("Cannot create temp directory");
+        }
+
+        if (!new File(this.templatesPath).exists()) {
+            if (!new File(this.templatesPath).mkdirs())
+                throw new RuntimeException("Cannot create templates directory");
+        }
+
         this.input = input;
 
         this.docx = new Docx(this.input.getAbsolutePath());
