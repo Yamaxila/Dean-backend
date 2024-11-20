@@ -38,6 +38,13 @@ public class ScriptInitializer {
     }
 
     public List<ScriptConfig> loadConfigs() {
+
+        if (!new File(scriptsPath).exists()) {
+            if (!new File(scriptsPath).mkdirs())
+                throw new RuntimeException("Cannot create script directory");
+            return new ArrayList<>();
+        }
+
         List<ScriptConfig> scriptConfigs = new ArrayList<>();
         for (File file : Objects.requireNonNull(new File(this.scriptsPath).listFiles())) {
             if (file.getName().endsWith(".json")) {

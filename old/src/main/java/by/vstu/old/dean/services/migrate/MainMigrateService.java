@@ -112,8 +112,7 @@ public class MainMigrateService {
 
             log.info("Update started at {}", updateStartTime);
 
-//      this.mainUpdateService.update();
-            this.absenceMigrateService.migrate();
+            this.mainUpdateService.update();
             log.info("Update end at {} with time {}s", System.currentTimeMillis(), Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
 
             log.info("Applying spec for groups");
