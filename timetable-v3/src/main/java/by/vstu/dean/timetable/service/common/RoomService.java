@@ -155,46 +155,50 @@ public class RoomService {
             else return new ResponseEntity<>(HttpStatus.OK);
         }
 
-        LessonModel lesson = lessonRepo.findById(roomDTO.getId()).get();
+        Optional<LessonModel> oLesson = lessonRepo.findById(roomDTO.getId());
 
-        if (roomDTO.getGroupId() != null)
-            lesson.setGroup(this.groupService.getById(roomDTO.getGroupId()).get());
-        if (roomDTO.getTeacherId() != null)
-            lesson.setTeacher(this.teacherService.getById(roomDTO.getTeacherId()).get());
-        if (roomDTO.getDisciplineId() != null)
-            lesson.setDiscipline(this.disciplineService.getById(roomDTO.getDisciplineId()).get());
-        if (roomDTO.getRoomId() != null)
-            lesson.setRoom(this.classroomService.getById(roomDTO.getRoomId()).get());
-        if (roomDTO.getLessonNumber() != null)
-            lesson.setLessonNumber(roomDTO.getLessonNumber());
-        if (roomDTO.getDay() != null)
-            lesson.setDay(roomDTO.getDay());
-        if (roomDTO.getLessonType() != null)
-            lesson.setLessonType(ELessonType.valueOf(roomDTO.getLessonType()));
-        if (roomDTO.getWeekType() != null)
-            lesson.setWeekType(EWeekType.valueOf(roomDTO.getWeekType()));
-        if (roomDTO.getSubGroup() != null)
-            lesson.setSubGroup(roomDTO.getSubGroup());
-        if (roomDTO.getStartDate() != null)
-            lesson.setStartDate(roomDTO.getStartDate());
-        if (roomDTO.getEndDate() != null)
-            lesson.setEndDate(roomDTO.getEndDate());
+        if (oLesson.isPresent()) {
+            LessonModel lesson = oLesson.get();
 
-        if (this.lessonRepo.existsByRoomIdAndTeacherIdAndDisciplineIdAndGroupIdAndSubGroupAndDayAndLessonNumberAndLessonTypeAndWeekTypeAndStatusAndStartDateAndEndDateAndLessonIdNot(
-                lesson.getRoom().getId(),
-                lesson.getTeacher().getId(),
-                lesson.getDiscipline().getId(),
-                lesson.getGroup().getId(),
-                lesson.getSubGroup(),
-                lesson.getDay(),
-                lesson.getLessonNumber(),
-                lesson.getLessonType(),
-                lesson.getWeekType(),
-                EStatus.ACTIVE,
-                lesson.getStartDate(),
-                lesson.getEndDate(),
-                lesson.getId()))
-            return new ResponseEntity<>("Ошибка: Такая запись уже существует.", HttpStatus.CONFLICT);
+            if (roomDTO.getGroupId() != null)
+                this.groupService.getById(roomDTO.getGroupId()).ifPresent(lesson::setGroup);
+            if (roomDTO.getTeacherId() != null)
+                this.teacherService.getById(roomDTO.getTeacherId()).ifPresent(lesson::setTeacher);
+            if (roomDTO.getDisciplineId() != null)
+                this.disciplineService.getById(roomDTO.getDisciplineId()).ifPresent(lesson::setDiscipline);
+            if (roomDTO.getRoomId() != null)
+                this.classroomService.getById(roomDTO.getRoomId()).ifPresent(lesson::setRoom);
+            if (roomDTO.getLessonNumber() != null)
+                lesson.setLessonNumber(roomDTO.getLessonNumber());
+            if (roomDTO.getDay() != null)
+                lesson.setDay(roomDTO.getDay());
+            if (roomDTO.getLessonType() != null)
+                lesson.setLessonType(ELessonType.valueOf(roomDTO.getLessonType()));
+            if (roomDTO.getWeekType() != null)
+                lesson.setWeekType(EWeekType.valueOf(roomDTO.getWeekType()));
+            if (roomDTO.getSubGroup() != null)
+                lesson.setSubGroup(roomDTO.getSubGroup());
+            if (roomDTO.getStartDate() != null)
+                lesson.setStartDate(roomDTO.getStartDate());
+            if (roomDTO.getEndDate() != null)
+                lesson.setEndDate(roomDTO.getEndDate());
+
+            if (this.lessonRepo.existsByRoomIdAndTeacherIdAndDisciplineIdAndGroupIdAndSubGroupAndDayAndLessonNumberAndLessonTypeAndWeekTypeAndStatusAndStartDateAndEndDateAndLessonIdNot(
+                    lesson.getRoom().getId(),
+                    lesson.getTeacher().getId(),
+                    lesson.getDiscipline().getId(),
+                    lesson.getGroup().getId(),
+                    lesson.getSubGroup(),
+                    lesson.getDay(),
+                    lesson.getLessonNumber(),
+                    lesson.getLessonType(),
+                    lesson.getWeekType(),
+                    EStatus.ACTIVE,
+                    lesson.getStartDate(),
+                    lesson.getEndDate(),
+                    lesson.getId()))
+                return new ResponseEntity<>("Ошибка: Такая запись уже существует.", HttpStatus.CONFLICT);
+        }
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
@@ -224,114 +228,114 @@ public class RoomService {
 
             case NUMERATOR:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;
 
             case DENOMINATOR:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;
 
             case FIRST:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FIRST, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;
 
             case SECOND:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.SECOND, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;
 
             case THIRD:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.NUMERATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.THIRD, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;
 
             case FOURTH:
                 if (this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByRoomIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getRoomId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: В аудитории " + room.getRoomNumber() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByTeacherIdAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getTeacherId(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У преподавателя " + room.getTeacherFullName() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 if (this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.ALWAYS, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
-                        this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.DENOMINATOR, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()) ||
+                    this.lessonRepo.existsByGroupIdAndSubGroupAndLessonNumberAndDayAndWeekTypeAndStatusAndBetweenDates(room.getGroupId(), room.getSubGroup(), room.getLessonNumber(), room.getDay(), EWeekType.FOURTH, EStatus.ACTIVE, room.getStartDate(), room.getEndDate()))
                     return new ResponseEntity<>("Конфликт: У группы " + room.getGroup() + " уже есть пара на это время.", HttpStatus.CONFLICT);
 
                 break;

@@ -19,8 +19,6 @@ public class MainUpdateService {
         Thread.currentThread().setName("Update");
 
         services.forEach(IUpdateExecutor::update);
-
-
     }
 
     public void registerService(IUpdateExecutor executor) {
