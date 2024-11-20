@@ -18,6 +18,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
@@ -55,23 +57,26 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
             filterChain.doFilter(request, response);
             return;
         }
+        try {
+            Jwt jwt = this.decoder.decode(token);
 
-        Jwt jwt = this.decoder.decode(token);
-
-        if (jwt == null) {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token parse failed!");
-            return;
-        }
-        if (this.needValidation)
-            if (!this.validateToken(jwt.getTokenValue(), jwt.getId())) {
-                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Token validation failed!");
+            if (jwt == null) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Token parse failed!");
                 return;
             }
+            if (this.needValidation)
+                if (!this.validateToken(jwt.getTokenValue(), jwt.getId())) {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Token validation failed!");
+                    return;
+                }
 
-        if (Arrays.stream(this.allowedResourceIds.split(",")).anyMatch(p -> jwt.getAudience().contains(p)) || jwt.getAudience().contains("*")) {
-            filterChain.doFilter(request, response);
-        } else {
-            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: resourceId is not allowed!");
+            if (Arrays.stream(this.allowedResourceIds.split(",")).anyMatch(p -> jwt.getAudience().contains(p)) || jwt.getAudience().contains("*")) {
+                filterChain.doFilter(request, response);
+            } else {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: resourceId is not allowed!");
+            }
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: Token parse failed!");
         }
     }
 
@@ -108,6 +113,27 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
         log.info("Clearing token store!");
         validatedTokens.clear();
     }
+
+    public boolean hasAnyResourceIds(String... resourceIds) {
+        ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+
+        String token = this.resolveToken(attr.getRequest());
+
+        if (token == null)
+            return false;
+
+        try {
+            Jwt jwt = this.decoder.decode(token);
+
+            if (jwt == null)
+                return false;
+
+            return jwt.getAudience().stream().anyMatch(p -> Arrays.asList(resourceIds).contains(p));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 
 
     private String resolveToken(HttpServletRequest req) {

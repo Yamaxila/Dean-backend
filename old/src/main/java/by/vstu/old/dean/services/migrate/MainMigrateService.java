@@ -20,7 +20,6 @@ import java.util.List;
 @Slf4j
 public class MainMigrateService {
 
-    @Autowired
     private List<IMigrateExecutor> services = new ArrayList<>();
     @Autowired
     private TeacherDegreeMigrateService teacherDegreeMigrateService;
