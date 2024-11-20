@@ -25,7 +25,7 @@ public final class V1StudentDTO extends BaseDTO {
      */
     @NotNull
     @Schema(title = "Фамилия")
-    @ReflectionField(value = "lastName", clazz = StudentModel.class)
+    @ReflectionField(clazz = StudentModel.class)
     private String surname;
 
     /**
@@ -33,7 +33,7 @@ public final class V1StudentDTO extends BaseDTO {
      */
     @NotNull
     @Schema(title = "Имя")
-    @ReflectionField(value = "firstName", clazz = StudentModel.class)
+    @ReflectionField(clazz = StudentModel.class)
     private String name;
 
     /**
@@ -41,7 +41,7 @@ public final class V1StudentDTO extends BaseDTO {
      */
     @NotNull
     @Schema(title = "Отчество")
-    @ReflectionField(value = "secondName", clazz = StudentModel.class)
+    @ReflectionField(clazz = StudentModel.class)
     private String patronymic;
 
     /**

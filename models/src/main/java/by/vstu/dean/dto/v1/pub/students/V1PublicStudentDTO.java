@@ -23,7 +23,7 @@ public class V1PublicStudentDTO extends PublicDTO {
      */
     @NotNull
     @Schema(title = "Фамилия")
-    @ReflectionField(value = "lastName", clazz = StudentModel.class)
+    @ReflectionField(clazz = StudentModel.class)
     private String surname;
 
     /**
@@ -53,13 +53,5 @@ public class V1PublicStudentDTO extends PublicDTO {
     @NotNull
     @NotBlank
     private V1GroupDTO group;
-
-    /**
-     * URL-адрес фотографии студента
-     */
-    @Schema(title = "URL-адрес фотографии")
-    @ReflectionField(value = "photoUrl", clazz = StudentModel.class)
-    private String photoUrl;
-
 
 }
