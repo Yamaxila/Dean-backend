@@ -14,7 +14,7 @@ import java.time.LocalDate;
  */
 @Setter
 @Getter
-@Schema(title = "DTO занятия для front-end")
+@Schema(title = "DTO Занятия для front-end")
 public class RoomDTO extends BaseDTO {
 
     /**

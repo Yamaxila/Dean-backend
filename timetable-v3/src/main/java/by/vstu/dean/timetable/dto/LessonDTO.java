@@ -22,7 +22,7 @@ import java.time.LocalDate;
  */
 @EqualsAndHashCode(callSuper = true)
 @Data
-@Schema(title = "DTO занятия")
+@Schema(title = "DTO Занятия")
 public class LessonDTO extends BaseDTO {
 
     /**
@@ -52,7 +52,10 @@ public class LessonDTO extends BaseDTO {
     /**
      * Номер пары (1-7).
      */
-    @Schema(title = "Номер пары (1-7)")
+    @Schema(title = "Номер пары",
+            description = "Номер пары по порядку. 1 - 8:00, 2 - 9:50 и т.д.",
+            minimum = "1", maximum = "7",
+            allowableValues = {"1", "2", "3", "4", "5", "6", "7"})
     @NotNull
     @ReflectionField(clazz = LessonModel.class)
     private Short lessonNumber;
@@ -60,7 +63,10 @@ public class LessonDTO extends BaseDTO {
     /**
      * Номер дня недели (0-6).
      */
-    @Schema(title = "Номер дня недели (0-6)")
+    @Schema(title = "Номер дня недели",
+            description = "Номер дня недели, начиная с нуля. 0 - пн., 1 - вт., 2 - ср. и т.д.",
+            minimum = "0", maximum = "6",
+            allowableValues = {"0", "1", "2", "3", "4", "5", "6"})
     @NotNull
     @ReflectionField(clazz = LessonModel.class)
     private Short day;

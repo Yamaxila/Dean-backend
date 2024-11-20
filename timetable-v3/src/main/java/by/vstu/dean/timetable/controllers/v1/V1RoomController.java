@@ -99,7 +99,7 @@ public class V1RoomController {
     @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
     @Operation(method = "getHiddenGroups", description = "Отправляет все объекты занятий из базы со статусом \"ACTIVE\"  и полем visible = false.",
             responses = {
-                    @ApiResponse(responseCode = "200", description = "Занятия найдены."),
+                    @ApiResponse(responseCode = "200", description = "Скрытые группы найдены."),
                     @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
                     @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права read у клиента.", content = @Content(schema = @Schema)),
                     @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
@@ -366,13 +366,13 @@ public class V1RoomController {
                     @ApiResponse(responseCode = "200", description = "Запись создана/изменена."),
                     @ApiResponse(responseCode = "400", description = "Некорректные данные.", content = @Content(schema = @Schema)),
                     @ApiResponse(responseCode = "401", description = "Не переданы данные авторизации (токен).", content = @Content(schema = @Schema)),
-                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права read у клиента.", content = @Content(schema = @Schema)),
+                    @ApiResponse(responseCode = "403", description = "Доступ запрещен. Возможно, не хватает права write у клиента.", content = @Content(schema = @Schema)),
                     @ApiResponse(responseCode = "409", description = "Конфликт с уже существующими записями.", content = @Content(schema = @Schema)),
                     @ApiResponse(responseCode = "500", description = "Внутрення ошибка сервера. Смотри логи", content = @Content(schema = @Schema))
             },
             security = @SecurityRequirement(name = "controllers", scopes = {"write", "ROLE_SCHEDULE"})
     )
-    public ResponseEntity<?> put(@RequestBody RoomDTO room, @RequestParam(required = false, defaultValue = "false") boolean check) {
+    public ResponseEntity<?> put(@RequestBody RoomDTO room, @RequestParam(required = false) Boolean check) {
         if (room.getStartDate() == null && room.getEndDate() != null) room.setStartDate(room.getEndDate());
         if (room.getEndDate() == null && room.getStartDate() != null) room.setEndDate(room.getStartDate());
 
@@ -381,7 +381,7 @@ public class V1RoomController {
             if (checkedIfExist.getStatusCode().equals(HttpStatus.CONFLICT)) return checkedIfExist;
         }
 
-        if (check) {
+        if (check != null && check) {
             ResponseEntity<?> checkedForConflicts = this.service.checkForConflicts(room);
             if (checkedForConflicts.getStatusCode().equals(HttpStatus.CONFLICT)) return checkedForConflicts;
         }
