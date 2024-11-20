@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/v1/student/absences")
+@RequestMapping("/api/v1/student/absences")
 @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
 @RequiredArgsConstructor
 public class V1StudentAbsenceController {

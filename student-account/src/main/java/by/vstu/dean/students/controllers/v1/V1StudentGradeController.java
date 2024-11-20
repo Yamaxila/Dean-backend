@@ -16,7 +16,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/v1/student/grade")
+@RequestMapping("/api/v1/student/grades")
 @PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
 public class V1StudentGradeController {
     private final StudentGradeService studentGradeService;
@@ -25,7 +25,7 @@ public class V1StudentGradeController {
         this.studentGradeService = studentGradeService;
     }
 
-    @RequestMapping(value = "",
+    @RequestMapping(value = "/session",
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<?> getGradesSession(@RequestParam(required = false) Integer semester) {
