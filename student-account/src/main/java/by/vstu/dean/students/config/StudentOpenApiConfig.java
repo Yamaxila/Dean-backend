@@ -1,4 +1,4 @@
-package by.vstu.dean.config;
+package by.vstu.dean.students.config;
 
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;

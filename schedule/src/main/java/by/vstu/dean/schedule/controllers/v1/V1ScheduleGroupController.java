@@ -1,6 +1,5 @@
 package by.vstu.dean.schedule.controllers.v1;
 
-import by.vstu.dean.dto.v1.students.V1GroupDTO;
 import by.vstu.dean.schedule.services.ScheduleGroupService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/schedule/groups")
+@RequestMapping("/api/v1/schedule/group")
 @RequiredArgsConstructor
 public class V1ScheduleGroupController {
 
@@ -22,15 +21,15 @@ public class V1ScheduleGroupController {
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     public ResponseEntity<?> getDaytime() {
-        List<V1GroupDTO> groupDTOS = scheduleGroupService.getValidGroups().stream().filter(g -> g.getFacultyId() != 1 || g.getFacultyId() != 2).toList();
-        return new ResponseEntity<>(groupDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(this.scheduleGroupService.getValidGroupDTOs().stream()
+                .filter(g -> !(g.getFacultyId() == 1 || g.getFacultyId() == 2)).toList(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/correspondence"
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     public ResponseEntity<?> getCorrespondence() {
-        List<V1GroupDTO> groupDTOS = scheduleGroupService.getValidGroups().stream().filter(g -> g.getFacultyId() == 1 || g.getFacultyId() == 2).toList();
-        return new ResponseEntity<>(groupDTOS, HttpStatus.OK);
+        return new ResponseEntity<>(this.scheduleGroupService.getValidGroupDTOs().stream()
+                .filter(g -> g.getFacultyId() == 1 || g.getFacultyId() == 2).toList(), HttpStatus.OK);
     }
 }

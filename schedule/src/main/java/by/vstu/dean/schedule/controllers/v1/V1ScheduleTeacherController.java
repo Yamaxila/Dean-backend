@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/v1/schedule/teachers")
+@RequestMapping("/api/v1/schedule/teacher")
 @RequiredArgsConstructor
 public class V1ScheduleTeacherController {
     private final ScheduleTeacherService scheduleTeacherService;
 
-    @RequestMapping(value = "/"
+    @RequestMapping(value = "/all"
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     public ResponseEntity<?> getAll() {
-        return new ResponseEntity<>(scheduleTeacherService.getValidTeachers(), HttpStatus.OK);
+        return new ResponseEntity<>(this.scheduleTeacherService.getValidTeacherDTOs(), HttpStatus.OK);
     }
 }

@@ -12,6 +12,9 @@ public class V1StudentAbsenceMapperImpl implements V1StudentAbsenceMapper {
 
     @Override
     public StudentAbsenceDTO toDto(AbsenceModel entity) {
+        if (entity == null)
+            return null;
+
         StudentAbsenceDTO studentAbsenceDto = V1StudentAbsenceMapper.super.toDto(entity);
         studentAbsenceDto.setTeacher(entity.getTeacherModel() != null ? entity.getTeacherModel().getFullName() : null);
         return studentAbsenceDto;

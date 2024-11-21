@@ -26,7 +26,7 @@ public class StudentGradeService {
                 .filter(s -> semester == null || s.getStatement().calculateSemesterNumber() == semester).toList());
     }
 
-    private String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить
+    public String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить
         ServletRequestAttributes requestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
 
         if (requestAttributes == null)

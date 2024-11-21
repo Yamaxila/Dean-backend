@@ -10,19 +10,21 @@ import java.util.Arrays;
 @Schema(title = "Тип недели", description = "Перечисление типов недель")
 public enum EWeekType {
 
-    ALWAYS(0),
-    NUMERATOR(1),
-    DENOMINATOR(2),
+    ALWAYS(0, "Всегда"),
+    NUMERATOR(1, "Числитель"),
+    DENOMINATOR(2, "Знаменатель"),
 
-    FIRST(11),
-    SECOND(12),
-    THIRD(13),
-    FOURTH(14);
+    FIRST(11, "1"),
+    SECOND(12, "2"),
+    THIRD(13, "3"),
+    FOURTH(14, "4");
 
     final int id;
+    final String name;
 
-    EWeekType(int id) {
+    EWeekType(int id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     public static EWeekType valueOf(int id) {
