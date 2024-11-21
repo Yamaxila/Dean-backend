@@ -4,7 +4,7 @@ import by.vstu.dean.core.services.FileService;
 import by.vstu.dean.mapper.v1.V1StudentMapper;
 import by.vstu.dean.services.students.StudentService;
 import by.vstu.dean.students.services.StudentGradeService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v1/student")
-@RequiredArgsConstructor
 @PreAuthorize("hasAnyAuthority('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
 public class V1StudentController {
 
@@ -23,6 +22,16 @@ public class V1StudentController {
     private final V1StudentMapper v1StudentMapper;
     private final StudentGradeService studentGradeService;
     private final FileService fileService;
+
+    @Value("${app.upload-dir.students}")
+    private String pathUploadDir;
+
+    public V1StudentController(StudentService studentService, V1StudentMapper v1StudentMapper, StudentGradeService studentGradeService, FileService fileService) {
+        this.studentService = studentService;
+        this.v1StudentMapper = v1StudentMapper;
+        this.studentGradeService = studentGradeService;
+        this.fileService = fileService;
+    }
 
     @RequestMapping(value = "/",
             produces = {"application/json"},
@@ -42,12 +51,5 @@ public class V1StudentController {
 
 
         return this.fileService.downloadFile(photoUrl.split("filename=")[1], "\\\\192.168.11.252\\c$\\CIT\\photos\\students");
-//        try {
-//            return ResponseEntity.ok()
-//                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getFilename() + "\"")
-//                    .body(Base64.getEncoder().encode(FileCopyUtils.copyToByteArray(photo.getInputStream())));
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        }
     }
 }
