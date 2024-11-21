@@ -1,5 +1,6 @@
 package by.vstu.dean.schedule.controllers.v1;
 
+import by.vstu.dean.dto.v1.students.V1GroupDTO;
 import by.vstu.dean.schedule.services.ScheduleGroupService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Контроллер для работы с группами расписания.
@@ -32,7 +33,7 @@ public class V1ScheduleGroupController {
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     @Operation(method = "daytime", description = "Получение всех групп для дневного расписания")
-    public ResponseEntity<?> getDaytime() {
+    public ResponseEntity<List<V1GroupDTO>> getDaytime() {
         return new ResponseEntity<>(this.scheduleGroupService.getValidGroupDTOs().stream()
                 .filter(g -> !(g.getFacultyId() == 1 || g.getFacultyId() == 2)).toList(), HttpStatus.OK);
     }
@@ -46,7 +47,7 @@ public class V1ScheduleGroupController {
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     @Operation(method = "correspondence", description = "Получение всех групп для заочного расписания")
-    public ResponseEntity<?> getCorrespondence() {
+    public ResponseEntity<List<V1GroupDTO>> getCorrespondence() {
         return new ResponseEntity<>(this.scheduleGroupService.getValidGroupDTOs().stream()
                 .filter(g -> g.getFacultyId() == 1 || g.getFacultyId() == 2).toList(), HttpStatus.OK);
     }
