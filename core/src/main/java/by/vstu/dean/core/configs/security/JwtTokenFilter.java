@@ -70,7 +70,7 @@ public class JwtTokenFilter extends OncePerRequestFilter implements Filter {
                     return;
                 }
 
-            if (Arrays.stream(this.allowedResourceIds.split(",")).anyMatch(p -> jwt.getAudience().contains(p)) || jwt.getAudience().contains("*")) {
+            if (Arrays.stream(this.allowedResourceIds.split(",")).anyMatch(p -> jwt.getAudience().contains(p) || p.equals("*")) || jwt.getAudience().contains("*")) {
                 filterChain.doFilter(request, response);
             } else {
                 response.sendError(HttpServletResponse.SC_FORBIDDEN, "Error: resourceId is not allowed!");

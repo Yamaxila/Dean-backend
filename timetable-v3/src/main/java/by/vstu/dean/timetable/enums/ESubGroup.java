@@ -10,7 +10,7 @@ import java.util.Arrays;
  * Перечисление подгрупп.
  */
 @Getter
-@Schema(title = "Подгруппа")
+@Schema(title = "Подгруппа", description = "Перечисление подгрупп")
 public enum ESubGroup {
 
     UNKNOWN(0, ""),
@@ -20,13 +20,13 @@ public enum ESubGroup {
     ALL(3, "Все"),
     THIRD(4, "3"),
     FOURTH(5, "4"),
-    SEWING(6, "Швейники"),         // швейники
-    SHOE(7, "Обувщики"),           // обувщики
-    TEXTILE(8, "Текстильщики"),        // текстильщики
-    GRAPHIC(9, "Графический дизайн"),        // графический дизайн
-    MULTIMEDIA(10, "Мультимедиа дизайн"),    // мультимедиа дизайн
-    WEAVERS(11, "Ткачи"),       // ткачи
-    KNITWEAR(12, "Трикотажники");      // трикотажники;
+    SEWING(6, "Швейники"),
+    SHOE(7, "Обувщики"),
+    TEXTILE(8, "Текстильщики"),
+    GRAPHIC(9, "Графический дизайн"),
+    MULTIMEDIA(10, "Мультимедиа дизайн"),
+    WEAVERS(11, "Ткачи"),
+    KNITWEAR(12, "Трикотажники");
 
     final int id;
     final String name;

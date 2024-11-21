@@ -7,7 +7,7 @@ import java.util.Arrays;
 /**
  * Перечисление типов недель.
  */
-@Schema(title = "Тип недели")
+@Schema(title = "Тип недели", description = "Перечисление типов недель")
 public enum EWeekType {
 
     ALWAYS(0),
