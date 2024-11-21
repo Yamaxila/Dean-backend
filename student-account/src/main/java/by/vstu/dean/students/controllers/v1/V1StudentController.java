@@ -1,9 +1,12 @@
 package by.vstu.dean.students.controllers.v1;
 
 import by.vstu.dean.core.services.FileService;
+import by.vstu.dean.dto.v1.students.V1StudentDTO;
 import by.vstu.dean.mapper.v1.V1StudentMapper;
 import by.vstu.dean.services.students.StudentService;
 import by.vstu.dean.students.services.StudentGradeService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1/student")
 @PreAuthorize("hasAnyAuthority('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
+@Tag(name = "StudentAccountController", description = "Данные студента для личного кабинета")
 public class V1StudentController {
 
     private final StudentService studentService;
@@ -33,18 +37,30 @@ public class V1StudentController {
         this.fileService = fileService;
     }
 
+    /**
+     * Получение информации о студенте.
+     *
+     * @return Студент
+     */
+    @Operation(description = "Получение информации о студенте")
     @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    public ResponseEntity<?> getStudentByCaseNo() {
+    public ResponseEntity<V1StudentDTO> getStudentByCaseNo() {
         String caseNo = this.studentGradeService.jwtCustomTokenDecoder("id_from_source");
-        return new ResponseEntity<>(this.v1StudentMapper.toDto(this.studentService.findByCaseNo(Long.parseLong(caseNo)).get()), HttpStatus.OK);
+        return new ResponseEntity<>(this.v1StudentMapper.toDto(this.studentService.findByCaseNo(Long.parseLong(caseNo)).orElse(null)), HttpStatus.OK);
     }
 
+    /**
+     * Получение фото студента.
+     *
+     * @return фото
+     */
+    @Operation(method = "photo", description = "Получение фото студента")
     @GetMapping("/photo")
     public ResponseEntity<?> getPhoto() {
         String caseNo = this.studentGradeService.jwtCustomTokenDecoder("id_from_source");
-        String photoUrl = studentService.findByCaseNo(Long.parseLong(caseNo)).get().getPhotoUrl();
+        String photoUrl = studentService.findByCaseNo(Long.parseLong(caseNo)).orElseThrow().getPhotoUrl();
 
         if (photoUrl == null)
             photoUrl = "/api/v1/files/students/download?filename=none.jpg";
