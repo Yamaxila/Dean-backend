@@ -36,7 +36,7 @@ public class V1StudentGradeController {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<StudentGradeAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
-        List<Integer> semesters = this.studentGradeService.getStudentGradesSession(null).stream().map(StudentGradeDTO::getSemesterNumber).toList();
+        List<Integer> semesters = this.studentGradeService.getStudentGradesSession(null).stream().map(StudentGradeDTO::getSemesterNumber).distinct().toList();
         List<StudentGradeDTO> studentGradeDTOS = this.studentGradeService.getStudentGradesSession(semester);
         Double averageGrade = studentGradeDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
