@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с предыдущими образованиями студентов.
  */
 @RestController
-@RequestMapping("/api/v1/students/educations/")
+@RequestMapping("/api/v1/students/educations")
 @Tag(name = "Educations", description = "Предыдущие образования")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadEducationController extends BaseReadController<V1EducationDTO, EducationModel, V1EducationMapper, EducationModelRepository, EducationService> {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с учреждениями образования студентов.
  */
 @RestController
-@RequestMapping("/api/v1/institutions/")
+@RequestMapping("/api/v1/institutions")
 @Tag(name = "Institutions", description = "Учреждения образования")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1WriteInstitutionController extends BaseWriteController<V1InstitutionDTO, InstitutionModel, V1InstitutionMapper, InstitutionModelRepository, InstitutionService> {

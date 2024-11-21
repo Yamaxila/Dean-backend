@@ -25,7 +25,7 @@ import java.util.List;
  * Контроллер для работы с преподавателями.
  */
 @RestController
-@RequestMapping("/api/v1/teachers/")
+@RequestMapping("/api/v1/teachers")
 @Tag(name = "Teachers", description = "Преподаватели")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadTeacherController extends BaseReadController<V1TeacherDTO, TeacherModel, V1TeacherMapper, TeacherModelRepository, TeacherService> {

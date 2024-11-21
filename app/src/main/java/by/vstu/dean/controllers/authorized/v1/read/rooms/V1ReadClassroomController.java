@@ -23,7 +23,7 @@ import java.util.List;
  * @apiNote Этот контроллер обрабатывает запросы, связанные с аудиториями.
  */
 @RestController
-@RequestMapping("/api/v1/classes/")
+@RequestMapping("/api/v1/classes")
 @Tag(name = "Classrooms", description = "Аудитории")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadClassroomController extends BaseReadController<V1ClassroomDTO, ClassroomModel, V1ClassroomMapper, ClassroomModelRepository, ClassroomService> {

@@ -24,7 +24,7 @@ import java.util.Optional;
  * Контроллер для работы с кафедрами.
  */
 @RestController
-@RequestMapping("/api/v1/departments/")
+@RequestMapping("/api/v1/departments")
 @Tag(name = "Departments", description = "Кафедры")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadDepartmentController extends BaseReadController<V1DepartmentDTO, DepartmentModel, V1DepartmentMapper, DepartmentModelRepository, DepartmentService> {

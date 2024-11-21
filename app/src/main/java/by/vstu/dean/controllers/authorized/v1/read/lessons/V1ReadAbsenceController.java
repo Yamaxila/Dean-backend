@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
  * @apiNote Этот контроллер обрабатывает запросы, связанные с отработками студентов.
  */
 @RestController
-@RequestMapping("/api/v1/absences/")
+@RequestMapping("/api/v1/absences")
 @Tag(name = "Absences", description = "Отработки")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadAbsenceController extends BaseReadController<V1AbsenceDTO, AbsenceModel, V1AbsenceMapper, AbsenceModelRepository, AbsenceService> {

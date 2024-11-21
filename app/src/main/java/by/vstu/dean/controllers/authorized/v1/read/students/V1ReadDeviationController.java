@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с отклонениями в данных студентов.
  */
 @RestController
-@RequestMapping("/api/v1/students/deviations/")
+@RequestMapping("/api/v1/students/deviations")
 @Tag(name = "Deviations", description = "Отклонения")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadDeviationController extends BaseReadController<V1DeviationDTO, DeviationModel, V1DeviationMapper, DeviationModelRepository, DeviationService> {

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с квалификациями.
  */
 @RestController
-@RequestMapping("/api/v1/qualifications/")
+@RequestMapping("/api/v1/qualifications")
 @Tag(name = "Qualification", description = "Квалификация")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadQualificationController extends BaseReadController<V1QualificationDTO, QualificationModel, V1QualificationMapper, QualificationModelRepository, QualificationService> {

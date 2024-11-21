@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с учебными планами.
  */
 @RestController
-@RequestMapping("/api/v1/plans/")
+@RequestMapping("/api/v1/plans")
 @Tag(name = "StudyPlans", description = "Учебные планы")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadStudyPlanController extends BaseReadController<V1StudyPlanDTO, StudyPlanModel, V1StudyPlanMapper, StudyPlanModelRepository, StudyPlanService> {

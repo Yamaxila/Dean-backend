@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/hostels/")
+@RequestMapping("/api/v1/hostels")
 @Tag(name = "HostelController", description = "Общежития и комнаты")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST') AND jwtTokenFilter.hasAnyResourceIds('dean')")
 public class V1ReadHostelController extends BaseReadController<V1HostelRoomDTO, HostelRoomModel, V1HostelRoomMapper, HostelRoomModelRepository, HostelRoomService> {

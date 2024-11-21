@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с должностями преподавателей.
  */
 @RestController
-@RequestMapping("/api/v1/teachers/degrees/")
+@RequestMapping("/api/v1/teachers/degrees")
 @Tag(name = "Degrees", description = "Должности преподавателей")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadTeacherDegreeController extends BaseReadController<V1TeacherDegreeDTO, TeacherDegreeModel, V1TeacherDegreeMapper, TeacherDegreeModelRepository, TeacherDegreeService> {

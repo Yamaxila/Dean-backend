@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с группами студентов.
  */
 @RestController
-@RequestMapping("/api/v1/groups/")
+@RequestMapping("/api/v1/groups")
 @Tag(name = "Groups")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1WriteGroupController extends BaseWriteController<V1GroupDTO, GroupModel, V1GroupMapper, GroupModelRepository, GroupService> {
