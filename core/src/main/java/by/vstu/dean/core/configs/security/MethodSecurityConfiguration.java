@@ -1,0 +1,22 @@
+package by.vstu.dean.core.configs.security;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
+import org.springframework.security.oauth2.provider.expression.OAuth2MethodSecurityExpressionHandler;
+
+//@Configuration
+//@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+public class MethodSecurityConfiguration /*extends GlobalMethodSecurityConfiguration */{
+    private final ApplicationContext context;
+
+    public MethodSecurityConfiguration(ApplicationContext context) {
+        this.context = context;
+    }
+
+    protected MethodSecurityExpressionHandler createExpressionHandler() {
+        OAuth2MethodSecurityExpressionHandler handler = new OAuth2MethodSecurityExpressionHandler();
+        handler.setApplicationContext(this.context);
+        return handler;
+    }
+
+}

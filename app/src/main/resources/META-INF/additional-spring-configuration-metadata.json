@@ -1,0 +1,49 @@
+{
+  "properties": [
+    {
+      "name": "auth.url",
+      "type": "java.lang.String",
+      "description": "auth-service full url."
+    },
+    {
+      "name": "dean.api.clientId",
+      "type": "java.lang.String",
+      "description": "dean API clientId."
+    },
+    {
+      "name": "dean.api.clientSecret",
+      "type": "java.lang.String",
+      "description": "dean API clientSecret."
+    },
+    {
+      "name": "dean.api.login",
+      "type": "java.lang.String",
+      "description": "dean API login."
+    },
+    {
+      "name": "dean.api.password",
+      "type": "java.lang.String",
+      "description": "dean API password."
+    },
+    {
+      "name": "manager.host",
+      "type": "java.lang.String",
+      "description": "Адрес менеджера сервисов."
+    },
+    {
+      "name": "manager.port",
+      "type": "java.lang.String",
+      "description": "Порт менеджера сервисов."
+    },
+    {
+      "name": "manager.secretKey",
+      "type": "java.lang.String",
+      "description": "Секретный ключ менеджера сервисов."
+    },
+    {
+      "name": "dean.bot.token",
+      "type": "java.lang.String",
+      "description": "Токен бота деканата."
+    }
+  ]
+}

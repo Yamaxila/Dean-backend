@@ -1,5 +1,6 @@
 HELP.md
 target/
+/src/
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -33,11 +34,17 @@ build/
 .vscode/
 
 ### Project specific ###
-/src/main/resources/application.properties
+*.properties
+/app/src/main/resources/application.properties
 /.jpb/
 /.mvn/
 /mvnw
 /mvnw.cmd
+amplicode.xml
+/logs/
+/temp/
+/templates/
+/scripts/
 
 # Ignore Gradle project-specific cache directory
 .gradle
