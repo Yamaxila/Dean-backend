@@ -50,6 +50,6 @@ public class V1StudentController {
             photoUrl = "/api/v1/files/students/download?filename=none.jpg";
 
 
-        return this.fileService.downloadFile(photoUrl.split("filename=")[1], "\\\\192.168.11.252\\c$\\CIT\\photos\\students");
+        return this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir);
     }
 }
