@@ -8,13 +8,19 @@ import by.vstu.dean.students.services.StudentGradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.io.IOException;
+import java.util.Base64;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -66,6 +72,14 @@ public class V1StudentController {
             photoUrl = "/api/v1/files/students/download?filename=none.jpg";
 
 
-        return this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir);
+        Resource photo = (Resource) this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir).getBody();
+        try {
+            assert photo != null;
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getFilename() + "\"")
+                    .body(Base64.getEncoder().encode(FileCopyUtils.copyToByteArray(photo.getInputStream())));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

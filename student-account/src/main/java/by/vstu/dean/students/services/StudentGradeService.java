@@ -22,7 +22,7 @@ public class StudentGradeService {
 
     public List<StudentGradeDTO> getStudentGradesSession(Integer semester) {
         Long studentId = Long.parseLong(this.jwtCustomTokenDecoder("id_from_source")); //ToDo: в будущем исправить на запрос авторизации
-        return v1StudentGradeMapperImpl.toDto(statementService.getAllStudentMergeForStudent(studentId).stream()
+        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudent(studentId).stream()
                 .filter(s -> semester == null || s.getStatement().calculateSemesterNumber() == semester).toList());
     }
 
