@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с гражданствами студентов.
  */
 @RestController
-@RequestMapping("/api/v1/students/citizenship/")
+@RequestMapping("/api/v1/students/citizenship")
 @Tag(name = "Citizenship's", description = "Гражданства")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1WriteCitizenshipController extends BaseWriteController<V1CitizenshipDTO, CitizenshipModel, V1CitizenshipMapper, CitizenshipModelRepository, CitizenshipService> {

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с типами экзаменов.
  */
 @RestController
-@RequestMapping("/api/v1/plans/exams/")
+@RequestMapping("/api/v1/plans/exams")
 @Tag(name = "ExamTypes", description = "Типы экзаменов")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadExamTypeController extends BaseReadController<V1ExamTypeDTO, ExamModel, V1ExamTypeMapper, ExamModelRepository, ExamTypeService> {

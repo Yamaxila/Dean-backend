@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с факультетами.
  */
 @RestController
-@RequestMapping("/api/v1/faculties/")
+@RequestMapping("/api/v1/faculties")
 @Tag(name = "Faculties", description = "Факультеты")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadFacultyController extends BaseReadController<V1FacultyDTO, FacultyModel, V1FacultyMapper, FacultyModelRepository, FacultyService> {

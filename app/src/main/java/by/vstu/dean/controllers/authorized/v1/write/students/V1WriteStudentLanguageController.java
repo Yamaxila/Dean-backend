@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с языками студентов.
  */
 @RestController
-@RequestMapping("/api/v1/students/langs/")
+@RequestMapping("/api/v1/students/langs")
 @Tag(name = "Languages", description = "Языки")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1WriteStudentLanguageController extends BaseWriteController<V1StudentLanguageDTO, StudentLanguageModel, V1StudentLanguageMapper, StudentLanguageModelRepository, StudentLanguageService> {

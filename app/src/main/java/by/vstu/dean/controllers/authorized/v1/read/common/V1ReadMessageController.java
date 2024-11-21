@@ -29,7 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/messages/")
+@RequestMapping("/api/v1/messages")
 @Tag(name = "Messages", description = "Сообщения")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadMessageController extends BaseController<V1MessageDTO, MessageModel, V1MessageMapper, MessageModelRepository, MessageService> {

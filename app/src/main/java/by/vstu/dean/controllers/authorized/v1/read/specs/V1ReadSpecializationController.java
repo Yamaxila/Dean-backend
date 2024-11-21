@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с специализациями.
  */
 @RestController
-@RequestMapping("/api/v1/spez/")
+@RequestMapping("/api/v1/spez")
 @Tag(name = "Specializations", description = "Специализации")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadSpecializationController extends BaseReadController<V1SpecializationDTO, SpecializationModel, V1SpecializationMapper, SpecializationModelRepository, SpecializationService> {

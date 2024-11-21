@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Контроллер для работы с дисциплинами.
  */
 @RestController
-@RequestMapping("/api/v1/disciplines/")
+@RequestMapping("/api/v1/disciplines")
 @Tag(name = "Disciplines", description = "Дисциплины")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadDisciplineController extends BaseReadController<V1DisciplineDTO, DisciplineModel, V1DisciplineMapper, DisciplineModelRepository, DisciplineService> {
