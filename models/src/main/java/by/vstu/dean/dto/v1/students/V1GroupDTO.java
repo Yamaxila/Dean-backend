@@ -32,7 +32,7 @@ public final class V1GroupDTO extends BaseDTO {
      * Факультет, связанный с данной группой.
      */
     @Schema(title = "Факультет")
-    @ReflectionField(value = "faculty.id", clazz = GroupModel.class)
+//    @ReflectionField(value = "faculty.id", clazz = GroupModel.class)
     private Long facultyId;
 
     /**
