@@ -32,17 +32,17 @@ import java.util.Map;
         entityManagerFactoryRef = "timetableV1EntityManagerFactory",
         transactionManagerRef = "timetableV1TransactionManager",
         basePackages = {
-                "by.vstu.migrate.v1.timetable"
+                "by.vstu.migrate.timetable"
         }
 )
 @ComponentScan(basePackages = {
-        "by.vstu.migrate.v1.timetable"
+        "by.vstu.migrate.timetable"
 })
 @EntityScan(basePackages = {
-        "by.vstu.migrate.v1.timetable"
+        "by.vstu.migrate.timetable"
 })
 @AutoConfigurationPackage(basePackages = {
-        "by.vstu.migrate.v1.timetable"
+        "by.vstu.migrate.timetable"
 })
 public class TimetableV1DBConfig {
 
@@ -70,7 +70,7 @@ public class TimetableV1DBConfig {
         return builder
                 .dataSource(primaryDataSource)
                 .packages(
-                        "by.vstu.migrate.v1.timetable"
+                        "by.vstu.migrate.timetable"
                 )
                 .properties(jpaProperties())
                 .build();

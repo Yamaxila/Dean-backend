@@ -1,6 +1,5 @@
 package by.vstu.migrate.v1.service.migrate;
 
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class MainMigrateService {
     private final AbsenceMigrateService absenceMigrateService;
     private final TeacherDepartmentMigrateService teacherDepartmentMigrateService;
 
-    @PostConstruct
+    //    @PostConstruct
     public void migrate() {
         long startTime = System.currentTimeMillis();
 

@@ -8,11 +8,19 @@ import by.vstu.old.dean.repo.DDisciplineModelRepository;
 import by.vstu.old.dean.services.migrate.DisciplineMigrateService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class DisciplineUpdateService extends BaseUpdateService<DDisciplineModel, DDisciplineModelRepository, DisciplineModel, DisciplineModelRepository, DisciplineService, DisciplineMigrateService> {
 
     public DisciplineUpdateService(DisciplineModelRepository repo, DDisciplineModelRepository dRepo, DisciplineMigrateService baseMigrateService, DisciplineService service, MainUpdateService updateService) {
         super(repo, dRepo, baseMigrateService, service, updateService);
+    }
+
+    @Override
+    public List<DisciplineModel> getUpdated() {
+        return new ArrayList<>();
     }
 
     @Override

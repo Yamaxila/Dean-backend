@@ -1,4 +1,4 @@
-package by.vstu.migrate.v1.timetable.enums;
+package by.vstu.migrate.timetable.enums;
 
 
 import by.vstu.dean.timetable.enums.ESubGroup;

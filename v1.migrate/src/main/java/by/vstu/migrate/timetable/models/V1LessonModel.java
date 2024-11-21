@@ -1,9 +1,9 @@
-package by.vstu.migrate.v1.timetable.models;
+package by.vstu.migrate.timetable.models;
 
+import by.vstu.migrate.timetable.enums.V1ELessonTypes;
+import by.vstu.migrate.timetable.enums.V1ESubGroup;
+import by.vstu.migrate.timetable.enums.V1EWeekType;
 import by.vstu.migrate.v1.V1DBBaseModel;
-import by.vstu.migrate.v1.timetable.enums.V1ELessonTypes;
-import by.vstu.migrate.v1.timetable.enums.V1ESubGroup;
-import by.vstu.migrate.v1.timetable.enums.V1EWeekType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

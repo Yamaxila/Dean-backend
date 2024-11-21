@@ -79,25 +79,25 @@ public class MainMigrateService {
         long startTime = System.currentTimeMillis();
         log.info("Migrate started at {}", startTime);
         services.clear();
-        services.add(this.teacherDegreeMigrateService);
-        services.add(this.teacherMigrateService);
-        services.add(this.examTypeMigrateService);
-        services.add(this.citizenshipMigrateService);
-        services.add(this.studentLanguageMigrateService);
-        services.add(this.institutionMigrateService);
-        services.add(this.qualificationMigrateService);
-        services.add(this.facultyMigrateService);
-        services.add(this.departmentMigrateService);
-        services.add(this.disciplineMigrateService);
-        services.add(this.specialityMigrateService);
-        services.add(this.specializationMigrateService);
+//        services.add(this.teacherDegreeMigrateService);
+//        services.add(this.teacherMigrateService);
+//        services.add(this.examTypeMigrateService);
+//        services.add(this.citizenshipMigrateService);
+//        services.add(this.studentLanguageMigrateService);
+//        services.add(this.institutionMigrateService);
+//        services.add(this.qualificationMigrateService);
+//        services.add(this.facultyMigrateService);
+//        services.add(this.departmentMigrateService);
+//        services.add(this.disciplineMigrateService);
+//        services.add(this.specialityMigrateService);
+//        services.add(this.specializationMigrateService);
         services.add(this.groupMigrateService);
-        services.add(this.studentMigrateService);
-        services.add(this.studyPlanMigrateService);
-        services.add(this.absenceMigrateService);
-        services.add(this.departmentSpecialityMergeService);
-        services.add(this.teacherDepartmentMigrateService);
-        services.add(this.statementMigrateService);
+//        services.add(this.studentMigrateService);
+//        services.add(this.studyPlanMigrateService);
+//        services.add(this.absenceMigrateService);
+//        services.add(this.departmentSpecialityMergeService);
+//        services.add(this.teacherDepartmentMigrateService);
+//        services.add(this.statementMigrateService);
 
 
         Thread migrateThread = new Thread(() -> {
@@ -115,9 +115,8 @@ public class MainMigrateService {
             log.info("Update end at {} with time {}s", System.currentTimeMillis(), Math.floor(((double) System.currentTimeMillis() - (double) updateStartTime) / 1000D));
 
             log.info("Applying spec for groups");
-            //this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
+            this.groupMigrateService.insertAll(this.groupMigrateService.applySpecIdByStudents());
             log.info("Applying student for educationModels");
-            // this.educationMigrateService.insertAll(this.educationMigrateService.applyStudentIds());
 
             log.info("Cleanup...");
             services.forEach(IMigrateExecutor::cleanup);
@@ -127,7 +126,7 @@ public class MainMigrateService {
             HikariPoolMXBean poolBean = hikariDs.getHikariPoolMXBean();
             log.info("Current connections count is {}", poolBean.getActiveConnections());
 
-            this.closeDS();
+//            this.closeDS();
 
             log.info("Current connections count after closing is {}", poolBean.getActiveConnections());
         });

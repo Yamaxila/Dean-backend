@@ -8,11 +8,19 @@ import by.vstu.old.dean.repo.DStudentModelRepository;
 import by.vstu.old.dean.services.migrate.EducationMigrateService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class EducationUpdateService extends BaseUpdateService<DStudentModel, DStudentModelRepository, EducationModel, EducationModelRepository, EducationService, EducationMigrateService> {
 
     public EducationUpdateService(EducationModelRepository repo, DStudentModelRepository dRepo, EducationMigrateService baseMigrateService, EducationService service, MainUpdateService updateService) {
         super(repo, dRepo, baseMigrateService, service, updateService);
+    }
+
+    @Override
+    public List<EducationModel> getUpdated() {
+        return new ArrayList<>();
     }
 
     @Override
