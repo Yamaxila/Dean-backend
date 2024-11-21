@@ -26,7 +26,7 @@ import java.util.List;
  * Контроллер для работы с занятиями.
  */
 @RestController
-@RequestMapping("/api/v1/lessons/")
+@RequestMapping("/api/v1/lessons")
 @PreAuthorize("hasAnyRole('ROLE_SCHEDULE', 'ROLE_SERVICE')")
 @Tag(name = "Lessons", description = "Занятия")
 public class V1LessonController extends BaseReadController<LessonDTO, LessonModel, LessonMapper, LessonModelRepository, LessonService> {
@@ -34,7 +34,6 @@ public class V1LessonController extends BaseReadController<LessonDTO, LessonMode
     public V1LessonController(LessonService service, LessonMapper mapper) {
         super(service, mapper);
     }
-
 
     @RequestMapping(
             value = {"/dto"},
