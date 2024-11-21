@@ -37,7 +37,7 @@ import java.util.List;
  * Контроллер для работы фронта с занятиями.
  */
 @RestController
-@RequestMapping("/api/v1/rooms/")
+@RequestMapping("/api/v1/rooms")
 @Tag(name = "Rooms", description = "Контроллер для работы фронта с занятиями")
 @RequiredArgsConstructor
 public class V1RoomController {
