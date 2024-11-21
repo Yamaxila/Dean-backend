@@ -81,4 +81,10 @@ public class StudentGradeDTO extends PublicDTO {
      */
     @Schema(title = "Тема занятия")
     private String classTopic;
+
+    /**
+     * Номер семестра.
+     */
+    @Schema(title = "Номер семестра")
+    private Integer semesterNumber;
 }

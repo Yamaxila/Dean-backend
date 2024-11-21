@@ -15,6 +15,12 @@ import java.util.List;
 public class StudentGradeAvgDTO {
 
     /**
+     * Список семестров.
+     */
+    @Schema(title = "Список семестров")
+    private List<Integer> semesters;
+
+    /**
      * Средняя оценка.
      */
     @Schema(title = "Средняя оценка")

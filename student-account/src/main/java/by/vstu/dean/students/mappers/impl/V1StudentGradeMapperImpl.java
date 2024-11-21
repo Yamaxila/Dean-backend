@@ -24,9 +24,10 @@ public class V1StudentGradeMapperImpl implements V1StudentGradeMapper {
         studentGradeDTO.setTeacherFIO(entity.getTeacher() != null ? entity.getTeacher().getFullName() : null);
         studentGradeDTO.setGrade(
                 entity.getGrade().getSupportExamTypes().contains(ExamType.EXAM)
-                        && entity.getGrade().getSupportGradeTypes().contains(10)
+                        && entity.getGrade().getSupportGradeTypes().contains(10) && !entity.getGrade().getSupportExamTypes().contains(ExamType.UNKNOWN)
                         ? String.valueOf(entity.getGrade().getId() - 10) : entity.getGrade().getTitle()
         );
+        studentGradeDTO.setSemesterNumber(entity.getStatement().calculateSemesterNumber());
         return studentGradeDTO;
     }
 
