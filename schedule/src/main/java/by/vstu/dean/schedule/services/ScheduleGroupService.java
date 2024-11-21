@@ -16,9 +16,9 @@ public class ScheduleGroupService {
     private final ScheduleService scheduleService;
     private final V1GroupMapperImpl groupMapper;
 
-    public List<V1GroupDTO> getValidGroups() {
+    public List<V1GroupDTO> getValidGroupDTOs() {
         return this.groupMapper.toDto(this.lessonService.getAllActive(true).stream()
                 .filter(scheduleService::isValid)
-                .map(LessonModel::getGroup).toList());
+                .map(LessonModel::getGroup).distinct().toList());
     }
 }

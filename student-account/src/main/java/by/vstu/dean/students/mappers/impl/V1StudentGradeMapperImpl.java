@@ -17,6 +17,9 @@ public class V1StudentGradeMapperImpl implements V1StudentGradeMapper {
 
     @Override
     public StudentGradeDTO toDto(StatementStudentMerge entity) {
+        if (entity == null)
+            return null;
+
         StudentGradeDTO studentGradeDTO = V1StudentGradeMapper.super.toDto(entity);
         studentGradeDTO.setTeacherFIO(entity.getTeacher() != null ? entity.getTeacher().getFullName() : null);
         studentGradeDTO.setGrade(

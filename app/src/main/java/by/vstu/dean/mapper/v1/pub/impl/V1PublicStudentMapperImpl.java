@@ -31,8 +31,8 @@ public class V1PublicStudentMapperImpl implements V1PublicStudentMapper {
 
         V1PublicStudentDTO dto = V1PublicStudentMapper.super.toDto(entity);
 
-        dto.setFistLetterName(String.valueOf(entity.getName().isEmpty() ? "" : entity.getName().toUpperCase().charAt(0)));
-        dto.setFistLetterPatronymic(entity.getPatronymic().isEmpty() ? "" : String.valueOf(entity.getPatronymic().toUpperCase().charAt(0)));
+        dto.setFirstLetterName(String.valueOf(entity.getName().isEmpty() ? "" : entity.getName().toUpperCase().charAt(0)));
+        dto.setFirstLetterPatronymic(entity.getPatronymic().isEmpty() ? "" : String.valueOf(entity.getPatronymic().toUpperCase().charAt(0)));
         dto.setGroup(this.groupMapper.toDto(entity.getGroup()));
 
         return dto;

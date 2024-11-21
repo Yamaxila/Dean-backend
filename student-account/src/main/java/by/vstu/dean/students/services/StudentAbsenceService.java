@@ -23,7 +23,7 @@ public class StudentAbsenceService {
     private final AbsenceService absenceService;
 
     public List<StudentAbsenceMonthDTO> findAbsencesByStudent() {
-        Map<LocalDate, List<StudentAbsenceDTO>> map = this.v1StudentAbsenceMapperImpl.toDto(this.absenceService.rsql("sql=student.id==".concat("")))
+        Map<LocalDate, List<StudentAbsenceDTO>> map = this.v1StudentAbsenceMapperImpl.toDto(this.absenceService.rsql("student.id==".concat("")))
                 .stream().collect(Collectors.groupingBy(s -> s.getDate().withDayOfMonth(1), TreeMap::new, Collectors.toList()));
 
         List<StudentAbsenceMonthDTO> studentAbsenceMonthDTOS = new ArrayList<>();

@@ -1,9 +1,9 @@
 package by.vstu.dean.students.controllers.v1;
 
-import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.students.dtos.StudentGradeAvgDTO;
 import by.vstu.dean.students.dtos.StudentGradeDTO;
 import by.vstu.dean.students.services.StudentGradeService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,13 +17,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/student/grades")
-@PreAuthorize("hasAnyRole('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
+@PreAuthorize("hasAnyAuthority('ROLE_STUDENT', 'ROLE_GROUP_ELDER')")
+@RequiredArgsConstructor
 public class V1StudentGradeController {
     private final StudentGradeService studentGradeService;
-
-    public V1StudentGradeController(StudentGradeService studentGradeService) {
-        this.studentGradeService = studentGradeService;
-    }
 
     @RequestMapping(value = "/session",
             produces = {"application/json"},
