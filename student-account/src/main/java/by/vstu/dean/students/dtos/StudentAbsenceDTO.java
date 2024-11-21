@@ -4,7 +4,6 @@ import by.vstu.dean.core.anotations.ReflectionField;
 import by.vstu.dean.core.dto.PublicDTO;
 import by.vstu.dean.enums.ELessonType;
 import by.vstu.dean.models.lessons.AbsenceModel;
-import by.vstu.dean.models.students.GroupModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

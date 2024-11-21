@@ -1,6 +1,5 @@
 package by.vstu.dean.students.dtos;
 
-import by.vstu.dean.models.students.GroupModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
