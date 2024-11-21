@@ -1,4 +1,4 @@
-package by.vstu.migrate.v1.timetable.service;
+package by.vstu.migrate.timetable.service;
 
 import by.vstu.dean.services.ClassroomService;
 import by.vstu.dean.services.DisciplineService;
@@ -6,13 +6,14 @@ import by.vstu.dean.services.GroupService;
 import by.vstu.dean.services.TeacherService;
 import by.vstu.dean.timetable.models.LessonModel;
 import by.vstu.dean.timetable.service.LessonService;
+import by.vstu.migrate.timetable.models.V1LessonModel;
+import by.vstu.migrate.timetable.repo.V1LessonModelRepository;
 import by.vstu.migrate.v1.repo.V1ClassroomModelRepository;
 import by.vstu.migrate.v1.repo.V1DisciplineModelRepository;
 import by.vstu.migrate.v1.repo.V1GroupModelRepository;
 import by.vstu.migrate.v1.repo.V1TeacherModelRepository;
 import by.vstu.migrate.v1.service.migrate.BaseMigrateService;
-import by.vstu.migrate.v1.timetable.models.V1LessonModel;
-import by.vstu.migrate.v1.timetable.repo.V1LessonModelRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -45,7 +46,7 @@ public class TimetableMigrateService extends BaseMigrateService<LessonModel, V1L
     @Override
     public LessonModel convertSingle(V1LessonModel v1LessonModel, boolean update) {
         LessonModel l = new LessonModel();
-        l.setId(v1LessonModel.getId());
+        l.setSourceId(v1LessonModel.getId());
         l.setStatus(v1LessonModel.getStatus().map());
         l.setCreated(v1LessonModel.getCreated());
         l.setUpdated(v1LessonModel.getUpdated());
@@ -60,7 +61,7 @@ public class TimetableMigrateService extends BaseMigrateService<LessonModel, V1L
                 l.setDiscipline(this.disciplineService.getBySourceId(discipline.getSourceId()))
         );
         this.v1ClassroomModelRepository.findById(v1LessonModel.getRoomId()).ifPresent(classroom ->
-                l.setRoom(this.classroomService.getBySourceId(classroom.getSourceId()))
+                l.setRoom(this.classroomService.getBySourceId(classroom.getId()))
         );
 
         l.setLessonNumber(v1LessonModel.getLessonNumber());
@@ -86,8 +87,11 @@ public class TimetableMigrateService extends BaseMigrateService<LessonModel, V1L
     }
 
     @Override
+    @PostConstruct
     public void migrate() {
-        System.err.println(this.getClass().getName());
-        this.insertAll(this.convertNotExistsFromDB());
+        new Thread(() -> {
+            System.err.println(this.getClass().getName());
+            this.insertAll(this.convertNotExistsFromDB());
+        }).start();
     }
 }

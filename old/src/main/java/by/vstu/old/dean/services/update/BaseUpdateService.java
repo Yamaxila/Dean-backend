@@ -162,9 +162,9 @@ public abstract class BaseUpdateService<
      */
     @Override
     @PostConstruct
-    @Order(6)
+    @Order
     public void onInit() {
         System.out.println("[UPDATE REGISTER]: " + this.getClass());
-//        this.updateService.registerService(this);
+        this.updateService.registerService(this);
     }
 }
