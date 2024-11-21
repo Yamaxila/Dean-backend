@@ -1,5 +1,7 @@
 package by.vstu.dean.schedule.controllers.v1;
 
+import by.vstu.dean.schedule.dtos.ScheduleDTO;
+import by.vstu.dean.schedule.dtos.WeekDTO;
 import by.vstu.dean.schedule.services.ScheduleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -11,13 +13,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Контроллер для получения расписания.
  */
 @RestController
 @RequestMapping("/api/v1/schedule")
 @RequiredArgsConstructor
-@Tag(name = "Schedule")
+@Tag(name = "Schedule", description = "Расписание")
 public class V1ScheduleController {
     private final ScheduleService scheduleService;
 
@@ -32,7 +36,7 @@ public class V1ScheduleController {
             , method = RequestMethod.GET
             , params = {"teacherId"})
     @Operation(method = "teacher", description = "Получение расписания для преподавателя")
-    public ResponseEntity<?> getScheduleByTeacher(@PathVariable Long teacherId) {
+    public ResponseEntity<List<ScheduleDTO>> getScheduleByTeacher(@PathVariable Long teacherId) {
         return new ResponseEntity<>(this.scheduleService.getSchedulesByTeacher(teacherId), HttpStatus.OK);
     }
 
@@ -47,7 +51,7 @@ public class V1ScheduleController {
             , method = RequestMethod.GET
             , params = {"groupId"})
     @Operation(method = "group", description = "Получение расписания для группы")
-    public ResponseEntity<?> getScheduleByGroup(@PathVariable Long groupId) {
+    public ResponseEntity<List<ScheduleDTO>> getScheduleByGroup(@PathVariable Long groupId) {
         return new ResponseEntity<>(this.scheduleService.getSchedulesByGroup(groupId), HttpStatus.OK);
     }
 
@@ -60,7 +64,7 @@ public class V1ScheduleController {
             , produces = {"application/json"}
             , method = RequestMethod.GET)
     @Operation(method = "groupId", description = "Получение данных о текущей неделу")
-    public ResponseEntity<?> getNameOFWeek() {
+    public ResponseEntity<WeekDTO> getNameOFWeek() {
         return new ResponseEntity<>(this.scheduleService.definitionOfWeek(), HttpStatus.OK);
     }
 
