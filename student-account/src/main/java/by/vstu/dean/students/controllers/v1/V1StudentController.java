@@ -74,6 +74,7 @@ public class V1StudentController {
 
         Resource photo = (Resource) this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir).getBody();
         try {
+            assert photo != null;
             return ResponseEntity.ok()
                     .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getFilename() + "\"")
                     .body(Base64.getEncoder().encode(FileCopyUtils.copyToByteArray(photo.getInputStream())));
