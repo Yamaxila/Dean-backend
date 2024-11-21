@@ -13,8 +13,6 @@ public class MainUpdateService {
     private final List<IUpdateExecutor> services = new ArrayList<>();
 
     public void update() {
-
-
         System.err.println("Update started!");
         Thread.currentThread().setName("Update");
 
@@ -22,6 +20,8 @@ public class MainUpdateService {
     }
 
     public void registerService(IUpdateExecutor executor) {
+        if (services.contains(executor))
+            return;
         this.services.add(executor);
     }
 

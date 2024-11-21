@@ -27,8 +27,8 @@ public class ClassroomsMigrateService extends BaseMigrateService<ClassroomModel,
     @Override
     public ClassroomModel convertSingle(V1ClassroomModel v1ClassroomModel, boolean update) {
         ClassroomModel c = new ClassroomModel();
-        c.setId(v1ClassroomModel.getId());
-        c.setSourceId(v1ClassroomModel.getSourceId());
+        c.setSourceId(v1ClassroomModel.getId());
+//        c.setSourceId(v1ClassroomModel.getSourceId());
         c.setStatus(v1ClassroomModel.getStatus().map());
         c.setCreated(v1ClassroomModel.getCreated());
         c.setUpdated(v1ClassroomModel.getUpdated());

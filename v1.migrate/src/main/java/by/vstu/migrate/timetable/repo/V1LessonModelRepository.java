@@ -1,17 +1,8 @@
-package by.vstu.migrate.v1.timetable.repo;
+package by.vstu.migrate.timetable.repo;
 
+import by.vstu.migrate.timetable.models.V1LessonModel;
 import by.vstu.migrate.v1.V1DBBaseModelRepository;
-import by.vstu.migrate.v1.enums.V1EStatus;
-import by.vstu.migrate.v1.timetable.enums.V1ELessonTypes;
-import by.vstu.migrate.v1.timetable.enums.V1ESubGroup;
-import by.vstu.migrate.v1.timetable.enums.V1EWeekType;
-import by.vstu.migrate.v1.timetable.models.V1LessonModel;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalDate;
-import java.util.Collection;
-import java.util.List;
 
 @Repository
 public interface V1LessonModelRepository extends V1DBBaseModelRepository<V1LessonModel> {

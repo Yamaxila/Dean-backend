@@ -52,6 +52,7 @@ public class V1GroupMapperImpl implements V1GroupMapper {
         V1GroupDTO groupDTO = V1GroupMapper.super.toDto(entity);
 
         groupDTO.setSpec(this.specialityMapper.toDto(entity.getSpec()));
+        groupDTO.setFacultyId(entity.getFaculty().getId());
         return groupDTO;
     }
 

@@ -251,7 +251,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
         mergeModel.setGrade(grade);
         mergeModel.setAttemptNumber(attemptNumber);
         //Если это не первая попытка, то это пересдача
-        mergeModel.setRetake(attemptNumber != 1);
+        mergeModel.setRetake(attemptNumber > 1);
         mergeModel.setPassDate(passDate);
         return mergeModel;
     }
