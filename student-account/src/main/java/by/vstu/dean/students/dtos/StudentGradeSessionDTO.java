@@ -78,10 +78,11 @@ public class StudentGradeSessionDTO extends PublicDTO {
     private Boolean isRetake;
 
     /**
-     * Тема занятия.
+     * Форма контроля.
      */
-    @Schema(title = "Тема занятия")
-    private String classTopic;
+    @ReflectionField(value = "statement.studyPlan.exam.name", clazz = StatementStudentMerge.class)
+    @Schema(title = "Форма контроля")
+    private String examType;
 
     /**
      * Номер семестра.

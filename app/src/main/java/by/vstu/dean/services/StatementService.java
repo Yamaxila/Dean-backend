@@ -25,7 +25,7 @@ public class StatementService extends BaseService<StatementModel, StatementModel
         return this.repo.findDistinctSourceIdsByStudentSourceId(studentSourceId);
     }
 
-    public List<StatementStudentMerge> getAllStudentMergeForStudent(Long caseNo) {
+    public List<StatementStudentMerge> getAllStudentMergeForStudentByCaseNo(Long caseNo) {
         return studentMergeRepository.findByStudent_CaseNo(caseNo);
     }
 
