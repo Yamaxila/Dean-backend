@@ -8,10 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,7 +24,8 @@ public class StudentAbsenceService {
     public List<StudentAbsenceMonthDTO> findAbsencesByStudent() {
         Map<LocalDate, List<StudentAbsenceDTO>> map = this.v1StudentAbsenceMapperImpl
                 .toDto(this.absenceService.getAbsenceByStudentCaseNo(Long.parseLong(studentGradeService.jwtCustomTokenDecoder("id_from_source"))))
-                .stream().collect(Collectors.groupingBy(s -> s.getDate().withDayOfMonth(1), TreeMap::new, Collectors.toList()));
+                .stream().sorted(Comparator.comparing(StudentAbsenceDTO::getDate).reversed())
+                .collect(Collectors.groupingBy(s -> s.getDate().withDayOfMonth(1), TreeMap::new, Collectors.toList()));
 
         List<StudentAbsenceMonthDTO> studentAbsenceMonthDTOS = new ArrayList<>();
 
