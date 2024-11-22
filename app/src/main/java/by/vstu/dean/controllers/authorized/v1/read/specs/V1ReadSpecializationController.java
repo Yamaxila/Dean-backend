@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * Контроллер для работы с специализациями.
+ * Контроллер для работы со специализациями.
  */
 @RestController
 @RequestMapping("/api/v1/spez")

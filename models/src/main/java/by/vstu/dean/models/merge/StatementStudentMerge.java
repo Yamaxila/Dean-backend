@@ -3,7 +3,6 @@ package by.vstu.dean.models.merge;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EGrade;
 import by.vstu.dean.models.lessons.StatementModel;
-import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.students.StudentModel;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
@@ -15,6 +14,8 @@ import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Модель объекта связи преподавателя и кафедры.
@@ -64,13 +65,13 @@ public class StatementStudentMerge extends DBBaseModel {
     private EGrade grade;
 
     /**
-     * Преподаватель, который осуществлял оценку
+     * Преподаватели, которые осуществлял оценку
      */
-    @Schema(title = "Преподаватель, который осуществлял оценку")
-    @ManyToOne
-    @JoinColumn(name = "teacher_id")
-    @NotFound(action = NotFoundAction.IGNORE)
-    private TeacherModel teacher;
+    @Schema(title = "Преподаватели, которые осуществлял оценку")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinTable(name = "dean_statement_teacher_merge",
+            joinColumns = {@JoinColumn(name = "ssm_id")}, inverseJoinColumns = {@JoinColumn(name = "id")})
+    private List<StatementTeacherMerge> teachers = new ArrayList<>();
 
     /**
      * Пересдача

@@ -27,6 +27,7 @@ import java.util.Optional;
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadGroupController extends BaseReadController<V1GroupDTO, GroupModel, V1GroupMapper, GroupModelRepository, GroupService> {
 
+    //Маппер кафедр
     private final V1DepartmentMapper departmentMapper;
 
     /**

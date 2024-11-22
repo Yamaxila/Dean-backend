@@ -1,5 +1,6 @@
 package by.vstu.dean.services.students;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.StudentModel;
@@ -45,6 +46,10 @@ public class StudentService extends BaseService<StudentModel, StudentModelReposi
 
     public List<Long> getAllSourceIds() {
         return this.repo.findAllSourceIds();
+    }
+
+    public List<Long> getAllSourceIdsByStatus(EStatus status) {
+        return this.repo.findAllSourceIdsByStatus(status);
     }
 
 }

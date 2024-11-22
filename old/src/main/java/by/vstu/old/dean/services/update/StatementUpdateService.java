@@ -10,9 +10,21 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class StatementUpdateService extends BaseUpdateService<DStatementModel, DStatementModelRepository, StatementModel, StatementModelRepository, StatementService, StatementMigrateService> {
-    public StatementUpdateService(StatementModelRepository repo, DStatementModelRepository dRepo, StatementMigrateService baseMigrateService, StatementService service, MainUpdateService updateService) {
+
+    private final StatementService statementService;
+
+    public StatementUpdateService(StatementModelRepository repo, DStatementModelRepository dRepo, StatementMigrateService baseMigrateService, StatementService service, MainUpdateService updateService, StatementService statementService) {
         super(repo, dRepo, baseMigrateService, service, updateService);
+        this.statementService = statementService;
     }
+
+//    public List<StatementStudentMerge> getUpdates() {
+//        this.statementService.getAll().forEach(statement -> {
+//
+//
+//
+//        });
+//    }
 
 
 }

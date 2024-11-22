@@ -9,8 +9,10 @@ import by.vstu.dean.models.lessons.StatementModel;
 import by.vstu.dean.models.lessons.StudyPlanModel;
 import by.vstu.dean.models.lessons.TeacherModel;
 import by.vstu.dean.models.merge.StatementStudentMerge;
+import by.vstu.dean.models.merge.StatementTeacherMerge;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StatementStudentMergeRepository;
+import by.vstu.dean.repo.StatementTeacherMergeRepository;
 import by.vstu.dean.services.StatementService;
 import by.vstu.dean.services.StudyPlanService;
 import by.vstu.dean.services.TeacherService;
@@ -39,6 +41,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     private final StudyPlanService studyPlanService;
     private final TeacherService teacherService;
     private final StatementStudentMergeRepository statementStudentMergeRepository;
+    private final StatementTeacherMergeRepository statementTeacherMergeRepository;
 
 
     @Override
@@ -53,7 +56,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
         List<StatementModel> out = new ArrayList<>();
 
         //У студента овердохера данных, а нам нужен только sourceId
-        this.studentService.getAllSourceIds().forEach((studentSourceId) -> {
+        this.studentService.getAllSourceIdsByStatus(EStatus.ACTIVE).forEach((studentSourceId) -> {
             /*
              * Пробуем хитрый метод.
              * Мы делаем выборку всех id ведомостей студентов и выбираем все записи, что у нас не существуют для этого студента.
@@ -67,18 +70,18 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
                     // p - старый объект
                     // e - сконвертированный объект
                     // тут удаляем все дубликаты
-                    .filter(p -> converted.stream().filter(Objects::nonNull).noneMatch(e -> e.getSourceId().equals(p.getId()) //если id совпадает
-                                            // ИЛИ
-                                            //Сверяем номер ведомости + группу вместе
-                                            || (
-                                            Objects.equals(e.getGroupStatementNumber(), p.getGlobalStatementNumber()) //Сверяем номера ведомостей
-                                                    && (
-                                                    e.getStudyPlan() != null
-                                                            && e.getStudyPlan().getGroup().getSourceId().equals(p.getGroupId())
-                                            ) //Так же группа должна совпасть
-                                    )
-                            )
-                    ) //Это выглядит очень страшно, но я не хочу считать скобочки)
+//                    .filter(p -> converted.stream().filter(Objects::nonNull).noneMatch(e -> e.getSourceId().equals(p.getId()) //если id совпадает
+//                                            // ИЛИ
+//                                            //Сверяем номер ведомости + группу вместе
+//                                            || (
+//                                            Objects.equals(e.getGroupStatementNumber(), p.getGlobalStatementNumber()) //Сверяем номера ведомостей
+//                                                    && (
+//                                                    e.getStudyPlan() != null
+//                                                            && e.getStudyPlan().getGroup().getSourceId().equals(p.getGroupId())
+//                                            ) //Так же группа должна совпасть
+//                                    )
+//                            )
+//                    ) //Это выглядит очень страшно, но я не хочу считать скобочки)
                     .filter(p -> tempList.stream().filter(Objects::nonNull).noneMatch(e -> e.getSourceId().equals(p.getId()) //если id совпадает
                                             // ИЛИ
                                             //Сверяем номер ведомости + группу вместе
@@ -208,52 +211,92 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
 
                     LocalDate passDate = oldStatement.getPassDate() != null ? oldStatement.getPassDate().toLocalDate() : LocalDate.now();
 
+                    if (oldStatement.getRetakeDate1() != null)
+                        passDate = oldStatement.getRetakeDate1().toLocalDate();
+
+                    if (oldStatement.getRetakeDate2() != null)
+                        passDate = oldStatement.getRetakeDate2().toLocalDate();
+
+                    if (oldStatement.getRetakeDate3() != null)
+                        passDate = oldStatement.getRetakeDate3().toLocalDate();
+
+
+                    Integer sheetNumber = oldStatement.getSemesterNumber();
+
+                    if (oldStatement.getRetakeExamSheetNumber1() != null)
+                        sheetNumber = oldStatement.getRetakeExamSheetNumber1();
+
+                    if (oldStatement.getRetakeExamSheetNumber2() != null)
+                        sheetNumber = oldStatement.getRetakeExamSheetNumber2();
+
+                    if (oldStatement.getRetakeExamSheetNumber3() != null)
+                        sheetNumber = oldStatement.getRetakeExamSheetNumber3();
+
+
+                    List<TeacherModel> teacherModels = new ArrayList<>();
+
+
                     //Я просто не знаю как тут сделать иначе
-                    if (oTeacher1.isPresent())
-                        out.add(this.createMergeModel(statementModel, oTeacher1.get(), oStudent.get(), grade, passDate, 1, oldStatement.getId()));
+                    oTeacher1.ifPresent(teacherModels::add);
+                    oTeacher2.ifPresent(teacherModels::add);
+                    oTeacher3.ifPresent(teacherModels::add);
 
-                    if (oTeacher4.isPresent())
-                        out.add(this.createMergeModel(statementModel, oTeacher4.get(), oStudent.get(), grade, passDate, 1, oldStatement.getId()));
+                    if (oTeacher4.isPresent() && teacherModels.stream().noneMatch(p -> p.getId().equals(oTeacher4.get().getId())))
+                        oTeacher4.ifPresent(teacherModels::add);
 
-                    if (oTeacher2.isPresent())
-                        out.add(this.createMergeModel(statementModel, oTeacher2.get(), oStudent.get(), grade, passDate, 2, oldStatement.getId()));
 
-                    if (oTeacher3.isPresent())
-                        out.add(this.createMergeModel(statementModel, oTeacher3.get(), oStudent.get(), grade, passDate, 3, oldStatement.getId()));
+                    out.add(this.createMergeModel(statementModel, teacherModels, oStudent.get(), grade, passDate, teacherModels.size(), oldStatement.getId(), sheetNumber));
 
                     if (oTeacher1.isEmpty() && oTeacher2.isEmpty() && oTeacher3.isEmpty() && oTeacher4.isEmpty()) {
-                        log.error("No one teacher is present in DStatementModel with id {}", oldStatement.getId());
-                        out.add(this.createMergeModel(statementModel, null, oStudent.get(), grade, passDate, 0, oldStatement.getId()));
+                        log.warn("No one teacher is present in DStatementModel with id {}", oldStatement.getId());
                     }
                 } else
-                    log.error("No student is present in DStatementModel with id {}", oldStatement.getId());
+                    log.warn("No student is present in DStatementModel with id {}", oldStatement.getId());
 
             });
         });
 
-        List<StatementStudentMerge> allMerges = this.statementStudentMergeRepository.findAll();
-
-        return out.stream().filter(p -> allMerges.stream().noneMatch(e -> e.getSourceId().equals(p.getSourceId()) && p.getAttemptNumber().equals(e.getAttemptNumber()))).toList();
+//        List<StatementStudentMerge> allMerges = this.statementStudentMergeRepository.findAll();
+//.stream().filter(p -> allMerges.stream().noneMatch(e -> e.getSourceId().equals(p.getSourceId()) && p.getAttemptNumber().equals(e.getAttemptNumber()) && p.getTeachers().size() != e.getTeachers().size())).toList()
+        return out;
     }
 
-    public StatementStudentMerge createMergeModel(StatementModel model, TeacherModel teacher, StudentModel student, EGrade grade, LocalDate passDate, Integer attemptNumber, Long sourceId) {
+
+    public StatementStudentMerge createMergeModel(StatementModel model, List<TeacherModel> teachers, StudentModel student, EGrade grade, LocalDate passDate, Integer attemptNumber, Long sourceId, Integer sheetNumber) {
         StatementStudentMerge mergeModel = new StatementStudentMerge();
 
         mergeModel.setStatement(model);
-        mergeModel.setStatus(teacher == null ? EStatus.BROKEN : model.getStatus());
+        mergeModel.setStatus(teachers.isEmpty() ? EStatus.BROKEN : model.getStatus());
         mergeModel.setCreated(model.getCreated());
         mergeModel.setUpdated(model.getUpdated());
         mergeModel.setSourceId(sourceId);
-
         mergeModel.setStudent(student);
         //Теоретически, сдавать могут разным преподавателям
-        mergeModel.setTeacher(teacher);
+//        mergeModel.setTeachers(teachers);
+        mergeModel.setSheetNumber(sheetNumber);
         mergeModel.setGrade(grade);
         mergeModel.setAttemptNumber(attemptNumber);
         //Если это не первая попытка, то это пересдача
         mergeModel.setRetake(attemptNumber > 1);
         mergeModel.setPassDate(passDate);
-        return mergeModel;
+
+        //это очень страшно
+        mergeModel = this.statementStudentMergeRepository.saveAndFlush(mergeModel);
+
+        StatementStudentMerge finalMergeModel = mergeModel;
+        finalMergeModel.setTeachers(teachers.stream().map(m -> {
+
+            StatementTeacherMerge stm = new StatementTeacherMerge();
+            stm.setSsm(finalMergeModel);
+            stm.setTeacher(m);
+            stm.setSourceId(sourceId);
+            stm.setCreated(model.getCreated());
+            stm.setUpdated(model.getUpdated());
+
+            return stm;
+        }).toList());
+
+        return finalMergeModel;
     }
 
     @Override
@@ -269,8 +312,9 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     @Override
     public void migrate() {
         //оно очееееень медленное, но работает
-        this.insertAll(this.convertNotExistsFromDB());
+//        this.insertAll(this.convertNotExistsFromDB());
         log.info("Saving students for statements");
-        this.statementStudentMergeRepository.saveAllAndFlush(this.analyseAndCreateMerges());
+        List<StatementStudentMerge> ssm = this.analyseAndCreateMerges();
+        this.statementTeacherMergeRepository.saveAllAndFlush(ssm.stream().flatMap(m -> m.getTeachers().stream()).toList());
     }
 }

@@ -36,6 +36,9 @@ public class V1ReadDepartmentController extends BaseReadController<V1DepartmentD
      * Конструктор контроллера.
      *
      * @param service Сервис кафедр
+     * @param mapper Маппер кафедр.
+     * @param mergeRepo Репозиторий для работы с промежуточным объектом {@link TeacherDepartmentMerge}
+     * @param teacherMapper Маппер преподавателей
      */
     public V1ReadDepartmentController(DepartmentService service, V1DepartmentMapper mapper, V1TeacherMapper teacherMapper, TeacherDepartmentMergeRepository mergeRepo) {
         super(service, mapper);

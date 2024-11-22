@@ -1,6 +1,5 @@
 package by.vstu.dean.services;
 
-import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.lessons.StatementModel;
@@ -23,10 +22,19 @@ public class StatementService extends BaseService<StatementModel, StatementModel
     }
 
     public List<Long> getAllDistinctSourceIdForStudent(Long studentSourceId) {
-        return this.repo.findDistinctByStatementStudents_Student_SourceId(studentSourceId).stream().map(DBBaseModel::getSourceId).toList();
+        return this.repo.findDistinctSourceIdsByStudentSourceId(studentSourceId);
     }
 
     public List<StatementStudentMerge> getAllStudentMergeForStudent(Long caseNo) {
         return studentMergeRepository.findByStudent_CaseNo(caseNo);
     }
+
+    public List<StatementStudentMerge> getAllStudentMergeForStatement(Long statementId) {
+        return studentMergeRepository.findByStatementId(statementId);
+    }
+
+    public List<StatementStudentMerge> getAllStudentMergeSourceIdsForStatement(Long statementId) {
+        return studentMergeRepository.findByStatementId(statementId);
+    }
+
 }

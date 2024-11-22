@@ -21,7 +21,7 @@ public class V1StudentGradeMapperImpl implements V1StudentGradeMapper {
             return null;
 
         StudentGradeDTO studentGradeDTO = V1StudentGradeMapper.super.toDto(entity);
-        studentGradeDTO.setTeacherFIO(entity.getTeacher() != null ? entity.getTeacher().getFullName() : null);
+        studentGradeDTO.setTeachers(entity.getTeachers().stream().map(m -> m.getTeacher().getFullName()).toList());
         studentGradeDTO.setGrade(
                 entity.getGrade().getSupportExamTypes().contains(ExamType.EXAM)
                         && entity.getGrade().getSupportGradeTypes().contains(10) && !entity.getGrade().getSupportExamTypes().contains(ExamType.UNKNOWN)
