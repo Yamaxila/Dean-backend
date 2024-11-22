@@ -20,10 +20,9 @@ public class StudentGradeService {
     private final V1StudentGradeMapperImpl v1StudentGradeMapperImpl;
     private final JwtDecoder jwtDecoder;
 
-    public List<StudentGradeSessionDTO> getStudentGradesSession(Integer semester) {
+    public List<StudentGradeSessionDTO> getStudentGradesSession() {
         Long studentId = Long.parseLong(this.jwtCustomTokenDecoder("id_from_source")); //ToDo: в будущем исправить на запрос авторизации
-        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudent(studentId).stream()
-                .filter(s -> semester == null || s.getStatement().calculateSemesterNumber() == semester).toList());
+        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudent(studentId));
     }
 
     public String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить
