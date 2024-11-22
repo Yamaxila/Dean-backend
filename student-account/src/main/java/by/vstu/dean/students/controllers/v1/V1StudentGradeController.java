@@ -50,6 +50,4 @@ public class V1StudentGradeController {
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
         return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, averageGrade, studentGradeSessionDTOS), HttpStatus.OK);
     }
-
-
 }
