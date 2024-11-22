@@ -3,7 +3,6 @@ package by.vstu.old.dean.services.migrate;
 import by.vstu.old.dean.services.update.MainUpdateService;
 import com.zaxxer.hikari.HikariDataSource;
 import com.zaxxer.hikari.HikariPoolMXBean;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,7 +71,7 @@ public class MainMigrateService {
         this.deanDataSource = deanDataSource;
     }
 
-    @PostConstruct
+    //    @PostConstruct
     public void migrate() {
         this.openDS();
 

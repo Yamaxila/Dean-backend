@@ -210,16 +210,21 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
                         }
 
                     LocalDate passDate = oldStatement.getPassDate() != null ? oldStatement.getPassDate().toLocalDate() : LocalDate.now();
-
-                    if (oldStatement.getRetakeDate1() != null)
+                    int attempt = 1;
+                    if (oldStatement.getRetakeDate1() != null && oldStatement.getRetakeDate1().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate1().toLocalDate();
+                        attempt = 2;
+                    }
 
-                    if (oldStatement.getRetakeDate2() != null)
+                    if (oldStatement.getRetakeDate2() != null && oldStatement.getRetakeDate2().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate2().toLocalDate();
+                        attempt = 3;
+                    }
 
-                    if (oldStatement.getRetakeDate3() != null)
+                    if (oldStatement.getRetakeDate3() != null && oldStatement.getRetakeDate3().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate3().toLocalDate();
-
+                        attempt = 4;
+                    }
 
                     Integer sheetNumber = oldStatement.getSemesterNumber();
 
@@ -245,7 +250,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
                         oTeacher4.ifPresent(teacherModels::add);
 
 
-                    out.add(this.createMergeModel(statementModel, teacherModels, oStudent.get(), grade, passDate, teacherModels.size(), oldStatement.getId(), sheetNumber));
+                    out.add(this.createMergeModel(statementModel, teacherModels, oStudent.get(), grade, passDate, attempt, oldStatement.getId(), sheetNumber));
 
                     if (oTeacher1.isEmpty() && oTeacher2.isEmpty() && oTeacher3.isEmpty() && oTeacher4.isEmpty()) {
                         log.warn("No one teacher is present in DStatementModel with id {}", oldStatement.getId());
