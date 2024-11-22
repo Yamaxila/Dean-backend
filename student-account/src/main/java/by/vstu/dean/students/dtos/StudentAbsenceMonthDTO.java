@@ -14,19 +14,22 @@ import java.util.List;
 @AllArgsConstructor
 @Schema(title = "DTO Список отработок по месяцам")
 public class StudentAbsenceMonthDTO {
+
     /**
      * Год.
      */
     @Schema(title = "Год")
     private Integer year;
+
     /**
      * Месяц.
      */
     @Schema(title = "Месяц")
     private Month month;
+
     /**
      * Список отработок.
      */
     @Schema(title = "Список отработок")
-    private List<StudentAbsenceDTO> absencesDTos;
+    private List<StudentAbsenceDTO> absencesDTOS;
 }
