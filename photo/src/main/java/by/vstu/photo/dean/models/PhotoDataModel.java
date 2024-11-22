@@ -21,8 +21,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PhotoDataModel extends OldDBBaseModel {
 
-    @Column(name = "card_number")
-    private Long cardNumber;
+    @Column(name = "card_num")
+    private String cardNumber;
 
     @Column(name = "foto")
     private byte[] photoBytes;
