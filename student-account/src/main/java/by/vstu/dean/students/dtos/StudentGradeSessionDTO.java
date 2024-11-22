@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(title = "DTO Оценки")
-public class StudentGradeDTO extends PublicDTO {
+public class StudentGradeSessionDTO extends PublicDTO {
 
     /**
      * Оценка.
@@ -41,7 +41,7 @@ public class StudentGradeDTO extends PublicDTO {
      */
     @Schema(title = "Дата занятия/экзамена")
     @ReflectionField(value = "passDate", clazz = StatementStudentMerge.class)
-    private LocalDate dateOfLesson;
+    private LocalDate dateOfExam;
 
     /**
      * ФИО Преподавателей.
