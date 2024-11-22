@@ -23,12 +23,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Контроллер для работы с общежитиями.
+ */
 @RestController
 @RequestMapping("/api/v1/hostels")
 @Tag(name = "HostelController", description = "Общежития и комнаты")
 @PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST') AND jwtTokenFilter.hasAnyResourceIds('dean')")
 public class V1ReadHostelController extends BaseReadController<V1HostelRoomDTO, HostelRoomModel, V1HostelRoomMapper, HostelRoomModelRepository, HostelRoomService> {
 
+    //Маппер студентов
     private final V1StudentMapper studentMapper;
 
     public V1ReadHostelController(HostelRoomService service, V1HostelRoomMapper mapper, V1StudentMapper studentMapper) {

@@ -18,9 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 /**
- * Контроллер для работы с аудиториями (classrooms).
+ * Контроллер для работы с аудиториями.
  *
- * @apiNote Этот контроллер обрабатывает запросы, связанные с аудиториями.
  */
 @RestController
 @RequestMapping("/api/v1/classes")

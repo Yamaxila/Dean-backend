@@ -31,4 +31,7 @@ public interface DStatementModelRepository extends OldDBBaseModelRepository<DSta
     @Query("select distinct s from DStatementModel s where s.studentId = :studentId and s.id not in :ids")
     List<DStatementModel> findAllByStudentIdAndIdNotIn(Long studentId, List<Long> ids);
 
+    @NotNull
+    @Query("select distinct s from DStatementModel s where s.id in :ids")
+    List<DStatementModel> findAllByIdIn(List<Long> ids);
 }

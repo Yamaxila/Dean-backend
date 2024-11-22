@@ -13,7 +13,6 @@ import by.vstu.migrate.v1.repo.V1DisciplineModelRepository;
 import by.vstu.migrate.v1.repo.V1GroupModelRepository;
 import by.vstu.migrate.v1.repo.V1TeacherModelRepository;
 import by.vstu.migrate.v1.service.migrate.BaseMigrateService;
-import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -87,7 +86,7 @@ public class TimetableMigrateService extends BaseMigrateService<LessonModel, V1L
     }
 
     @Override
-    @PostConstruct
+//    @PostConstruct
     public void migrate() {
         new Thread(() -> {
             System.err.println(this.getClass().getName());

@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * Контроллер для работы с отработками.
- *
- * @apiNote Этот контроллер обрабатывает запросы, связанные с отработками студентов.
  */
 @RestController
 @RequestMapping("/api/v1/absences")
@@ -25,6 +23,7 @@ public class V1ReadAbsenceController extends BaseReadController<V1AbsenceDTO, Ab
      * Конструктор контроллера отработок.
      *
      * @param service Сервис для работы с отработками.
+     * @param mapper Маппер отработок.
      */
     public V1ReadAbsenceController(AbsenceService service, V1AbsenceMapper mapper) {
         super(service, mapper);

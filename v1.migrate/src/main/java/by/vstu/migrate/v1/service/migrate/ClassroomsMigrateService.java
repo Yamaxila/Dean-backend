@@ -5,6 +5,7 @@ import by.vstu.dean.services.ClassroomService;
 import by.vstu.dean.services.DepartmentService;
 import by.vstu.migrate.v1.models.rooms.V1ClassroomModel;
 import by.vstu.migrate.v1.repo.V1ClassroomModelRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -57,6 +58,7 @@ public class ClassroomsMigrateService extends BaseMigrateService<ClassroomModel,
     }
 
     @Override
+    @PostConstruct
     public void migrate() {
         System.err.println(this.getClass().getName());
         this.insertAll(this.convertNotExistsFromDB());

@@ -11,6 +11,7 @@ import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.List;
 
 /**
  * DTO Оценки.
@@ -46,7 +47,7 @@ public class StudentGradeDTO extends PublicDTO {
      * ФИО Преподавателей.
      */
     @Schema(title = "ФИО Преподавателей")
-    private String teacherFIO;
+    private List<String> teachers;
 
     /**
      * Часы занятия.

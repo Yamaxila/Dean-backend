@@ -10,6 +10,8 @@ import java.util.List;
 @Repository
 public interface StatementModelRepository extends DBBaseModelRepository<StatementModel> {
 
-    @Query("select distinct s from StatementStudentMerge s where s.sourceId = :sourceId")
-    List<StatementModel> findDistinctByStatementStudents_Student_SourceId(Long sourceId);
+    @Query("select distinct s.sourceId from StatementStudentMerge s where s.student.sourceId = :sourceId")
+    List<Long> findDistinctSourceIdsByStudentSourceId(Long sourceId);
+
+    List<StatementModel> findFirstById(Long id);
 }

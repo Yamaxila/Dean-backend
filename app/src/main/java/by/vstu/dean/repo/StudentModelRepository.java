@@ -1,5 +1,6 @@
 package by.vstu.dean.repo;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.models.students.StudentModel;
 import org.springframework.data.jpa.repository.Query;
@@ -15,12 +16,20 @@ import java.util.Optional;
 public interface StudentModelRepository extends DBBaseModelRepository<StudentModel> {
 
     /**
-     * Найти id деканата всех пользователей.
+     * Найти id деканата всех студентов.
      *
      * @return Список идентификаторов источников.
      */
     @Query("select s.sourceId from StudentModel s")
     List<Long> findAllSourceIds();
+
+    /**
+     * Найти id деканата всех студентов по статусу.
+     *
+     * @return Список идентификаторов источников.
+     */
+    @Query("select s.sourceId from StudentModel s where s.status = :status")
+    List<Long> findAllSourceIdsByStatus(EStatus status);
 
     /**
      * Найти последнюю сущность по идентификатору группы с ненулевой специализацией.
