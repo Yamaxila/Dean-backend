@@ -1,7 +1,7 @@
 package by.vstu.dean.students.controllers.v1;
 
-import by.vstu.dean.students.dtos.StudentGradeAvgDTO;
-import by.vstu.dean.students.dtos.StudentGradeDTO;
+import by.vstu.dean.students.dtos.StudentGradeSessionAvgDTO;
+import by.vstu.dean.students.dtos.StudentGradeSessionDTO;
 import by.vstu.dean.students.services.StudentGradeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -35,12 +35,12 @@ public class V1StudentGradeController {
     @RequestMapping(value = "/session",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    public ResponseEntity<StudentGradeAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
-        List<Integer> semesters = this.studentGradeService.getStudentGradesSession(null).stream().map(StudentGradeDTO::getSemesterNumber).distinct().toList();
-        List<StudentGradeDTO> studentGradeDTOS = this.studentGradeService.getStudentGradesSession(semester);
-        Double averageGrade = studentGradeDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
+    public ResponseEntity<StudentGradeSessionAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
+        List<Integer> semesters = this.studentGradeService.getStudentGradesSession(null).stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().toList();
+        List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession(semester);
+        Double averageGrade = studentGradeSessionDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
-        return new ResponseEntity<>(new StudentGradeAvgDTO(semesters, averageGrade, studentGradeDTOS), HttpStatus.OK);
+        return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, averageGrade, studentGradeSessionDTOS), HttpStatus.OK);
     }
 
 

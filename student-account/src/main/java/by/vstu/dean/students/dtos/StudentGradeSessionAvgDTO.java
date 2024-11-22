@@ -12,7 +12,7 @@ import java.util.List;
 @Getter
 @AllArgsConstructor
 @Schema(title = "DTO Средней оценки")
-public class StudentGradeAvgDTO {
+public class StudentGradeSessionAvgDTO {
 
     /**
      * Список семестров.
@@ -30,5 +30,5 @@ public class StudentGradeAvgDTO {
      * Список оценок.
      */
     @Schema(title = "Список оценок")
-    private List<StudentGradeDTO> grades;
+    private List<StudentGradeSessionDTO> grades;
 }
