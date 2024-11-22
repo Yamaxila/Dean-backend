@@ -46,9 +46,9 @@ public class V1StudentGradeController {
                     return o2.getDateOfExam().compareTo(o1.getDateOfExam());
                 })
                 .toList();
-        Double averageGrade = studentGradeSessionDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
+        double averageGrade = studentGradeSessionDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
-        return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, averageGrade, studentGradeSessionDTOS), HttpStatus.OK);
+        return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, Math.scalb(averageGrade, 2), studentGradeSessionDTOS), HttpStatus.OK);
     }
 
 
