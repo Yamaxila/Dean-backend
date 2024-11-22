@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Objects;
 
 
 @RestController
@@ -36,8 +37,10 @@ public class V1StudentGradeController {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<StudentGradeSessionAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
-        List<Integer> semesters = this.studentGradeService.getStudentGradesSession(null).stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().toList();
-        List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession(semester);
+        List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession();
+        List<Integer> semesters = studentGradeSessionDTOS.stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().toList();
+
+        studentGradeSessionDTOS = studentGradeSessionDTOS.stream().filter(s -> semester == null || Objects.equals(s.getSemesterNumber(), semester)).toList();
         Double averageGrade = studentGradeSessionDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
         return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, averageGrade, studentGradeSessionDTOS), HttpStatus.OK);
