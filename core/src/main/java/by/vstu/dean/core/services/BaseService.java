@@ -4,6 +4,7 @@ import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.core.rsql.CustomRsqlVisitor;
+import by.vstu.dean.core.utils.ListUtils;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.core.websocket.WSListener;
 import cz.jirutka.rsql.parser.RSQLParser;
@@ -15,8 +16,11 @@ import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.*;
 
 /**
  * Базовый сервис с общими методами для работы с моделями базы данных.
@@ -43,7 +47,6 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Список объектов модели.
      */
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
-    @Transactional
     public List<O> getAll() {
         return this.repo.findAll();
     }
@@ -54,7 +57,6 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
      * @return Список объектов модели.
      */
     @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
-    @Transactional
     public List<O> rsql(String rsql) {
         Node rootNode = new RSQLParser().parse(rsql);
         Specification<O> spec = rootNode.accept(new CustomRsqlVisitor<>());
@@ -143,7 +145,7 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
         if (o.isEmpty())
             return o;
 
-        List<O> o2 = this.repo.saveAllAndFlush(o);
+        List<O> o2 = this.repo.saveAll(o);
         this.javers.commit("dean-" + this.getClass().getSimpleName(), o2);
 
         /*
@@ -162,6 +164,30 @@ public abstract class BaseService<O extends DBBaseModel, R extends DBBaseModelRe
 
         return o2;
     }
+
+    public List<O> parallelSaveAll(List<O> os) {
+        ExecutorService executor = Executors.newFixedThreadPool(10);
+
+        long count = os.size();
+        long pageSize = count / 10L;
+
+        List<List<O>> toSave = ListUtils.splitList(os, (int) pageSize);
+        List<Future<List<O>>> futures = new LinkedList<>();
+
+        for (List<O> l : toSave) {
+            Callable<List<O>> task = () -> this.saveAll(l);
+            futures.add(executor.submit(task));
+        }
+
+        return futures.parallelStream().map(m -> {
+            try {
+                return m.get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+        }).flatMap(Collection::stream).toList();
+    }
+
 
     /**
      * Удаляет объект модели.
