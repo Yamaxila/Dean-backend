@@ -20,6 +20,10 @@ public interface StatementStudentMergeRepository extends DBBaseModelRepository<S
     @Query("select s.sourceId from StatementStudentMerge s where s.student.sourceId = :studentSourceId")
     List<Long> findSourceIdsByStudentSourceId(Long studentSourceId);
 
+    @Query("select distinct s.sourceId from StatementStudentMerge s")
+    List<Long> findSourceIds();
+
+
     @Query("SELECT COUNT(t.id) FROM StatementStudentMerge t")
     Long countAll();
 

@@ -1,5 +1,6 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.lessons.StudyPlanModel;
@@ -25,5 +26,11 @@ public class StudyPlanService extends BaseService<StudyPlanModel, StudyPlanModel
         return this.repo.findAllDistinctByGroupId(groupId).stream().map(StudyPlanModel::getSourceId).toList();
     }
 
+    public List<Long> getAllSourceIdsByStatus(EStatus status) {
+        return this.repo.findAllSourceIdsByStatus(status);
+    }
 
+    public List<Long> getAllSourceIds() {
+        return this.repo.findAllSourceIds();
+    }
 }

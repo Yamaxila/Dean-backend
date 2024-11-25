@@ -17,7 +17,6 @@ import by.vstu.dean.services.TeacherService;
 import by.vstu.old.dean.models.DStatementModel;
 import by.vstu.old.dean.repo.DStatementModelRepository;
 import by.vstu.old.dean.services.migrate.StatementMigrateService;
-import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -258,20 +257,20 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
 
 
     @Override
-    @PostConstruct
+//    @PostConstruct
     public void onInit() {
         log.info("SSM update service started");
 
-        new Thread(() -> {
-            try {
-                List<StatementStudentMerge> statementStudentMerges = this.getUpdatesForSSM();
-                log.info("Saving SSM with size {}", statementStudentMerges.size());
-                this.saveParallelStudents(statementStudentMerges);
-                log.info("SSM done!");
-            } catch (ExecutionException | InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-        }).start();
+//        new Thread(() -> {
+//            try {
+//                List<StatementStudentMerge> statementStudentMerges = this.getUpdatesForSSM();
+//                log.info("Saving SSM with size {}", statementStudentMerges.size());
+//                this.saveParallelStudents(statementStudentMerges);
+//                log.info("SSM done!");
+//            } catch (ExecutionException | InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//        }).start();
 
 
     }
