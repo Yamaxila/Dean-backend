@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +34,7 @@ public class V1StudentAbsenceController {
     @RequestMapping(value = "",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    public ResponseEntity<List<StudentAbsenceMonthDTO>> getAbsences() {
-        return new ResponseEntity<>(this.studentAbsenceService.findAbsencesByStudent(), HttpStatus.OK);
+    public ResponseEntity<List<StudentAbsenceMonthDTO>> getAbsences(@AuthenticationPrincipal Jwt principal) {
+        return new ResponseEntity<>(this.studentAbsenceService.findAbsencesByStudent(principal.getClaim("id_from_source")), HttpStatus.OK);
     }
 }
