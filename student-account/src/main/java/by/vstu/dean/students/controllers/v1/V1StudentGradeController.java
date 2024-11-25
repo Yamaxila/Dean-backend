@@ -38,14 +38,9 @@ public class V1StudentGradeController {
             method = RequestMethod.GET)
     public ResponseEntity<StudentGradeSessionAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
         List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession();
-        List<Integer> semesters = studentGradeSessionDTOS.stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().sorted().toList();
+        List<Integer> semesters = studentGradeSessionDTOS.stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().toList();
 
-        studentGradeSessionDTOS = studentGradeSessionDTOS.stream().filter(s -> semester == null || Objects.equals(s.getSemesterNumber(), semester))
-                .sorted((o1, o2) -> {
-                    if (o1.getDateOfExam() == null || o2.getDateOfExam() == null) return 0;
-                    return o2.getDateOfExam().compareTo(o1.getDateOfExam());
-                })
-                .toList();
+        studentGradeSessionDTOS = studentGradeSessionDTOS.stream().filter(s -> semester == null || Objects.equals(s.getSemesterNumber(), semester)).toList();
         double averageGrade = studentGradeSessionDTOS.stream().filter(s -> s.getGrade().matches("\\d"))
                 .mapToInt(s -> Integer.parseInt(s.getGrade())).average().orElse(0.0);
         return new ResponseEntity<>(new StudentGradeSessionAvgDTO(semesters, averageGrade, studentGradeSessionDTOS), HttpStatus.OK);

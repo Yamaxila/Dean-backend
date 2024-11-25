@@ -1,5 +1,6 @@
 package by.vstu.dean.students.services;
 
+import by.vstu.dean.models.merge.StatementStudentMerge;
 import by.vstu.dean.services.StatementService;
 import by.vstu.dean.students.dtos.StudentGradeSessionDTO;
 import by.vstu.dean.students.mappers.impl.V1StudentGradeMapperImpl;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -22,7 +24,7 @@ public class StudentGradeService {
 
     public List<StudentGradeSessionDTO> getStudentGradesSession() {
         Long studentId = Long.parseLong(this.jwtCustomTokenDecoder("id_from_source")); //ToDo: в будущем исправить на запрос авторизации
-        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudentByCaseNo(studentId));
+        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudentByCaseNo(studentId).stream().sorted(Comparator.comparing(StatementStudentMerge::getPassDate).reversed().thenComparing(StatementStudentMerge::getGrade)).toList());
     }
 
     public String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить

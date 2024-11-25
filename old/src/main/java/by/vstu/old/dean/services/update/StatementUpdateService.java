@@ -17,6 +17,7 @@ import by.vstu.dean.services.TeacherService;
 import by.vstu.old.dean.models.DStatementModel;
 import by.vstu.old.dean.repo.DStatementModelRepository;
 import by.vstu.old.dean.services.migrate.StatementMigrateService;
+import jakarta.annotation.PostConstruct;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -140,6 +141,10 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
                     attempt = 4;
                 }
 
+                if (oldStatement.getStatementDate() != null && passDate.equals(LocalDate.now())) {
+                    passDate = oldStatement.getStatementDate().toLocalDate();
+                }
+
                 Integer sheetNumber = oldStatement.getSemesterNumber();
 
                 if (oldStatement.getRetakeExamSheetNumber1() != null)
@@ -171,7 +176,7 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
                     oTeacher4.ifPresent(t -> teacherModels.add(this.createTeacher(t, statement)));
 
                 if (!teacherModels.isEmpty()) {
-                    outTeachers.addAll(teacherModels.stream().filter(p -> outTeachersTemp.stream().noneMatch(e -> p.getTeacher().getSourceId().equals(e.getTeacher().getSourceId()))).toList());
+//                    outTeachers.addAll(teacherModels.stream().filter(p -> outTeachersTemp.stream().noneMatch(e -> p.getTeacher().getSourceId().equals(e.getTeacher().getSourceId()))).toList());
                     statement.setStatus(EStatus.ACTIVE);
                 }
                 statement.setGrade(grade);
@@ -205,7 +210,7 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
 
     private List<StatementTeacherMerge> saveParallelTeachers(List<StatementTeacherMerge> list) {
         long totalUsers = list.size(); // Общее количество пользователей
-        int pageSize = 40000; // Количество пользователей на страницу
+        int pageSize = 25000; // Количество пользователей на страницу
         long totalPages = (long) Math.ceil((double) totalUsers / pageSize);
 
         ExecutorService executor = Executors.newFixedThreadPool(10);
@@ -253,7 +258,7 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
 
 
     @Override
-//    @PostConstruct
+    @PostConstruct
     public void onInit() {
         log.info("SSM update service started");
 
@@ -262,6 +267,7 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
                 List<StatementStudentMerge> statementStudentMerges = this.getUpdatesForSSM();
                 log.info("Saving SSM with size {}", statementStudentMerges.size());
                 this.saveParallelStudents(statementStudentMerges);
+                log.info("SSM done!");
             } catch (ExecutionException | InterruptedException e) {
                 throw new RuntimeException(e);
             }
