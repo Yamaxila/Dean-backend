@@ -22,7 +22,7 @@ public class StudentGradeService {
 
     public List<StudentGradeSessionDTO> getStudentGradesSession() {
         Long studentId = Long.parseLong(this.jwtCustomTokenDecoder("id_from_source")); //ToDo: в будущем исправить на запрос авторизации
-        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudent(studentId));
+        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudentByCaseNo(studentId));
     }
 
     public String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить
