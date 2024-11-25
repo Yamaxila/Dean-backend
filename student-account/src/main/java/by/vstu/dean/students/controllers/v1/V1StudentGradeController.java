@@ -9,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -36,8 +38,8 @@ public class V1StudentGradeController {
     @RequestMapping(value = "/session",
             produces = {"application/json"},
             method = RequestMethod.GET)
-    public ResponseEntity<StudentGradeSessionAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester) {
-        List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession();
+    public ResponseEntity<StudentGradeSessionAvgDTO> getGradesSession(@RequestParam(required = false) Integer semester, @AuthenticationPrincipal Jwt principal) {
+        List<StudentGradeSessionDTO> studentGradeSessionDTOS = this.studentGradeService.getStudentGradesSession(principal.getClaim("id_from_source"));
         List<Integer> semesters = studentGradeSessionDTOS.stream().map(StudentGradeSessionDTO::getSemesterNumber).distinct().toList();
 
         studentGradeSessionDTOS = studentGradeSessionDTOS.stream().filter(s -> semester == null || Objects.equals(s.getSemesterNumber(), semester)).toList();
