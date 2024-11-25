@@ -19,11 +19,10 @@ public class StudentAbsenceService {
 
     private final AbsenceService absenceService;
 
-    private final StudentGradeService studentGradeService;
 
-    public List<StudentAbsenceMonthDTO> findAbsencesByStudent() {
+    public List<StudentAbsenceMonthDTO> findAbsencesByStudent(Long caseNo) {
         Map<LocalDate, List<StudentAbsenceDTO>> map = this.v1StudentAbsenceMapperImpl
-                .toDto(this.absenceService.getAbsenceByStudentCaseNo(Long.parseLong(studentGradeService.jwtCustomTokenDecoder("id_from_source"))))
+                .toDto(this.absenceService.getAbsenceByStudentCaseNo(caseNo))
                 .stream().sorted(Comparator.comparing(StudentAbsenceDTO::getDate).reversed())
                 .collect(Collectors.groupingBy(s -> s.getDate().withDayOfMonth(1), TreeMap::new, Collectors.toList()));
 

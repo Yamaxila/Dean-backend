@@ -4,13 +4,8 @@ import by.vstu.dean.models.merge.StatementStudentMerge;
 import by.vstu.dean.services.StatementService;
 import by.vstu.dean.students.dtos.StudentGradeSessionDTO;
 import by.vstu.dean.students.mappers.impl.V1StudentGradeMapperImpl;
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.jwt.Jwt;
-import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Comparator;
 import java.util.List;
@@ -20,32 +15,8 @@ import java.util.List;
 public class StudentGradeService {
     private final StatementService statementService;
     private final V1StudentGradeMapperImpl v1StudentGradeMapperImpl;
-    private final JwtDecoder jwtDecoder;
 
-    public List<StudentGradeSessionDTO> getStudentGradesSession() {
-        Long studentId = Long.parseLong(this.jwtCustomTokenDecoder("id_from_source")); //ToDo: в будущем исправить на запрос авторизации
-        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudentByCaseNo(studentId).stream().sorted(Comparator.comparing(StatementStudentMerge::getPassDate).reversed().thenComparing(StatementStudentMerge::getGrade)).toList());
-    }
-
-    public String jwtCustomTokenDecoder(String field) { //ToDo: это тоже было бы хорошо удалить
-        ServletRequestAttributes requestAttributes = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes());
-
-        if (requestAttributes == null)
-            throw new RuntimeException("RequestAttributes cannot be null");
-
-        HttpServletRequest request = requestAttributes.getRequest();
-
-        String authHeader = request.getHeader("Authorization");
-
-        if (authHeader == null)
-            throw new RuntimeException("Authorization header cannot be null");
-
-        if (authHeader.startsWith("Bearer ")) {
-            authHeader = authHeader.substring(7);
-        }
-
-        Jwt jwt = this.jwtDecoder.decode(authHeader);
-
-        return jwt.getClaimAsString(field);
+    public List<StudentGradeSessionDTO> getStudentGradesSession(Long caseNo) {
+        return this.v1StudentGradeMapperImpl.toDto(this.statementService.getAllStudentMergeForStudentByCaseNo(caseNo).stream().sorted(Comparator.comparing(StatementStudentMerge::getPassDate).reversed().thenComparing(StatementStudentMerge::getGrade)).toList());
     }
 }
