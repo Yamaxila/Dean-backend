@@ -31,7 +31,7 @@ public class V1StudentAbsenceController {
      * @return Отработки
      */
     @Operation(description = "Получение отработок студента по месяцам")
-    @RequestMapping(value = "",
+    @RequestMapping(value = "/",
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<List<StudentAbsenceMonthDTO>> getAbsences(@AuthenticationPrincipal Jwt principal) {
