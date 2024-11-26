@@ -6,12 +6,12 @@
     <parent>
         <groupId>by.vstu</groupId>
         <artifactId>Dean-backend</artifactId>
-        <version>2.0.0</version>
+        <version>2.0.1</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>by.vstu.dean</groupId>
     <artifactId>app</artifactId>
-    <version>2.0.0</version>
+    <version>2.0.1</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -22,13 +22,13 @@
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>models</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>by.vstu.dean</groupId>
             <artifactId>core</artifactId>
-            <version>2.0.0</version>
+            <version>2.0.1</version>
             <scope>compile</scope>
         </dependency>
 
