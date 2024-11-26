@@ -20,7 +20,7 @@ public class StudentAbsenceService {
     private final AbsenceService absenceService;
 
 
-    public List<StudentAbsenceMonthDTO> findAbsencesByStudent(Long caseNo) {
+    public List<StudentAbsenceMonthDTO> findAbsencesMonthByStudent(Long caseNo) {
         Map<LocalDate, List<StudentAbsenceDTO>> map = this.v1StudentAbsenceMapperImpl
                 .toDto(this.absenceService.getAbsenceByStudentCaseNo(caseNo))
                 .stream().sorted(Comparator.comparing(StudentAbsenceDTO::getDate).reversed())
@@ -32,5 +32,10 @@ public class StudentAbsenceService {
             studentAbsenceMonthDTOS.add(new StudentAbsenceMonthDTO(entry.getKey().getYear(), entry.getKey().getMonth(), entry.getValue()));
         }
         return studentAbsenceMonthDTOS;
+    }
+
+    public List<StudentAbsenceDTO> findAbsencesByStudentCaseNo(Long caseNo) {
+        return this.v1StudentAbsenceMapperImpl.toDto(this.absenceService.getAbsenceByStudentCaseNo(caseNo))
+                .stream().sorted(Comparator.comparing(StudentAbsenceDTO::getDate).reversed()).toList();
     }
 }

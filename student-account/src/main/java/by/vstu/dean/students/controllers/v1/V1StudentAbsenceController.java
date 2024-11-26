@@ -35,6 +35,6 @@ public class V1StudentAbsenceController {
             produces = {"application/json"},
             method = RequestMethod.GET)
     public ResponseEntity<List<StudentAbsenceMonthDTO>> getAbsences(@AuthenticationPrincipal Jwt principal) {
-        return new ResponseEntity<>(this.studentAbsenceService.findAbsencesByStudent(principal.getClaim("id_from_source")), HttpStatus.OK);
+        return new ResponseEntity<>(this.studentAbsenceService.findAbsencesMonthByStudent(principal.getClaim("id_from_source")), HttpStatus.OK);
     }
 }
