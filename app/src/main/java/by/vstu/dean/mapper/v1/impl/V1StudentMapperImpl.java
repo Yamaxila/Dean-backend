@@ -43,6 +43,8 @@ public class V1StudentMapperImpl implements V1StudentMapper {
         studentModel.setGroup(this.groupMapper.toEntity(dto.getGroup()));
         studentModel.setHostelRoom(this.hostelRoomMapper.toEntity(dto.getHostelRoom()));
 
+        studentModel.setSex(dto.getSex() != null ? dto.getSex().equals("м") ? 1 : 0 : -1);
+
         return studentModel;
     }
 
@@ -58,6 +60,8 @@ public class V1StudentMapperImpl implements V1StudentMapper {
         studentDTO.setGroup(this.groupMapper.toDto(entity.getGroup()));
         studentDTO.setHostelRoom(this.hostelRoomMapper.toDto(entity.getHostelRoom()));
         studentDTO.setApproved(entity.isApproved());
+
+        studentDTO.setSex(entity.getSex() == 0 ? "ж" : "м");
 
         return studentDTO;
     }

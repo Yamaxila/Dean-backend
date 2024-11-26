@@ -48,8 +48,7 @@ public final class V1StudentDTO extends BaseDTO {
      * Пол студента.
      */
     @Schema(title = "Пол")
-    @ReflectionField(value = "sex", clazz = StudentModel.class)
-    private Integer sex;
+    private String sex;
 
     /**
      * Номер зачетки студента.
