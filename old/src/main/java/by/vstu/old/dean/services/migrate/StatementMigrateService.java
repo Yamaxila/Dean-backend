@@ -315,9 +315,11 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     public void migrate() {
         //оно очееееень медленное, но работает
         this.insertAll(this.convertNotExistsFromDB());
-        log.info("Saving students for statements");
+        log.info("Analysing students for statements");
         List<StatementStudentMerge> ssm = this.analyseAndCreateMerges();
+        log.info("Saving teachers for statements");
         this.statementTeacherMergeRepository.saveAllAndFlush(ssm.stream().flatMap(m -> m.getTeachers().stream()).toList());
-        this.statementStudentMergeRepository.saveAll(ssm);
+        log.info("Saving students for statements");
+        //this.statementStudentMergeRepository.saveAll(ssm);
     }
 }

@@ -11,19 +11,22 @@ import java.util.List;
 @Getter
 public enum ESemester implements BaseEnum<ESemester> {
 
-    UNKNOWN(0),
+    UNKNOWN(0, ""),
 
-    SPRING(1),
-    AUTUMN(2);
+    SPRING(1, "Весенний"),
+    AUTUMN(2, "Осенний");
 
     final int id;
+    final String name;
 
-    ESemester(int id) {
+    ESemester(int id, String name) {
         this.id = id;
+        this.name = name;
     }
 
     @Override
     public List<ESemester> getValues() {
         return Arrays.stream(ESemester.values()).toList();
     }
+
 }
