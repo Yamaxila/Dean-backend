@@ -43,7 +43,7 @@ public interface LessonModelRepository extends DBBaseModelRepository<LessonModel
     List<LessonModel> findByStatusAndDate(EStatus status, LocalDate dateFrom, LocalDate dateTo);
 
     @Query("""
-            select l from LessonModel l where l.status = :status and l.group in (:groupsIds) and l.status = :status and\s
+            select l from LessonModel l where l.status = :status and l.group.id in (:groupsIds) and l.status = :status and\s
             ((l.startDate between :dateFrom and :dateTo) or (l.endDate between :dateFrom and :dateTo))""")
     List<LessonModel> findByGroupIdInAndStatusAndBetweenDates(long[] groupsIds, EStatus status, LocalDate dateFrom, LocalDate dateTo);
 
