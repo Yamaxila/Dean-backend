@@ -14,4 +14,11 @@ public interface StatementModelRepository extends DBBaseModelRepository<Statemen
     List<Long> findDistinctSourceIdsByStudentSourceId(Long sourceId);
 
     List<StatementModel> findFirstById(Long id);
+
+    @Query("select (count(*) > 0) from StatementModel s where s.studyPlan.sourceId = :studyPlanSourceId AND s.groupStatementNumber = :globalStatementNumber ")
+    Boolean exists(Long globalStatementNumber, Long studyPlanSourceId);
+
+    @Query("select (count(*) > 0) from StatementModel s where s.studyPlan.sourceId = :studyPlanSourceId")
+    Boolean exists(Long studyPlanSourceId);
+
 }

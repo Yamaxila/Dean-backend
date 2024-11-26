@@ -2,6 +2,7 @@ package by.vstu.photo.dean.services;
 
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.services.students.StudentService;
+import by.vstu.photo.dean.models.PhotoDataModel;
 import by.vstu.photo.dean.repo.PhotoDataModelRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
@@ -13,7 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Optional;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -29,27 +30,35 @@ public class PhotoMigrateService {
 
     @PostConstruct
     public void init() {
-        this.photoDataModelRepo.findAll().forEach(photoDataModel -> {
-            if (photoDataModel.getCardNumber() == null)
-                throw new NullPointerException("Card number is null for id " + photoDataModel.getId());
+        log.info("Photo migration started!");
+        this.studentService.getAll().stream().filter(p -> p.getPhotoUrl() == null || p.getPhotoUrl().contains("none.jpg")).forEach(student -> {
+            log.info("{} {}", student.getId(), student.getCaseNo());
 
-            Optional<StudentModel> oStudent = this.studentService.findByCaseNo(photoDataModel.getCardNumber());
+            List<PhotoDataModel> photoDataModels = this.photoDataModelRepo.findByCardNumber(String.valueOf(student.getCaseNo()));
 
-            if (oStudent.isEmpty())
-                throw new NullPointerException("Student not found for id " + photoDataModel.getId());
+            photoDataModels.forEach(photoDataModel -> {
+                if (photoDataModel != null && photoDataModel.getPhotoBytes() != null) {
+                    try {
+                        String filename = this.generateFilename(student);
 
-            StudentModel studentModel = oStudent.get();
+                        Path wPath = Files.write(Paths.get(this.studentPhotoUploadDir + "/" + filename), photoDataModel.getPhotoBytes());
+                        log.info("Wrote image for {} on {}", student.getId(), wPath);
 
-            try {
-                String filename = this.generateFilename(studentModel);
-                Path wPath = Files.write(Paths.get(this.studentPhotoUploadDir + "/" + filename), photoDataModel.getPhotoBytes());
-                log.debug("Wrote image for {} on {}", studentModel.getId(), wPath);
-                studentModel.setPhotoUrl("/api/v1/files/students/download?filename=" + filename);
-                this.studentService.save(studentModel);
-            } catch (IOException e) {
-                throw new RuntimeException("Cannot write photo to file for id = " + photoDataModel.getId(), e);
-            }
+                        student.setPhotoUrl("/api/v1/files/students/download?filename=" + filename);
+
+                        studentService.save(student);
+
+                    } catch (IOException e) {
+                        throw new RuntimeException("Cannot write photo to file for id = " + photoDataModel.getId(), e);
+                    }
+                } else {
+                    student.setPhotoUrl("/api/v1/files/students/download?filename=none.jpg");
+                    studentService.save(student);
+                }
+
+            });
         });
+        log.info("Photo migration done!");
     }
 
     private String generateFilename(StudentModel student) {

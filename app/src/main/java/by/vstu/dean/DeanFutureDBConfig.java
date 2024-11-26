@@ -1,5 +1,6 @@
 package by.vstu.dean;
 
+import by.vstu.dean.core.repo.NotSimpleJPARepository;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
@@ -17,6 +18,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -30,6 +32,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
+        repositoryBaseClass = NotSimpleJPARepository.class,
         entityManagerFactoryRef = "futureEntityManagerFactory",
         transactionManagerRef = "futureTransactionManager",
         basePackages = {
@@ -45,6 +48,7 @@ import java.util.Map;
 @AutoConfigurationPackage(basePackages = {
         "by.vstu.dean"
 })
+@EnableAsync
 public class DeanFutureDBConfig {
 
     /**

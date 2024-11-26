@@ -1,5 +1,6 @@
 package by.vstu.dean.services;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.services.BaseService;
 import by.vstu.dean.core.websocket.WSControllerManager;
 import by.vstu.dean.models.students.GroupModel;
@@ -7,6 +8,8 @@ import by.vstu.dean.repo.GroupModelRepository;
 import org.javers.core.Javers;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * Сервис для работы с объектами модели группы.
@@ -29,4 +32,9 @@ public class GroupService extends BaseService<GroupModel, GroupModelRepository> 
     public GroupModel findByName(String name) {
         return this.repo.findByName(name);
     }
+
+    public List<Long> getAllSourceIdsByStatus(EStatus status) {
+        return this.repo.findAllSourceIdsByStatus(status);
+    }
+
 }

@@ -1,5 +1,6 @@
 package by.vstu.dean;
 
+import by.vstu.dean.core.repo.NotSimpleJPARepository;
 import com.zaxxer.hikari.HikariDataSource;
 import jakarta.persistence.EntityManagerFactory;
 import org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl;
@@ -29,6 +30,7 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
+        repositoryBaseClass = NotSimpleJPARepository.class,
         entityManagerFactoryRef = "deanEntityManagerFactory",
         transactionManagerRef = "deanTransactionManager",
         basePackages = {"by.vstu.old.dean"}

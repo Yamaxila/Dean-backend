@@ -1,5 +1,6 @@
 package by.vstu.dean.repo;
 
+import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
 import by.vstu.dean.models.lessons.StudyPlanModel;
 import by.vstu.dean.models.lessons.TeacherModel;
@@ -25,4 +26,19 @@ public interface StudyPlanModelRepository extends DBBaseModelRepository<StudyPla
     @Query("select s.teacher from StudyPlanModel s where s.id = :id")
     Optional<TeacherModel> findTeacherByStudyPlanId(Long id);
 
+    /**
+     * Найти id деканата всех учебных планов по статусу.
+     *
+     * @return Список идентификаторов источников.
+     */
+    @Query("select s.sourceId from StudyPlanModel s where s.status = :status")
+    List<Long> findAllSourceIdsByStatus(EStatus status);
+
+    /**
+     * Найти id деканата всех учебных планов.
+     *
+     * @return Список идентификаторов источников.
+     */
+    @Query("select s.sourceId from StudyPlanModel s")
+    List<Long> findAllSourceIds();
 }

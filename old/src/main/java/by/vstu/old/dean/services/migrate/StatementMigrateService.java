@@ -13,6 +13,7 @@ import by.vstu.dean.models.merge.StatementTeacherMerge;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.repo.StatementStudentMergeRepository;
 import by.vstu.dean.repo.StatementTeacherMergeRepository;
+import by.vstu.dean.services.GroupService;
 import by.vstu.dean.services.StatementService;
 import by.vstu.dean.services.StudyPlanService;
 import by.vstu.dean.services.TeacherService;
@@ -25,10 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -38,11 +36,38 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     private final DStatementModelRepository dStatementModelRepository;
     private final StatementService statementService;
     private final StudentService studentService;
+    private final GroupService groupService;
     private final StudyPlanService studyPlanService;
     private final TeacherService teacherService;
     private final StatementStudentMergeRepository statementStudentMergeRepository;
     private final StatementTeacherMergeRepository statementTeacherMergeRepository;
 
+    private List<TeacherModel> teacherModels;
+    private List<StudyPlanModel> studyPlanModels;
+
+    @Override
+    public void init() {
+        teacherModels = this.teacherService.getAll();
+        studyPlanModels = this.studyPlanService.getAll();
+    }
+
+    public Optional<TeacherModel> findTeacherByStudyPlanSourceId(Long id) {
+        if (id == null)
+            return Optional.empty();
+        return this.studyPlanModels.stream().filter(p -> p.getTeacher() != null && p.getSourceId().equals(id)).map(StudyPlanModel::getTeacher).findFirst();
+    }
+
+    public Optional<TeacherModel> findTeacherBySourceId(Long id) {
+        if (id == null)
+            return Optional.empty();
+        return this.teacherModels.stream().filter(p -> p.getSourceId().equals(id)).findFirst();
+    }
+
+    public Optional<StudyPlanModel> findStudyPlanBySourceId(Long id) {
+        if (id == null)
+            return Optional.empty();
+        return this.studyPlanModels.stream().filter(p -> p.getSourceId().equals(id)).findFirst();
+    }
 
     @Override
     public Long getLastDBId() {
@@ -52,51 +77,24 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     @Override
     public List<StatementModel> convertNotExistsFromDB() {
 
-        List<StatementModel> converted = this.statementService.getAll();
-        List<StatementModel> out = new ArrayList<>();
+//        List<StatementModel> converted = this.statementService.getAll();
+        List<StatementModel> out = Collections.synchronizedList(new ArrayList<>());
 
         //У студента овердохера данных, а нам нужен только sourceId
-        this.studentService.getAllSourceIdsByStatus(EStatus.ACTIVE).forEach((studentSourceId) -> {
+        this.studyPlanService.getAllSourceIds().parallelStream().filter(p -> !this.statementService.hasStatement(p)).forEach((studyPlanSourceId) -> {
             /*
              * Пробуем хитрый метод.
              * Мы делаем выборку всех id ведомостей студентов и выбираем все записи, что у нас не существуют для этого студента.
              * Теоретически, это должно очень сильно увеличить производительность при последующих миграциях и обновлениях (если это сработает).
              */
-            List<DStatementModel> studentStatements = this.dStatementModelRepository.findAllByStudentIdAndIdNotIn(studentSourceId, this.statementService.getAllDistinctSourceIdForStudent(studentSourceId));
+            List<DStatementModel> studyPlanStatements = this.dStatementModelRepository.findByStudyPlanId(studyPlanSourceId);
             //нам нужно создать копию для работы
-            List<StatementModel> tempList = new ArrayList<>(out);
-            studentStatements.stream()
-                    .filter(Objects::nonNull)
-                    // p - старый объект
-                    // e - сконвертированный объект
-                    // тут удаляем все дубликаты
-//                    .filter(p -> converted.stream().filter(Objects::nonNull).noneMatch(e -> e.getSourceId().equals(p.getId()) //если id совпадает
-//                                            // ИЛИ
-//                                            //Сверяем номер ведомости + группу вместе
-//                                            || (
-//                                            Objects.equals(e.getGroupStatementNumber(), p.getGlobalStatementNumber()) //Сверяем номера ведомостей
-//                                                    && (
-//                                                    e.getStudyPlan() != null
-//                                                            && e.getStudyPlan().getGroup().getSourceId().equals(p.getGroupId())
-//                                            ) //Так же группа должна совпасть
-//                                    )
-//                            )
-//                    ) //Это выглядит очень страшно, но я не хочу считать скобочки)
-                    .filter(p -> tempList.stream().filter(Objects::nonNull).noneMatch(e -> e.getSourceId().equals(p.getId()) //если id совпадает
-                                            // ИЛИ
-                                            //Сверяем номер ведомости + группу вместе
-                                            || (
-                                            Objects.equals(e.getGroupStatementNumber(), p.getGlobalStatementNumber()) //Сверяем номера ведомостей
-                                                    && (
-                                                    e.getStudyPlan() != null
-                                                            && e.getStudyPlan().getGroup().getSourceId().equals(p.getGroupId())
-                                            ) //Так же группа должна совпасть
-                                    )
-                            )
-                    ) //Это выглядит очень страшно, но я не хочу считать скобочки)
-                    .forEach((studentStatement) -> {
-                        out.add(this.convertSingle(studentStatement, false));
-                    });
+            log.info("Processing studyPlan with sourceId {}", studyPlanSourceId);
+            Optional<DStatementModel> oStudyPlanStatement = studyPlanStatements.stream().findFirst();
+            oStudyPlanStatement.ifPresent(dStatementModel -> out.add(this.convertSingle(dStatementModel, false)));
+
+            if (oStudyPlanStatement.isEmpty())
+                log.warn("DStatementModel not found for studyPlan with sourceId {}", studyPlanSourceId);
 
         });
 
@@ -126,7 +124,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
         if (oStudyPlan.isEmpty()) {
             //есть "крутые студенты", что отчислялись и восстанавливались с 2008 года. кайф
             //просто забиваем на эту ведомость, т.к. учебный план 400% битый для привязанной группы
-            log.info("Can't find study plan for id {}", dStatementModel.getId());
+            log.warn("Can't find study plan for id {}", dStatementModel.getId());
             return null;
         }
 
@@ -167,19 +165,18 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     public List<StatementStudentMerge> analyseAndCreateMerges() {
 
         List<StatementStudentMerge> out = new ArrayList<>();
+        List<Long> temp = this.statementStudentMergeRepository.findSourceIds();
 
         this.statementService.getRepo().findAll().forEach((statementModel) -> {
             //Это очень страшно)
-            List<DStatementModel> oldStatements = this.dStatementModelRepository.findAllByMagic(
-                    statementModel.getCourse(), this.studyPlanService.getRepo().findSourceId(statementModel.getStudyPlan().getId()),
-                    this.studyPlanService.getRepo().findFacultySourceId(statementModel.getStudyPlan().getId()), statementModel.getGroupStatementNumber());
+            List<DStatementModel> oldStatements = this.dStatementModelRepository.findAllByStudyPlanId(statementModel.getStudyPlan().getSourceId());
 
-            oldStatements.forEach((oldStatement) -> {
+            oldStatements.parallelStream().filter(p -> !temp.contains(p.getId())).forEach((oldStatement) -> {
 
-                Optional<TeacherModel> oTeacher1 = Optional.ofNullable(this.teacherService.getBySourceId(oldStatement.getRetakeTeacherId1() != null ? oldStatement.getRetakeTeacherId1() : 0L));
-                Optional<TeacherModel> oTeacher2 = Optional.ofNullable(this.teacherService.getBySourceId(oldStatement.getRetakeTeacherId2() != null ? oldStatement.getRetakeTeacherId2() : 0L));
-                Optional<TeacherModel> oTeacher3 = Optional.ofNullable(this.teacherService.getBySourceId(oldStatement.getRetakeTeacherId3() != null ? oldStatement.getRetakeTeacherId3() : 0L));
-                Optional<TeacherModel> oTeacher4 = this.studyPlanService.getRepo().findTeacherByStudyPlanId(statementModel.getStudyPlan().getId());
+                Optional<TeacherModel> oTeacher1 = this.findTeacherBySourceId(oldStatement.getRetakeTeacherId1());
+                Optional<TeacherModel> oTeacher2 = this.findTeacherBySourceId(oldStatement.getRetakeTeacherId2());
+                Optional<TeacherModel> oTeacher3 = this.findTeacherBySourceId(oldStatement.getRetakeTeacherId3());
+                Optional<TeacherModel> oTeacher4 = this.findTeacherByStudyPlanSourceId(statementModel.getStudyPlan().getSourceId());
 
 
                 Optional<StudentModel> oStudent = Optional.ofNullable(this.studentService.getBySourceId(oldStatement.getStudentId() != null ? oldStatement.getStudentId() : 0L));
@@ -209,17 +206,22 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
                             grade = EGrade.findBy(oldStatement.getGrade().getRange(), oldStatement.getGrade().getExamType().equalsIgnoreCase("экзамен") ? ExamType.EXAM : ExamType.TEST, gradeInt);
                         }
 
-                    LocalDate passDate = oldStatement.getPassDate() != null ? oldStatement.getPassDate().toLocalDate() : LocalDate.now();
-
-                    if (oldStatement.getRetakeDate1() != null)
+                    LocalDate passDate = oldStatement.getPassDate() != null ? oldStatement.getPassDate().toLocalDate() : LocalDate.parse("2001-09-11");
+                    int attempt = 1;
+                    if (oldStatement.getRetakeDate1() != null && oldStatement.getRetakeDate1().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate1().toLocalDate();
+                        attempt = 2;
+                    }
 
-                    if (oldStatement.getRetakeDate2() != null)
+                    if (oldStatement.getRetakeDate2() != null && oldStatement.getRetakeDate2().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate2().toLocalDate();
+                        attempt = 3;
+                    }
 
-                    if (oldStatement.getRetakeDate3() != null)
+                    if (oldStatement.getRetakeDate3() != null && oldStatement.getRetakeDate3().toLocalDate().isAfter(passDate)) {
                         passDate = oldStatement.getRetakeDate3().toLocalDate();
-
+                        attempt = 4;
+                    }
 
                     Integer sheetNumber = oldStatement.getSemesterNumber();
 
@@ -245,7 +247,7 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
                         oTeacher4.ifPresent(teacherModels::add);
 
 
-                    out.add(this.createMergeModel(statementModel, teacherModels, oStudent.get(), grade, passDate, teacherModels.size(), oldStatement.getId(), sheetNumber));
+                    out.add(this.createMergeModel(statementModel, teacherModels, oStudent.get(), grade, passDate, attempt, oldStatement.getId(), sheetNumber));
 
                     if (oTeacher1.isEmpty() && oTeacher2.isEmpty() && oTeacher3.isEmpty() && oTeacher4.isEmpty()) {
                         log.warn("No one teacher is present in DStatementModel with id {}", oldStatement.getId());
@@ -312,9 +314,10 @@ public class StatementMigrateService extends BaseMigrateService<StatementModel, 
     @Override
     public void migrate() {
         //оно очееееень медленное, но работает
-//        this.insertAll(this.convertNotExistsFromDB());
+        this.insertAll(this.convertNotExistsFromDB());
         log.info("Saving students for statements");
         List<StatementStudentMerge> ssm = this.analyseAndCreateMerges();
         this.statementTeacherMergeRepository.saveAllAndFlush(ssm.stream().flatMap(m -> m.getTeachers().stream()).toList());
+        this.statementStudentMergeRepository.saveAll(ssm);
     }
 }

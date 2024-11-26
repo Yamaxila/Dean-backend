@@ -37,4 +37,12 @@ public class StatementService extends BaseService<StatementModel, StatementModel
         return studentMergeRepository.findByStatementId(statementId);
     }
 
+    public boolean hasStatement(Long globalStatementNumber, Long studyPlanSourceId) {
+        return this.repo.exists(globalStatementNumber, studyPlanSourceId);
+    }
+
+    public boolean hasStatement(Long studyPlanSourceId) {
+        return this.repo.exists(studyPlanSourceId);
+    }
+
 }

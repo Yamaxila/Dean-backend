@@ -154,7 +154,7 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
             this.sendException(Thread.currentThread(), ex, args);
 
         return ResponseEntity
-                .status(responseStatus == null ? HttpStatus.INTERNAL_SERVER_ERROR : responseStatus.value())
+                .status(responseStatus == null ? HttpStatus.BAD_REQUEST : responseStatus.value())
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(String.format(
                         """
@@ -166,7 +166,7 @@ public class TelegramService implements LongPollingSingleThreadUpdateConsumer {
                         }
                         """
                         , responseStatus == null ? ex.getMessage() : responseStatus.reason()
-                        , responseStatus == null ? 500 : responseStatus.value().value()
+                        , responseStatus == null ? 400 : responseStatus.value().value()
                         , errorCode));
 
     }

@@ -31,8 +31,8 @@ import java.util.Map;
 @Configuration
 @EnableTransactionManagement
 @EnableJpaRepositories(
-        entityManagerFactoryRef = "deanEntityManagerFactory",
-        transactionManagerRef = "deanTransactionManager",
+        entityManagerFactoryRef = "photoEntityManagerFactory",
+        transactionManagerRef = "photoTransactionManager",
         basePackages = {"by.vstu.photo.dean"}
 )
 @ComponentScan(basePackages = "by.vstu.photo.dean")
@@ -45,8 +45,6 @@ import java.util.Map;
 //Сразу запрещаем любые изменения в старой базе
 @Import({PreventAnyUpdate.class})
 public class DeanPhotoDBConfig {
-
-
     /**
      * Создает источник данных для БД с фото студентов.
      *

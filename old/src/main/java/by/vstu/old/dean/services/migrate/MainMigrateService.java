@@ -97,7 +97,7 @@ public class MainMigrateService {
 //        services.add(this.absenceMigrateService);
 //        services.add(this.departmentSpecialityMergeService);
 //        services.add(this.teacherDepartmentMigrateService);
-//        services.add(this.statementMigrateService);
+        services.add(this.statementMigrateService);
 
 
         Thread migrateThread = new Thread(() -> {
