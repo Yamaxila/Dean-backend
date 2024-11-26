@@ -145,6 +145,9 @@ public class FacultyModel extends DBBaseModel {
     @Deprecated
     private Integer educationType;
 
+    public boolean isDaytime() {
+        return this.getFacultyType() == 0 && this.getSourceId() != 8;
+    }
 
     @Override
     public String toString() {

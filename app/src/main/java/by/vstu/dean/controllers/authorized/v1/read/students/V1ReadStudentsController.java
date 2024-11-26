@@ -2,6 +2,7 @@ package by.vstu.dean.controllers.authorized.v1.read.students;
 
 import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.trowable.EntityNotFoundException;
 import by.vstu.dean.dto.v1.students.V1StudentDTO;
 import by.vstu.dean.mapper.v1.V1StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
@@ -12,10 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -59,8 +57,8 @@ public class V1ReadStudentsController extends BaseReadController<V1StudentDTO, S
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
-    public ResponseEntity<List<StudentModel>> getAllByGroup(@PathVariable Long id) {
-        return new ResponseEntity<>(this.service.findAllByGroupId(id), HttpStatus.OK);
+    public ResponseEntity<List<V1StudentDTO>> getAllByGroup(@PathVariable Long id) {
+        return new ResponseEntity<>(this.mapper.toDto(this.service.findAllByGroupId(id)), HttpStatus.OK);
     }
 
     /**
@@ -73,8 +71,8 @@ public class V1ReadStudentsController extends BaseReadController<V1StudentDTO, S
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Operation(method = "getAllByGroup", description = "Отправляет все объекты из базы по id группы")
-    public ResponseEntity<List<StudentModel>> getAllActiveByGroup(@PathVariable Long id) {
-        return new ResponseEntity<>(this.service.findAllByGroupId(id).stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).toList(), HttpStatus.OK);
+    public ResponseEntity<List<V1StudentDTO>> getAllActiveByGroup(@PathVariable Long id) {
+        return new ResponseEntity<>(this.mapper.toDto(this.service.findAllByGroupId(id)).stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).toList(), HttpStatus.OK);
     }
 
     /**
@@ -102,6 +100,20 @@ public class V1ReadStudentsController extends BaseReadController<V1StudentDTO, S
     @Operation(method = "getAllHomeless", description = "Отправляет все объекты из базы, которые нуждаются в общежитии")
     public ResponseEntity<List<V1StudentDTO>> getAllHomeless() {
         return new ResponseEntity<>(this.mapper.toDto(this.service.getAll().stream().filter(s -> s.isNeedHostel() && s.getStatus().equals(EStatus.ACTIVE)).toList()), HttpStatus.OK);
+    }
+
+    /**
+     * Получить студента по номеру зачетки.
+     *
+     * @param caseNo Номер зачетки студента
+     * @return Список студентов
+     */
+    @RequestMapping(value = "/byCaseNo",
+            produces = {"application/json"},
+            method = RequestMethod.GET)
+    @Operation(method = "getStudentByCaseNo", description = "Отправляет студента по номеру зачетки")
+    public ResponseEntity<V1StudentDTO> getStudentByCaseNo(@RequestParam("caseNo") Long caseNo) {
+        return this.service.findByCaseNo(caseNo).map(m -> ResponseEntity.ok(this.mapper.toDto(m))).orElseThrow(EntityNotFoundException::new);
     }
 
 }

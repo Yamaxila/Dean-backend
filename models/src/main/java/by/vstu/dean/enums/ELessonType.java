@@ -1,6 +1,7 @@
 package by.vstu.dean.enums;
 
 import by.vstu.dean.core.enums.BaseEnum;
+import com.fasterxml.jackson.annotation.JsonValue;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.util.Arrays;
@@ -40,5 +41,10 @@ public enum ELessonType implements BaseEnum<ELessonType> {
     @Override
     public List<ELessonType> getValues() {
         return Arrays.stream(ELessonType.values()).toList();
+    }
+
+    @JsonValue
+    public String getName() {
+        return name;
     }
 }
