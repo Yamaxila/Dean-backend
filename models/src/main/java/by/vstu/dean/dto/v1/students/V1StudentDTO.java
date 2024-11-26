@@ -52,6 +52,13 @@ public final class V1StudentDTO extends BaseDTO {
     private Integer sex;
 
     /**
+     * Номер зачетки студента.
+     */
+    @Schema(title = "Номер зачетки студента")
+    @ReflectionField(value = "caseNo", clazz = StudentModel.class)
+    private String caseNo;
+
+    /**
      * Адрес студента (устаревшее поле, используйте отдельные поля для адреса).
      */
     @Schema(title = "Адрес")

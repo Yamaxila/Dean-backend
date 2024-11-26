@@ -7,6 +7,7 @@ import by.vstu.dean.models.merge.StatementStudentMerge;
 import by.vstu.dean.repo.StatementModelRepository;
 import by.vstu.dean.repo.StatementStudentMergeRepository;
 import org.javers.core.Javers;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -25,16 +26,17 @@ public class StatementService extends BaseService<StatementModel, StatementModel
         return this.repo.findDistinctSourceIdsByStudentSourceId(studentSourceId);
     }
 
+    @Cacheable(cacheResolver = "simpleCacheResolver", unless = "#result.size() == 0")
     public List<StatementStudentMerge> getAllStudentMergeForStudentByCaseNo(Long caseNo) {
-        return studentMergeRepository.findByStudent_CaseNo(caseNo);
+        return this.studentMergeRepository.findByStudent_CaseNo(caseNo);
     }
 
     public List<StatementStudentMerge> getAllStudentMergeForStatement(Long statementId) {
-        return studentMergeRepository.findByStatementId(statementId);
+        return this.studentMergeRepository.findByStatementId(statementId);
     }
 
     public List<StatementStudentMerge> getAllStudentMergeSourceIdsForStatement(Long statementId) {
-        return studentMergeRepository.findByStatementId(statementId);
+        return this.studentMergeRepository.findByStatementId(statementId);
     }
 
     public boolean hasStatement(Long globalStatementNumber, Long studyPlanSourceId) {
