@@ -148,13 +148,10 @@ public class V1ReadGroupController extends BaseReadController<V1GroupDTO, GroupM
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Operation(method = "getAllBy", description = "Отправляет список годов обучения")
-    public ResponseEntity<List<Integer>> getAllYears(@RequestParam(required = false, defaultValue = "-1") Integer year, @RequestParam(required = false, defaultValue = "") String semester, @RequestParam(required = false, defaultValue = "-1") Long facultyId) {
-
+    public ResponseEntity<List<Integer>> getAllYears() {
         List<GroupModel> groups = Collections.synchronizedList(this.service.getAll());
-
         List<Integer> out = new java.util.ArrayList<>(groups.stream().map(GroupModel::getYearEnd).distinct().toList());
         out.addAll(groups.stream().map(GroupModel::getYearStart).distinct().toList());
-
         return ResponseEntity.ok(out.stream().distinct().toList());
     }
 
