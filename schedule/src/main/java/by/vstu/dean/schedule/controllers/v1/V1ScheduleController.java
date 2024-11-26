@@ -33,8 +33,7 @@ public class V1ScheduleController {
      */
     @RequestMapping(value = "/teacher/{teacherId}"
             , produces = {"application/json"}
-            , method = RequestMethod.GET
-            , params = {"teacherId"})
+            , method = RequestMethod.GET)
     @Operation(method = "teacher", description = "Получение расписания для преподавателя")
     public ResponseEntity<List<ScheduleDTO>> getScheduleByTeacher(@PathVariable Long teacherId) {
         return new ResponseEntity<>(this.scheduleService.getSchedulesByTeacher(teacherId), HttpStatus.OK);
@@ -48,8 +47,7 @@ public class V1ScheduleController {
      */
     @RequestMapping(value = "/group/{groupId}"
             , produces = {"application/json"}
-            , method = RequestMethod.GET
-            , params = {"groupId"})
+            , method = RequestMethod.GET)
     @Operation(method = "group", description = "Получение расписания для группы")
     public ResponseEntity<List<ScheduleDTO>> getScheduleByGroup(@PathVariable Long groupId) {
         return new ResponseEntity<>(this.scheduleService.getSchedulesByGroup(groupId), HttpStatus.OK);
@@ -63,7 +61,7 @@ public class V1ScheduleController {
     @RequestMapping(value = "/week"
             , produces = {"application/json"}
             , method = RequestMethod.GET)
-    @Operation(method = "groupId", description = "Получение данных о текущей неделу")
+    @Operation(method = "groupId", description = "Получение данных о текущей неделе")
     public ResponseEntity<WeekDTO> getNameOFWeek() {
         return new ResponseEntity<>(this.scheduleService.definitionOfWeek(), HttpStatus.OK);
     }
