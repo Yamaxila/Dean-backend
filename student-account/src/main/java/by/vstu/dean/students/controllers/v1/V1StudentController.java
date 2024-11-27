@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.Base64;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/api/v1/student")
@@ -62,21 +63,20 @@ public class V1StudentController {
      */
     @Operation(method = "photo", description = "Получение фото студента")
     @GetMapping("/photo")
-    public ResponseEntity<?> getPhoto(@AuthenticationPrincipal Jwt principal) {
+    public ResponseEntity<?> getPhoto(@AuthenticationPrincipal Jwt principal) throws IOException {
         String photoUrl = studentService.findByCaseNo(principal.getClaim("id_from_source")).orElseThrow().getPhotoUrl();
 
-        if (photoUrl == null)
-            photoUrl = "/api/v1/files/students/download?filename=none.jpg";
-
-
-        Resource photo = (Resource) this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir).getBody();
-        try {
-            assert photo != null;
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getFilename() + "\"")
-                    .body(Base64.getEncoder().encode(FileCopyUtils.copyToByteArray(photo.getInputStream())));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        ResponseEntity<?> response = this.fileService.downloadFile(photoUrl.split("filename=")[1], pathUploadDir);
+        if (response.getStatusCode() == HttpStatus.OK) {
+            return findPhoto((Resource) Objects.requireNonNull(response.getBody()));
+        } else {
+            return findPhoto((Resource) Objects.requireNonNull(this.fileService.downloadFile("none.jpg", pathUploadDir).getBody()));
         }
+    }
+
+    private ResponseEntity<?> findPhoto(Resource photo) throws IOException {
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + photo.getFilename() + "\"")
+                .body(Base64.getEncoder().encode(FileCopyUtils.copyToByteArray(photo.getInputStream())));
     }
 }
