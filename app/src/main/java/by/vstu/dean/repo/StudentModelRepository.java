@@ -55,4 +55,13 @@ public interface StudentModelRepository extends DBBaseModelRepository<StudentMod
      */
     Optional<StudentModel> findByCaseNo(Long caseNo);
 
+    /**
+     * Найти студентов по номеру зачетки.
+     *
+     * @param caseNo Номер зачетки.
+     * @return Список студентов, если они существуют.
+     */
+    @Query("select s from StudentModel s where cast(s.caseNo as string) LIKE concat(:caseNo, '%')")
+    List<StudentModel> findAllByCaseNo(String caseNo);
+
 }

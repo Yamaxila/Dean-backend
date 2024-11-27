@@ -10,6 +10,7 @@ import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.models.students.internal.*;
+import by.vstu.dean.repo.ParentModelRepository;
 import by.vstu.dean.repo.SpecializationModelRepository;
 import by.vstu.dean.services.GroupService;
 import by.vstu.dean.services.SpecializationService;
@@ -17,6 +18,7 @@ import by.vstu.dean.services.students.*;
 import by.vstu.old.dean.models.DStudentModel;
 import by.vstu.old.dean.repo.DStudentModelRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -40,11 +42,14 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     private final StudentLanguageService studentLanguageService;
     private final SpecializationService specializationService;
 
+    private final ParentModelRepository parentModelRepository;
+
     private final DStudentModelRepository dStudentModelRepository;
 
 
     private final List<SpecializationModel> specializations = new ArrayList<>();
     private final List<GroupModel> groups = new ArrayList<>();
+    private final ModelMapper modelMapper;
 
     @Override
     public Long getLastDBId() {
@@ -135,6 +140,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
                 .type(EMobileOperatorType.UNKNOWN)
                 .phone(StringUtils.safeTrim(dStudentModel.getPhone())
                 ).build();
+
         if (!update) {
             phoneModel.setCreated(LocalDateTime.now());
             phoneModel.setSourceId(dStudentModel.getId());
@@ -142,6 +148,11 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         phoneModel.setUpdated(LocalDateTime.now());
         phoneModel.setStatus(status);
         studentModel.setPhone(phoneModel);
+
+        studentModel.setJob(StringUtils.safeTrim(dStudentModel.getJob()));
+        studentModel.setJobExperience(dStudentModel.getJobExperience());
+
+        studentModel.setUnbound(StringUtils.safeTrim(dStudentModel.getUnbound()));
 
         studentModel.setBenefits(StringUtils.safeTrim(dStudentModel.getBenefits()   ));
         studentModel.setSex((dStudentModel.getSex() != null && dStudentModel.getSex().equals("М")) ? 1 : 0);
@@ -162,6 +173,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
             passportModel.setCreated(LocalDateTime.now());
             passportModel.setSourceId(dStudentModel.getId());
         }
+
         passportModel.setUpdated(LocalDateTime.now());
         passportModel.setStatus(status);
         studentModel.setPassport(passportModel);
@@ -171,7 +183,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
                 .state(StringUtils.safeTrim(dStudentModel.getRegState()))
                 .region(StringUtils.safeTrim(dStudentModel.getRegRegion()))
                 .city(StringUtils.safeTrim(dStudentModel.getRegCity2()))
-                .street(StringUtils.safeTrim(dStudentModel.getRegCity()))
+                .street(StringUtils.safeTrim(dStudentModel.getRegStreet()))
                 .house(StringUtils.safeTrim(dStudentModel.getRegHouse()))
                 .housePart(StringUtils.safeTrim(dStudentModel.getRegHousePart()))
                 .flat(StringUtils.safeTrim(dStudentModel.getRegFlat()))
@@ -234,6 +246,79 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         return studentModel;
     }
 
+    public List<ParentModel> createParentsForStudent(DStudentModel dStudentModel, StudentModel studentModel) {
+        if (dStudentModel == null)
+            return new ArrayList<>();
+
+        List<ParentModel> parents = new ArrayList<>();
+
+        if (dStudentModel.getFatherFullName() != null && !dStudentModel.getFatherFullName().isEmpty() && dStudentModel.getFatherFullName().split(" ").length == 3) {
+            parents.add(ParentModel.builder()
+                    .student(studentModel)
+                    .surname(dStudentModel.getFatherFullName().split(" ")[0])
+                    .name(dStudentModel.getFatherFullName().split(" ")[1])
+                    .patronymic(dStudentModel.getFatherFullName().split(" ")[2])
+                    .job(StringUtils.safeTrim(dStudentModel.getFatherJob()))
+                    .phone(PhoneModel.builder()
+                            .phone(StringUtils.safeTrim(dStudentModel.getFatherPhone()))
+                            .type(EMobileOperatorType.UNKNOWN).build()
+                    ).build()
+            );
+        }
+
+        if (dStudentModel.getMotherFullName() != null && !dStudentModel.getMotherFullName().isEmpty() && dStudentModel.getMotherFullName().split(" ").length == 3) {
+            parents.add(ParentModel.builder()
+                    .student(studentModel)
+                    .surname(dStudentModel.getMotherFullName().split(" ")[0])
+                    .name(dStudentModel.getMotherFullName().split(" ")[1])
+                    .patronymic(dStudentModel.getMotherFullName().split(" ")[2])
+                    .job(StringUtils.safeTrim(dStudentModel.getMotherJob()))
+                    .phone(PhoneModel.builder()
+                            .phone(StringUtils.safeTrim(dStudentModel.getMotherPhone()))
+                            .type(EMobileOperatorType.UNKNOWN).build()
+                    ).build()
+            );
+        }
+
+
+        return parents.stream().peek(m -> {
+            m.getPhone().setCreated(LocalDateTime.now());
+            m.getPhone().setUpdated(LocalDateTime.now());
+            m.getPhone().setSourceId(dStudentModel.getId());
+            m.getPhone().setStatus(studentModel.getStatus());
+
+            m.setCreated(LocalDateTime.now());
+            m.setUpdated(LocalDateTime.now());
+            m.setSourceId(dStudentModel.getId());
+            m.setStatus(studentModel.getStatus());
+        }).toList();
+    }
+
+    public List<EducationModel> createEducationsForStudent(DStudentModel dStudentModel, StudentModel studentModel) {
+        if (dStudentModel == null)
+            return new ArrayList<>();
+
+        List<EducationModel> educations = new ArrayList<>();
+
+        if (!StringUtils.safeTrim(dStudentModel.getEducation1()).isEmpty())
+            this.addEducation(educations, studentModel, StringUtils.safeTrim(dStudentModel.getEducation1()), StringUtils.safeTrim(dStudentModel.getEducation1DocumentType()), StringUtils.safeTrim(dStudentModel.getEducation1DocumentSerial()), StringUtils.safeTrim(dStudentModel.getEducation1DocumentNumber()));
+        if (!StringUtils.safeTrim(dStudentModel.getEducation2()).isEmpty())
+            this.addEducation(educations, studentModel, StringUtils.safeTrim(dStudentModel.getEducation2()), StringUtils.safeTrim(dStudentModel.getEducation2DocumentType()), StringUtils.safeTrim(dStudentModel.getEducation2DocumentSerial()), StringUtils.safeTrim(dStudentModel.getEducation2DocumentNumber()));
+        if (!StringUtils.safeTrim(dStudentModel.getEducation3()).isEmpty())
+            this.addEducation(educations, studentModel, StringUtils.safeTrim(dStudentModel.getEducation3()), StringUtils.safeTrim(dStudentModel.getEducation3DocumentType()), StringUtils.safeTrim(dStudentModel.getEducation3DocumentSerial()), StringUtils.safeTrim(dStudentModel.getEducation3DocumentNumber()));
+
+        return educations;
+    }
+
+    private void addEducation(List<EducationModel> toAdd, StudentModel studentModel, String education, String documentType, String serial, String number) {
+        toAdd.add(EducationModel.builder()
+                .student(studentModel)
+                .education(education)
+                .educationDocumentType(documentType)
+                .educationDocumentSerial(serial)
+                .educationDocumentNumber(number)
+                .build());
+    }
 
     @Override
     public List<StudentModel> convertList(List<DStudentModel> t) {
@@ -258,6 +343,11 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     @Override
     public void migrate() {
         System.err.println(this.getClass().getName());
-        this.insertAll(this.convertNotExistsFromDB());
+        // this.insertAll(this.convertNotExistsFromDB());
+
+        List<StudentModel> studentModels = this.studentService.getAll().stream().filter(p -> /*p.getEducations().isEmpty() &&*/ p.getParents().isEmpty()).toList();
+
+        this.educationService.saveAll(studentModels.stream().flatMap(m -> this.createEducationsForStudent(this.dStudentModelRepository.findById(m.getSourceId()).orElse(null), m).stream()).toList());
+//        this.parentModelRepository.saveAll(studentModels.stream().flatMap(m -> this.createParentsForStudent(this.dStudentModelRepository.findById(m.getSourceId()).orElse(null), m).stream()).toList());
     }
 }

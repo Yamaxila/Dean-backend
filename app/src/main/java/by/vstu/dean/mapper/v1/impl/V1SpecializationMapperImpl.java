@@ -9,6 +9,9 @@ import by.vstu.dean.services.SpecializationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 @Component
 public class V1SpecializationMapperImpl implements V1SpecializationMapper {
 
@@ -39,6 +42,18 @@ public class V1SpecializationMapperImpl implements V1SpecializationMapper {
         }
         V1SpecializationDTO specializationDTO = V1SpecializationMapper.super.toDto(entity);
         specializationDTO.setSpec(this.mapper.toDto(entity.getSpec()));
+
+        Pattern pattern = Pattern.compile("-");
+
+        if (specializationDTO.getName() != null && specializationDTO.getSpec() != null) {
+            Matcher matcher = pattern.matcher(specializationDTO.getName());
+            int i = 0;
+            while (matcher.find())
+                i++;
+            if (i > 5)
+                specializationDTO.setName(specializationDTO.getSpec().getName());
+        }
+
         return specializationDTO;
     }
 

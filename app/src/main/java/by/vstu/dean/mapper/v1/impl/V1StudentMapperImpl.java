@@ -2,10 +2,7 @@ package by.vstu.dean.mapper.v1.impl;
 
 import by.vstu.dean.core.utils.ReflectionUtils;
 import by.vstu.dean.dto.v1.students.V1StudentDTO;
-import by.vstu.dean.mapper.v1.V1GroupMapper;
-import by.vstu.dean.mapper.v1.V1HostelRoomMapper;
-import by.vstu.dean.mapper.v1.V1SpecializationMapper;
-import by.vstu.dean.mapper.v1.V1StudentMapper;
+import by.vstu.dean.mapper.v1.*;
 import by.vstu.dean.models.students.StudentModel;
 import by.vstu.dean.services.students.StudentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,21 @@ public class V1StudentMapperImpl implements V1StudentMapper {
     @Autowired
     private V1GroupMapper groupMapper;
 
+    @Autowired
+    private V1EducationMapper educationMapper;
+
+    @Autowired
+    private V1ParentsMapper parentsMapper;
+
+    @Autowired
+    private V1CitizenshipMapper citizenshipMapper;
+
+    @Autowired
+    private V1InstitutionMapper institutionMapper;
+
+    @Autowired
+    private V1StudentLanguageMapper languageMapper;
+
     @Override
     public StudentModel toEntity(V1StudentDTO dto) {
 
@@ -40,6 +52,9 @@ public class V1StudentMapperImpl implements V1StudentMapper {
         studentModel = (StudentModel) ReflectionUtils.mapObject(studentModel, dto, true, dto.getId() != null);
 
         studentModel.setSpecialization(this.specializationMapper.toEntity(dto.getSpecialization()));
+        studentModel.setCitizenship(this.citizenshipMapper.toEntity(dto.getCitizenship()));
+        studentModel.setInstitution(this.institutionMapper.toEntity(dto.getInstitution()));
+        studentModel.setStudentLanguage(this.languageMapper.toEntity(dto.getLanguage()));
         studentModel.setGroup(this.groupMapper.toEntity(dto.getGroup()));
         studentModel.setHostelRoom(this.hostelRoomMapper.toEntity(dto.getHostelRoom()));
 
@@ -57,6 +72,11 @@ public class V1StudentMapperImpl implements V1StudentMapper {
         V1StudentDTO studentDTO = V1StudentMapper.super.toDto(entity);
 
         studentDTO.setSpecialization(this.specializationMapper.toDto(entity.getSpecialization()));
+        studentDTO.setInstitution(this.institutionMapper.toDto(entity.getInstitution()));
+        studentDTO.setCitizenship(this.citizenshipMapper.toDto(entity.getCitizenship()));
+        studentDTO.setLanguage(this.languageMapper.toDto(entity.getStudentLanguage()));
+        studentDTO.setEducations(this.educationMapper.toDto(entity.getEducations()));
+        studentDTO.setParents(this.parentsMapper.toDto(entity.getParents()));
         studentDTO.setGroup(this.groupMapper.toDto(entity.getGroup()));
         studentDTO.setHostelRoom(this.hostelRoomMapper.toDto(entity.getHostelRoom()));
         studentDTO.setApproved(entity.isApproved());

@@ -37,8 +37,8 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
     private final StatementStudentMergeRepository statementStudentMergeRepository;
     private final StatementTeacherMergeRepository statementTeacherMergeRepository;
 
-    public StatementUpdateService(StatementModelRepository repo, DStatementModelRepository dRepo, StatementMigrateService baseMigrateService, StatementService service, MainUpdateService updateService, StatementService statementService, TeacherService teacherService, StudyPlanService studyPlanService, StatementStudentMergeRepository statementStudentMergeRepository, StatementTeacherMergeRepository statementTeacherMergeRepository) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public StatementUpdateService(StatementModelRepository repo, DStatementModelRepository dRepo, StatementMigrateService baseMigrateService, StatementService service, StatementService statementService, TeacherService teacherService, StudyPlanService studyPlanService, StatementStudentMergeRepository statementStudentMergeRepository, StatementTeacherMergeRepository statementTeacherMergeRepository) {
+        super(repo, dRepo, baseMigrateService, service);
         this.statementService = statementService;
         this.teacherService = teacherService;
         this.studyPlanService = studyPlanService;

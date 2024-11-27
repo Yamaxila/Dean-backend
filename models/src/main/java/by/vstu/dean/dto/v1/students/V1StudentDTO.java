@@ -5,12 +5,16 @@ import by.vstu.dean.core.dto.BaseDTO;
 import by.vstu.dean.dto.v1.hostels.V1HostelRoomDTO;
 import by.vstu.dean.dto.v1.specs.V1SpecializationDTO;
 import by.vstu.dean.models.students.StudentModel;
+import by.vstu.dean.models.students.internal.ParentModel;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  * DTO for {@link StudentModel}
@@ -45,17 +49,71 @@ public final class V1StudentDTO extends BaseDTO {
     private String patronymic;
 
     /**
+     * Место рождения студента.
+     */
+    @NotNull
+    @Schema(title = "Место рождения")
+    @ReflectionField(clazz = StudentModel.class)
+    private String birthPlace;
+
+    /**
      * Пол студента.
      */
     @Schema(title = "Пол")
     private String sex;
 
     /**
+     * Последнее место учебы студента.
+     */
+    @Schema(title = "Последнее место учебы")
+    private V1InstitutionDTO institution;
+
+    /**
+     * Год окончания последнего места учебы студента.
+     */
+    @Schema(title = "Год окончания последнего места учебы")
+    @ReflectionField(clazz = StudentModel.class)
+    private Integer educationYearEnd;
+
+    /**
+     * Гражданство студента.
+     */
+    @Schema(title = "Гражданство")
+    private V1CitizenshipDTO citizenship;
+
+    /**
+     * Иностранный язык студента.
+     */
+    @Schema(title = "Иностранный язык")
+    private V1StudentLanguageDTO language;
+
+    /**
      * Номер зачетки студента.
      */
     @Schema(title = "Номер зачетки студента")
     @ReflectionField(value = "caseNo", clazz = StudentModel.class)
-    private String caseNo;
+    private Long caseNo;
+
+    /**
+     * Тип оплаты обучения студента.
+     */
+    @Schema(title = "Тип оплаты обучения студента")
+    @ReflectionField(value = "paymentType.name", clazz = StudentModel.class)
+    private String paymentType;
+
+    /**
+     * Дата зачисления студента.
+     */
+    @Schema(title = "Дата зачисления")
+    @ReflectionField(value = "enrollDate", clazz = StudentModel.class)
+    private LocalDate enrollDate;
+
+    /**
+     * Дата рождения студента.
+     */
+    @Schema(title = "Дата рождения")
+    @ReflectionField(value = "birthDate", clazz = StudentModel.class)
+    private LocalDate birthDate;
 
     /**
      * Адрес студента (устаревшее поле, используйте отдельные поля для адреса).
@@ -136,6 +194,32 @@ public final class V1StudentDTO extends BaseDTO {
     private String phone;
 
     /**
+     * E-mail студента..
+     */
+    @Schema(title = "E-mail")
+    private String email;
+
+    /**
+     * Оператор мобильного телефона студента.
+     */
+    @ReflectionField(value = "phone.type.name", clazz = ParentModel.class)
+    private String phoneType;
+
+    /**
+     * Работа студента.
+     */
+    @Schema(title = "Работа")
+    @ReflectionField(clazz = StudentModel.class)
+    private String job;
+
+    /**
+     * Стаж работы студента.
+     */
+    @Schema(title = "Стаж")
+    @ReflectionField(clazz = StudentModel.class)
+    private Double jobExperience;
+
+    /**
      * Специализация студента.
      */
     @Schema(title = "Специализация")
@@ -155,9 +239,29 @@ public final class V1StudentDTO extends BaseDTO {
     @JsonIgnore
     private V1HostelRoomDTO hostelRoom;
 
-    @ReflectionField(clazz = StudentModel.class)
-    private boolean approved;
+    /**
+     * Образования студента
+     */
+    @Schema(title = "Образования студента")
+    private List<V1EducationDTO> educations;
 
+    /**
+     * Родители студента
+     */
+    @Schema(title = "Родители студента")
+    private List<V1ParentDTO> parents;
+
+    /**
+     * Утверждено ли заселение студента.
+     */
+    @Schema(title = "Утверждено ли заселение студента")
+    @ReflectionField(clazz = StudentModel.class)
+    private Boolean approved;
+
+    /**
+     * URL-адрес фото студента.
+     */
+    @Schema(title = "URL-адрес фото студента")
     @ReflectionField(clazz = StudentModel.class)
     private String photoUrl;
 

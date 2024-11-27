@@ -2,7 +2,6 @@ package by.vstu.dean.controllers.authorized.v1.read.students;
 
 import by.vstu.dean.core.controllers.BaseReadController;
 import by.vstu.dean.core.enums.EStatus;
-import by.vstu.dean.core.trowable.EntityNotFoundException;
 import by.vstu.dean.dto.v1.students.V1StudentDTO;
 import by.vstu.dean.mapper.v1.V1StudentMapper;
 import by.vstu.dean.models.students.StudentModel;
@@ -12,9 +11,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +22,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/students")
 @Tag(name = "Students", description = "Студенты")
-@PreAuthorize("hasAnyAuthority('ROLE_SERVICE', 'ROLE_METHODIST')")
 public class V1ReadStudentsController extends BaseReadController<V1StudentDTO, StudentModel, V1StudentMapper, StudentModelRepository, StudentService> {
 
     /**
@@ -112,8 +110,13 @@ public class V1ReadStudentsController extends BaseReadController<V1StudentDTO, S
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Operation(method = "getStudentByCaseNo", description = "Отправляет студента по номеру зачетки")
-    public ResponseEntity<V1StudentDTO> getStudentByCaseNo(@RequestParam("caseNo") Long caseNo) {
-        return this.service.findByCaseNo(caseNo).map(m -> ResponseEntity.ok(this.mapper.toDto(m))).orElseThrow(EntityNotFoundException::new);
+    public ResponseEntity<List<V1StudentDTO>> getStudentByCaseNo(@RequestParam("caseNo") String caseNo) {
+        List<StudentModel> found = this.service.findAllByCaseNo(caseNo);
+
+        if (found.isEmpty())
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ArrayList<>());
+
+        return ResponseEntity.ok(this.mapper.toDto(found));
     }
 
 }

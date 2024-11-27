@@ -12,7 +12,12 @@ import org.springframework.stereotype.Service;
 public class DepartmentUpdateService extends BaseUpdateService<DDepartmentModel, DDepartmentModelRepository, DepartmentModel, DepartmentModelRepository, DepartmentService, DepartmentMigrateService> {
 
 
-    public DepartmentUpdateService(DepartmentModelRepository repo, DDepartmentModelRepository dRepo, DepartmentMigrateService baseMigrateService, DepartmentService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public DepartmentUpdateService(DepartmentModelRepository repo, DDepartmentModelRepository dRepo, DepartmentMigrateService baseMigrateService, DepartmentService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
+
+    public void update() {
+        System.err.println("DISABLED " + this.getClass().getName());
+    }
+
 }

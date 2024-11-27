@@ -8,8 +8,10 @@ public enum EMobileOperatorType {
     A1(2, "А1"),
     LIFE(3, "Life ;)");
 
+    final String name;
 
-    EMobileOperatorType(int ignoredId, String ignoredName) {
+    EMobileOperatorType(int ignoredId, String name) {
+        this.name = name;
     }
 
 

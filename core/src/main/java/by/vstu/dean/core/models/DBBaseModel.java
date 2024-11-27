@@ -32,7 +32,6 @@ public abstract class DBBaseModel {
      */
     @ReadOnlyProperty
     @Schema(title = "Id из базы деканата")
-
     private Long sourceId;
 
     /**

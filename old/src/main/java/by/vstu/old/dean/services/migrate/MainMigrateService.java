@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Service;
 
 import javax.sql.DataSource;
@@ -73,6 +74,7 @@ public class MainMigrateService {
     }
 
     @PostConstruct
+    @Order
     public void migrate() {
         this.openDS();
 
@@ -92,12 +94,12 @@ public class MainMigrateService {
 //        services.add(this.specialityMigrateService);
 //        services.add(this.specializationMigrateService);
 //        services.add(this.groupMigrateService);
-//        services.add(this.studentMigrateService);
+        services.add(this.studentMigrateService);
 //        services.add(this.studyPlanMigrateService);
 //        services.add(this.absenceMigrateService);
 //        services.add(this.departmentSpecialityMergeService);
 //        services.add(this.teacherDepartmentMigrateService);
-        services.add(this.statementMigrateService);
+//        services.add(this.statementMigrateService);
 
 
         Thread migrateThread = new Thread(() -> {

@@ -24,8 +24,9 @@ public class CitizenshipUpdateService extends BaseUpdateService<DCitizenshipMode
      * @param service            Сервис для работы с моделями будущей версии.
      * @param updateService      Главная служба обновления, в которой регистрируется данный сервис.
      */
-    public CitizenshipUpdateService(CitizenshipModelRepository repo, DCitizenshipModelRepository dRepo, CitizenshipMigrateService baseMigrateService, CitizenshipService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public CitizenshipUpdateService(CitizenshipModelRepository repo, DCitizenshipModelRepository dRepo, CitizenshipMigrateService baseMigrateService, CitizenshipService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
+
 }
 

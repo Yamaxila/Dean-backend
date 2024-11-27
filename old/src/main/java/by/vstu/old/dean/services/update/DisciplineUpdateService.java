@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class DisciplineUpdateService extends BaseUpdateService<DDisciplineModel, DDisciplineModelRepository, DisciplineModel, DisciplineModelRepository, DisciplineService, DisciplineMigrateService> {
 
-    public DisciplineUpdateService(DisciplineModelRepository repo, DDisciplineModelRepository dRepo, DisciplineMigrateService baseMigrateService, DisciplineService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public DisciplineUpdateService(DisciplineModelRepository repo, DDisciplineModelRepository dRepo, DisciplineMigrateService baseMigrateService, DisciplineService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
 
     @Override

@@ -10,28 +10,29 @@ import java.util.List;
  * Перечисление, реализующее типы оплаты обучения.
  */
 @Schema(title = "Тип оплаты обучения")
-@SuppressWarnings("unused")
 public enum EPaymentType implements BaseEnum<EPaymentType> {
 
     @Schema(title = "Неизвестно")
-    UNKNOWN(-1),
+    UNKNOWN(-1, "Неизвестно"),
 
     @Schema(title = "Бесплатное обучение")
-    NOT_PAID(1),
+    NOT_PAID(1, "Бюджет"),
 
     @Schema(title = "Платное обучение")
-    PAID(2),
+    PAID(2, "Платно"),
 
     @Schema(title = "Целевое обучение")
-    DIRECTIONAL(3);
+    DIRECTIONAL(3, "Целевое");
 
+    final String name;
 
     /**
      * Конструктор с параметром.
      *
      * @param ignoredId Идентификатор типа оплаты
      */
-    EPaymentType(int ignoredId) {
+    EPaymentType(int ignoredId, String name) {
+        this.name = name;
     }
 
 

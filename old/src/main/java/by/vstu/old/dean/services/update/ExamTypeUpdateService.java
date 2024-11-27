@@ -14,8 +14,8 @@ import java.util.List;
 @Service
 public class ExamTypeUpdateService extends BaseUpdateService<DExamModel, DExamModelModelRepository, ExamModel, ExamModelRepository, ExamTypeService, ExamTypeMigrateService> {
 
-    public ExamTypeUpdateService(ExamModelRepository repo, DExamModelModelRepository dRepo, ExamTypeMigrateService baseMigrateService, ExamTypeService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public ExamTypeUpdateService(ExamModelRepository repo, DExamModelModelRepository dRepo, ExamTypeMigrateService baseMigrateService, ExamTypeService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
 
     @Override

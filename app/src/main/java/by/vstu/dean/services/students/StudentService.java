@@ -43,4 +43,15 @@ public class StudentService extends BaseService<StudentModel, StudentModelReposi
         return this.repo.findByCaseNo(caseNo);
     }
 
+    /**
+     * Получает студентов по номеру зачетки.
+     *
+     * @param caseNoLike Номер зачетки.
+     * @return Список моделей студентов, если они найдены.
+     */
+    @Cacheable(value = "students", key = "#caseNoLike")
+    public List<StudentModel> findAllByCaseNo(String caseNoLike) {
+        return this.repo.findAllByCaseNo(caseNoLike);
+    }
+
 }

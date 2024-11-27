@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class SpecializationUpdateService extends BaseUpdateService<DSpecializationModel, DSpecializationModelRepository, SpecializationModel, SpecializationModelRepository, SpecializationService, SpecializationMigrateService> {
 
-    public SpecializationUpdateService(SpecializationModelRepository repo, DSpecializationModelRepository dRepo, SpecializationMigrateService baseMigrateService, SpecializationService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public SpecializationUpdateService(SpecializationModelRepository repo, DSpecializationModelRepository dRepo, SpecializationMigrateService baseMigrateService, SpecializationService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
 }

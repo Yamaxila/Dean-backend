@@ -7,9 +7,10 @@ import by.vstu.dean.enums.ESemester;
 import by.vstu.dean.models.specs.SpecializationModel;
 import by.vstu.dean.models.students.GroupModel;
 import by.vstu.dean.models.students.StudentModel;
-import by.vstu.dean.repo.FacultyModelRepository;
-import by.vstu.dean.repo.StudentModelRepository;
+import by.vstu.dean.services.FacultyService;
 import by.vstu.dean.services.GroupService;
+import by.vstu.dean.services.SpecialityService;
+import by.vstu.dean.services.students.StudentService;
 import by.vstu.old.dean.OldDBBaseModel;
 import by.vstu.old.dean.models.DGroupModel;
 import by.vstu.old.dean.repo.DGroupModelRepository;
@@ -26,8 +27,9 @@ import java.util.List;
 public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupModel> {
 
     private final GroupService groupService;
-    private final StudentModelRepository studentModelRepository;
-    private final FacultyModelRepository facultyModelRepository;
+    private final StudentService studentService;
+    private final FacultyService facultyService;
+    private final SpecialityService specialityService;
 
     private final DStudentModelRepository dStudentModelRepository;
     private final DGroupModelRepository dGroupModelRepository;
@@ -55,10 +57,12 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
 
         groupModel.setName(StringUtils.safeTrim(dGroupModel.getName()));
         groupModel.setScore(Double.valueOf(dGroupModel.getScore()));
-        groupModel.setFaculty(facultyModelRepository.findBySourceId(dGroupModel.getFaculty().getId()));
+        groupModel.setFaculty(facultyService.getBySourceId(dGroupModel.getFaculty().getId()));
         groupModel.setYearStart(dGroupModel.getYearStart());
         groupModel.setYearEnd(dGroupModel.getYearEnd());
         groupModel.setCurrentCourse(dGroupModel.getCurrentCourse());
+        groupModel.setSpec(this.specialityService.getBySourceId(dGroupModel.getSpeciality() != null ? dGroupModel.getSpeciality().getId() : null));
+
         try {
             groupModel.setEndSemester(dGroupModel.getSemestrEnd().equalsIgnoreCase("осенний") ? ESemester.AUTUMN : ESemester.SPRING);
         } catch (Exception ignored) {
@@ -88,7 +92,7 @@ public class GroupMigrateService extends BaseMigrateService<GroupModel, DGroupMo
     public List<GroupModel> applySpecIdByStudents() {
         List<GroupModel> temp = this.groupService.getRepo().findAllBySpecIsNull();
         temp.forEach((group) -> {
-            StudentModel studentModel = this.studentModelRepository.findTopByGroupIdAndSpecializationNotNull(group.getId());
+            StudentModel studentModel = this.studentService.getRepo().findTopByGroupIdAndSpecializationNotNull(group.getId());
             if (studentModel != null) {
                 SpecializationModel specializationModel = studentModel.getSpecialization();
 

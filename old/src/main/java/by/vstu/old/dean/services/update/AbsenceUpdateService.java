@@ -10,7 +10,12 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class AbsenceUpdateService extends BaseUpdateService<DAbsenceModel, DAbsenceModelRepository, AbsenceModel, AbsenceModelRepository, AbsenceService, AbsenceMigrateService> {
-    public AbsenceUpdateService(AbsenceModelRepository repo, DAbsenceModelRepository dRepo, AbsenceMigrateService baseMigrateService, AbsenceService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public AbsenceUpdateService(AbsenceModelRepository repo, DAbsenceModelRepository dRepo, AbsenceMigrateService baseMigrateService, AbsenceService service) {
+        super(repo, dRepo, baseMigrateService, service);
+    }
+
+    @Override
+    public void update() {
+
     }
 }

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class StudentsUpdateService extends BaseUpdateService<DStudentModel, DStudentModelRepository, StudentModel, StudentModelRepository, StudentService, StudentMigrateService> {
 
-    public StudentsUpdateService(StudentModelRepository repo, DStudentModelRepository dRepo, StudentMigrateService baseMigrateService, StudentService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public StudentsUpdateService(StudentModelRepository repo, DStudentModelRepository dRepo, StudentMigrateService baseMigrateService, StudentService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
 }

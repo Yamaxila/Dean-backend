@@ -1,5 +1,6 @@
 package by.vstu.old.dean.services.update;
 
+import by.vstu.dean.core.anotations.ReflectionIgnore;
 import by.vstu.dean.core.enums.EStatus;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.repo.DBBaseModelRepository;
@@ -42,7 +43,7 @@ public abstract class BaseUpdateService<
     protected final Y dRepo;
     protected final M baseMigrateService;
     protected final S service;
-    protected final MainUpdateService updateService;
+//    protected final MainUpdateService updateService;
 
     /**
      * Метод для сравнения двух объектов модели будущей версии и старой версии.
@@ -66,6 +67,7 @@ public abstract class BaseUpdateService<
                         && !p.getName().equalsIgnoreCase("hostelRoom")
                         && !p.getName().equalsIgnoreCase("hostelRoomId")
                         && !p.getName().equalsIgnoreCase("migrateDate")
+                        && Arrays.stream(p.getAnnotations()).noneMatch(a -> a.annotationType() == ReflectionIgnore.class)
         ).toList()) {
 
             if (field.getType().equals(Set.class) || field.getType().equals(List.class))
@@ -99,7 +101,7 @@ public abstract class BaseUpdateService<
      * @return Список моделей, требующих обновления.
      */
     public List<O> getUpdated() {
-        List<O> out = new ArrayList<>();
+        List<O> out = Collections.synchronizedList(new ArrayList<>());
         this.repo.findAll().stream().filter(p -> p.getStatus().equals(EStatus.ACTIVE)).forEach(row -> {
             D t = this.findOldModel(row.getSourceId());
             if (t != null) {
@@ -162,9 +164,9 @@ public abstract class BaseUpdateService<
      */
     @Override
     @PostConstruct
-    @Order
+    @Order(0)
     public void onInit() {
-        System.out.println("[UPDATE REGISTER]: " + this.getClass());
-        this.updateService.registerService(this);
+//        System.out.println("[UPDATE REGISTER]: " + this.getClass());
+//        this.updateService.registerService(this);
     }
 }

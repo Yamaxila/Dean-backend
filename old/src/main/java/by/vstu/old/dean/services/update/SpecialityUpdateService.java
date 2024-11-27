@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class SpecialityUpdateService extends BaseUpdateService<DSpecialityModel, DSpecialityModelRepository, SpecialityModel, SpecialityModelRepository, SpecialityService, SpecialityMigrateService> {
-    public SpecialityUpdateService(SpecialityModelRepository repo, DSpecialityModelRepository dRepo, SpecialityMigrateService baseMigrateService, SpecialityService service, MainUpdateService updateService) {
-        super(repo, dRepo, baseMigrateService, service, updateService);
+    public SpecialityUpdateService(SpecialityModelRepository repo, DSpecialityModelRepository dRepo, SpecialityMigrateService baseMigrateService, SpecialityService service) {
+        super(repo, dRepo, baseMigrateService, service);
     }
 }

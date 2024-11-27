@@ -1,6 +1,7 @@
 package by.vstu.dean.models.students;
 
 import by.vstu.dean.core.adapters.LocalDateTypeAdapter;
+import by.vstu.dean.core.anotations.ReflectionIgnore;
 import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.enums.EPaymentType;
 import by.vstu.dean.models.changes.PenaltyModel;
@@ -12,7 +13,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.google.gson.annotations.JsonAdapter;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.*;
-import jakarta.transaction.Transactional;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -36,7 +36,6 @@ import java.util.Objects;
 @NoArgsConstructor
 @Table(name = "dean_students")
 @Schema(title = "Модель студента")
-@Transactional
 public class StudentModel extends DBBaseModel {
 
     /**
@@ -79,7 +78,12 @@ public class StudentModel extends DBBaseModel {
     private PhoneModel phone;
 
     @Schema(title = "E-mail")
+    @ReflectionIgnore
     private String email;
+
+    @Schema(title = "Telegram id студента")
+    @ReflectionIgnore
+    private Long telegramId;
 
     @JsonAdapter(LocalDateTypeAdapter.class)
     @Schema(title = "Дата рождения")
@@ -95,28 +99,27 @@ public class StudentModel extends DBBaseModel {
     @ManyToOne(fetch = FetchType.EAGER)
     @Schema(title = "Последнее место учебы")
     private InstitutionModel institution;
+
     @Schema(title = "Год окончания")
     private Integer educationYearEnd;
 
     @Schema(title = "Работа")
     private String job;
+
     @Schema(title = "Стаж")
     private Double jobExperience;
-
-    @JsonAdapter(LocalDateTypeAdapter.class)
-    @Schema(title = "Дата зачисления")
-    private LocalDate enrollmentDate;
 
     @Schema(title = "Перепоступает")
     private boolean reEnroll;
 
     @Schema(title = "Свободный диплом")
     private String unbound;
+
     @Schema(title = "Поддержка государством")
     private boolean stateSupport;
+
     @Schema(title = "Переведен")
     private boolean move;
-
 
     @JsonAdapter(LocalDateTypeAdapter.class)
     @Schema(title = "Дата зачисления")
@@ -125,6 +128,7 @@ public class StudentModel extends DBBaseModel {
     @Schema(title = "Полное имя(латиница)")
     @NotNull
     private String fullNameL; // Это нужно разбивать на фамилию, имя и отчество
+
     @Schema(title = "Имя(Латиница)")
     @NotNull
     private String firstNameL;
@@ -134,6 +138,7 @@ public class StudentModel extends DBBaseModel {
 
     @Schema(title = "Номер договора/Студенческого")
     private Long caseNo;
+
     @Schema(title = "Номер договора (2)")
     private Long documentNumber; //TODO: Какой-то бред
 
@@ -167,26 +172,29 @@ public class StudentModel extends DBBaseModel {
 
     @JoinColumn(name = "passport_id")
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ReflectionIgnore
     private PassportModel passport;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "dean_parents", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "student")
     @Schema(title = "Родители/опекуны")
+    @ReflectionIgnore
     private List<ParentModel> parents;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(name = "dean_educations", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "student")
     @Schema(title = "Образования")
+    @ReflectionIgnore
     private List<EducationModel> educations;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "dean_student_changes", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Образования")
+    @ReflectionIgnore
     private List<StudentChangeModel> changes;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "dean_penalties", joinColumns = {@JoinColumn(name = "id")}, inverseJoinColumns = {@JoinColumn(name = "student_id")})
     @Schema(title = "Образования")
+    @ReflectionIgnore
     private List<PenaltyModel> penalties;
 
     @Schema(title = "Место рождения")
@@ -227,28 +235,33 @@ public class StudentModel extends DBBaseModel {
     @NotFound(action = NotFoundAction.IGNORE)
     @Schema(title = "Комната")
     @JsonBackReference
+    @ReflectionIgnore
     private HostelRoomModel hostelRoom;
 
     /**
      * Дата заселения студента.
      */
     @Schema(title = "Дата заселения")
+    @ReflectionIgnore
     private LocalDate checkInDate;
 
     /**
      * Дата выселения студента.
      */
     @Schema(title = "Дата выселения")
+    @ReflectionIgnore
     private LocalDate evictionDate;
 
     @Column(name = "approved", columnDefinition = "boolean default false")
     @NotNull
+    @ReflectionIgnore
     private boolean approved;
 
     /**
      * URL-адрес фото студента.
      */
     @Schema(title = "URL-адрес фото студента")
+    @ReflectionIgnore
     private String photoUrl;
 
     @Override

@@ -90,7 +90,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, V1St
         s.setEducationYearEnd(v1StudentModel.getLastDocument().getEducationYearEnd());
         s.setJob(v1StudentModel.getLastDocument().getJob());
         s.setJobExperience(v1StudentModel.getLastDocument().getJobExperience());
-        s.setEnrollmentDate(v1StudentModel.getLastDocument().getEnrollmentDate());
+//        s.setEnrollmentDate(v1StudentModel.getLastDocument().getEnrollmentDate());
         s.setReEnroll(v1StudentModel.getLastDocument().isReEnroll());
         s.setUnbound(v1StudentModel.getLastDocument().getUnbound());
         s.setStateSupport(v1StudentModel.getLastDocument().isStateSupport());
