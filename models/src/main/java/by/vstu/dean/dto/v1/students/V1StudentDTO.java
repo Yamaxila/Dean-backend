@@ -197,6 +197,7 @@ public final class V1StudentDTO extends BaseDTO {
      * E-mail студента..
      */
     @Schema(title = "E-mail")
+    @ReflectionField(clazz = StudentModel.class)
     private String email;
 
     /**

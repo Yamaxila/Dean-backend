@@ -30,7 +30,7 @@ import java.util.*;
  */
 @RequiredArgsConstructor
 public abstract class BaseUpdateService<
-          D extends OldDBBaseModel
+        D extends OldDBBaseModel
         , Y extends OldDBBaseModelRepository<D>
         , O extends DBBaseModel
         , R extends DBBaseModelRepository<O>
@@ -78,10 +78,11 @@ public abstract class BaseUpdateService<
             Object value2 = field.get(old);
 
             if (value1 instanceof DBBaseModel && value2 instanceof DBBaseModel) {
-                if (!((DBBaseModel) value1).getSourceId().equals(((DBBaseModel) value2).getSourceId())) {
-                    field.set(future, value2);
-                    equals = false;
-                }
+                if (((DBBaseModel) value1).getSourceId() != null && ((DBBaseModel) value2).getSourceId() != null)
+                    if (!((DBBaseModel) value1).getSourceId().equals(((DBBaseModel) value2).getSourceId())) {
+                        field.set(future, value2);
+                        equals = false;
+                    }
             } else {
                 if (!(value1 instanceof DBBaseModel)) {
                     if (!Objects.equals(value1, value2)) {

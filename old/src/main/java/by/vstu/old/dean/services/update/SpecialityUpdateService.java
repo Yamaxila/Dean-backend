@@ -13,4 +13,9 @@ public class SpecialityUpdateService extends BaseUpdateService<DSpecialityModel,
     public SpecialityUpdateService(SpecialityModelRepository repo, DSpecialityModelRepository dRepo, SpecialityMigrateService baseMigrateService, SpecialityService service) {
         super(repo, dRepo, baseMigrateService, service);
     }
+
+    @Override
+    public void update() {
+
+    }
 }

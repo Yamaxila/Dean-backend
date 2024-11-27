@@ -2,6 +2,7 @@ package by.vstu.old.dean.services.migrate;
 
 
 import by.vstu.dean.core.enums.EStatus;
+import by.vstu.dean.core.models.DBBaseModel;
 import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.enums.EMobileOperatorType;
 import by.vstu.dean.enums.EPassportType;
@@ -123,7 +124,7 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
         studentModel.setPatronymic(StringUtils.safeTrim(dStudentModel.getSecondName()));
         studentModel.setBirthDate(dStudentModel.getBirthDate() != null ? dStudentModel.getBirthDate().toLocalDate() : LocalDate.now());
         studentModel.setBirthPlace(StringUtils.safeTrim(dStudentModel.getBirthPlace()));
-        studentModel.setCaseNo(StringUtils.canBeInt(dStudentModel.getCaseNo()) ? Long.parseLong(StringUtils.safeTrim(dStudentModel.getCaseNo()).replaceAll("[^0-9]", "")) : -1L);
+        studentModel.setCaseNo(Long.parseLong(StringUtils.safeTrim(dStudentModel.getCaseNo()).replaceAll("[^0-9]", "")));
         studentModel.setDocumentNumber(StringUtils.canBeInt(dStudentModel.getDocumentNumber()) ? Long.parseLong(StringUtils.safeTrim(dStudentModel.getDocumentNumber()).replaceAll("[^0-9]", "")) : -1L);
         studentModel.setEnrollDate(dStudentModel.getEnrollmentDate() != null ? dStudentModel.getEnrollmentDate().toLocalDate() : LocalDate.now());
         studentModel.setNeedHostel(!(dStudentModel.getHostel() == null ||
@@ -243,6 +244,8 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
 
         studentModel.setUpdated(LocalDateTime.now());
 
+        studentModel.setPhotoUrl("/api/v1/files/students/download?filename=none.jpg");
+
         return studentModel;
     }
 
@@ -344,10 +347,11 @@ public class StudentMigrateService extends BaseMigrateService<StudentModel, DStu
     public void migrate() {
         System.err.println(this.getClass().getName());
         // this.insertAll(this.convertNotExistsFromDB());
+        List<Long> educationSIds = this.educationService.getAll().stream().map(EducationModel::getStudent).map(DBBaseModel::getId).toList();
+        List<Long> parentsSIds = this.parentModelRepository.findAll().stream().map(ParentModel::getStudent).map(DBBaseModel::getId).toList();
+        List<StudentModel> studentModels = this.studentService.getAll().stream().filter(p -> !educationSIds.contains(p.getId()) && parentsSIds.contains(p.getId())).toList();
 
-        List<StudentModel> studentModels = this.studentService.getAll().stream().filter(p -> /*p.getEducations().isEmpty() &&*/ p.getParents().isEmpty()).toList();
-
-        this.educationService.saveAll(studentModels.stream().flatMap(m -> this.createEducationsForStudent(this.dStudentModelRepository.findById(m.getSourceId()).orElse(null), m).stream()).toList());
+//        this.educationService.saveAll(studentModels.stream().flatMap(m -> this.createEducationsForStudent(this.dStudentModelRepository.findById(m.getSourceId()).orElse(null), m).stream()).toList());
 //        this.parentModelRepository.saveAll(studentModels.stream().flatMap(m -> this.createParentsForStudent(this.dStudentModelRepository.findById(m.getSourceId()).orElse(null), m).stream()).toList());
     }
 }

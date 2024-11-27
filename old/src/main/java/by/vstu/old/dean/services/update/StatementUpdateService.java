@@ -274,4 +274,10 @@ public class StatementUpdateService extends BaseUpdateService<DStatementModel, D
 
 
     }
+
+
+    @Override
+    public void update() {
+
+    }
 }

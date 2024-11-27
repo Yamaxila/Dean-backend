@@ -13,4 +13,9 @@ public class GroupUpdateService extends BaseUpdateService<DGroupModel, DGroupMod
     public GroupUpdateService(GroupModelRepository repo, DGroupModelRepository dRepo, GroupMigrateService baseMigrateService, GroupService service) {
         super(repo, dRepo, baseMigrateService, service);
     }
+
+    @Override
+    public void update() {
+
+    }
 }

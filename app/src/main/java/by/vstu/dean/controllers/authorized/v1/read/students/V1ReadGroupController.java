@@ -1,6 +1,7 @@
 package by.vstu.dean.controllers.authorized.v1.read.students;
 
 import by.vstu.dean.core.controllers.BaseReadController;
+import by.vstu.dean.core.utils.StringUtils;
 import by.vstu.dean.dto.v1.lessons.V1DepartmentDTO;
 import by.vstu.dean.dto.v1.students.V1GroupDTO;
 import by.vstu.dean.mapper.v1.V1DepartmentMapper;
@@ -16,6 +17,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -120,23 +122,32 @@ public class V1ReadGroupController extends BaseReadController<V1GroupDTO, GroupM
             produces = {"application/json"},
             method = RequestMethod.GET)
     @Operation(method = "getAllBy", description = "Отправляет все группы из базы по году, семестру или факультету")
-    public ResponseEntity<List<V1GroupDTO>> getAllBy(@RequestParam(required = false, defaultValue = "-1") Integer year, @RequestParam(required = false, defaultValue = "") String semester, @RequestParam(required = false, defaultValue = "-1") Long facultyId) {
+    public ResponseEntity<List<V1GroupDTO>> getAllBy(@RequestParam(required = false, defaultValue = "-1") String year, @RequestParam(required = false, defaultValue = "") String semester, @RequestParam(required = false, defaultValue = "-1") String facultyId) {
 
         List<GroupModel> groups = Collections.synchronizedList(this.service.getAll());
 
-        if (year != -1) {
-            groups = Collections.synchronizedList(groups.stream().filter(p -> p.getYearStart() <= year && p.getYearEnd() >= year).toList());
+        if (!StringUtils.canBeInt(year))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        if (!StringUtils.canBeInt(facultyId))
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+        long lFacultyId = Long.parseLong(facultyId);
+        Integer iYear = Integer.parseInt(year);
+
+        if (iYear != -1) {
+            groups = Collections.synchronizedList(groups.stream().filter(p -> p.getYearStart() <= iYear && p.getYearEnd() >= iYear).toList());
         }
 
         if (!semester.isEmpty()) {
             groups = Collections.synchronizedList(groups.stream().filter(p -> p.getEndSemester().getName().equals(semester)).toList());
         }
 
-        if (facultyId != -1) {
-            groups = Collections.synchronizedList(groups.stream().filter(p -> p.getFaculty().getId().equals(facultyId)).toList());
+        if (lFacultyId != -1) {
+            groups = Collections.synchronizedList(groups.stream().filter(p -> p.getFaculty().getId().equals(lFacultyId)).toList());
         }
 
-        return ResponseEntity.ok(this.mapper.toDto(groups));
+        return ResponseEntity.ok(this.mapper.toDto(groups.stream().sorted(Comparator.comparing(GroupModel::getStatus).thenComparing(GroupModel::getYearStart)).toList()));
     }
 
     /**

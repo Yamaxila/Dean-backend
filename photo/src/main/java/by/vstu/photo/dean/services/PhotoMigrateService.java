@@ -31,7 +31,7 @@ public class PhotoMigrateService {
     @PostConstruct
     public void init() {
         log.info("Photo migration started!");
-        this.studentService.getAll().parallelStream().forEach(student -> {
+        this.studentService.getAll().forEach(student -> {
             log.info("{} {}", student.getId(), student.getCaseNo());
 
             List<PhotoDataModel> photoDataModels = this.photoDataModelRepo.findByCardNumber(String.valueOf(student.getCaseNo()));
